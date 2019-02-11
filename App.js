@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { AppLoading, Asset, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import RootNavigation from './navigation/RootNavigation';
@@ -16,6 +16,7 @@ export default class App extends React.Component {
       isLoadingComplete: false,
       isAuthenticationReady: false,
       isAuthenticated: false,
+      isReady: fales
     };
 
     // Initialize firebase...
@@ -26,6 +27,13 @@ export default class App extends React.Component {
   onAuthStateChanged = (user) => {
     this.setState({isAuthenticationReady: true});
     this.setState({isAuthenticated: !!user});
+  }
+
+  componentDidMount() {
+    await Font.loadAsync({
+      'DancingScript-Regular': require('./assets/fonts/DancingScript-Regular.otf'),
+    }); 
+    this.setState({isReady: true})
   }
 
   render() {

@@ -2,7 +2,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator, TabBarBottom } from 'react-navigation';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
 
 //import Colors from '../constants/Colors';
 import TestScreen from './../screens/TestScreen';

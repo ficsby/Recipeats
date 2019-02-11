@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Button, Image, View, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { StackActions } from 'react-navigation';
+import { Font } from 'expo';
 import * as firebase from 'firebase';
 
 import logo from './../../assets/images/logo_transparent.png';
@@ -107,7 +108,8 @@ const styles = StyleSheet.create({
     
     logoText: {
         marginTop: -40, 
-        fontSize: 16,
+        fontFamily: 'DancingScript-Regular',
+        fontSize: 16
     },
 
     logo: {
