@@ -102,7 +102,7 @@ export default class LoginScreen extends React.Component {
                  <TouchableOpacity style={styles.button} onPress ={this.onForgotPasswordPress}> 
                     <Text>Forgot Password</Text>
                  </TouchableOpacity>
-
+                <Text>pw</Text>
             </View>
         )
         //return <Text style={{paddingTop:20}}>LoginScreen</Text>
