@@ -26,20 +26,8 @@ export default class SignupScreen extends React.Component {
             return;
         }
         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then( function(user) {
-            var ref = firebase.database().ref().child("user");
-            var data = {
-                email: this.email,
-                password: this.password,
-                name: this.name,
-                id: user.uid
-            }
-            ref.child(user.uid).set(data).then(function(ref) {//use 'child' and 'set' combination to save data in your own generated key
-                console.log("Saved");
-                $location.path('/profile');
-            }, function(error) {
-                console.log(error); 
-            });
+        .then( function() {
+            var user = firebase.auth().currentUser;
             // do nothing, success of creating will move onto the main page
         }, (error) => {
             Alert.alert(error.message);
@@ -171,6 +159,14 @@ export default class SignupScreen extends React.Component {
                         //onChangeText = {(text) => {this.setState( {activityLevel: text} ) } }
                     />
                 </View>
+                
+                <TouchableOpacity style={styles.button } onPress={this.onBackToLogin}>
+                    <Text>Login</Text>
+                 </TouchableOpacity>
+
+                 <TouchableOpacity style={styles.button} onPress ={this.onSignUpPress}> 
+                    <Text>Sign Up</Text>
+                 </TouchableOpacity>
 
             </ScrollView>
         ) 
