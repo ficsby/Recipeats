@@ -1,9 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Alert, Dimensions } from 'react-native';
 import { StackActions } from 'react-navigation';
 import * as firebase from 'firebase';
 
 import logo from './../../assets/images/logo_transparent.png';
+
+const { width: WIDTH } = Dimensions.get('window')
 
 export default class SignupScreen extends React.Component {
 
@@ -57,7 +59,7 @@ export default class SignupScreen extends React.Component {
                     <TextInput
                         style={styles.input}
                         value = {this.state.name}
-                        onChangeText = {(text) => {this.setState( {name: text} ) } }
+                        //onChangeText = {(text) => {this.setState( {name: text} ) } }
                     />
                 </View>
 
@@ -67,7 +69,7 @@ export default class SignupScreen extends React.Component {
                         style={styles.input}
                         secureTextEntry ={true}
                         value = {this.state.username}
-                        onChangeText = {(text) => {this.setState( {username: text} ) } }
+                        //onChangeText = {(text) => {this.setState( {username: text} ) } }
                     />
                 </View>
 
@@ -77,7 +79,7 @@ export default class SignupScreen extends React.Component {
                         style={styles.input}
                         secureTextEntry ={true}
                         value = {this.state.email}
-                        onChangeText = {(text) => {this.setState( {email: text} ) } }
+                        //onChangeText = {(text) => {this.setState( {email: text} ) } }
                     />
                 </View>
                 
@@ -87,7 +89,7 @@ export default class SignupScreen extends React.Component {
                         style={styles.input}
                         secureTextEntry ={true}
                         value = {this.state.password}
-                        onChangeText = {(text) => {this.setState( {password: text} ) } }
+                        //onChangeText = {(text) => {this.setState( {password: text} ) } }
                     />
                 </View>
 
@@ -97,7 +99,7 @@ export default class SignupScreen extends React.Component {
                         style={styles.input}
                         secureTextEntry ={true}
                         value = {this.state.passwordConfirm}
-                        onChangeText = {(text) => {this.setState( {passwordConfirm: text} ) } }
+                        //onChangeText = {(text) => {this.setState( {passwordConfirm: text} ) } }
                     />
                 </View>
 
@@ -146,6 +148,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center', // Used to set Text Component Vertically Center
         alignItems: 'center', // Used to set Text Component Horizontally Center
         backgroundColor: 'rgba(244, 238, 238, 0.7)', // Sandy 
+    },
+
+    input: {
+        width: WIDTH - 130,
+        height: 40,
+        fontSize: 20, 
+        marginHorizontal: 35,
+        //borderBottomColor: 'rgba(181, 83, 102, 1)', // Medium Pink
+        //borderBottomWidth: 2,
     },
 
     button: {
