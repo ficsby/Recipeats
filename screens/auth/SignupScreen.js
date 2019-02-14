@@ -47,47 +47,63 @@ export default class SignupScreen extends React.Component {
         return (
             <View>
         
-                <Text>Sign Up</Text>
+                <Text style={styles.pageTitle}>Sign Up</Text>
 
+
+                <Text style={styles.inputHeading}>Your basic information</Text>
+
+                <Text style={styles.inputLabel}>Name</Text>
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.input}
-                        placeholder={'email'}
-                        value = {this.state.email}
-                        onChangeText = {(text) => {this.setState( {email: text} ) } }
-                        //underLineColorAndroid= 'transparent'
+                        value = {this.state.name}
+                        onChangeText = {(text) => {this.setState( {name: text} ) } }
                     />
                 </View>
 
+                <Text style={styles.inputLabel}>Username</Text>
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.input}
-                        placeholder={'password'}
+                        secureTextEntry ={true}
+                        value = {this.state.username}
+                        onChangeText = {(text) => {this.setState( {username: text} ) } }
+                    />
+                </View>
+
+                <Text style={styles.inputLabel}>Email</Text>
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        secureTextEntry ={true}
+                        value = {this.state.email}
+                        onChangeText = {(text) => {this.setState( {email: text} ) } }
+                    />
+                </View>
+                
+                <Text style={styles.inputLabel}>Password</Text>
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
                         secureTextEntry ={true}
                         value = {this.state.password}
                         onChangeText = {(text) => {this.setState( {password: text} ) } }
-                        //underLineColorAndroid= 'transparent'
                     />
                 </View>
 
+                <Text style={styles.inputLabel}>Password Confirmation</Text>
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.input}
-                        placeholder={'passwordConfirm'}
                         secureTextEntry ={true}
                         value = {this.state.passwordConfirm}
                         onChangeText = {(text) => {this.setState( {passwordConfirm: text} ) } }
-                        //underLineColorAndroid= 'transparent'
                     />
                 </View>
 
-                <TouchableOpacity style={styles.button } onPress={this.onSignUpPress}>
-                    <Text>Sign Up</Text>
-                 </TouchableOpacity>
 
-                 <TouchableOpacity style={styles.button} onPress ={this.onBackToLogin}> 
-                    <Text>Back to Login</Text>
-                 </TouchableOpacity>
+                <Text style={styles.inputHeading}>Your physical information</Text>
+
             </View>
         )
      
@@ -95,6 +111,43 @@ export default class SignupScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+
+    pageTitle: {
+        paddingTop: 30,
+        fontSize: 35,
+        textAlign: 'center',
+        color: 'rgba(181, 83, 102, 1)', // Medium Pink
+    },
+
+    inputHeading: {
+        paddingTop: 30,
+        paddingLeft: 40,
+        marginBottom: 20,
+        fontSize: 18,
+        fontWeight: '500',
+        color: 'rgba(91, 88, 88, 0.9)',
+    },
+
+    inputLabel: {
+        marginBottom: -5,
+        paddingLeft: 40,
+        fontSize: 15,
+        color: 'rgba(91, 88, 88, 0.9)',
+    },
+
+    inputContainer: {
+        paddingTop: 7,
+        paddingBottom: 7,
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 40,
+        marginRight: 40,
+        fontSize: 15,
+        justifyContent: 'center', // Used to set Text Component Vertically Center
+        alignItems: 'center', // Used to set Text Component Horizontally Center
+        backgroundColor: 'rgba(244, 238, 238, 0.7)', // Sandy 
+    },
+
     button: {
         marginTop: 30,
         marginBottom: 20,

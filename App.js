@@ -16,7 +16,6 @@ export default class App extends React.Component {
       isLoadingComplete: false,
       isAuthenticationReady: false,
       isAuthenticated: false,
-      isReady: fales
     };
 
     // Initialize firebase...
@@ -29,12 +28,7 @@ export default class App extends React.Component {
     this.setState({isAuthenticated: !!user});
   }
 
-  componentDidMount() {
-    await Font.loadAsync({
-      'DancingScript-Regular': require('./assets/fonts/DancingScript-Regular.otf'),
-    }); 
-    this.setState({isReady: true})
-  }
+
 
   render() {
     if ( (!this.state.isLoadingComplete || !this.state.isAuthenticationReady) && !this.props.skipLoadingScreen) {
@@ -61,14 +55,16 @@ export default class App extends React.Component {
         require('./assets/images/logo.png'),
         require('./assets/images/logo.png'),
       ]),
-      /*
+
+      
       Font.loadAsync({
         // This is the font that we are using for our tab bar
         //...Ionicons.font,
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
+        'dancing-script': require('./assets/fonts/DancingScript-Regular.otf'),
         //'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
-      }),*/
+      }),
     ]);
   };
 

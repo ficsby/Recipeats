@@ -17,6 +17,7 @@ export default class LoginScreen extends React.Component {
         this.state = { 
             email: "",
             password: "",
+            fontLoaded: false,
         };
     }
 
@@ -50,7 +51,14 @@ export default class LoginScreen extends React.Component {
 
         this.props.navigation.dispatch(navActions);
     }
-
+    
+    async componentDidMount() {
+        await Font.loadAsync({
+          'dancing-script': require('../../assets/fonts/DancingScript-Regular.otf'),
+        }); 
+        this.setState({fontLoaded: true})
+    }
+    
     render() {
         return (
             <View style={ globalStyles.background }>
@@ -58,24 +66,25 @@ export default class LoginScreen extends React.Component {
                 <Text>Login</Text>
                 <View style={styles.logoContainer}>
                     <Image source={logo} style={styles.logo}/>
-                    <Text style={styles.logoText} >RECIPEATS</Text>
+                    <Text style={styles.logoText} >Recipeats</Text>
                 </View>
 
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.input}
-                        placeholder={'email'}
-                        //placeholderTextColor = {'rgba(255, 255, 255, 0.7)'}
+                        placeholder={'Username'}
+                        placeholderTextColor = {'rgba(0, 0, 0, 0.3)'}
                         value = {this.state.email}
                         onChangeText = {(text) => {this.setState( {email: text} ) } }
                         //underLineColorAndroid= 'transparent'
                     />
                 </View>
 
-                <View style={styles.inputContainer}>
+                <View style={[styles.inputContainer, styles.inputContainer2]}>
                     <TextInput
                         style={styles.input}
-                        placeholder={'password'}
+                        placeholder={'Password'}
+                        placeholderTextColor = {'rgba(0, 0, 0, 0.3)'}
                         secureTextEntry ={true}
                         value = {this.state.password}
                         onChangeText = {(text) => {this.setState( {password: text} ) } }
@@ -107,29 +116,37 @@ const styles = StyleSheet.create({
       },
     
     logoText: {
-        marginTop: -40, 
-        fontFamily: 'DancingScript-Regular',
-        fontSize: 16
+        marginTop: -60, 
+        fontFamily: 'dancing-script',
+        fontSize: 45,
+        color: 'rgba(181, 83, 102, 1)', // Medium Pink
     },
 
     logo: {
-    width: 120,
-    height: 120,
-    marginBottom: 50,
+        width: 90,
+        height: 90,
+        marginBottom: 50,
 
     },
 
     inputContainer: {
-    marginTop: 20,
-    backgroundColor: 'rgba(249, 248, 248, 1)',
+        marginTop: -130,
+        flex: 1,
+        justifyContent: 'center', // Used to set Text Component Vertically Center
+        alignItems: 'center' // Used to set Text Component Horizontally Center
+    },
+
+    inputContainer2: {
+        marginTop: -300,
     },
 
     input: {
-    width: WIDTH - 75,
-    height: 65,
-    fontSize: 20, 
-    paddingLeft: 45,
-    marginHorizontal: 35,
+        width: WIDTH - 130,
+        height: 40,
+        fontSize: 20, 
+        marginHorizontal: 35,
+        borderBottomColor: 'rgba(181, 83, 102, 1)', // Medium Pink
+        borderBottomWidth: 2,
     },
 
     button: {
