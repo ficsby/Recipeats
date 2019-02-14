@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { AppLoading, Asset, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import RootNavigation from './navigation/RootNavigation';
@@ -28,6 +28,8 @@ export default class App extends React.Component {
     this.setState({isAuthenticated: !!user});
   }
 
+
+
   render() {
     if ( (!this.state.isLoadingComplete || !this.state.isAuthenticationReady) && !this.props.skipLoadingScreen) {
       return (
@@ -53,14 +55,16 @@ export default class App extends React.Component {
         require('./assets/images/logo.png'),
         require('./assets/images/logo.png'),
       ]),
-      /*
+
+      
       Font.loadAsync({
         // This is the font that we are using for our tab bar
         //...Ionicons.font,
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
+        'dancing-script': require('./assets/fonts/DancingScript-Regular.otf'),
         //'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
-      }),*/
+      }),
     ]);
   };
 
