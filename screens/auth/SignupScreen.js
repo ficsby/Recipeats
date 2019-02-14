@@ -13,21 +13,33 @@ export default class SignupScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
+            name : "",
             email: "",
             paswword: "",
             passwordConfirm: "",
-
+            username: "",
         };
     }
-
     onSignUpPress = () => {
-
         if(this.state.password !== this.state.passwordConfirm) {
             Alert.alert("Passwords do not match");
             return;
         }
         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then( ()=> {
+        .then( function(user) {
+            var ref = firebase.database().ref().child("user");
+            var data = {
+                email: this.email,
+                password: this.password,
+                name: this.name,
+                id: user.uid
+            }
+            ref.child(user.uid).set(data).then(function(ref) {//use 'child' and 'set' combination to save data in your own generated key
+                console.log("Saved");
+                $location.path('/profile');
+            }, function(error) {
+                console.log(error); 
+            });
             // do nothing, success of creating will move onto the main page
         }, (error) => {
             Alert.alert(error.message);
@@ -52,7 +64,6 @@ export default class SignupScreen extends React.Component {
         
                 <Text style={styles.pageTitle}>Sign Up</Text>
 
-
                 <Text style={styles.inputHeading}>Your basic information</Text>
 
                 <Text style={styles.inputLabel}>Name</Text>
@@ -60,7 +71,7 @@ export default class SignupScreen extends React.Component {
                     <TextInput
                         style={styles.input}
                         value = {this.state.name}
-                        //onChangeText = {(text) => {this.setState( {name: text} ) } }
+                        onChangeText = { (text) => {this.setState( {name: text} ) } }
                     />
                 </View>
 
@@ -68,9 +79,8 @@ export default class SignupScreen extends React.Component {
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.input}
-                        secureTextEntry ={true}
                         value = {this.state.username}
-                        //onChangeText = {(text) => {this.setState( {username: text} ) } }
+                        onChangeText = {(text) => {this.setState( {username: text} ) } }
                     />
                 </View>
 
@@ -78,9 +88,8 @@ export default class SignupScreen extends React.Component {
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.input}
-                        secureTextEntry ={true}
                         value = {this.state.email}
-                        //onChangeText = {(text) => {this.setState( {email: text} ) } }
+                        onChangeText = {(text) => {this.setState( {email: text} ) } }
                     />
                 </View>
                 
@@ -90,7 +99,7 @@ export default class SignupScreen extends React.Component {
                         style={styles.input}
                         secureTextEntry ={true}
                         value = {this.state.password}
-                        //onChangeText = {(text) => {this.setState( {password: text} ) } }
+                        onChangeText = {(text) => {this.setState( {password: text} ) } }
                     />
                 </View>
 
@@ -100,7 +109,7 @@ export default class SignupScreen extends React.Component {
                         style={styles.input}
                         secureTextEntry ={true}
                         value = {this.state.passwordConfirm}
-                        //onChangeText = {(text) => {this.setState( {passwordConfirm: text} ) } }
+                        onChangeText = {(text) => {this.setState( {passwordConfirm: text} ) } }
                     />
                 </View>
 
