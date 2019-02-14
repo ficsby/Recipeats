@@ -125,8 +125,8 @@ export default class SignupScreen extends React.Component {
                     mode="date"
                     placeholder="Select date"
                     format="YYYY-MM-DD"
-                    minDate=""
-                    maxDate=""
+                    minDate='1900-01-01'
+                    maxDate='2020-12-31'
                     confirmBtnText="Confirm"
                     cancelBtnText="Cancel"
                     customStyles={{
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     inputHeading: {
         paddingTop: 30,
         paddingLeft: 40,
-        marginBottom: 20,
+        marginBottom: 5,
         fontSize: 18,
         fontWeight: '500',
         color: 'rgba(91, 88, 88, 0.9)',
@@ -211,9 +211,9 @@ const styles = StyleSheet.create({
     },
 
     inputContainer: {
-        paddingTop: 7,
-        paddingBottom: 7,
-        marginTop: 10,
+        paddingTop: 2,
+        paddingBottom: 2,
+        marginTop: 7,
         marginBottom: 10,
         marginLeft: 40,
         marginRight: 40,
