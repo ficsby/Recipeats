@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, ScrollView, Text, TextInput, TouchableOpacity, Image, Alert, Dimensions } from 'react-native';
 import { StackActions } from 'react-navigation';
 import * as firebase from 'firebase';
+import DatePicker from 'react-native-datepicker';
 
 import logo from './../../assets/images/logo_transparent.png';
 
@@ -107,12 +108,32 @@ export default class SignupScreen extends React.Component {
                 <Text style={styles.inputHeading}>Your physical information</Text>
 
                 <Text style={styles.inputLabel}>Birthday</Text>
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        value = {this.state.birthday}
-                        //onChangeText = {(text) => {this.setState( {birthday: text} ) } }
-                    />
+
+                <View style={styles.inputDate}>
+                <DatePicker
+                    style={{width:200}}
+                    date={this.state.date}
+                    mode="date"
+                    placeholder="Select date"
+                    format="YYYY-MM-DD"
+                    minDate=""
+                    maxDate=""
+                    confirmBtnText="Confirm"
+                    cancelBtnText="Cancel"
+                    customStyles={{
+                        dateIcon: {
+                          position: 'absolute',
+                          left: 0,
+                          top: 4,
+                          marginLeft: 0
+                        },
+                        dateInput: {
+                          marginLeft: 36
+                        }
+                        // ... You can check the source to find the other keys.
+                      }}
+                      onDateChange={(date) => {this.setState({date: date})}}
+                />
                 </View>
 
                 <Text style={styles.inputLabel}>Height</Text>
@@ -129,13 +150,21 @@ export default class SignupScreen extends React.Component {
                     <TextInput
                         style={styles.input}
                         value = {this.state.name}
-                        //onChangeText = {(text) => {this.setState( {name: text} ) } }
+                        //onChangeText = {(text) => {this.setState( {weight: text} ) } }
+                    />
+                </View>
+
+                <Text style={styles.inputLabel}>Activity Level</Text>
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        value = {this.state.name}
+                        //onChangeText = {(text) => {this.setState( {activityLevel: text} ) } }
                     />
                 </View>
 
             </ScrollView>
-        )
-     
+        ) 
     }
 }
 
@@ -160,6 +189,15 @@ const styles = StyleSheet.create({
     inputLabel: {
         marginBottom: -5,
         paddingLeft: 40,
+        paddingTop: 10,
+        fontSize: 15,
+        color: 'rgba(91, 88, 88, 0.9)',
+    },
+
+    inputDate:  {
+        marginBottom: 5,
+        paddingLeft: 40,
+        paddingTop: 10,
         fontSize: 15,
         color: 'rgba(91, 88, 88, 0.9)',
     },
