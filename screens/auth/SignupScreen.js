@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Alert, Dimensions } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, TextInput, TouchableOpacity, Image, Alert, Dimensions } from 'react-native';
 import { StackActions } from 'react-navigation';
 import * as firebase from 'firebase';
 
@@ -59,7 +59,7 @@ export default class SignupScreen extends React.Component {
     render() {
         
         return (
-            <View>
+            <ScrollView>
         
                 <Text style={styles.pageTitle}>Sign Up</Text>
 
@@ -115,7 +115,34 @@ export default class SignupScreen extends React.Component {
 
                 <Text style={styles.inputHeading}>Your physical information</Text>
 
-            </View>
+                <Text style={styles.inputLabel}>Birthday</Text>
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        value = {this.state.birthday}
+                        //onChangeText = {(text) => {this.setState( {birthday: text} ) } }
+                    />
+                </View>
+
+                <Text style={styles.inputLabel}>Height</Text>
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        value = {this.state.height}
+                        //onChangeText = {(text) => {this.setState( {height: text} ) } }
+                    />
+                </View>
+
+                <Text style={styles.inputLabel}>Weight</Text>
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        value = {this.state.name}
+                        //onChangeText = {(text) => {this.setState( {name: text} ) } }
+                    />
+                </View>
+
+            </ScrollView>
         )
      
     }
