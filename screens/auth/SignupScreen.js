@@ -20,14 +20,26 @@ export default class SignupScreen extends React.Component {
             username: "",
         };
     }
+
+    writeUserData = (userId) => {
+        firebase.database().ref('users/' + userId).set({
+            name: this.state.name,
+            email: this.state.email,
+            password: this.state.password,
+            username : this.state.username
+        });
+    }
+
     onSignUpPress = () => {
         if(this.state.password !== this.state.passwordConfirm) {
             Alert.alert("Passwords do not match");
             return;
         }
+        
         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then( function() {
+        .then( () => {
             var user = firebase.auth().currentUser;
+            this.writeUserData(user.uid);
             // do nothing, success of creating will move onto the main page
         }, (error) => {
             Alert.alert(error.message);
