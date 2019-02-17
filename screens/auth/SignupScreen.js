@@ -144,22 +144,28 @@ export default class SignupScreen extends React.Component {
                       onDateChange={(date) => {this.setState({date: date})}}
                 />
                 </View>
-
+                
                 <Text style={styles.inputLabel}>Height</Text>
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        value = {this.state.height}
-                        //onChangeText = {(text) => {this.setState( {height: text} ) } }
-                    />
+
+                <View style={styles.row}>
+                
+                    <View style={styles.heightContainer}>
+                        <TextInput
+                            style={styles.bodyInfoInput}
+                            value = {this.state.height}
+                            //onChangeText = {(text) => {this.setState( {height: text} ) } }
+                        />
+                    </View>
+                    <Picker style={styles.pickerContainer}
+                            selectedValue={this.state.selectedHeightMetric}
+                            onValueChange={ (itemValue, itemIndex) => this.setState({selectedHeightMetric : itemValue }) }
+                            mode = {'dropdown'}>
+
+                        <Picker.Item style={styles.picker} label="ft" value="ft" />
+                        <Picker.Item style={styles.picker} label="in" value="in" />
+                        <Picker.Item style={styles.picker} label="cm" value="cm" />
+                    </Picker>
                 </View>
-                <Picker style={styles.pickerContainer}
-                        selectedValue={this.state.selectedHeightMetric}
-                        onValueChange={ (itemValue, itemIndex) => this.setState({selectedHeightMetric : itemValue })} >
-                    <Picker.Item style={styles.picker} label="ft" value="ft" />
-                    <Picker.Item style={styles.picker} label="in" value="in" />
-                    <Picker.Item style={styles.picker} label="cm" value="cm" />
-                </Picker>
 
                 <Text style={styles.inputLabel}>Weight</Text>
                 <View style={styles.inputContainer}>
@@ -231,7 +237,14 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(244, 238, 238, 0.7)', // Sandy 
     },
   
+    row: {
+        flex: 1,
+        flexDirection: "row",
+        alignItems: 'flex-start',
+    },
+
     pickerContainer: {
+        flex: 1,
         paddingTop: 2,
         paddingBottom: 2,
         marginTop: 7,
@@ -240,6 +253,21 @@ const styles = StyleSheet.create({
         marginRight: 40,
         justifyContent: 'center', // Used to set Text Component Vertically Center
         alignItems: 'center', // Used to set Text Component Horizontally Center
+    },
+
+    heightContainer : {
+        flex: 2,
+        flexWrap: 'wrap',
+        marginLeft: 40,
+        marginRight: 40,
+    },
+
+    bodyInfoInput: {
+        flex: 1,
+        fontSize: 15,
+        justifyContent: 'center', // Used to set Text Component Vertically Center
+        alignItems: 'center', // Used to set Text Component Horizontally Center
+        backgroundColor: 'rgba(244, 238, 238, 0.7)', // Sandy 
     },
 
     input: {
