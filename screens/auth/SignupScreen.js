@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Text, TextInput, TouchableOpacity, Image, Alert, Dimensions } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, TextInput, Button, Picker, Alert, Dimensions } from 'react-native';
 import { StackActions } from 'react-navigation';
 import * as firebase from 'firebase';
 import DatePicker from 'react-native-datepicker';
@@ -18,6 +18,7 @@ export default class SignupScreen extends React.Component {
             paswword: "",
             passwordConfirm: "",
             username: "",
+            selectedHeightMetric : "",
         };
     }
     onSignUpPress = () => {
@@ -152,6 +153,13 @@ export default class SignupScreen extends React.Component {
                         //onChangeText = {(text) => {this.setState( {height: text} ) } }
                     />
                 </View>
+                <Picker style={styles.pickerContainer}
+                        selectedValue={this.state.selectedHeightMetric}
+                        onValueChange={ (itemValue, itemIndex) => this.setState({selectedHeightMetric : itemValue })} >
+                    <Picker.Item style={styles.picker} label="ft" value="ft" />
+                    <Picker.Item style={styles.picker} label="in" value="in" />
+                    <Picker.Item style={styles.picker} label="cm" value="cm" />
+                </Picker>
 
                 <Text style={styles.inputLabel}>Weight</Text>
                 <View style={styles.inputContainer}>
@@ -222,6 +230,17 @@ const styles = StyleSheet.create({
         alignItems: 'center', // Used to set Text Component Horizontally Center
         backgroundColor: 'rgba(244, 238, 238, 0.7)', // Sandy 
     },
+  
+    pickerContainer: {
+        paddingTop: 2,
+        paddingBottom: 2,
+        marginTop: 7,
+        marginBottom: 10,
+        marginLeft: 40,
+        marginRight: 40,
+        justifyContent: 'center', // Used to set Text Component Vertically Center
+        alignItems: 'center', // Used to set Text Component Horizontally Center
+    },
 
     input: {
         width: WIDTH - 130,
@@ -230,6 +249,18 @@ const styles = StyleSheet.create({
         marginHorizontal: 35,
         //borderBottomColor: 'rgba(181, 83, 102, 1)', // Medium Pink
         //borderBottomWidth: 2,
+    },
+
+    input_col: {
+        width: 50,
+        height: 50,
+        fontSize: 15,
+        backgroundColor: 'rgba(244, 238, 238, 0.7)', // Sandy 
+    },
+
+    metric_col: {
+        width: 50,
+        height: 50,
     },
 
     button: {
