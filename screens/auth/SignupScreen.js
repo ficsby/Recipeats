@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Text, TextInput, TouchableOpacity, Picker, Alert, Dimensions } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, TextInput, TouchableOpacity, Picker, Button, Alert, Dimensions } from 'react-native';
 import { StackActions } from 'react-navigation';
 import * as firebase from 'firebase';
 import DatePicker from 'react-native-datepicker';
@@ -121,7 +121,7 @@ export default class SignupScreen extends React.Component {
 
                 <View style={styles.inputDate}>
                 <DatePicker
-                    style={{width:200}}
+                    style={{width:330}}
                     date={this.state.date}
                     mode="date"
                     placeholder="Select date"
@@ -138,7 +138,7 @@ export default class SignupScreen extends React.Component {
                           marginLeft: 0
                         },
                         dateInput: {
-                          marginLeft: 36
+                          marginLeft: 40
                         }
                       }}
                       onDateChange={(date) => {this.setState({date: date})}}
@@ -202,14 +202,15 @@ export default class SignupScreen extends React.Component {
                     </Picker>
                 </View>   
                 
-                <TouchableOpacity style={styles.button} onPress ={this.onBackToLogin}> 
-                    <Text>Back to Login</Text>
-                 </TouchableOpacity>
-
-                <TouchableOpacity style={styles.button} onPress ={this.onSignUpPress}> 
-                    <Text>Sign Up</Text>
-                 </TouchableOpacity>
+                <TouchableOpacity style={styles.signupButton} onPress ={this.onSignUpPress}> 
+                    <Text style={styles.signupText}>SIGN UP</Text>
+                </TouchableOpacity>
                 
+                <TouchableOpacity style={styles.loginButton} onPress ={this.onBackToLogin}> 
+                    <Text>Back to Login</Text>
+                </TouchableOpacity>
+
+
             </ScrollView>
         ) 
     }
@@ -302,12 +303,6 @@ const styles = StyleSheet.create({
         marginRight: 40,
     },
 
-    bodyInfoInput: {
-        flex: 1,
-        fontSize: 15,
-        backgroundColor: 'rgba(244, 238, 238, 0.7)', // Sandy 
-    },
-
     input: {
         width: WIDTH - 130,
         height: 40,
@@ -317,10 +312,29 @@ const styles = StyleSheet.create({
         //borderBottomWidth: 2,
     },
 
-    button: {
-        marginTop: 30,
-        marginBottom: 20,
+    signupButton: {
+        marginTop: 40,
+        marginBottom: 30,
+        marginRight: 40,
+        marginLeft: 40,
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: 'rgba(204, 102, 102, 0.9)',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+
+    loginButton: {
+        marginBottom: 20,
+        marginRight: 40,
+        marginLeft: 40,
+        paddingBottom: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    signupText: {
+        color: 'rgba(255, 255, 255, 1)',
+        //fontWeight: '600',
     },
   });
