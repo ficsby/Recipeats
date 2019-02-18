@@ -155,7 +155,7 @@ export default class SignupScreen extends React.Component {
                             //onChangeText = {(text) => {this.setState( {height: text} ) } }
                         />
                     </View>
-                    <View style={style={ backgroundColor: 'rgba(161, 104, 104, 0.15)', height: 40, width: 90}}>
+                    <View style={style={ backgroundColor: 'rgba(215, 203, 203, 0.35)', height: 40, width: 90}}>
                         <Picker style={styles.pickerContainer}
                                 selectedValue={this.state.selectedHeightMetric}
                                 onValueChange={ (itemValue, itemIndex) => this.setState({selectedHeightMetric : itemValue }) }
@@ -177,7 +177,7 @@ export default class SignupScreen extends React.Component {
                             //onChangeText = {(text) => {this.setState( {height: text} ) } }
                         />
                     </View>
-                    <View style={{backgroundColor: 'rgba(161, 104, 104, 0.15)', height: 40,  width: 90}}>
+                    <View style={{backgroundColor: 'rgba(215, 203, 203, 0.35)', height: 40,  width: 90}}>
                         <Picker style={styles.pickerContainer}
                                 selectedValue={this.state.selectedHeightMetric}
                                 onValueChange={ (itemValue, itemIndex) => this.setState({selectedHeightMetric : itemValue }) }
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         justifyContent: 'center', // Used to set Text Component Vertically Center
         alignItems: 'center', // Used to set Text Component Horizontally Center
-        backgroundColor: 'rgba(244, 238, 238, 0.7)', // Sandy 
+        backgroundColor: 'rgba(244, 238, 238, 0.5)', // Sandy 
     },
   
     row: {
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
         //alignItems: 'flex-start',
         marginTop: 7,
         marginBottom: 10,
-        marginLeft: 20,
+        marginLeft: 5,
         height: 40,
     },
 
@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
         width: WIDTH - 130,
         height: 40,
         fontSize: 15,
-        marginLeft: -20, 
+        marginLeft: -25, 
         //borderBottomColor: 'rgba(181, 83, 102, 1)', // Medium Pink
         //borderBottomWidth: 2,
     },
