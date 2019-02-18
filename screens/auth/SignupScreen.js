@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Text, TextInput, Button, Picker, Alert, Dimensions } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, TextInput, TouchableOpacity, Picker, Alert, Dimensions } from 'react-native';
 import { StackActions } from 'react-navigation';
 import * as firebase from 'firebase';
 import DatePicker from 'react-native-datepicker';
@@ -201,8 +201,14 @@ export default class SignupScreen extends React.Component {
                             <Picker.Item style={styles.picker} label="Very Active" value="3" />
                     </Picker>
                 </View>   
+                
+                <TouchableOpacity style={styles.button} onPress ={this.onBackToLogin}> 
+                    <Text>Back to Login</Text>
+                 </TouchableOpacity>
 
-
+                <TouchableOpacity style={styles.button} onPress ={this.onSignUpPress}> 
+                    <Text>Sign Up</Text>
+                 </TouchableOpacity>
                 
             </ScrollView>
         ) 
