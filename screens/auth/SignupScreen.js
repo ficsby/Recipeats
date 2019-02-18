@@ -148,50 +148,68 @@ export default class SignupScreen extends React.Component {
                 <Text style={styles.inputLabel}>Height</Text>
 
                 <View style={styles.row}>
-                
                     <View style={styles.heightContainer}>
                         <TextInput
-                            style={styles.bodyInfoInput}
+                            style={styles.input}
                             value = {this.state.height}
                             //onChangeText = {(text) => {this.setState( {height: text} ) } }
                         />
                     </View>
-                    <Picker style={styles.pickerContainer}
-                            selectedValue={this.state.selectedHeightMetric}
-                            onValueChange={ (itemValue, itemIndex) => this.setState({selectedHeightMetric : itemValue }) }
-                            mode = {'dropdown'}>
-
-                        <Picker.Item style={styles.picker} label="ft" value="ft" />
-                        <Picker.Item style={styles.picker} label="in" value="in" />
-                        <Picker.Item style={styles.picker} label="cm" value="cm" />
-                    </Picker>
+                    <View style={style={ backgroundColor: 'rgba(161, 104, 104, 0.15)', height: 40, width: 90}}>
+                        <Picker style={styles.pickerContainer}
+                                selectedValue={this.state.selectedHeightMetric}
+                                onValueChange={ (itemValue, itemIndex) => this.setState({selectedHeightMetric : itemValue }) }
+                                mode = {'dropdown'}>
+                            <Picker.Item style={styles.picker} label="in" value="in" />
+                            <Picker.Item style={styles.picker} label="cm" value="cm" />
+                        </Picker>
+                    </View>
                 </View>
 
                 <Text style={styles.inputLabel}>Weight</Text>
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        value = {this.state.name}
-                        //onChangeText = {(text) => {this.setState( {weight: text} ) } }
-                    />
+                
+                <View style={styles.row}>
+                
+                    <View style={styles.heightContainer}>
+                        <TextInput
+                            style={styles.input}
+                            value = {this.state.height}
+                            //onChangeText = {(text) => {this.setState( {height: text} ) } }
+                        />
+                    </View>
+                    <View style={{backgroundColor: 'rgba(161, 104, 104, 0.15)', height: 40,  width: 90}}>
+                        <Picker style={styles.pickerContainer}
+                                selectedValue={this.state.selectedHeightMetric}
+                                onValueChange={ (itemValue, itemIndex) => this.setState({selectedHeightMetric : itemValue }) }
+                                mode = {'dropdown'}>
+                            <Picker.Item style={styles.picker} label="lbs" value="lbs" />
+                            <Picker.Item style={styles.picker} label="kg" value="kg" />
+                        </Picker>
+                    </View>
                 </View>
+
 
                 <Text style={styles.inputLabel}>Activity Level</Text>
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        value = {this.state.name}
-                        //onChangeText = {(text) => {this.setState( {activityLevel: text} ) } }
-                    />
-                </View>
+                <View style={styles.activityContainer}>
+                    <Picker style={styles.activityRow}
+                                selectedValue={this.state.selectedHeightMetric}
+                                onValueChange={ (itemValue, itemIndex) => this.setState({selectedHeightMetric : itemValue }) }
+                                mode = {'dropdown'}>
+                            <Picker.Item style={styles.picker} label="Sedentary" value="0" />
+                            <Picker.Item style={styles.picker} label="Lightly Active" value="1" />
+                            <Picker.Item style={styles.picker} label="Active" value="2" />
+                            <Picker.Item style={styles.picker} label="Very Active" value="3" />
+                    </Picker>
+                </View>   
 
+
+                
             </ScrollView>
         ) 
     }
 }
 
 const styles = StyleSheet.create({
-
     pageTitle: {
         paddingTop: 30,
         fontSize: 35,
@@ -225,12 +243,11 @@ const styles = StyleSheet.create({
     },
 
     inputContainer: {
-        paddingTop: 2,
-        paddingBottom: 2,
         marginTop: 7,
         marginBottom: 10,
         marginLeft: 40,
         marginRight: 40,
+        height: 40,
         fontSize: 15,
         justifyContent: 'center', // Used to set Text Component Vertically Center
         alignItems: 'center', // Used to set Text Component Horizontally Center
@@ -241,23 +258,40 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         alignItems: 'flex-start',
-    },
-
-    pickerContainer: {
-        flex: 1,
-        paddingTop: 2,
-        paddingBottom: 2,
         marginTop: 7,
         marginBottom: 10,
         marginLeft: 40,
         marginRight: 40,
-        justifyContent: 'center', // Used to set Text Component Vertically Center
-        alignItems: 'center', // Used to set Text Component Horizontally Center
+        height: 40,
+        backgroundColor: 'rgba(244, 238, 238, 0.7)',
     },
+
+    activityRow: {
+        flex: 1,
+        flexDirection: "row",
+        //alignItems: 'flex-start',
+        marginTop: 7,
+        marginBottom: 10,
+        marginLeft: 20,
+        height: 40,
+    },
+
+    pickerContainer: {
+        flex: 1,
+    },
+    
 
     heightContainer : {
         flex: 2,
         flexWrap: 'wrap',
+        height: 40,
+        marginLeft: 40,
+    },
+
+    activityContainer : {
+        backgroundColor: 'rgba(244, 238, 238, 0.7)', 
+        height: 40, 
+        marginTop: 7,
         marginLeft: 40,
         marginRight: 40,
     },
@@ -265,30 +299,16 @@ const styles = StyleSheet.create({
     bodyInfoInput: {
         flex: 1,
         fontSize: 15,
-        justifyContent: 'center', // Used to set Text Component Vertically Center
-        alignItems: 'center', // Used to set Text Component Horizontally Center
         backgroundColor: 'rgba(244, 238, 238, 0.7)', // Sandy 
     },
 
     input: {
         width: WIDTH - 130,
         height: 40,
-        fontSize: 20, 
-        marginHorizontal: 35,
+        fontSize: 15,
+        marginLeft: -20, 
         //borderBottomColor: 'rgba(181, 83, 102, 1)', // Medium Pink
         //borderBottomWidth: 2,
-    },
-
-    input_col: {
-        width: 50,
-        height: 50,
-        fontSize: 15,
-        backgroundColor: 'rgba(244, 238, 238, 0.7)', // Sandy 
-    },
-
-    metric_col: {
-        width: 50,
-        height: 50,
     },
 
     button: {
