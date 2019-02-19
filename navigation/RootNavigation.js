@@ -12,6 +12,7 @@ const RootStackNavigator = createAppContainer(
     createStackNavigator (
     {
         Login: { screen: LoginScreen },
+        ForgotPassword : { screen: ForgotPasswordScreen },
         Signup: { screen: SignupScreen },
         ForgotPassword: { screen: ForgotPasswordScreen },
 
