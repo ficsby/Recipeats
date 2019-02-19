@@ -7,10 +7,12 @@ import registerForPushNotificationsAsync from '../api/registerForPushNotificatio
 import LoginScreen from '../screens/auth/LoginScreen';
 import SignupScreen from '../screens/auth/SignupScreen';
 import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen';
+import HomeScreen from '../screens/auth/HomeScreen';
 
 const RootStackNavigator = createAppContainer(
     createStackNavigator (
     {
+        //HomeScreen: { screen: HomeScreen },
         Login: { screen: LoginScreen },
         Signup: { screen: SignupScreen },
         ForgotPassword: { screen: ForgotPasswordScreen },
