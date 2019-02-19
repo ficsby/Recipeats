@@ -132,7 +132,7 @@ export default class SignupScreen extends React.Component {
 
                 <Text style={styles.inputLabel}>Birthday</Text>
 
-                <View style={styles.inputDate}>
+                <View style={styles.selectDate}>
                 <DatePicker
                     style={{width:330}}
                     date={this.state.birthDate}
@@ -151,7 +151,8 @@ export default class SignupScreen extends React.Component {
                           marginLeft: 0
                         },
                         dateInput: {
-                          marginLeft: 40
+                          marginLeft: 45,
+                          marginRight: 40
                         }
                       }}
                       onDateChange={(date) => {this.setState({birthDate: date})}}
@@ -170,11 +171,12 @@ export default class SignupScreen extends React.Component {
                     </View>
                     <View style={style={ backgroundColor: 'rgba(215, 203, 203, 0.35)', height: 40, width: 90}}>
                         <Picker style={styles.pickerContainer}
+                                itemStyle={{backgroundColor: 'rgba(215, 203, 203, 0.35)'}}
                                 selectedValue={this.state.selectedHeightMetric}
                                 onValueChange={ (itemValue, itemIndex) => this.setState({selectedHeightMetric : itemValue }) }
                                 mode = {'dropdown'}>
-                            <Picker.Item style={styles.picker} label="in" value="in" />
-                            <Picker.Item style={styles.picker} label="cm" value="cm" />
+                            <Picker.Item label="in" value="in" />
+                            <Picker.Item label="cm" value="cm" />
                         </Picker>
                     </View>
                 </View>
@@ -219,7 +221,7 @@ export default class SignupScreen extends React.Component {
                 </TouchableOpacity>
                 
                 <TouchableOpacity style={styles.loginButton} onPress ={this.onBackToLogin}> 
-                    <Text>Back to Login</Text>
+                    <Text style={{color:'rgba(0,0,0,0.55)'}}>Back to Login</Text>
                 </TouchableOpacity>
             </ScrollView>
         ) 
@@ -251,8 +253,9 @@ const styles = StyleSheet.create({
         color: 'rgba(91, 88, 88, 0.9)',
     },
 
-    inputDate:  {
+    selectDate:  {
         marginBottom: 5,
+        marginRight: 40,
         paddingLeft: 40,
         paddingTop: 10,
         fontSize: 15,
@@ -355,6 +358,9 @@ const styles = StyleSheet.create({
 
     signupText: {
         color: 'rgba(255, 255, 255, 1)',
-        //fontWeight: '600',
+        fontWeight: '500',
+        fontSize: 17,
+        width: 100,
+        textAlign: 'center',
     },
   });
