@@ -134,7 +134,7 @@ export default class SignupScreen extends React.Component {
                     placeholder="Select date"
                     format="YYYY-MM-DD"
                     minDate='1900-01-01'
-                    maxDate='2020-12-31'
+                    maxDate= {new Date()}
                     confirmBtnText="Confirm"
                     cancelBtnText="Cancel"
                     customStyles={{
