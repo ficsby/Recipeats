@@ -15,7 +15,7 @@ export default class SignupScreen extends React.Component {
         this.state = { 
             name : "",
             email: "",
-            paswword: "",
+            password: "",
             passwordConfirm: "",
             username: "",
             selectedHeightMetric : "",
