@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Text, TextInput, TouchableOpacity, Image, Alert, Dimensions, Picker } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, TextInput, TouchableOpacity, Picker, Button, Alert, Dimensions } from 'react-native';
 import { StackActions } from 'react-navigation';
 import * as firebase from 'firebase';
 import DatePicker from 'react-native-datepicker';
@@ -20,7 +20,8 @@ export default class SignupScreen extends React.Component {
             username: "",
             weight: "",
             activityLevel: "",
-            birthDate: ""
+            birthDate: "",
+            selectedHeightMetric : "",
         };
     }
 
@@ -32,7 +33,8 @@ export default class SignupScreen extends React.Component {
             username: this.state.username,
             weight: this.state.weight,
             activityLevel: this.state.activityLevel,
-            birthDate: this.state.birthDate
+            birthDate: this.state.birthDate,
+            selectedHeightMetric: this.state.selectedHeightMetric
         });
     }
 
@@ -126,13 +128,13 @@ export default class SignupScreen extends React.Component {
 
                 <View style={styles.inputDate}>
                 <DatePicker
-                    style={{width:200}}
-                    date={this.state.birthDate}
+                    style={{width:330}}
+                    date={this.state.date}
                     mode="date"
                     placeholder="Select date"
                     format="YYYY-MM-DD"
-                    minDate=""
-                    maxDate=""
+                    minDate='1900-01-01'
+                    maxDate='2020-12-31'
                     confirmBtnText="Confirm"
                     cancelBtnText="Cancel"
                     customStyles={{
@@ -143,58 +145,81 @@ export default class SignupScreen extends React.Component {
                           marginLeft: 0
                         },
                         dateInput: {
-                          marginLeft: 36
+                          marginLeft: 40
                         }
-                        // ... You can check the source to find the other keys.
                       }}
                       onDateChange={(date) => {this.setState({birthDate: date})}}
                 />
                 </View>
-
+                
                 <Text style={styles.inputLabel}>Height</Text>
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        value = {this.state.height}
-                        //onChangeText = {(text) => {this.setState( {height: text} ) } }
-                    />
+
+                <View style={styles.row}>
+                    <View style={styles.heightContainer}>
+                        <TextInput
+                            style={styles.input}
+                            value = {this.state.height}
+                            //onChangeText = {(text) => {this.setState( {height: text} ) } }
+                        />
+                    </View>
+                    <View style={style={ backgroundColor: 'rgba(215, 203, 203, 0.35)', height: 40, width: 90}}>
+                        <Picker style={styles.pickerContainer}
+                                selectedValue={this.state.selectedHeightMetric}
+                                onValueChange={ (itemValue, itemIndex) => this.setState({selectedHeightMetric : itemValue }) }
+                                mode = {'dropdown'}>
+                            <Picker.Item style={styles.picker} label="in" value="in" />
+                            <Picker.Item style={styles.picker} label="cm" value="cm" />
+                        </Picker>
+                    </View>
                 </View>
 
                 <Text style={styles.inputLabel}>Weight</Text>
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        value = {this.state.weight}
-                        onChangeText = {(text) => {this.setState( {weight: text} ) } }
-                    />
+                <View style={styles.row}>
+                    <View style={styles.heightContainer}>
+                        <TextInput
+                            style={styles.input}
+                            value = {this.state.height}
+                            //onChangeText = {(text) => {this.setState( {height: text} ) } }
+                        />
+                    </View>
+                    <View style={{backgroundColor: 'rgba(215, 203, 203, 0.35)', height: 40,  width: 90}}>
+                        <Picker style={styles.pickerContainer}
+                                selectedValue={this.state.selectedHeightMetric}
+                                onValueChange={ (itemValue, itemIndex) => this.setState({selectedHeightMetric : itemValue }) }
+                                mode = {'dropdown'}>
+                            <Picker.Item style={styles.picker} label="lbs" value="lbs" />
+                            <Picker.Item style={styles.picker} label="kg" value="kg" />
+                        </Picker>
+                    </View>
                 </View>
+
 
                 <Text style={styles.inputLabel}>Activity Level</Text>
-                <View style={styles.inputActivity}>
-                    <Picker 
-                    selectedValue = {this.state.activityLevel} 
-                    style={{width: 200}} 
-                    onValueChange = {(itemValue) => this.setState({ activityLevel: itemValue })}>
-                        <Picker.Item label = "Sedentary" value = "sedentary" />
-                        <Picker.Item label = "Active" value = "active" />
+                <View style={styles.activityContainer}>
+                    <Picker style={styles.activityRow}
+                                selectedValue={this.state.selectedHeightMetric}
+                                onValueChange={ (itemValue, itemIndex) => this.setState({selectedHeightMetric : itemValue }) }
+                                mode = {'dropdown'}>
+                            <Picker.Item style={styles.picker} label="Sedentary" value="0" />
+                            <Picker.Item style={styles.picker} label="Lightly Active" value="1" />
+                            <Picker.Item style={styles.picker} label="Active" value="2" />
+                            <Picker.Item style={styles.picker} label="Very Active" value="3" />
                     </Picker>
-                </View>
+                </View>   
                 
-                <TouchableOpacity style={styles.button } onPress={this.onBackToLogin}>
-                    <Text>Login</Text>
-                 </TouchableOpacity>
-
-                 <TouchableOpacity style={styles.button} onPress ={this.onSignUpPress}> 
-                    <Text>Sign Up</Text>
-                 </TouchableOpacity>
-
+                <TouchableOpacity style={styles.signupButton} onPress ={this.onSignUpPress}> 
+                    <Text style={styles.signupText}>SIGN UP</Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity style={styles.loginButton} onPress ={this.onBackToLogin}> 
+                    <Text>Back to Login</Text>
+                </TouchableOpacity>
             </ScrollView>
         ) 
     }
 }
 
 const styles = StyleSheet.create({
-
     pageTitle: {
         paddingTop: 30,
         fontSize: 35,
@@ -205,7 +230,7 @@ const styles = StyleSheet.create({
     inputHeading: {
         paddingTop: 30,
         paddingLeft: 40,
-        marginBottom: 20,
+        marginBottom: 5,
         fontSize: 18,
         fontWeight: '500',
         color: 'rgba(91, 88, 88, 0.9)',
@@ -228,16 +253,57 @@ const styles = StyleSheet.create({
     },
 
     inputContainer: {
-        paddingTop: 7,
-        paddingBottom: 7,
-        marginTop: 10,
+        marginTop: 7,
         marginBottom: 10,
         marginLeft: 40,
         marginRight: 40,
+        height: 40,
         fontSize: 15,
         justifyContent: 'center', // Used to set Text Component Vertically Center
         alignItems: 'center', // Used to set Text Component Horizontally Center
-        backgroundColor: 'rgba(244, 238, 238, 0.7)', // Sandy 
+        backgroundColor: 'rgba(244, 238, 238, 0.5)', // Sandy 
+    },
+  
+    row: {
+        flex: 1,
+        flexDirection: "row",
+        alignItems: 'flex-start',
+        marginTop: 7,
+        marginBottom: 10,
+        marginLeft: 40,
+        marginRight: 40,
+        height: 40,
+        backgroundColor: 'rgba(244, 238, 238, 0.7)',
+    },
+
+    activityRow: {
+        flex: 1,
+        flexDirection: "row",
+        //alignItems: 'flex-start',
+        marginTop: 7,
+        marginBottom: 10,
+        marginLeft: 5,
+        height: 40,
+    },
+
+    pickerContainer: {
+        flex: 1,
+    },
+    
+
+    heightContainer : {
+        flex: 2,
+        flexWrap: 'wrap',
+        height: 40,
+        marginLeft: 40,
+    },
+
+    activityContainer : {
+        backgroundColor: 'rgba(244, 238, 238, 0.7)', 
+        height: 40, 
+        marginTop: 7,
+        marginLeft: 40,
+        marginRight: 40,
     },
     
     inputActivity: {
@@ -253,16 +319,35 @@ const styles = StyleSheet.create({
     input: {
         width: WIDTH - 130,
         height: 40,
-        fontSize: 20, 
-        marginHorizontal: 35,
+        fontSize: 15,
+        marginLeft: -25, 
         //borderBottomColor: 'rgba(181, 83, 102, 1)', // Medium Pink
         //borderBottomWidth: 2,
     },
 
-    button: {
-        marginTop: 30,
-        marginBottom: 20,
+    signupButton: {
+        marginTop: 40,
+        marginBottom: 30,
+        marginRight: 40,
+        marginLeft: 40,
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: 'rgba(204, 102, 102, 0.9)',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+
+    loginButton: {
+        marginBottom: 20,
+        marginRight: 40,
+        marginLeft: 40,
+        paddingBottom: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    signupText: {
+        color: 'rgba(255, 255, 255, 1)',
+        //fontWeight: '600',
     },
   });
