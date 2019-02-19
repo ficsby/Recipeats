@@ -172,10 +172,10 @@ export default class SignupScreen extends React.Component {
                 
                 <View style={styles.row}>
                 
-                    <View style={styles.heightContainer}>
+                    <View style={styles.weightContainer}>
                         <TextInput
                             style={styles.input}
-                            value = {this.state.height}
+                            value = {this.state.weight}
                             //onChangeText = {(text) => {this.setState( {height: text} ) } }
                         />
                     </View>

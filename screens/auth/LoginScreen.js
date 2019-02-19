@@ -130,14 +130,14 @@ const styles = StyleSheet.create({
     },
 
     inputContainer: {
-        marginTop: -130,
+        marginTop: -50,
         flex: 1,
         justifyContent: 'center', // Used to set Text Component Vertically Center
         alignItems: 'center' // Used to set Text Component Horizontally Center
     },
 
     inputContainer2: {
-        marginTop: -300,
+        marginTop: -100,
     },
 
     input: {
@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
         height: 40,
         fontSize: 20, 
         marginHorizontal: 35,
+        marginTop: 100,
         borderBottomColor: 'rgba(181, 83, 102, 1)', // Medium Pink
         borderBottomWidth: 2,
     },
