@@ -5,6 +5,7 @@ import * as firebase from 'firebase';
 import DatePicker from 'react-native-datepicker';
 
 import logo from './../../assets/images/logo_transparent.png';
+import { stringify } from 'qs';
 
 const { width: WIDTH } = Dimensions.get('window')
 
@@ -36,6 +37,11 @@ export default class SignupScreen extends React.Component {
             birthDate: this.state.birthDate,
             selectedHeightMetric: this.state.selectedHeightMetric
         });
+    }
+
+    handleNaN = (text) => {
+        Alert.alert("Please enter a number");
+        text = text.substring(0, text.length - 1);
     }
 
     onSignUpPress = () => {
@@ -180,8 +186,9 @@ export default class SignupScreen extends React.Component {
                     <View style={styles.heightContainer}>
                         <TextInput
                             style={styles.input}
-                            value = {this.state.height}
-                            //onChangeText = {(text) => {this.setState( {height: text} ) } }
+                            value = {this.state.weight}
+                            onChangeText = {(text) => {
+                                ( isNaN(text) ) ? text = this.handleNaN(text) : this.setState( {weight: text } ) } }
                         />
                     </View>
                     <View style={{backgroundColor: 'rgba(215, 203, 203, 0.35)', height: 40,  width: 90}}>
