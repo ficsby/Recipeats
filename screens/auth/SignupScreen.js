@@ -129,7 +129,7 @@ export default class SignupScreen extends React.Component {
                 <View style={styles.inputDate}>
                 <DatePicker
                     style={{width:330}}
-                    date={this.state.date}
+                    date={this.state.birthDate}
                     mode="date"
                     placeholder="Select date"
                     format="YYYY-MM-DD"
