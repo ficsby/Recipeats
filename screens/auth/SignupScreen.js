@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Text, TextInput, TouchableOpacity, Image, Alert, Dimensions } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, TextInput, TouchableOpacity, Image, Alert, Dimensions, Picker } from 'react-native';
 import { StackActions } from 'react-navigation';
 import * as firebase from 'firebase';
 import DatePicker from 'react-native-datepicker';
@@ -18,6 +18,9 @@ export default class SignupScreen extends React.Component {
             paswword: "",
             passwordConfirm: "",
             username: "",
+            weight: "",
+            activityLevel: "",
+            birthDate: ""
         };
     }
 
@@ -26,7 +29,10 @@ export default class SignupScreen extends React.Component {
             name: this.state.name,
             email: this.state.email,
             password: this.state.password,
-            username : this.state.username
+            username: this.state.username,
+            weight: this.state.weight,
+            activityLevel: this.state.activityLevel,
+            birthDate: this.state.birthDate
         });
     }
 
@@ -121,7 +127,7 @@ export default class SignupScreen extends React.Component {
                 <View style={styles.inputDate}>
                 <DatePicker
                     style={{width:200}}
-                    date={this.state.date}
+                    date={this.state.birthDate}
                     mode="date"
                     placeholder="Select date"
                     format="YYYY-MM-DD"
@@ -141,7 +147,7 @@ export default class SignupScreen extends React.Component {
                         }
                         // ... You can check the source to find the other keys.
                       }}
-                      onDateChange={(date) => {this.setState({date: date})}}
+                      onDateChange={(date) => {this.setState({birthDate: date})}}
                 />
                 </View>
 
@@ -158,18 +164,20 @@ export default class SignupScreen extends React.Component {
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.input}
-                        value = {this.state.name}
-                        //onChangeText = {(text) => {this.setState( {weight: text} ) } }
+                        value = {this.state.weight}
+                        onChangeText = {(text) => {this.setState( {weight: text} ) } }
                     />
                 </View>
 
                 <Text style={styles.inputLabel}>Activity Level</Text>
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        value = {this.state.name}
-                        //onChangeText = {(text) => {this.setState( {activityLevel: text} ) } }
-                    />
+                <View style={styles.inputActivity}>
+                    <Picker 
+                    selectedValue = {this.state.activityLevel} 
+                    style={{width: 200}} 
+                    onValueChange = {(itemValue) => this.setState({ activityLevel: itemValue })}>
+                        <Picker.Item label = "Sedentary" value = "sedentary" />
+                        <Picker.Item label = "Active" value = "active" />
+                    </Picker>
                 </View>
                 
                 <TouchableOpacity style={styles.button } onPress={this.onBackToLogin}>
@@ -227,6 +235,16 @@ const styles = StyleSheet.create({
         marginLeft: 40,
         marginRight: 40,
         fontSize: 15,
+        justifyContent: 'center', // Used to set Text Component Vertically Center
+        alignItems: 'center', // Used to set Text Component Horizontally Center
+        backgroundColor: 'rgba(244, 238, 238, 0.7)', // Sandy 
+    },
+    
+    inputActivity: {
+        marginTop: 10,
+        marginLeft: 40,
+        marginRight: 40,
+        marginBottom: 10,
         justifyContent: 'center', // Used to set Text Component Vertically Center
         alignItems: 'center', // Used to set Text Component Horizontally Center
         backgroundColor: 'rgba(244, 238, 238, 0.7)', // Sandy 
