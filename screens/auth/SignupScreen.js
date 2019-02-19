@@ -18,29 +18,36 @@ export default class SignupScreen extends React.Component {
             password: "",
             passwordConfirm: "",
             username: "",
+            weight: "",
+            activityLevel: "",
+            birthDate: "",
             selectedHeightMetric : "",
         };
     }
+
+    writeUserData = (userId) => {
+        firebase.database().ref('users/' + userId).set({
+            name: this.state.name,
+            email: this.state.email,
+            password: this.state.password,
+            username: this.state.username,
+            weight: this.state.weight,
+            activityLevel: this.state.activityLevel,
+            birthDate: this.state.birthDate,
+            selectedHeightMetric: this.state.selectedHeightMetric
+        });
+    }
+
     onSignUpPress = () => {
         if(this.state.password !== this.state.passwordConfirm) {
             Alert.alert("Passwords do not match");
             return;
         }
+        
         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then( function(user) {
-            var ref = firebase.database().ref().child("user");
-            var data = {
-                email: this.email,
-                password: this.password,
-                name: this.name,
-                id: user.uid
-            }
-            ref.child(user.uid).set(data).then(function(ref) {//use 'child' and 'set' combination to save data in your own generated key
-                console.log("Saved");
-                $location.path('/profile');
-            }, function(error) {
-                console.log(error); 
-            });
+        .then( () => {
+            var user = firebase.auth().currentUser;
+            this.writeUserData(user.uid);
             // do nothing, success of creating will move onto the main page
         }, (error) => {
             Alert.alert(error.message);
@@ -121,13 +128,13 @@ export default class SignupScreen extends React.Component {
 
                 <View style={styles.selectDate}>
                 <DatePicker
-                    style={{width:350}}
-                    date={this.state.date}
+                    style={{width:330}}
+                    date={this.state.birthDate}
                     mode="date"
                     placeholder="Select date"
                     format="YYYY-MM-DD"
                     minDate='1900-01-01'
-                    maxDate='2020-12-31'
+                    maxDate= {new Date()}
                     confirmBtnText="Confirm"
                     cancelBtnText="Cancel"
                     customStyles={{
@@ -142,7 +149,7 @@ export default class SignupScreen extends React.Component {
                           marginRight: 40
                         }
                       }}
-                      onDateChange={(date) => {this.setState({date: date})}}
+                      onDateChange={(date) => {this.setState({birthDate: date})}}
                 />
                 </View>
                 
@@ -169,9 +176,7 @@ export default class SignupScreen extends React.Component {
                 </View>
 
                 <Text style={styles.inputLabel}>Weight</Text>
-                
                 <View style={styles.row}>
-                
                     <View style={styles.heightContainer}>
                         <TextInput
                             style={styles.input}
@@ -211,8 +216,6 @@ export default class SignupScreen extends React.Component {
                 <TouchableOpacity style={styles.loginButton} onPress ={this.onBackToLogin}> 
                     <Text style={{color:'rgba(0,0,0,0.55)'}}>Back to Login</Text>
                 </TouchableOpacity>
-
-
             </ScrollView>
         ) 
     }
@@ -304,6 +307,16 @@ const styles = StyleSheet.create({
         marginTop: 7,
         marginLeft: 40,
         marginRight: 40,
+    },
+    
+    inputActivity: {
+        marginTop: 10,
+        marginLeft: 40,
+        marginRight: 40,
+        marginBottom: 10,
+        justifyContent: 'center', // Used to set Text Component Vertically Center
+        alignItems: 'center', // Used to set Text Component Horizontally Center
+        backgroundColor: 'rgba(244, 238, 238, 0.7)', // Sandy 
     },
 
     input: {
