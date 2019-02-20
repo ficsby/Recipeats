@@ -11,10 +11,9 @@ import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen';
 const RootStackNavigator = createAppContainer(
     createStackNavigator (
     {
-        Login: { screen: LoginScreen },
         ForgotPassword : { screen: ForgotPasswordScreen },
+        Login: { screen: LoginScreen },
         Signup: { screen: SignupScreen },
-        ForgotPassword: { screen: ForgotPasswordScreen },
 
         Main: { screen: MainTabNavigator, },
     },
