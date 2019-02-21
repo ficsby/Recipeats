@@ -54,6 +54,7 @@ export default class SignupScreen extends React.Component {
         .then( () => {
             var user = firebase.auth().currentUser;
             this.writeUserData(user.uid);
+            user.sendEmailVerification(); 
             // do nothing, success of creating will move onto the main page
         }, (error) => {
             Alert.alert(error.message);

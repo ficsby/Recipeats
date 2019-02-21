@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, Text, View } from 'react-native';
-import EStyleSheet from 'react-native-extended-stylesheet';
+//import EStyleSheet from 'react-native-extended-stylesheet';
 import { AppLoading, Asset, Font } from 'expo';
 import RootNavigation from './navigation/RootNavigation';
 import MainTabNavigator from './navigation/MainTabNavigator';
