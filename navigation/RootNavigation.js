@@ -3,6 +3,7 @@ import React from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
+//import { EStyleSheet } from 'react-native-extended-stylesheet';
 
 import LoginScreen from '../screens/auth/LoginScreen';
 import SignupScreen from '../screens/auth/SignupScreen';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, TextInput, Button, Image,  Dimensions, TouchableOpacity, Alert } from 'react-native';
-//import { EStyleSheet } from 'react-native-extended-stylesheet';
+import {widthPercentageToDP, heightPercentageToDP} from 'react-native-responsive-screen';
 import { StackActions } from 'react-navigation';
 import * as firebase from 'firebase';
 
@@ -68,17 +68,18 @@ export default class SignupScreen extends React.Component {
     }
 }
 
+// {width: widthPercentageToDP('53%')}
 //const styles = EStyleSheet.create({
 const styles = StyleSheet.create({
     pageTitle: {
-        marginTop: 40,
+        marginTop: heightPercentageToDP('53%'),
         marginBottom: 20,
         marginLeft: 40,
         marginRight: 40,
         fontSize: 25,
         color: 'rgba(182, 93, 93, 0.8)',
     },
-
+    
     subTitle: {
         marginBottom: 15,
         marginLeft: 40,
