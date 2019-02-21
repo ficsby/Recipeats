@@ -4,8 +4,6 @@ import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage}
 import { StackActions } from 'react-navigation';
 import * as firebase from 'firebase';
 
-import logo from './../../assets/images/logo_transparent.png';
-
 export default class SignupScreen extends React.Component {
 
     constructor(props) {
