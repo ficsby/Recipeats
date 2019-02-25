@@ -12,22 +12,38 @@ import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen';
 const RootStackNavigator = createAppContainer(
     createStackNavigator (
     {
-        Login: { screen: LoginScreen },
-        Signup: { screen: SignupScreen },
-        ForgotPassword : { screen: ForgotPasswordScreen },
-        Main: { screen: MainTabNavigator, },
+        Login: { 
+          screen: LoginScreen, 
+          navigationOptions: {
+            header: null
+          },
+        },
+        Signup: { screen: SignupScreen,
+          navigationOptions: {
+            header: null
+          }, 
+        },
+        ForgotPassword : { screen: ForgotPasswordScreen,
+          navigationOptions: {
+            header: null
+          }, 
+        },
+        Main: { screen: MainTabNavigator, 
+          navigationOptions: {
+            header: null
+          }
+        },
     },
     {
         navigationOptions: () => ({
-          headerTitleStyle: {
-              fontWeight: 'normal',
-          },
+          header: null
         }),
     }
     )
 );
 
 export default class RootNavigator extends React.Component {
+  /*
   componentDidMount() {
     this._notificationSubscription = this._registerForPushNotifications();
   }
@@ -35,7 +51,7 @@ export default class RootNavigator extends React.Component {
   componentWillUnmount() {
     this._notificationSubscription && this._notificationSubscription.remove();
   }
-
+  */
   render() {
     return <RootStackNavigator />;
   }
