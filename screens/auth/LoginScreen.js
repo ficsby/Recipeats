@@ -51,6 +51,20 @@ export default class LoginScreen extends React.Component {
 
         this.props.navigation.dispatch(navActions);
     }
+
+    /* NOTE: THIS IS FOR TESTING PURPOSES ONLY....  
+             Normally you access this page through logging in with your credentials 
+    */ 
+    onHomePress = () => {
+        var navActions = StackActions.reset({
+            index: 0,
+            actions: [
+                StackActions.push({ routeName: "Home" })
+            ]
+        });
+
+        this.props.navigation.dispatch(navActions);
+    }
     
     async componentDidMount() {
         await Font.loadAsync({
@@ -100,6 +114,11 @@ export default class LoginScreen extends React.Component {
 
                  <TouchableOpacity style={styles.button} onPress ={this.onForgotPasswordPress}> 
                     <Text>Forgot Password</Text>
+                 </TouchableOpacity>
+
+                {/* NOTE: This is for testing purposes only */}
+                 <TouchableOpacity style={styles.button} onPress ={this.onHomepPress}> 
+                    <Text>Home Page   NOTE: This is for testing purposes only </Text>
                  </TouchableOpacity>
             </View>
         )

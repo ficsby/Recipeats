@@ -12,30 +12,34 @@ import HomeScreen from '../screens/auth/HomeScreen';
 
 const RootStackNavigator = createAppContainer(
     createStackNavigator (
-    {
-        HomeScreen: { 
+    {        
+
+        Home: { 
           screen: HomeScreen, 
           navigationOptions: {
             header: null
           },
-        }, 
-        
+        },  
+
         Login: { 
           screen: LoginScreen, 
           navigationOptions: {
             header: null
           },
         },
+
         Signup: { screen: SignupScreen,
           navigationOptions: {
             header: null
           }, 
         },
+
         ForgotPassword : { screen: ForgotPasswordScreen,
           navigationOptions: {
             header: null
           }, 
         },
+
         Main: { screen: MainTabNavigator, 
           navigationOptions: {
             header: null

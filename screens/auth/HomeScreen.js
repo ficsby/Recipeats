@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Button, Image, View, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { StackActions } from 'react-navigation';
+import { SearchBar } from 'react-native-elements';
 import { Font } from 'expo';
 import * as firebase from 'firebase';
 
@@ -12,20 +13,36 @@ var globalStyles = require('./../../styles/globalStyles.js');
 
 export default class HomeScreen extends React.Component {
     
+    state = {
+        search: '',
+    };
+    
+    updateSearch = search => {
+        this.setState({ search });
+    };
+    
     async componentDidMount() {
         await Font.loadAsync({
           'dancing-script': require('../../assets/fonts/DancingScript-Regular.otf'),
         }); 
         this.setState({fontLoaded: true})
     }
-    
+
     render() {
+
+        const { search } = this.state;
+
         return (
             <View>
 
                 <View style={styles.logoContainer}>
                     <Image source={logo} style={styles.logo}/>
                     <Text style={styles.logoText} >Recipeats</Text>
+
+                    <SearchBar placeholder="Search recipes, ingredients..."
+                               onChangeText={this.updateSearch}
+                               value={search}
+                    />
                 </View>
             
             </View>
@@ -36,8 +53,9 @@ export default class HomeScreen extends React.Component {
 
 const styles = StyleSheet.create({
     logoContainer: {
-        marginTop: 20,
+        paddingTop: 20,
         alignItems: 'center',
+        backgroundColor: 'rgba(244, 238, 238, 0.7)',
       },
     
     logoText: {
