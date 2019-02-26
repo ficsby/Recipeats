@@ -63,7 +63,6 @@ export default class LoginScreen extends React.Component {
         return (
             <View style={ globalStyles.background }>
 
-                <Text>Login</Text>
                 <View style={styles.logoContainer}>
                     <Image source={logo} style={styles.logo}/>
                     <Text style={styles.logoText} >Recipeats</Text>
