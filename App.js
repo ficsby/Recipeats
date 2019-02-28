@@ -62,6 +62,7 @@ export default class App extends React.Component {
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
         'dancing-script': require('./assets/fonts/DancingScript-Regular.otf'),
+        fontello: require('./assets/fonts/recipe_icon.ttf'),
         //'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
       }),
     ]);
