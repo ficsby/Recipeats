@@ -1,11 +1,13 @@
 import React from 'react';
 import { StyleSheet, Button, Image, View, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 import { StackActions } from 'react-navigation';
 import { Font } from 'expo';
 import * as firebase from 'firebase';
 
 import logo from './../../assets/images/logo_transparent.png';
 import { reset } from 'expo/build/AR';
+import { heightPercentageToDP } from 'react-native-responsive-screen';
 
 const { width: WIDTH } = Dimensions.get('window')
 var globalStyles = require('./../../styles/globalStyles.js');
@@ -129,14 +131,15 @@ const styles = StyleSheet.create({
     },
 
     inputContainer: {
-        marginTop: -50,
+        marginTop: hPercentage('5%'),
         flex: 1,
         justifyContent: 'center', // Used to set Text Component Vertically Center
         alignItems: 'center' // Used to set Text Component Horizontally Center
     },
 
     inputContainer2: {
-        marginTop: -100,
+        marginTop: hPercentage('10%'),
+        marginBottom: hPercentage('15%'),
     },
 
     input: {
