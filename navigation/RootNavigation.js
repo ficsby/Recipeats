@@ -12,7 +12,6 @@ import HomeScreen from '../screens/auth/HomeScreen';
 
 const RootStackNavigator = createAppContainer(
     createStackNavigator (
-<<<<<<< HEAD
     {        
 
         Home: { 
@@ -28,13 +27,6 @@ const RootStackNavigator = createAppContainer(
             header: null
           },
         },
-=======
-    {
-        //HomeScreen: { screen: HomeScreen },
-        Login: { screen: LoginScreen },
-        Signup: { screen: SignupScreen },
-        ForgotPassword: { screen: ForgotPasswordScreen },
->>>>>>> 01ea5e1f767be60e47f1fad9e9c22266d22d0730
 
         Signup: { screen: SignupScreen,
           navigationOptions: {
