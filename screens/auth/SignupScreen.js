@@ -7,6 +7,9 @@ import DatePicker from 'react-native-datepicker';
 import logo from './../../assets/images/logo_transparent.png';
 import { stringify } from 'qs';
 
+import KeyboardShift from './../../styles/KeyboardShift.js';
+import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
+
 const { width: WIDTH } = Dimensions.get('window')
 
 export default class SignupScreen extends React.Component {
@@ -75,6 +78,8 @@ export default class SignupScreen extends React.Component {
     render() {
         
         return (
+            <KeyboardShift>
+                {() => (
             <ScrollView>
         
                 <Text style={styles.pageTitle}>Sign Up</Text>
@@ -225,7 +230,9 @@ export default class SignupScreen extends React.Component {
                     <Text style={{color:'rgba(0,0,0,0.55)'}}>Back to Login</Text>
                 </TouchableOpacity>
             </ScrollView>
-        ) 
+                )}
+            </KeyboardShift>
+        ); 
     }
 }
 
@@ -240,14 +247,14 @@ const styles = StyleSheet.create({
     inputHeading: {
         paddingTop: 30,
         paddingLeft: 40,
-        marginBottom: 5,
+        marginBottom: hPercentage('2%'),
         fontSize: 18,
         fontWeight: '500',
         color: 'rgba(91, 88, 88, 0.9)',
     },
 
     inputLabel: {
-        marginBottom: -5,
+        marginTop: hPercentage('1%'),
         paddingLeft: 40,
         paddingTop: 10,
         fontSize: 15,
@@ -255,7 +262,7 @@ const styles = StyleSheet.create({
     },
 
     selectDate:  {
-        marginBottom: 5,
+        marginBottom: hPercentage('5%'),
         marginRight: 40,
         paddingLeft: 40,
         paddingTop: 10,
@@ -264,8 +271,7 @@ const styles = StyleSheet.create({
     },
 
     inputContainer: {
-        marginTop: 7,
-        marginBottom: 10,
+        marginTop: hPercentage('2%'),
         marginLeft: 40,
         marginRight: 40,
         height: 40,
@@ -279,8 +285,8 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         alignItems: 'flex-start',
-        marginTop: 7,
-        marginBottom: 10,
+        marginTop: hPercentage('2%'),
+        marginBottom: hPercentage('5%'),
         marginLeft: 40,
         marginRight: 40,
         height: 40,

@@ -9,7 +9,7 @@ import logo from './../../assets/images/logo_transparent.png';
 import { reset } from 'expo/build/AR';
 import { heightPercentageToDP } from 'react-native-responsive-screen';
 
-import KeyboardShift from './../../styles/KeyboardShift.js'
+import KeyboardShift from './../../styles/KeyboardShift.js';
 
 const { width: WIDTH } = Dimensions.get('window')
 var globalStyles = require('./../../styles/globalStyles.js');
@@ -141,11 +141,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center', // Used to set Text Component Vertically Center
         alignItems: 'center' // Used to set Text Component Horizontally Center
-    },
-
-    inputContainer2: {
-        marginTop: hPercentage('-5%'),
-        marginBottom: hPercentage('5%'),
     },
 
     input: {
