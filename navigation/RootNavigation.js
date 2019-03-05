@@ -5,21 +5,24 @@ import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
 //import { EStyleSheet } from 'react-native-extended-stylesheet';
 
+// authentication screens
 import LoginScreen from '../screens/auth/LoginScreen';
 import SignupScreen from '../screens/auth/SignupScreen';
+import EditAccountScreen from '../screens/auth/EditAccountScreen';
 import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen';
-import HomeScreen from '../screens/auth/HomeScreen';
+
+// screens displayed to a user
+import HomeScreen from '../screens/HomeScreen';
 
 const RootStackNavigator = createAppContainer(
     createStackNavigator (
     {        
-
-        Home: { 
-          screen: HomeScreen, 
-          navigationOptions: {
-            header: null
-          },
-        },  
+        // Home: { 
+        //   screen: HomeScreen, 
+        //   navigationOptions: {
+        //     header: null
+        //   },
+        // },  
 
         Login: { 
           screen: LoginScreen, 
@@ -33,6 +36,13 @@ const RootStackNavigator = createAppContainer(
             header: null
           }, 
         },
+
+        // EditAccount: { 
+        //   screen: EditAccountScreen, 
+        //   navigationOptions: {
+        //     header: null
+        //   },
+        // }, 
 
         ForgotPassword : { screen: ForgotPasswordScreen,
           navigationOptions: {

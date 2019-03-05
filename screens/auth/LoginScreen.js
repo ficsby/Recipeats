@@ -15,6 +15,7 @@ const { width: WIDTH } = Dimensions.get('window')
 var globalStyles = require('./../../styles/globalStyles.js');
 
 export default class LoginScreen extends React.Component {
+    _isMounted = false;
 
     constructor(props) {
         super(props);
@@ -71,12 +72,17 @@ export default class LoginScreen extends React.Component {
     }
     
     async componentDidMount() {
+        this._isMounted = true;
         await Font.loadAsync({
           'dancing-script': require('../../assets/fonts/DancingScript-Regular.otf'),
         }); 
-        this.setState({fontLoaded: true})
+        if (this._isMounted) this.setState({fontLoaded: true})
     }
     
+    componentWillUnmount(){
+        this._isMounted = false;
+    }
+
     render() {
         return (
             <View style={ globalStyles.background }>
@@ -96,7 +102,9 @@ export default class LoginScreen extends React.Component {
                         placeholder={'Username'}
                         placeholderTextColor = {'rgba(0, 0, 0, 0.3)'}
                         value = {this.state.email}
-                        onChangeText = {(text) => {this.setState( {email: text} ) } }
+                        onChangeText = {(text) => {
+                            if (this._isMounted) this.setState( {email: text} ) 
+                        } }
                         //underLineColorAndroid= 'transparent'
                     />
 
@@ -106,7 +114,9 @@ export default class LoginScreen extends React.Component {
                         placeholderTextColor = {'rgba(0, 0, 0, 0.3)'}
                         secureTextEntry ={true}
                         value = {this.state.password}
-                        onChangeText = {(text) => {this.setState( {password: text} ) } }
+                        onChangeText = {(text) => { 
+                            if (this._isMounted) this.setState( {password: text} ) 
+                        } }
                     />
                 </View>
                 )}

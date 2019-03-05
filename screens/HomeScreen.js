@@ -3,18 +3,18 @@ import { StyleSheet, Button, Image, View, Text, TextInput, Dimensions, Touchable
 import { StackActions } from 'react-navigation';
 import { SearchBar } from 'react-native-elements';
 import { Font, AppLoading } from 'expo';
-import * as firebase from 'firebase';
+//import * as firebase from 'firebase';
 
-import logo from './../../assets/images/logo_transparent.png';
-import { reset } from 'expo/build/AR';
+//import logo from './../../assets/images/logo_transparent.png';
+//import { reset } from 'expo/build/AR';
 
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
-import fontelloConfig from './../../config/icon-font.json';
+import fontelloConfig from './../config/icon-font.json';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
 const { width: WIDTH } = Dimensions.get('window');
-var globalStyles = require('./../../styles/globalStyles.js');
+var globalStyles = require('../styles/globalStyles.js');
 
 export default class HomeScreen extends React.Component {
     
@@ -28,10 +28,14 @@ export default class HomeScreen extends React.Component {
     
     async componentDidMount() {
         await Font.loadAsync({
-          'dancing-script': require('../../assets/fonts/DancingScript-Regular.otf'),
+          'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
         }); 
         this.setState({fontLoaded: true});
     };
+
+    onAccountIconPress = () => {
+        this.props.navigation.navigate('EditAccount')
+    }
 
     render() {
 
@@ -43,11 +47,14 @@ export default class HomeScreen extends React.Component {
                 <View style={styles.topContainer}>
 
                     <View style={styles.row}>
+                        {/* Side bar navigation icon */}
                         <TouchableOpacity style={{height: 80}}>
                             <Icon name='menu' size={30} color='rgba(175,76,99,1)'
                                 style={{marginLeft: '20%'}} />
                         </TouchableOpacity>
-                        <TouchableOpacity style={{height: 80}}>
+
+                        {/* User account icon */}
+                        <TouchableOpacity style={{height: 80}} onPress ={this.onAccountIconPress}>
                             <Icon name='user' size={30} color='rgba(175,76,99,1)'
                                 style={{marginLeft: '75%'}} />
                         </TouchableOpacity>

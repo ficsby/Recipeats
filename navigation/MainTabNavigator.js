@@ -5,13 +5,18 @@ import { createAppContainer } from 'react-navigation';
 
 //import Colors from '../constants/Colors';
 import TestScreen from './../screens/TestScreen';
+import HomeScreen from './../screens/HomeScreen';
+import EditAccountScreen from './../screens/auth/EditAccountScreen';
 
 const MainTabNavigator = createAppContainer(
   createBottomTabNavigator(
     {
-      Test: {
-        screen: TestScreen,
+      Home: {
+        screen: HomeScreen,
       },
+      EditAccount: { 
+        screen: EditAccountScreen, 
+      }, 
     },
     {
       navigationOptions: ({ navigation }) => ({
@@ -19,7 +24,13 @@ const MainTabNavigator = createAppContainer(
           const { routeName } = navigation.state;
           let iconName;
           switch (routeName) {
-            case 'Test':
+            case 'Home':
+              iconName =
+                Platform.OS === 'ios'
+                  ? `ios-information-circle${focused ? '' : '-outline'}`
+                  : 'md-information-circle';
+              break;
+            case 'EditAccount':
               iconName =
                 Platform.OS === 'ios'
                   ? `ios-information-circle${focused ? '' : '-outline'}`
