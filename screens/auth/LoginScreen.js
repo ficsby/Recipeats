@@ -1,11 +1,15 @@
 import React from 'react';
 import { StyleSheet, Button, Image, View, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 import { StackActions } from 'react-navigation';
 import { Font } from 'expo';
 import * as firebase from 'firebase';
 
 import logo from './../../assets/images/logo_transparent.png';
 import { reset } from 'expo/build/AR';
+import { heightPercentageToDP } from 'react-native-responsive-screen';
+
+import KeyboardShift from './../../styles/KeyboardShift.js'
 
 const { width: WIDTH } = Dimensions.get('window')
 var globalStyles = require('./../../styles/globalStyles.js');
@@ -77,11 +81,15 @@ export default class LoginScreen extends React.Component {
         return (
             <View style={ globalStyles.background }>
 
+                <Text>Login</Text>
+
                 <View style={styles.logoContainer}>
                     <Image source={logo} style={styles.logo}/>
                     <Text style={styles.logoText} >Recipeats</Text>
                 </View>
 
+                <KeyboardShift>
+                {() => (
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.input}
@@ -91,9 +99,7 @@ export default class LoginScreen extends React.Component {
                         onChangeText = {(text) => {this.setState( {email: text} ) } }
                         //underLineColorAndroid= 'transparent'
                     />
-                </View>
 
-                <View style={[styles.inputContainer, styles.inputContainer2]}>
                     <TextInput
                         style={styles.input}
                         placeholder={'Password'}
@@ -103,23 +109,21 @@ export default class LoginScreen extends React.Component {
                         onChangeText = {(text) => {this.setState( {password: text} ) } }
                     />
                 </View>
+                )}
+            </KeyboardShift>
 
-                <TouchableOpacity style={styles.button } onPress={this.onLoginPress}>
+                <TouchableOpacity style={styles.loginButton } onPress={this.onLoginPress}>
                     <Text>Login</Text>
                  </TouchableOpacity>
 
-                 <TouchableOpacity style={styles.button} onPress ={this.onSignUpPress}> 
+                 <TouchableOpacity style={styles.signUpButton} onPress ={this.onSignUpPress}> 
                     <Text>Sign Up</Text>
                  </TouchableOpacity>
 
-                 <TouchableOpacity style={styles.button} onPress ={this.onForgotPasswordPress}> 
+                 <TouchableOpacity style={styles.forgotPasswordButton} onPress ={this.onForgotPasswordPress}> 
                     <Text>Forgot Password</Text>
                  </TouchableOpacity>
-
-                {/* NOTE: This is for testing purposes only */}
-                 <TouchableOpacity style={styles.button} onPress ={this.onHomepPress}> 
-                    <Text>Home Page   NOTE: This is for testing purposes only </Text>
-                 </TouchableOpacity>
+            
             </View>
         )
         //return <Text style={{paddingTop:20}}>LoginScreen</Text>
@@ -128,33 +132,34 @@ export default class LoginScreen extends React.Component {
 
 const styles = StyleSheet.create({
     logoContainer: {
-        marginTop: 50,
+        marginTop: hPercentage('5%'),
         alignItems: 'center',
       },
-    
+      
     logoText: {
-        marginTop: -60, 
+        marginTop: hPercentage('0%'), 
         fontFamily: 'dancing-script',
         fontSize: 45,
         color: 'rgba(181, 83, 102, 1)', // Medium Pink
     },
 
     logo: {
+        marginTop: hPercentage('1%'),
         width: 90,
         height: 90,
-        marginBottom: 50,
 
     },
 
     inputContainer: {
-        marginTop: -50,
+        marginTop: hPercentage('-5%'),
         flex: 1,
         justifyContent: 'center', // Used to set Text Component Vertically Center
         alignItems: 'center' // Used to set Text Component Horizontally Center
     },
 
     inputContainer2: {
-        marginTop: -100,
+        marginTop: hPercentage('-5%'),
+        marginBottom: hPercentage('5%'),
     },
 
     input: {
@@ -163,15 +168,28 @@ const styles = StyleSheet.create({
         height: 40,
         fontSize: 20, 
         marginHorizontal: 35,
-        marginTop: 100,
+        marginTop: hPercentage('5%'),
         borderBottomColor: 'rgba(181, 83, 102, 1)', // Medium Pink
         borderBottomWidth: 2,
     },
 
-    button: {
-        marginTop: 30,
-        marginBottom: 20,
+    loginButton: {
+        marginTop: hPercentage('30%'),
+        marginBottom: hPercentage('7%'),
         alignItems: 'center',
         justifyContent: 'center',
     },
+
+    signUpButton: {
+        marginBottom: hPercentage('7%'),
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    forgotPasswordButton: {
+        marginBottom: hPercentage('10%'),
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
 });
