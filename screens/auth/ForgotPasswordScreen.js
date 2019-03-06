@@ -71,7 +71,6 @@ export default class SignupScreen extends React.Component {
 const styles = StyleSheet.create({
     pageTitle: {
         marginTop: hPercentage('15%'),
-        marginBottom: 20,
         marginLeft: 40,
         marginRight: 40,
         fontSize: 25,
@@ -79,7 +78,7 @@ const styles = StyleSheet.create({
     },
     
     subTitle: {
-        marginBottom: 15,
+        marginTop: hPercentage('5%'),
         marginLeft: 40,
         marginRight: 40,
         fontSize: 15,
@@ -92,6 +91,7 @@ const styles = StyleSheet.create({
     },
 
     inputContainer: {
+        marginTop: hPercentage('5%'),
         marginLeft: 40,
         marginRight: 40,
         paddingTop: 8,
@@ -102,8 +102,8 @@ const styles = StyleSheet.create({
     },
 
     resetPwButton: {
-        marginTop: 20,
-        marginBottom: 20,
+        marginTop: hPercentage('2%'),
+        marginBottom: hPercentage('5%'),
         marginLeft: 40,
         marginRight: 40,
         paddingTop: 8,

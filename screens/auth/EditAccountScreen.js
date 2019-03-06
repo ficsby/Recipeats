@@ -7,12 +7,10 @@ import DatePicker from 'react-native-datepicker';
 import logo from './../../assets/images/logo_transparent.png';
 import { stringify } from 'qs';
 
-import KeyboardShift from './../../styles/KeyboardShift.js';
-import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
-
 const { width: WIDTH } = Dimensions.get('window')
 
 export default class SignupScreen extends React.Component {
+    //user = firebase.database().ref('users/' + firebase.auth().currentUser.uid);
 
     constructor(props) {
         super(props);
@@ -20,7 +18,6 @@ export default class SignupScreen extends React.Component {
             name : "",
             email: "",
             password: "",
-            passwordConfirm: "",
             username: "",
             weight: "",
             activityLevel: "",
@@ -64,25 +61,16 @@ export default class SignupScreen extends React.Component {
         });
     }
 
-    onBackToLogin = () => {
-        var navActions = StackActions.reset({
-            index: 0,
-            actions: [
-                StackActions.push({ routeName: "Login" })
-            ]
-        });
-
-        this.props.navigation.dispatch(navActions);
+    onBackToHome = () => {
+        this.props.navigation.navigate('Home')
     }
 
     render() {
         
         return (
-            <KeyboardShift>
-                {() => (
             <ScrollView>
         
-                <Text style={styles.pageTitle}>Sign Up</Text>
+                <Text style={styles.pageTitle}>Edit Account</Text>
 
                 <Text style={styles.inputHeading}>Your basic information</Text>
 
@@ -91,6 +79,7 @@ export default class SignupScreen extends React.Component {
                     <TextInput
                         style={styles.input}
                         value = {this.state.name}
+                        placeholder = {this.state.name}
                         onChangeText = { (text) => {this.setState( {name: text} ) } }
                     />
                 </View>
@@ -226,13 +215,11 @@ export default class SignupScreen extends React.Component {
                     <Text style={styles.signupText}>SIGN UP</Text>
                 </TouchableOpacity>
                 
-                <TouchableOpacity style={styles.loginButton} onPress ={this.onBackToLogin}> 
-                    <Text style={{color:'rgba(0,0,0,0.55)'}}>Back to Login</Text>
+                <TouchableOpacity style={styles.loginButton} onPress ={this.onBackToHome}> 
+                    <Text style={{color:'rgba(0,0,0,0.55)'}}>Back to Home</Text>
                 </TouchableOpacity>
             </ScrollView>
-                )}
-            </KeyboardShift>
-        ); 
+        ) 
     }
 }
 
@@ -247,14 +234,14 @@ const styles = StyleSheet.create({
     inputHeading: {
         paddingTop: 30,
         paddingLeft: 40,
-        marginBottom: hPercentage('2%'),
+        marginBottom: 5,
         fontSize: 18,
         fontWeight: '500',
         color: 'rgba(91, 88, 88, 0.9)',
     },
 
     inputLabel: {
-        marginTop: hPercentage('1%'),
+        marginBottom: -5,
         paddingLeft: 40,
         paddingTop: 10,
         fontSize: 15,
@@ -262,7 +249,7 @@ const styles = StyleSheet.create({
     },
 
     selectDate:  {
-        marginBottom: hPercentage('5%'),
+        marginBottom: 5,
         marginRight: 40,
         paddingLeft: 40,
         paddingTop: 10,
@@ -271,7 +258,8 @@ const styles = StyleSheet.create({
     },
 
     inputContainer: {
-        marginTop: hPercentage('2%'),
+        marginTop: 7,
+        marginBottom: 10,
         marginLeft: 40,
         marginRight: 40,
         height: 40,
@@ -285,8 +273,8 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         alignItems: 'flex-start',
-        marginTop: hPercentage('2%'),
-        marginBottom: hPercentage('5%'),
+        marginTop: 7,
+        marginBottom: 10,
         marginLeft: 40,
         marginRight: 40,
         height: 40,
