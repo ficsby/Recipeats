@@ -1,7 +1,6 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { createBottomTabNavigator, TabBarBottom } from 'react-navigation';
-import { createAppContainer } from 'react-navigation';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 //import Colors from '../constants/Colors';
 import TestScreen from './../screens/TestScreen';
@@ -9,45 +8,70 @@ import HomeScreen from './../screens/HomeScreen';
 import EditAccountScreen from './../screens/auth/EditAccountScreen';
 
 const MainTabNavigator = createAppContainer(
-  createBottomTabNavigator(
+  createStackNavigator (
     {
-      Home: {
-        screen: HomeScreen,
-      },
-      EditAccount: { 
-        screen: EditAccountScreen, 
-      }, 
+      Home: { 
+          screen: HomeScreen, 
+          navigationOptions: {
+            header: null
+          },
+        },
+      
+        EditAccount: { 
+          screen: EditAccountScreen, 
+          navigationOptions: {
+            header: null
+          }, 
+        }, 
     },
     {
-      navigationOptions: ({ navigation }) => ({
-        tabBarIcon: ({ focused }) => {
-          const { routeName } = navigation.state;
-          let iconName;
-          switch (routeName) {
-            case 'Home':
-              iconName =
-                Platform.OS === 'ios'
-                  ? `ios-information-circle${focused ? '' : '-outline'}`
-                  : 'md-information-circle';
-              break;
-            case 'EditAccount':
-              iconName =
-                Platform.OS === 'ios'
-                  ? `ios-information-circle${focused ? '' : '-outline'}`
-                  : 'md-information-circle';
-              break;
-          }
-          return (
-            <Text>Main page</Text>
-          );
-        },
+      navigationOptions: () => ({
+        header: null
       }),
-      tabBarComponent: TabBarBottom,
-      tabBarPosition: 'bottom',
-      animationEnabled: false,
-      swipeEnabled: false,
     }
   )
+  // // createBottomTabNavigator(
+  // //   {
+  // //     Home: {
+  // //       screen: HomeScreen,
+  // //     },
+  // //     EditAccount: { 
+  // //       screen: EditAccountScreen, 
+  // //       navigationOptions: {
+  // //         header: null
+  // //       }, 
+  // //     }, 
+  // //   },
+  // //   {
+  // //     navigationOptions: ({ navigation }) => ({
+  // //       tabBarIcon: ({ focused }) => {
+  // //         const { routeName } = navigation.state;
+  // //         let iconName;
+  // //         switch (routeName) {
+  // //           case 'Home':
+  // //             iconName =
+  // //               Platform.OS === 'ios'
+  // //                 ? `ios-information-circle${focused ? '' : '-outline'}`
+  // //                 : 'md-information-circle';
+  // //             break;
+  // //           case 'EditAccount':
+  // //             iconName =
+  // //               Platform.OS === 'ios'
+  // //                 ? `ios-information-circle${focused ? '' : '-outline'}`
+  // //                 : 'md-information-circle';
+  // //             break;
+  // //         }
+  // //         return (
+  // //           <Text>Main page</Text>
+  // //         );
+  // //       },
+  // //     }),
+  // //     tabBarComponent: TabBarBottom,
+  // //     tabBarPosition: 'bottom',
+  // //     animationEnabled: false,
+  // //     swipeEnabled: false,
+  // //   }
+  // )
 );
 
 export default class RootNavigator extends React.Component{

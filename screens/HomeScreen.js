@@ -34,7 +34,14 @@ export default class HomeScreen extends React.Component {
     };
 
     onAccountIconPress = () => {
-        this.props.navigation.navigate('EditAccount')
+        var navActions = StackActions.reset({
+            index: 0,
+            actions: [
+                StackActions.push({ routeName: "EditAccount" })
+            ]
+        });
+
+        this.props.navigation.dispatch(navActions);
     }
 
     render() {

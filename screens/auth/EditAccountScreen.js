@@ -11,7 +11,17 @@ const { width: WIDTH } = Dimensions.get('window')
 
 export default class SignupScreen extends React.Component {
     //user = firebase.database().ref('users/' + firebase.auth().currentUser.uid);
-
+    
+    user = firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            return user;
+          // User is signed in.
+        } else {
+          // No user is signed in.
+            return null;
+        }
+      });
+      
     constructor(props) {
         super(props);
         this.state = { 
@@ -62,7 +72,14 @@ export default class SignupScreen extends React.Component {
     }
 
     onBackToHome = () => {
-        this.props.navigation.navigate('Home')
+        var navActions = StackActions.reset({
+            index: 0,
+            actions: [
+                StackActions.push({ routeName: "Home" })
+            ]
+        });
+
+        this.props.navigation.dispatch(navActions);
     }
 
     render() {
