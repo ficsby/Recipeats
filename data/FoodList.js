@@ -1,10 +1,9 @@
-import * as firebase from 'firebase';
-
 export default class FoodList {
-    constructor(foodListID) {
-        var owner = foodListID;
+    constructor() {
+        this.owner = "";
 
         //pull the foodList map from firebase and store as a map
-        var list = firebase.database().ref().child("foodlist").child(foodListID);
+        this.list = new Map();
     }
 }
+
