@@ -1,8 +1,11 @@
-import FoodList from '../data/FoodList'
+import FoodList from "../data/FoodList";
+import * as firebase from "firebase";
 
-//compares two different FoodLists and
-//returns a FoodList containing missing FoodItems
-export const findMissing = (secondList) => {
+/**
+ * 
+ * @param {*} secondList 
+ */
+export const findMissingFoodItems = (secondList) => {
     var myFoods = new FoodList();
     var missing = new Map();
 
@@ -13,4 +16,20 @@ export const findMissing = (secondList) => {
     }
 
     return missing;
+};
+
+/**
+ * 
+ * @param {*} foodListID 
+ */
+export const getFoodList = (foodListID) => {
+    var newList = new FoodList();
+    newList.list = firebase.database().ref().child("foodlist").child(foodListID);
+    newList.owner = foodListID;
+    return newList;
+};
+
+//subtracts the 
+export const subtractFoodList = (secondList) => {
+    var result = new FoodList();
 };
