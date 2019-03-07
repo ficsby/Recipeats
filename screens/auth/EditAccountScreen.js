@@ -106,25 +106,29 @@ export default class SignupScreen extends React.Component {
  
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Name</Text>
-                    <Text style={styles.inputData}>Frank Buendia</Text>
+                    <TextInput style={styles.inputData} 
+                               value ={'Franky Buendia'} editable={false}/>
                 </View>
                 <View style={styles.separationLine} />
 
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Username</Text>
-                    <Text style={styles.inputData}>jiggypuff</Text>
+                    <TextInput style={styles.inputData} 
+                               value ={'jiggypuff'} editable={false}/>
                 </View>
                 <View style={styles.separationLine} />
 
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Email</Text>
-                    <Text style={styles.inputData}>frankbuendia@gmail.com</Text>
+                    <TextInput style={styles.inputData} 
+                               value ={'jiggypuff@gmail.com'} editable={false}/>
                 </View>
                 <View style={styles.separationLine} />
         
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Password</Text>
-                    <Text style={styles.inputData}>********</Text>
+                    <TextInput style={styles.inputData} 
+                               value ={'*******'} editable={false}/>
                 </View>
                 <View style={styles.separationLine} />
 
@@ -134,25 +138,29 @@ export default class SignupScreen extends React.Component {
 
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Birthday</Text>
-                    <Text style={styles.inputData}>12/10/1997</Text>
+                    <TextInput style={styles.inputData} 
+                               value ={'01/01/1901'} editable={false}/>
                 </View>
                 <View style={styles.separationLine} />
 
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Height</Text>
-                    <Text style={styles.inputData}> --- </Text>
+                    <TextInput style={styles.inputData} 
+                               value ={'---'} editable={false}/>
                 </View>
                 <View style={styles.separationLine} />
 
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Weight</Text>
-                    <Text style={styles.inputData}> --- </Text>
+                    <TextInput style={styles.inputData} 
+                               value ={'---'} editable={false}/>
                 </View>
                 <View style={styles.separationLine} />
 
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Level of Activity</Text>
-                    <Text style={styles.inputData}> Sedentary </Text>
+                    <TextInput style={styles.inputData} 
+                               value ={'Sedentary'} editable={false}/>
                 </View>
                 <View style={styles.separationLine} />
 
@@ -161,19 +169,23 @@ export default class SignupScreen extends React.Component {
 
                 <View style={styles.dataRow}>
                     <Text style={styles.macroLabel}>Calories</Text>
-                    <Text style={{ width: 200}}> 2000 </Text>
+                    <TextInput style={{ width: 200}}
+                               value ={'1000'} editable={false}/>
                 </View>
                 <View style={styles.dataRow}>
                     <Text style={styles.macroLabel}>Protein</Text>
-                    <Text style={{ width: 200}}> 100 </Text>
+                    <TextInput style={{ width: 200}}
+                               value ={'100'} editable={false}/>                
                 </View>
                 <View style={styles.dataRow}>
                     <Text style={styles.macroLabel}>Fats</Text>
-                    <Text style={{ width: 200}}> 100 </Text>
+                    <TextInput style={{ width: 200}}
+                               value ={'100'} editable={false}/>                
                 </View>
                 <View style={styles.dataRow}>
                     <Text style={styles.macroLabel}>Carbs</Text>
-                    <Text style={{ width: 200}}> 100 </Text>
+                    <TextInput style={{ width: 200}}
+                               value ={'100'} editable={false}/>                
                 </View>
                 <View style={styles.macroSeparationLine} />
 
@@ -182,9 +194,9 @@ export default class SignupScreen extends React.Component {
 
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Budget</Text>
-                    <Text style={styles.inputData}> $200.00 weekly </Text>
+                    <TextInput style={styles.inputData} 
+                               value ={'$200 weekly'} editable={false}/>                
                 </View>                
-                
                 <View style={styles.separationLine} />
 
                            
@@ -203,7 +215,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         paddingTop: '5%',
-        height: 78,
+        height: 70,
         width: '100%',
         backgroundColor: 'rgba(249, 248, 248, 1)',
         borderBottomColor: 'rgba(141, 130, 130, 1)',
@@ -211,8 +223,9 @@ const styles = StyleSheet.create({
     },
 
     pageTitle: {
+        height: 100,
         width: '100%',
-        fontSize: 24,
+        fontSize: 22,
         fontWeight: '600',
         color: 'rgba(100, 92, 92, 0.8)', // Dark grey
     },
@@ -247,7 +260,7 @@ const styles = StyleSheet.create({
     },
 
     macroLabel: {
-        width: 200,
+        width: 160,
         fontSize: 15,
         color: 'rgba(100, 92, 92, 1)',
         fontWeight: '500',
