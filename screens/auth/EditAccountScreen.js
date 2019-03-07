@@ -14,8 +14,6 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
 const { width: WIDTH } = Dimensions.get('window');
 
-var isEditable = false;
-
 export default class SignupScreen extends React.Component {
     //user = firebase.database().ref('users/' + firebase.auth().currentUser.uid);
 
@@ -32,15 +30,34 @@ export default class SignupScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
-            name : "",
-            email: "",
-            password: "",
-            username: "",
-            weight: "",
-            activityLevel: "",
-            birthDate: "",
-            selectedHeightMetric : "",
+            editable: false,
+
+            name : "someName",
+            email: "someEmail",
+            password: "somePw",
+            username: "someUsername",
+            height: "someHeight",
+            weight: "someWeight",
+            activityLevel: "someActivityLevel",
+            birthDate: "someBirthday",
+
+            calories: "1000",
+            protein: "100",
+            fats: "100",
+            carbs: "100",
+
+            budget: "2000 weekly"
         };
+        this.toggleEditable = this.toggleEditable.bind(this);
+        this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
+    }
+
+    toggleEditable() {
+        this.setState({
+            editable: !this.state.editable
+        });
+
+        this.state.editable?  Alert.alert("Not editable now") : Alert.alert("Values should be editable now.");
     }
 
     writeUserData = (userId) => {
@@ -52,7 +69,14 @@ export default class SignupScreen extends React.Component {
             weight: this.state.weight,
             activityLevel: this.state.activityLevel,
             birthDate: this.state.birthDate,
-            selectedHeightMetric: this.state.selectedHeightMetric
+            height: this.state.height
+
+            // calories: this.state.calories,
+            // protein: this.state.email,
+            // fats: this.state.fats,
+            // carbs: this.state.carbs,
+
+            // budget: this.state.budget
         });
     }
 
@@ -60,14 +84,10 @@ export default class SignupScreen extends React.Component {
         Alert.alert("Please enter a number");
         text = text.substring(0, text.length - 1);
     }
-
-    onEditPress = () => {
-        Alert.alert("Account info should now be editable.");
-        isEditable = true;
-    }
     
     onSaveChangesPress = () => {
         Alert.alert("Saved... (Testing)");
+        this.toggleEditable();
     }
 
     onBackToHome = () => {
@@ -90,15 +110,16 @@ export default class SignupScreen extends React.Component {
                     {/* Side bar navigation icon */}
                     <TouchableOpacity style={{height: 80}}>
                         <Icon name='left' size={30} color='rgba(100, 92, 92, 0.8)'
-                                style={{marginLeft: '20%'}} />
+                              style={{marginLeft: '20%'}} />
                     </TouchableOpacity>
 
                     <Text style={styles.pageTitle}>Account Settings</Text>
-
-                    <TouchableOpacity>
-                        <Text style={styles.editButton} onPress ={this.onEditPress}>Edit</Text>
-                    </TouchableOpacity>
-
+                    {
+                        !(this.state.editable)? 
+                        <TouchableOpacity>
+                            <Text style={styles.editButton} onPress ={this.toggleEditable}>Edit</Text>
+                        </TouchableOpacity> : null
+                    }
                 </View>
 
                 <Text style={styles.inputHeading}>Your basic information</Text>
@@ -106,28 +127,32 @@ export default class SignupScreen extends React.Component {
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Name</Text>
                     <TextInput style={styles.inputData} 
-                               value ={'Franky Buendia'} editable={true}/>
+                               value ={this.state.name}  onChangeText={(name) => this.setState({name})}
+                               editable={this.state.editable}/>
                 </View>
                 <View style={styles.separationLine} />
 
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Username</Text>
                     <TextInput style={styles.inputData} 
-                               value ={'jiggypuff'} editable={isEditable}/>
+                               value ={this.state.username}  onChangeText={(username) => this.setState({username})}
+                               editable={this.state.editable}/>
                 </View>
                 <View style={styles.separationLine} />
 
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Email</Text>
                     <TextInput style={styles.inputData} 
-                               value ={'jiggypuff@gmail.com'} editable={isEditable}/>
+                               value ={this.state.email}  onChangeText={(email) => this.setState({email})}
+                               editable={this.state.editable}/>
                 </View>
                 <View style={styles.separationLine} />
         
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Password</Text>
                     <TextInput style={styles.inputData} 
-                               value ={'*******'} editable={isEditable}/>
+                               value ={this.state.password}  onChangeText={(password) => this.setState({password})}
+                               editable={this.state.editable}/>
                 </View>
                 <View style={styles.separationLine} />
 
@@ -138,28 +163,32 @@ export default class SignupScreen extends React.Component {
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Birthday</Text>
                     <TextInput style={styles.inputData} 
-                               value ={'01/01/1901'} editable={isEditable}/>
+                               value ={this.state.birthDate}  onChangeText={(birthDate) => this.setState({birthDate})}
+                               editable={this.state.editable}/>
                 </View>
                 <View style={styles.separationLine} />
 
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Height</Text>
                     <TextInput style={styles.inputData} 
-                               value ={'---'} editable={isEditable}/>
+                               value ={this.state.height}  onChangeText={(height) => this.setState({height})}
+                               editable={this.state.editable}/>
                 </View>
                 <View style={styles.separationLine} />
 
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Weight</Text>
                     <TextInput style={styles.inputData} 
-                               value ={'---'} editable={isEditable}/>
+                               value ={this.state.weight}  onChangeText={(weight) => this.setState({weight})}
+                               editable={this.state.editable}/>
                 </View>
                 <View style={styles.separationLine} />
 
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Level of Activity</Text>
                     <TextInput style={styles.inputData} 
-                               value ={'Sedentary'} editable={isEditable}/>
+                               value ={this.state.activityLevel}  onChangeText={(activityLevel) => this.setState({activityLevel})}
+                               editable={this.state.editable}/>
                 </View>
                 <View style={styles.separationLine} />
 
@@ -169,22 +198,26 @@ export default class SignupScreen extends React.Component {
                 <View style={styles.dataRow}>
                     <Text style={styles.macroLabel}>Calories</Text>
                     <TextInput style={{ width: 200}}
-                               value ={'1000'} editable={isEditable}/>
+                               value ={this.state.calories}  onChangeText={(calories) => this.setState({calories})}
+                               editable={this.state.editable}/>
                 </View>
                 <View style={styles.dataRow}>
                     <Text style={styles.macroLabel}>Protein</Text>
                     <TextInput style={{ width: 200}}
-                               value ={'100'} editable={isEditable}/>                
+                               value ={this.state.protein}  onChangeText={(protein) => this.setState({protein})}
+                               editable={this.state.editable}/>                
                 </View>
                 <View style={styles.dataRow}>
                     <Text style={styles.macroLabel}>Fats</Text>
                     <TextInput style={{ width: 200}}
-                               value ={'100'} editable={isEditable}/>                
+                               value ={this.state.fats}  onChangeText={(fats) => this.setState({fats})}
+                               editable={this.state.editable}/>                
                 </View>
                 <View style={styles.dataRow}>
                     <Text style={styles.macroLabel}>Carbs</Text>
                     <TextInput style={{ width: 200}}
-                               value ={'100'} editable={isEditable}/>                
+                               value ={this.state.carbs}  onChangeText={(carbs) => this.setState({carbs})}
+                               editable={this.state.editable}/>                
                 </View>
                 <View style={styles.macroSeparationLine} />
 
@@ -194,15 +227,17 @@ export default class SignupScreen extends React.Component {
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Budget</Text>
                     <TextInput style={styles.inputData} 
-                               value ={'$200 weekly'} editable={isEditable}/>                
+                               value ={this.state.budget}  onChangeText={(budget) => this.setState({budget})} 
+                               editable={this.state.editable}/>                
                 </View>                
                 <View style={styles.separationLine} />
-
-                           
-                <TouchableOpacity style={styles.saveButton} onPress ={this.onSaveChangesPress}> 
-                    <Text style={styles.saveChanges}>Save Changes</Text>
-                </TouchableOpacity>
-              
+                <View style={styles.whitespaceBuffer} />
+                {
+                    this.state.editable?            
+                    <TouchableOpacity style={styles.saveButton} onPress ={this.onSaveChangesPress}> 
+                        <Text style={styles.saveChanges}>Save Changes</Text>
+                    </TouchableOpacity> : null
+                }
             </ScrollView>
         ) 
     }
@@ -291,6 +326,10 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
         //alignItems: 'center',
         //justifyContent: 'center',
+    },
+
+    whitespaceBuffer: {
+        marginBottom: '10%',
     },
 
     saveButton: {
