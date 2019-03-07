@@ -7,11 +7,18 @@ import DatePicker from 'react-native-datepicker';
 import logo from './../../assets/images/logo_transparent.png';
 import { stringify } from 'qs';
 
-const { width: WIDTH } = Dimensions.get('window')
+/* Custom Icons */
+import { createIconSetFromFontello } from 'react-native-vector-icons';
+import fontelloConfig from './../../config/icon-font.json';
+const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
+
+const { width: WIDTH } = Dimensions.get('window');
+
+var isEditable = false;
 
 export default class SignupScreen extends React.Component {
     //user = firebase.database().ref('users/' + firebase.auth().currentUser.uid);
-    
+
     user = firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
             return user;
@@ -54,21 +61,13 @@ export default class SignupScreen extends React.Component {
         text = text.substring(0, text.length - 1);
     }
 
-    onSignUpPress = () => {
-        if(this.state.password !== this.state.passwordConfirm) {
-            Alert.alert("Passwords do not match");
-            return;
-        }
-        
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then( () => {
-            var user = firebase.auth().currentUser;
-            this.writeUserData(user.uid);
-            user.sendEmailVerification(); 
-            // do nothing, success of creating will move onto the main page
-        }, (error) => {
-            Alert.alert(error.message);
-        });
+    onEditPress = () => {
+        Alert.alert("Account info should now be editable.");
+        isEditable = true;
+    }
+    
+    onSaveChangesPress = () => {
+        Alert.alert("Saved... (Testing)");
     }
 
     onBackToHome = () => {
@@ -86,272 +85,219 @@ export default class SignupScreen extends React.Component {
         
         return (
             <ScrollView>
-        
-                <Text style={styles.pageTitle}>Edit Account</Text>
+
+                <View style={styles.titleRow}>
+                    {/* Side bar navigation icon */}
+                    <TouchableOpacity style={{height: 80}}>
+                        <Icon name='left' size={30} color='rgba(100, 92, 92, 0.8)'
+                                style={{marginLeft: '20%'}} />
+                    </TouchableOpacity>
+
+                    <Text style={styles.pageTitle}>Account Settings</Text>
+
+                    <TouchableOpacity>
+                        <Text style={styles.editButton} onPress ={this.onEditPress}>Edit</Text>
+                    </TouchableOpacity>
+
+                </View>
 
                 <Text style={styles.inputHeading}>Your basic information</Text>
+ 
+                <View style={styles.dataRow}>
+                    <Text style={styles.inputLabel}>Name</Text>
+                    <TextInput style={styles.inputData} 
+                               value ={'Franky Buendia'} editable={true}/>
+                </View>
+                <View style={styles.separationLine} />
 
-                <Text style={styles.inputLabel}>Name</Text>
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        value = {this.state.name}
-                        placeholder = {this.state.name}
-                        onChangeText = { (text) => {this.setState( {name: text} ) } }
-                    />
+                <View style={styles.dataRow}>
+                    <Text style={styles.inputLabel}>Username</Text>
+                    <TextInput style={styles.inputData} 
+                               value ={'jiggypuff'} editable={isEditable}/>
                 </View>
+                <View style={styles.separationLine} />
 
-                <Text style={styles.inputLabel}>Username</Text>
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        value = {this.state.username}
-                        onChangeText = {(text) => {this.setState( {username: text} ) } }
-                    />
+                <View style={styles.dataRow}>
+                    <Text style={styles.inputLabel}>Email</Text>
+                    <TextInput style={styles.inputData} 
+                               value ={'jiggypuff@gmail.com'} editable={isEditable}/>
                 </View>
+                <View style={styles.separationLine} />
+        
+                <View style={styles.dataRow}>
+                    <Text style={styles.inputLabel}>Password</Text>
+                    <TextInput style={styles.inputData} 
+                               value ={'*******'} editable={isEditable}/>
+                </View>
+                <View style={styles.separationLine} />
 
-                <Text style={styles.inputLabel}>Email</Text>
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        value = {this.state.email}
-                        onChangeText = {(text) => {this.setState( {email: text} ) } }
-                    />
-                </View>
-                
-                <Text style={styles.inputLabel}>Password</Text>
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        secureTextEntry ={true}
-                        value = {this.state.password}
-                        onChangeText = {(text) => {this.setState( {password: text} ) } }
-                    />
-                </View>
-
-                <Text style={styles.inputLabel}>Password Confirmation</Text>
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        secureTextEntry ={true}
-                        value = {this.state.passwordConfirm}
-                        onChangeText = {(text) => {this.setState( {passwordConfirm: text} ) } }
-                    />
-                </View>
 
 
                 <Text style={styles.inputHeading}>Your physical information</Text>
 
-                <Text style={styles.inputLabel}>Birthday</Text>
-
-                <View style={styles.selectDate}>
-                <DatePicker
-                    style={{width:330}}
-                    date={this.state.birthDate}
-                    mode="date"
-                    placeholder="Select date"
-                    format="YYYY-MM-DD"
-                    minDate='1900-01-01'
-                    maxDate= {new Date()}
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    customStyles={{
-                        dateIcon: {
-                          position: 'absolute',
-                          left: 0,
-                          top: 4,
-                          marginLeft: 0
-                        },
-                        dateInput: {
-                          marginLeft: 45,
-                          marginRight: 40
-                        }
-                      }}
-                      onDateChange={(date) => {this.setState({birthDate: date})}}
-                />
+                <View style={styles.dataRow}>
+                    <Text style={styles.inputLabel}>Birthday</Text>
+                    <TextInput style={styles.inputData} 
+                               value ={'01/01/1901'} editable={isEditable}/>
                 </View>
-                
-                <Text style={styles.inputLabel}>Height</Text>
+                <View style={styles.separationLine} />
 
-                <View style={styles.row}>
-                    <View style={styles.heightContainer}>
-                        <TextInput
-                            style={styles.input}
-                            value = {this.state.height}
-                            //onChangeText = {(text) => {this.setState( {height: text} ) } }
-                        />
-                    </View>
-                    <View style={style={ backgroundColor: 'rgba(215, 203, 203, 0.35)', height: 40, width: 90}}>
-                        <Picker style={styles.pickerContainer}
-                                itemStyle={{backgroundColor: 'rgba(215, 203, 203, 0.35)'}}
-                                selectedValue={this.state.selectedHeightMetric}
-                                onValueChange={ (itemValue, itemIndex) => this.setState({selectedHeightMetric : itemValue }) }
-                                mode = {'dropdown'}>
-                            <Picker.Item label="in" value="in" />
-                            <Picker.Item label="cm" value="cm" />
-                        </Picker>
-                    </View>
+                <View style={styles.dataRow}>
+                    <Text style={styles.inputLabel}>Height</Text>
+                    <TextInput style={styles.inputData} 
+                               value ={'---'} editable={isEditable}/>
                 </View>
+                <View style={styles.separationLine} />
 
-                <Text style={styles.inputLabel}>Weight</Text>
-                <View style={styles.row}>
-                    <View style={styles.heightContainer}>
-                        <TextInput
-                            style={styles.input}
-                            value = {this.state.weight}
-                            onChangeText = {(text) => {
-                                ( isNaN(text) ) ? text = this.handleNaN(text) : this.setState( {weight: text } ) } }
-                        />
-                    </View>
-                    <View style={{backgroundColor: 'rgba(215, 203, 203, 0.35)', height: 40,  width: 90}}>
-                        <Picker style={styles.pickerContainer}
-                                selectedValue={this.state.selectedHeightMetric}
-                                onValueChange={ (itemValue, itemIndex) => this.setState({selectedHeightMetric : itemValue }) }
-                                mode = {'dropdown'}>
-                            <Picker.Item style={styles.picker} label="lbs" value="lbs" />
-                            <Picker.Item style={styles.picker} label="kg" value="kg" />
-                        </Picker>
-                    </View>
+                <View style={styles.dataRow}>
+                    <Text style={styles.inputLabel}>Weight</Text>
+                    <TextInput style={styles.inputData} 
+                               value ={'---'} editable={isEditable}/>
                 </View>
+                <View style={styles.separationLine} />
+
+                <View style={styles.dataRow}>
+                    <Text style={styles.inputLabel}>Level of Activity</Text>
+                    <TextInput style={styles.inputData} 
+                               value ={'Sedentary'} editable={isEditable}/>
+                </View>
+                <View style={styles.separationLine} />
 
 
-                <Text style={styles.inputLabel}>Activity Level</Text>
-                <View style={styles.activityContainer}>
-                    <Picker style={styles.activityRow}
-                                selectedValue={this.state.selectedHeightMetric}
-                                onValueChange={ (itemValue, itemIndex) => this.setState({selectedHeightMetric : itemValue }) }
-                                mode = {'dropdown'}>
-                            <Picker.Item style={styles.picker} label="Sedentary" value="0" />
-                            <Picker.Item style={styles.picker} label="Lightly Active" value="1" />
-                            <Picker.Item style={styles.picker} label="Active" value="2" />
-                            <Picker.Item style={styles.picker} label="Very Active" value="3" />
-                    </Picker>
-                </View>   
-                
-                <TouchableOpacity style={styles.signupButton} onPress ={this.onSignUpPress}> 
-                    <Text style={styles.signupText}>SIGN UP</Text>
+                <Text style={styles.inputHeading}>Macro Goals</Text>
+
+                <View style={styles.dataRow}>
+                    <Text style={styles.macroLabel}>Calories</Text>
+                    <TextInput style={{ width: 200}}
+                               value ={'1000'} editable={isEditable}/>
+                </View>
+                <View style={styles.dataRow}>
+                    <Text style={styles.macroLabel}>Protein</Text>
+                    <TextInput style={{ width: 200}}
+                               value ={'100'} editable={isEditable}/>                
+                </View>
+                <View style={styles.dataRow}>
+                    <Text style={styles.macroLabel}>Fats</Text>
+                    <TextInput style={{ width: 200}}
+                               value ={'100'} editable={isEditable}/>                
+                </View>
+                <View style={styles.dataRow}>
+                    <Text style={styles.macroLabel}>Carbs</Text>
+                    <TextInput style={{ width: 200}}
+                               value ={'100'} editable={isEditable}/>                
+                </View>
+                <View style={styles.macroSeparationLine} />
+
+
+                <Text style={styles.inputHeading}>Budget Information</Text>
+
+                <View style={styles.dataRow}>
+                    <Text style={styles.inputLabel}>Budget</Text>
+                    <TextInput style={styles.inputData} 
+                               value ={'$200 weekly'} editable={isEditable}/>                
+                </View>                
+                <View style={styles.separationLine} />
+
+                           
+                <TouchableOpacity style={styles.saveButton} onPress ={this.onSaveChangesPress}> 
+                    <Text style={styles.saveChanges}>Save Changes</Text>
                 </TouchableOpacity>
-                
-                <TouchableOpacity style={styles.loginButton} onPress ={this.onBackToHome}> 
-                    <Text style={{color:'rgba(0,0,0,0.55)'}}>Back to Home</Text>
-                </TouchableOpacity>
+              
             </ScrollView>
         ) 
     }
 }
 
 const styles = StyleSheet.create({
+    
+    titleRow: {
+        flex: 1,
+        flexDirection: "row",
+        paddingTop: '5%',
+        height: 70,
+        width: '100%',
+        backgroundColor: 'rgba(249, 248, 248, 1)',
+        borderBottomColor: 'rgba(141, 130, 130, 1)',
+        borderBottomWidth: 2,
+    },
+
     pageTitle: {
-        paddingTop: 30,
-        fontSize: 35,
-        textAlign: 'center',
-        color: 'rgba(181, 83, 102, 1)', // Medium Pink
+        height: 100,
+        width: '50%',
+        fontSize: 22,
+        fontWeight: '600',
+        color: 'rgba(100, 92, 92, 0.8)', // Dark grey
+    },
+
+    editButton: {
+        textAlign: 'right',
+        marginTop: 5,
+        height: 100,
+        marginLeft: 20,
+        textDecorationLine: 'underline',
     },
 
     inputHeading: {
         paddingTop: 30,
-        paddingLeft: 40,
+        paddingLeft: 30,
         marginBottom: 5,
         fontSize: 18,
-        fontWeight: '500',
-        color: 'rgba(91, 88, 88, 0.9)',
+        fontWeight: '600',
+        color: 'rgba(163, 143, 143, 1)',
+    },
+
+    dataRow: {
+        flex: 1,
+        flexDirection: "row",
+        marginLeft: 30,
+        //alignItems: 'flex-start',
     },
 
     inputLabel: {
-        marginBottom: -5,
-        paddingLeft: 40,
+        width: 160,
         paddingTop: 10,
         fontSize: 15,
-        color: 'rgba(91, 88, 88, 0.9)',
+        color: 'rgba(100, 92, 92, 1)',
+        fontWeight: '500',
     },
 
-    selectDate:  {
-        marginBottom: 5,
-        marginRight: 40,
-        paddingLeft: 40,
+    inputData: {
+        width: 200,
         paddingTop: 10,
+    },
+
+    macroLabel: {
+        width: 160,
         fontSize: 15,
-        color: 'rgba(91, 88, 88, 0.9)',
+        color: 'rgba(100, 92, 92, 1)',
+        fontWeight: '500',
     },
 
-    inputContainer: {
-        marginTop: 7,
-        marginBottom: 10,
-        marginLeft: 40,
-        marginRight: 40,
-        height: 40,
-        fontSize: 15,
-        justifyContent: 'center', // Used to set Text Component Vertically Center
-        alignItems: 'center', // Used to set Text Component Horizontally Center
-        backgroundColor: 'rgba(244, 238, 238, 0.5)', // Sandy 
-    },
-  
-    row: {
-        flex: 1,
-        flexDirection: "row",
-        alignItems: 'flex-start',
-        marginTop: 7,
-        marginBottom: 10,
-        marginLeft: 40,
-        marginRight: 40,
-        height: 40,
-        backgroundColor: 'rgba(244, 238, 238, 0.7)',
+    separationLine: {
+        marginTop: 5,
+        marginLeft: 30,
+        width: '85%',
+        borderBottomColor: 'rgba(126, 104, 104, 0.3)', // Light Brown
+        borderBottomWidth: 2,
+        //alignItems: 'center',
+        //justifyContent: 'center',
     },
 
-    activityRow: {
-        flex: 1,
-        flexDirection: "row",
-        //alignItems: 'flex-start',
-        marginTop: 7,
-        marginBottom: 10,
-        marginLeft: 5,
-        height: 40,
-    },
-
-    pickerContainer: {
-        flex: 1,
-    },
-    
-
-    heightContainer : {
-        flex: 2,
-        flexWrap: 'wrap',
-        height: 40,
-        marginLeft: 40,
-    },
-
-    activityContainer : {
-        backgroundColor: 'rgba(244, 238, 238, 0.7)', 
-        height: 40, 
-        marginTop: 7,
-        marginLeft: 40,
-        marginRight: 40,
-    },
-    
-    inputActivity: {
+    macroSeparationLine: {
         marginTop: 10,
-        marginLeft: 40,
-        marginRight: 40,
-        marginBottom: 10,
-        justifyContent: 'center', // Used to set Text Component Vertically Center
-        alignItems: 'center', // Used to set Text Component Horizontally Center
-        backgroundColor: 'rgba(244, 238, 238, 0.7)', // Sandy 
+        marginLeft: 30,
+        width: '85%',
+        borderBottomColor: 'rgba(126, 104, 104, 0.3)', // Light Brown
+        borderBottomWidth: 2,
+        //alignItems: 'center',
+        //justifyContent: 'center',
     },
 
-    input: {
-        width: WIDTH - 130,
-        height: 40,
-        fontSize: 15,
-        marginLeft: -25, 
-        //borderBottomColor: 'rgba(181, 83, 102, 1)', // Medium Pink
-        //borderBottomWidth: 2,
-    },
-
-    signupButton: {
-        marginTop: 40,
-        marginBottom: 30,
-        marginRight: 40,
-        marginLeft: 40,
+    saveButton: {
+        marginTop: 50,
+        marginBottom: 50,
+        marginLeft: 30,
+        marginRight: 30,
         paddingTop: 10,
         paddingBottom: 10,
         backgroundColor: 'rgba(204, 102, 102, 0.9)',
@@ -359,20 +305,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 
-    loginButton: {
-        marginBottom: 20,
-        marginRight: 40,
-        marginLeft: 40,
-        paddingBottom: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
+    saveChanges: {
+        color: 'rgba(255,255,255,1)',
+        fontSize: 16,
+        fontweight: '600',
     },
 
-    signupText: {
-        color: 'rgba(255, 255, 255, 1)',
-        fontWeight: '500',
-        fontSize: 17,
-        width: 100,
-        textAlign: 'center',
-    },
+
   });

@@ -24,6 +24,13 @@ const RootStackNavigator = createAppContainer(
         //   },
         // },  
 
+        EditAccount: { 
+          screen: EditAccountScreen, 
+          navigationOptions: {
+            header: null
+          },
+        }, 
+
         Login: { 
           screen: LoginScreen, 
           navigationOptions: {
@@ -36,13 +43,6 @@ const RootStackNavigator = createAppContainer(
             header: null
           }, 
         },
-
-        // EditAccount: { 
-        //   screen: EditAccountScreen, 
-        //   navigationOptions: {
-        //     header: null
-        //   },
-        // }, 
 
         ForgotPassword : { screen: ForgotPasswordScreen,
           navigationOptions: {
