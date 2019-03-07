@@ -12,11 +12,13 @@ import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from './../../config/icon-font.json';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
-const { width: WIDTH } = Dimensions.get('window')
+const { width: WIDTH } = Dimensions.get('window');
+
+var isEditable = false;
 
 export default class SignupScreen extends React.Component {
     //user = firebase.database().ref('users/' + firebase.auth().currentUser.uid);
-    
+
     user = firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
             return user;
@@ -59,21 +61,13 @@ export default class SignupScreen extends React.Component {
         text = text.substring(0, text.length - 1);
     }
 
+    onEditPress = () => {
+        Alert.alert("Account info should now be editable.");
+        isEditable = true;
+    }
+    
     onSaveChangesPress = () => {
-        if(this.state.password !== this.state.passwordConfirm) {
-            Alert.alert("Passwords do not match");
-            return;
-        }
-        
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then( () => {
-            var user = firebase.auth().currentUser;
-            this.writeUserData(user.uid);
-            user.sendEmailVerification(); 
-            // do nothing, success of creating will move onto the main page
-        }, (error) => {
-            Alert.alert(error.message);
-        });
+        Alert.alert("Saved... (Testing)");
     }
 
     onBackToHome = () => {
@@ -100,6 +94,11 @@ export default class SignupScreen extends React.Component {
                     </TouchableOpacity>
 
                     <Text style={styles.pageTitle}>Account Settings</Text>
+
+                    <TouchableOpacity>
+                        <Text style={styles.editButton} onPress ={this.onEditPress}>Edit</Text>
+                    </TouchableOpacity>
+
                 </View>
 
                 <Text style={styles.inputHeading}>Your basic information</Text>
@@ -107,28 +106,28 @@ export default class SignupScreen extends React.Component {
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Name</Text>
                     <TextInput style={styles.inputData} 
-                               value ={'Franky Buendia'} editable={false}/>
+                               value ={'Franky Buendia'} editable={true}/>
                 </View>
                 <View style={styles.separationLine} />
 
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Username</Text>
                     <TextInput style={styles.inputData} 
-                               value ={'jiggypuff'} editable={false}/>
+                               value ={'jiggypuff'} editable={isEditable}/>
                 </View>
                 <View style={styles.separationLine} />
 
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Email</Text>
                     <TextInput style={styles.inputData} 
-                               value ={'jiggypuff@gmail.com'} editable={false}/>
+                               value ={'jiggypuff@gmail.com'} editable={isEditable}/>
                 </View>
                 <View style={styles.separationLine} />
         
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Password</Text>
                     <TextInput style={styles.inputData} 
-                               value ={'*******'} editable={false}/>
+                               value ={'*******'} editable={isEditable}/>
                 </View>
                 <View style={styles.separationLine} />
 
@@ -139,28 +138,28 @@ export default class SignupScreen extends React.Component {
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Birthday</Text>
                     <TextInput style={styles.inputData} 
-                               value ={'01/01/1901'} editable={false}/>
+                               value ={'01/01/1901'} editable={isEditable}/>
                 </View>
                 <View style={styles.separationLine} />
 
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Height</Text>
                     <TextInput style={styles.inputData} 
-                               value ={'---'} editable={false}/>
+                               value ={'---'} editable={isEditable}/>
                 </View>
                 <View style={styles.separationLine} />
 
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Weight</Text>
                     <TextInput style={styles.inputData} 
-                               value ={'---'} editable={false}/>
+                               value ={'---'} editable={isEditable}/>
                 </View>
                 <View style={styles.separationLine} />
 
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Level of Activity</Text>
                     <TextInput style={styles.inputData} 
-                               value ={'Sedentary'} editable={false}/>
+                               value ={'Sedentary'} editable={isEditable}/>
                 </View>
                 <View style={styles.separationLine} />
 
@@ -170,22 +169,22 @@ export default class SignupScreen extends React.Component {
                 <View style={styles.dataRow}>
                     <Text style={styles.macroLabel}>Calories</Text>
                     <TextInput style={{ width: 200}}
-                               value ={'1000'} editable={false}/>
+                               value ={'1000'} editable={isEditable}/>
                 </View>
                 <View style={styles.dataRow}>
                     <Text style={styles.macroLabel}>Protein</Text>
                     <TextInput style={{ width: 200}}
-                               value ={'100'} editable={false}/>                
+                               value ={'100'} editable={isEditable}/>                
                 </View>
                 <View style={styles.dataRow}>
                     <Text style={styles.macroLabel}>Fats</Text>
                     <TextInput style={{ width: 200}}
-                               value ={'100'} editable={false}/>                
+                               value ={'100'} editable={isEditable}/>                
                 </View>
                 <View style={styles.dataRow}>
                     <Text style={styles.macroLabel}>Carbs</Text>
                     <TextInput style={{ width: 200}}
-                               value ={'100'} editable={false}/>                
+                               value ={'100'} editable={isEditable}/>                
                 </View>
                 <View style={styles.macroSeparationLine} />
 
@@ -195,7 +194,7 @@ export default class SignupScreen extends React.Component {
                 <View style={styles.dataRow}>
                     <Text style={styles.inputLabel}>Budget</Text>
                     <TextInput style={styles.inputData} 
-                               value ={'$200 weekly'} editable={false}/>                
+                               value ={'$200 weekly'} editable={isEditable}/>                
                 </View>                
                 <View style={styles.separationLine} />
 
@@ -224,10 +223,18 @@ const styles = StyleSheet.create({
 
     pageTitle: {
         height: 100,
-        width: '100%',
+        width: '50%',
         fontSize: 22,
         fontWeight: '600',
         color: 'rgba(100, 92, 92, 0.8)', // Dark grey
+    },
+
+    editButton: {
+        textAlign: 'right',
+        marginTop: 5,
+        height: 100,
+        marginLeft: 20,
+        textDecorationLine: 'underline',
     },
 
     inputHeading: {
