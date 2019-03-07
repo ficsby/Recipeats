@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Button, Image, View, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
-import { StackActions } from 'react-navigation';
+import { StackActions, DrawerActions } from 'react-navigation';
 import { SearchBar } from 'react-native-elements';
 import { Font, AppLoading } from 'expo';
 //import * as firebase from 'firebase';
@@ -17,7 +17,6 @@ const { width: WIDTH } = Dimensions.get('window');
 var globalStyles = require('../styles/globalStyles.js');
 
 export default class HomeScreen extends React.Component {
-    
     state = {
         search: '',
     };
@@ -25,7 +24,8 @@ export default class HomeScreen extends React.Component {
     updateSearch = search => {
         this.setState({ search });
     };
-    
+
+
     async componentDidMount() {
         await Font.loadAsync({
           'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
@@ -42,7 +42,7 @@ export default class HomeScreen extends React.Component {
         });
 
         this.props.navigation.dispatch(navActions);
-    }
+    };
 
     render() {
 
@@ -55,7 +55,7 @@ export default class HomeScreen extends React.Component {
 
                     <View style={styles.row}>
                         {/* Side bar navigation icon */}
-                        <TouchableOpacity style={{height: 80}}>
+                        <TouchableOpacity style={{height: 80}} onPress = { () => DrawerActions.openDrawer()}>
                             <Icon name='menu' size={30} color='rgba(175,76,99,1)'
                                 style={{marginLeft: '20%'}} />
                         </TouchableOpacity>
