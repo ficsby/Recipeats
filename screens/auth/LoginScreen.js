@@ -87,8 +87,6 @@ export default class LoginScreen extends React.Component {
         return (
             <View style={ globalStyles.background }>
 
-                <Text>Login</Text>
-
                 <View style={styles.logoContainer}>
                     <Image source={logo} style={styles.logo}/>
                     <Text style={styles.logoText} >Recipeats</Text>
@@ -122,17 +120,17 @@ export default class LoginScreen extends React.Component {
                 )}
             </KeyboardShift>
 
-                <TouchableOpacity style={styles.loginButton } onPress={this.onLoginPress}>
-                    <Text>Login</Text>
-                 </TouchableOpacity>
+            <TouchableOpacity style={styles.loginButton } onPress={this.onLoginPress}>
+                <Text>Login</Text>
+            </TouchableOpacity>
 
-                 <TouchableOpacity style={styles.signUpButton} onPress ={this.onSignUpPress}> 
-                    <Text>Sign Up</Text>
-                 </TouchableOpacity>
+            <TouchableOpacity style={styles.signUpButton} onPress ={this.onSignUpPress}> 
+                <Text>Sign Up</Text>
+            </TouchableOpacity>
 
-                 <TouchableOpacity style={styles.forgotPasswordButton} onPress ={this.onForgotPasswordPress}> 
-                    <Text>Forgot Password</Text>
-                 </TouchableOpacity>
+            <TouchableOpacity style={styles.forgotPasswordButton} onPress ={this.onForgotPasswordPress}> 
+                <Text>Forgot Password</Text>
+            </TouchableOpacity>
             
             </View>
         )
@@ -179,7 +177,7 @@ const styles = StyleSheet.create({
     },
 
     loginButton: {
-        marginTop: hPercentage('30%'),
+        marginTop: hPercentage('40%'),
         marginBottom: hPercentage('7%'),
         alignItems: 'center',
         justifyContent: 'center',
