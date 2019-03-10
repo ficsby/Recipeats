@@ -89,6 +89,10 @@ export default class SignupScreen extends React.Component {
         Alert.alert("Saved... (Testing)");
         this.toggleEditable();
     }
+    
+    onDeleteAccount = () => {
+        Alert.alert("Your account has been removed.");
+    }
 
     onBackToHome = () => {
         var navActions = StackActions.reset({
@@ -236,7 +240,11 @@ export default class SignupScreen extends React.Component {
                     this.state.editable?            
                     <TouchableOpacity style={styles.saveButton} onPress ={this.onSaveChangesPress}> 
                         <Text style={styles.saveChanges}>Save Changes</Text>
-                    </TouchableOpacity> : null
+                    </TouchableOpacity>
+                    :
+                    <TouchableOpacity style={styles.deleteAccount} onPress ={this.onDeleteAccount}> 
+                        <Text style={styles.deleteAccountText}>Delete your account </Text>
+                    </TouchableOpacity>
                 }
             </ScrollView>
         ) 
@@ -245,110 +253,6 @@ export default class SignupScreen extends React.Component {
 
 const styles = StyleSheet.create({
     
-    titleRow: {
-        flex: 1,
-        flexDirection: "row",
-        paddingTop: '5%',
-        height: 70,
-        width: '100%',
-        backgroundColor: 'rgba(249, 248, 248, 1)',
-        borderBottomColor: 'rgba(141, 130, 130, 1)',
-        borderBottomWidth: 2,
-    },
-
-    pageTitle: {
-        height: 100,
-        width: '50%',
-        fontSize: 22,
-        fontWeight: '600',
-        color: 'rgba(100, 92, 92, 0.8)', // Dark grey
-    },
-
-    editButton: {
-        textAlign: 'right',
-        marginTop: 5,
-        height: 100,
-        marginLeft: 20,
-        textDecorationLine: 'underline',
-    },
-
-    inputHeading: {
-        paddingTop: 30,
-        paddingLeft: 30,
-        marginBottom: 5,
-        fontSize: 18,
-        fontWeight: '600',
-        color: 'rgba(163, 143, 143, 1)',
-    },
-
-    dataRow: {
-        flex: 1,
-        flexDirection: "row",
-        marginLeft: 30,
-        //alignItems: 'flex-start',
-    },
-
-    inputLabel: {
-        width: 160,
-        paddingTop: 10,
-        fontSize: 15,
-        color: 'rgba(100, 92, 92, 1)',
-        fontWeight: '500',
-    },
-
-    inputData: {
-        width: 200,
-        paddingTop: 10,
-    },
-
-    macroLabel: {
-        width: 160,
-        fontSize: 15,
-        color: 'rgba(100, 92, 92, 1)',
-        fontWeight: '500',
-    },
-
-    separationLine: {
-        marginTop: 5,
-        marginLeft: 30,
-        width: '85%',
-        borderBottomColor: 'rgba(126, 104, 104, 0.3)', // Light Brown
-        borderBottomWidth: 2,
-        //alignItems: 'center',
-        //justifyContent: 'center',
-    },
-
-    macroSeparationLine: {
-        marginTop: 10,
-        marginLeft: 30,
-        width: '85%',
-        borderBottomColor: 'rgba(126, 104, 104, 0.3)', // Light Brown
-        borderBottomWidth: 2,
-        //alignItems: 'center',
-        //justifyContent: 'center',
-    },
-
-    whitespaceBuffer: {
-        marginBottom: '10%',
-    },
-
-    saveButton: {
-        marginTop: 50,
-        marginBottom: 50,
-        marginLeft: 30,
-        marginRight: 30,
-        paddingTop: 10,
-        paddingBottom: 10,
-        backgroundColor: 'rgba(204, 102, 102, 0.9)',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-
-    saveChanges: {
-        color: 'rgba(255,255,255,1)',
-        fontSize: 16,
-        fontweight: '600',
-    },
 
 
   });
