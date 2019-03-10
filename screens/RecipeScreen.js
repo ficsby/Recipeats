@@ -212,7 +212,6 @@ const styles = StyleSheet.create({
         color: 'rgba(0,0,0, 0.5)',
         marginLeft: 5,
     },
-
     
     recipeStatsIcon: {
         fontSize: 15,
