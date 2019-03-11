@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Button, Image, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Button, Image, ImageBackground, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { StackActions } from 'react-navigation';
 import { SearchBar } from 'react-native-elements';
 import { Font, AppLoading } from 'expo';
@@ -18,13 +18,30 @@ var globalStyles = require('../styles/globalStyles.js');
 
 export default class HomeScreen extends React.Component {
     
-    state = {
-        search: '',
+    constructor(props) {
+        super(props);
+        this.state = { 
+            bookmarked: false,
+            // search: '',
+        };
+        this.toggleBookmark = this.toggleBookmark.bind(this);
     };
-    
-    updateSearch = search => {
-        this.setState({ search });
+
+    toggleBookmark() {
+        this.setState({  bookmarked: !this.state.bookmarked  });
     };
+
+    renderBookmark() {
+        bookmarkStatus = this.state.bookmarked? "bookmark" : "bookmark-empty";
+        return (
+            <Icon name={bookmarkStatus} size={28} color='rgba(175,76,99,1)'
+                  style={{paddingTop: 6}} />
+        );
+    };
+
+    // updateSearch = search => {
+    //     this.setState({ search });
+    // };
     
     async componentDidMount() {
         await Font.loadAsync({
@@ -42,7 +59,7 @@ export default class HomeScreen extends React.Component {
         });
 
         this.props.navigation.dispatch(navActions);
-    }
+    };
 
     render() {
 
@@ -79,16 +96,45 @@ export default class HomeScreen extends React.Component {
                 
                 <ScrollView style={styles.recipeContainer}> 
 
-                    <Image styles={styles.image} resizeMode="cover" source={require('./../assets/images/test_photo.jpg')} />
+                    {/* <ImageBackground source={require('./../assets/images/test_photo.jpg')} /> */}
+                    <ImageBackground source={require('./../assets/images/test_photo.jpg')} style={styles.image}>
+                    </ImageBackground>
+                    <View style={styles.contents}>
 
-                    <View style={styles.recipeInfo}>
-                        <Text style={styles.recipeTitle}> Some Recipe Title </Text>
+                        <View style={styles.titleContainer}>
+                            <View style={styles.row}>
+                                <Text style={styles.title}> Some Recipe Title </Text>
+                                
+                                <TouchableOpacity  onPress={this.toggleBookmark} >
+                                    {this.renderBookmark() }
+                                </TouchableOpacity>
+                                        
+                                
+                            </View>
 
-                        <View style={styles.row}>
-                            <Icon style={styles.recipeStatsIcon} name='clock' size={13} color='rgba(0,0,0, 0.5)' />
-                            <Text style={styles.recipeStats}> 60 mins </Text>
-                            <Icon style={styles.recipeStatsIcon} name='adult' size={13} color='rgba(0,0,0, 0.5)' />
-                            <Text style={styles.recipeStats}> 2 servings </Text>
+                            <View style={styles.row}>
+                                <Icon style={styles.statsIcon} name='clock' size={13} color='rgba(0,0,0, 0.5)' />
+                                <Text style={styles.stats}> 60 mins </Text>
+                                <Icon style={styles.statsIcon} name='adult' size={13} color='rgba(0,0,0, 0.5)' />
+                                <Text style={styles.stats}> 2 servings </Text>
+                            </View>
+                        </View>
+
+                        <View style ={styles.descriptionContainer}>
+                            <Text style={styles.description}> 
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
+                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            </Text>
+                        </View>
+
+                        <View style ={styles.ingredientsContainer}>
+                            <Text style={styles.subTitle}> Ingredients </Text>
+                            <Text style={styles.ingredients}> 
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
+                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            </Text>
                         </View>
                       
 
@@ -151,6 +197,12 @@ const styles = StyleSheet.create({
         alignItems: 'center', // Used to set Text Component Horizontally Center
     },
 
+    contents: {
+        marginTop: 5,
+        marginBottom: 15,
+        backgroundColor: 'rgba(0, 0, 0, 0.05)',
+    },
+
     /*------------------------------------------------------------------------
        Top Section
     ------------------------------------------------------------------------*/
@@ -185,39 +237,83 @@ const styles = StyleSheet.create({
     ------------------------------------------------------------------------*/
 
     recipeContainer: {
-        backgroundColor: 'rgba(240, 240, 240, 0.2)',
-    },
-
-    recipeInfo: {
-        marginTop: 5,
-        marginBottom: 15,
-        marginLeft: 13,
-        marginRight: 13,
+        backgroundColor: 'rgba(0, 0, 0, 0.05)',
     },
 
     image: {
-        flex: 1,
+        //position: 'relative',
         width: '100%',
-        height: '20%',
+        height: 300,
     },
 
-    recipeTitle: {
-        fontSize: 30,
+    titleContainer: {
+        marginTop: -5,
+        paddingTop: 5,
+        backgroundColor: 'rgba(255,255,255,1)',
+    },
+
+    title: {
+        marginLeft: 13,
+        marginRight: 13,
+        fontSize: 28,
         fontWeight: '500',
         color: 'rgba(181, 83, 102, 1)', // Medium Pink
     },
 
-    recipeStats: {
+    subTitle: {
+        marginBottom: 10,
+        marginLeft: 13,
+        marginRight: 13,
+        fontSize: 22,
+        fontWeight: '500',
+        color: 'rgba(0,0,0,1)', // Black
+    },
+
+    stats: {
         fontSize: 16,
         color: 'rgba(0,0,0, 0.5)',
         marginLeft: 5,
     },
     
-    recipeStatsIcon: {
+    statsIcon: {
+        marginTop: 3,
+        marginLeft: 20,
         fontSize: 15,
         color: 'rgba(0,0,0, 0.5)',
-        marginTop: 3,
-        marginLeft: 14,
+    },
+
+    descriptionContainer: {
+        marginBottom: 15,
+        backgroundColor: 'rgba(255,255,255,1)',
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgba(0,0,0,0.3)',
+    },
+
+    description: {
+        marginTop: 8,
+        marginBottom: 15,
+        marginLeft: 17,
+        marginRight: 17,
+        fontSize: 14,
+        color: 'rgba(0,0,0, 0.8)',
+    },
+
+    ingredientsContainer: {
+        marginBottom: 15,
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: 'rgba(255,255,255,1)',
+        borderBottomWidth: 1,
+        borderTopWidth: 1,
+        borderBottomColor: 'rgba(0,0,0,0.3)',
+        borderTopColor: 'rgba(0,0,0,0.3)',
+    },
+
+    ingredients: {
+        marginLeft: 17,
+        marginRight: 17,
+        fontSize: 14,
+        color: 'rgba(0,0,0, 0.8)',
     },
     
     /*------------------------------------------------------------------------

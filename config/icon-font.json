@@ -129,6 +129,18 @@
       "src": "elusive"
     },
     {
+      "uid": "f04a5d24e9e659145b966739c4fde82a",
+      "css": "bookmark",
+      "code": 59404,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "2f5ef6f6b7aaebc56458ab4e865beff5",
+      "css": "bookmark-empty",
+      "code": 61591,
+      "src": "fontawesome"
+    },
+    {
       "uid": "059ee84db3ec1875f05b6b29e53c8cd1",
       "css": "chef",
       "code": 59392,
