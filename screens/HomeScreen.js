@@ -25,7 +25,6 @@ export default class HomeScreen extends React.Component {
         this.setState({ search });
     };
 
-
     async componentDidMount() {
         await Font.loadAsync({
           'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
@@ -35,9 +34,10 @@ export default class HomeScreen extends React.Component {
 
     onAccountIconPress = () => {
         var navActions = StackActions.reset({
-            index: 0,
+            index: 1,
             actions: [
-                StackActions.push({ routeName: "EditAccount" })
+                StackActions.push({ routeName: "Home" }),
+                StackActions.push({ routeName: "EditAccount" }),
             ]
         });
 

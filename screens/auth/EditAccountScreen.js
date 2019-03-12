@@ -73,14 +73,11 @@ export default class SignupScreen extends React.Component {
         Alert.alert("Saved... (Testing)");
     }
 
-    onBackToHome = () => {
-        var navActions = StackActions.reset({
-            index: 0,
-            actions: [
-                StackActions.push({ routeName: "Home" })
-            ]
+    onGoBack = () => {
+        var navActions = StackActions.pop({
+            n: 1,
         });
-
+        
         this.props.navigation.dispatch(navActions);
     }
 
@@ -92,9 +89,9 @@ export default class SignupScreen extends React.Component {
                 <ScrollView>
                     <View style={styles.titleRow}>
                         {/* Side bar navigation icon */}
-                        <TouchableOpacity style={{height: 80}}>
+                        <TouchableOpacity style={{height: 80}} onPress={this.onGoBack}>
                             <Icon name='left' size={30} color='rgba(100, 92, 92, 0.8)'
-                                    style={{marginLeft: '20%'}} />
+                                    style={{marginLeft: '20%'}}/>
                         </TouchableOpacity>
     
                         <Text style={styles.pageTitle}>Account Settings</Text>
