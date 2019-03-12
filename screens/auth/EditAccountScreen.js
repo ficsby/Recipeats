@@ -70,7 +70,9 @@ export default class SignupScreen extends React.Component {
     }
     
     onSaveChangesPress = () => {
-        Alert.alert("Saved... (Testing)");
+        var user = firebase.auth().currentUser;
+        this.writeUserData(user.uid);
+        Alert.alert("Your changes has been updated..");
     }
 
     onGoBack = () => {
