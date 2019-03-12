@@ -14,8 +14,6 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
 const { width: WIDTH } = Dimensions.get('window');
 
-var isEditable = false;
-
 export default class SignupScreen extends React.Component {
     //user = firebase.database().ref('users/' + firebase.auth().currentUser.uid);
     constructor(props) {
@@ -23,6 +21,16 @@ export default class SignupScreen extends React.Component {
         this.state = { 
             user: null
         };
+        this.toggleEditable = this.toggleEditable.bind(this);
+        this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
+    }
+
+    toggleEditable() {
+        this.setState({
+            editable: !this.state.editable
+        });
+
+        this.state.editable?  Alert.alert("Not editable now") : Alert.alert("Values should be editable now.");
     }
 
     componentDidMount() {
@@ -55,18 +63,20 @@ export default class SignupScreen extends React.Component {
             weight: this.state.weight,
             activityLevel: this.state.activityLevel,
             birthDate: this.state.birthDate,
-            selectedHeightMetric: this.state.selectedHeightMetric
+            height: this.state.height
+
+            // calories: this.state.calories,
+            // protein: this.state.email,
+            // fats: this.state.fats,
+            // carbs: this.state.carbs,
+
+            // budget: this.state.budget
         });
     }
 
     handleNaN = (text) => {
         Alert.alert("Please enter a number");
         text = text.substring(0, text.length - 1);
-    }
-
-    onEditPress = () => {
-        Alert.alert("Account info should now be editable.");
-        isEditable = true;
     }
     
     onSaveChangesPress = () => {
@@ -301,6 +311,10 @@ const styles = StyleSheet.create({
         //justifyContent: 'center',
     },
 
+    whitespaceBuffer: {
+        marginBottom: '10%',
+    },
+
     saveButton: {
         marginTop: 50,
         marginBottom: 50,
@@ -318,6 +332,18 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '600',
     },
+
+    deleteAccount: {
+        marginTop: 20,
+        marginBottom: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    deleteAccountText: {
+        fontSize: 15,
+        fontWeight: '500',
+    }
 
 
   });
