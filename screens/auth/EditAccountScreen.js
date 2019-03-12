@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
     saveChanges: {
         color: 'rgba(255,255,255,1)',
         fontSize: 16,
-        fontweight: '600',
+        fontWeight: '600',
     },
 
     deleteAccount: {
@@ -367,7 +367,7 @@ const styles = StyleSheet.create({
 
     deleteAccountText: {
         fontSize: 15,
-        fontWeight: 500,
+        fontWeight: '500',
     }
 
 

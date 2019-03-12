@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Button, Image, ImageBackground, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { StackActions } from 'react-navigation';
 import { SearchBar, ListItem } from 'react-native-elements';
+import Bar from 'react-native-bar-collapsible';
 import { Font, AppLoading } from 'expo';
 //import * as firebase from 'firebase';
 
@@ -16,7 +17,7 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 const { width: WIDTH } = Dimensions.get('window');
 var globalStyles = require('../styles/globalStyles.js');
 
-const ingredList = [   // FOR TESTING PURPOSES
+const ingredientsList = [   // FOR TESTING PURPOSES
     {
         name: 'Rice',
         quantity: '4 cups'
@@ -155,14 +156,16 @@ export default class HomeScreen extends React.Component {
                             </Text>
                         </View>
 
-                        <View style ={styles.ingredientsContainer}>
-                            <Text style={styles.subTitle}> Ingredients </Text>
-                            {
-                                ingredList.map( (item, i) =>  
-                                ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
-                                            titleStyle={styles.ingredientText} rightTitleStyle={styles.quantityText} /> ))
-                            }
-                        </View>
+                        <Bar title='Ingredients' style={styles.collapsibleBar} titleStyle={styles.collapsibleTitle} tintColor='rgba(63, 52, 50, 0.75)'
+                             collapsible={true} showOnStart={true} iconSize={15} >
+                            <View style ={styles.ingredientsContainer}>
+                                {
+                                    ingredientsList.map( (item, i) =>  
+                                    ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
+                                                titleStyle={styles.ingredientText} rightTitleStyle={styles.quantityText} /> ))
+                                }
+                            </View>
+                        </Bar>
 
                     </View>
 
@@ -211,6 +214,20 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         width: '100%',
+    },
+
+    collapsibleBar: {
+        backgroundColor: 'rgba(255,255,255,1)',
+        borderTopColor: 'rgba(0,0,0,0.3)',
+        borderBottomColor: 'rgba(0,0,0,0.3)',
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+    },
+
+    collapsibleTitle: {
+        marginLeft: 15,
+        color: 'rgba(0,0,0,0.9)',
+        fontSize: 18,
     },
 
     recipeRow: {
@@ -285,15 +302,6 @@ const styles = StyleSheet.create({
         color: 'rgba(181, 83, 102, 1)', // Medium Pink
     },
 
-    subTitle: {
-        marginBottom: 10,
-        marginLeft: 15,
-        marginRight: 13,
-        fontSize: 22,
-        fontWeight: '500',
-        color: 'rgba(0,0,0,1)', // Black
-    },
-
     stats: {
         fontSize: 16,
         color: 'rgba(0,0,0, 0.5)',
@@ -326,12 +334,12 @@ const styles = StyleSheet.create({
     ingredientsContainer: {
         marginBottom: 300,
         paddingTop: 10,
-        paddingBottom: 25,
+        paddingBottom: 20,
         backgroundColor: 'rgba(255,255,255,1)',
-        borderBottomWidth: 1,
-        borderTopWidth: 1,
         borderBottomColor: 'rgba(0,0,0,0.3)',
         borderTopColor: 'rgba(0,0,0,0.3)',
+        borderBottomWidth: 1,
+        borderTopWidth: 1,
     },
 
     ingredientText: {
