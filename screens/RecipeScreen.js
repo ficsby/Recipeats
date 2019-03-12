@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Button, Image, ImageBackground, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { StackActions } from 'react-navigation';
-import { SearchBar } from 'react-native-elements';
+import { SearchBar, ListItem } from 'react-native-elements';
 import { Font, AppLoading } from 'expo';
 //import * as firebase from 'firebase';
 
@@ -15,6 +15,33 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
 const { width: WIDTH } = Dimensions.get('window');
 var globalStyles = require('../styles/globalStyles.js');
+
+const ingredList = [   // FOR TESTING PURPOSES
+    {
+        name: 'Rice',
+        quantity: '4 cups'
+    },
+    {
+        name: 'Peas',
+        quantity: '1 cup, canned'
+    },
+    {
+        name: 'Carrots',
+        quantity: '1 cup, diced'
+    },
+    {
+        name: 'Corn',
+        quantity: '4 cups, canned'
+    },
+    {
+        name: 'Garlic',
+        quantity: '3 Tbsp, minced'
+    },
+    {
+        name: 'Vegetable Oil',
+        quantity: '2 Tbsp'
+    },
+  ];
 
 export default class HomeScreen extends React.Component {
     
@@ -130,21 +157,19 @@ export default class HomeScreen extends React.Component {
 
                         <View style ={styles.ingredientsContainer}>
                             <Text style={styles.subTitle}> Ingredients </Text>
-                            <Text style={styles.ingredients}> 
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
-                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
-                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                            </Text>
+                            {
+                                ingredList.map( (item, i) =>  
+                                ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
+                                            titleStyle={styles.ingredientText} rightTitleStyle={styles.quantityText} /> ))
+                            }
                         </View>
-                      
-
 
                     </View>
 
 
                 </ScrollView>
 
-                <View style={styles.row}> 
+                <View style={styles.menubarRow}> 
                     <TouchableOpacity style={styles.menuBar}>
                         <Icon name='home' size={33} color='rgba(175,76,99,1)'
                                     style={{paddingTop: '16%', paddingLeft: '28%'}} />
@@ -211,7 +236,7 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         paddingBottom: 15,
         alignItems: 'center',
-        backgroundColor: 'rgba(244, 238, 238, 0.5)',
+        backgroundColor: 'rgba(246, 238, 238, 1)',
         borderBottomColor: 'rgba(225, 218, 218, 0.7)',
         borderBottomWidth: 2.1,
       },
@@ -262,7 +287,7 @@ const styles = StyleSheet.create({
 
     subTitle: {
         marginBottom: 10,
-        marginLeft: 13,
+        marginLeft: 15,
         marginRight: 13,
         fontSize: 22,
         fontWeight: '500',
@@ -299,9 +324,9 @@ const styles = StyleSheet.create({
     },
 
     ingredientsContainer: {
-        marginBottom: 15,
+        marginBottom: 300,
         paddingTop: 10,
-        paddingBottom: 10,
+        paddingBottom: 25,
         backgroundColor: 'rgba(255,255,255,1)',
         borderBottomWidth: 1,
         borderTopWidth: 1,
@@ -309,20 +334,43 @@ const styles = StyleSheet.create({
         borderTopColor: 'rgba(0,0,0,0.3)',
     },
 
-    ingredients: {
-        marginLeft: 17,
-        marginRight: 17,
+    ingredientText: {
+        width: '80%',
         fontSize: 14,
-        color: 'rgba(0,0,0, 0.8)',
+        marginLeft: 20,
+        includeFontPadding: false,
+        marginBottom: -15,
+    },
+
+    quantityText: {
+        width: '100%',
+        fontStyle: 'italic',
+        marginRight: 20,
+        includeFontPadding: false,
+        marginBottom: -15,
     },
     
     /*------------------------------------------------------------------------
         Bottom Menu Section
     ------------------------------------------------------------------------*/
+    
+    menubarRow: {
+        flex: 1,
+        flexDirection: 'row',
+        width: '100%',
+        height: 50,
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 10,
+    },
+
     menuBar: {
         width: '20%',
         height: 100, 
-        backgroundColor: 'rgba(225, 218, 218, 0.7)'
+        backgroundColor: 'rgba(246, 238, 238, 1)',
+        borderTopColor: 'rgba(225, 218, 218, 0.7)',
+        borderTopWidth: 2.1,
     },
     
 });
