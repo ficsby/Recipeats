@@ -32,7 +32,9 @@ export default class HomeScreen extends React.Component {
     state = {
         search: '',
         query: '',
-        recipes: []
+        recipes: [],
+        recipeTitle: '',
+        recipeId: '',
     };
     
     updateSearch = search => {
@@ -55,10 +57,12 @@ export default class HomeScreen extends React.Component {
             a.setState({recipes: json});
         })
     }
+
     findRecipe = (query) => {
-        if( query === '') { return []; }
+        if( query === '') { return ''; }
         const { recipes } = this.state;
-        const regex = new RegExp(`${query.trim()}`, 'i');
+        query = query.trim()
+        const regex = new RegExp(`${query}`, 'i');
         return recipes.filter(recipe => recipe.title.search(regex) >= 0);
     }
     async componentDidMount() {
@@ -126,7 +130,11 @@ export default class HomeScreen extends React.Component {
                         placeholder= "Search recipes, ingredients..."
                         onChangeText={text => this.setState({ query: text })}
                         renderItem={({ id, title }) => (
-                            <TouchableOpacity onPress={() => this.setState({ query: title })}>
+                            <TouchableOpacity onPress={() => this.setState(
+                                { query: title,
+                                  recipeId: id,
+                                  recipeTitle: title,
+                                })}>
                               <Text style={styles.itemText}>
                                 {title}
                               </Text>
