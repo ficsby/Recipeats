@@ -29,7 +29,14 @@ export default class LoginScreen extends React.Component {
     onLoginPress = () => {
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
         .then( () => {
+            var navActions = StackActions.reset({
+                index: 0,
+                actions: [
+                    StackActions.push({ routeName: "Main" })
+                ]
+            });
 
+            this.props.navigation.dispatch(navActions);
         }, (error) => {
             Alert.alert(error.message);
         });

@@ -6,9 +6,9 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import TestScreen from './../screens/TestScreen';
 import HomeScreen from './../screens/HomeScreen';
 import EditAccountScreen from './../screens/auth/EditAccountScreen';
+import { SidebarNavigator } from './SidebarNavigator';
 
-const MainTabNavigator = createAppContainer(
-  createStackNavigator (
+export const MainTabNavigator = createStackNavigator (
     {
       Home: { 
           screen: HomeScreen, 
@@ -22,14 +22,13 @@ const MainTabNavigator = createAppContainer(
           navigationOptions: {
             header: null
           }, 
-        }, 
+        },
     },
     {
       navigationOptions: () => ({
         header: null
       }),
     }
-  )
   // // createBottomTabNavigator(
   // //   {
   // //     Home: {
@@ -73,9 +72,3 @@ const MainTabNavigator = createAppContainer(
   // //   }
   // )
 );
-
-export default class RootNavigator extends React.Component{
-  render() {
-    return <MainTabNavigator />;
-  }
-}

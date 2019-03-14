@@ -8,7 +8,6 @@ import Firebase from './config/Firebase';
 import * as firebase from 'firebase';
 
 export default class App extends React.Component {
-  
   constructor(props) {
     super(props);
     
@@ -28,6 +27,13 @@ export default class App extends React.Component {
     this.setState({isAuthenticated: !!user});
   }
 
+  toHomeScreen = () => {
+    this.navigator &&
+      this.navigator.dispatch(
+        StackActions.push({ routeName: "Main" })
+      );
+  }
+
   render() {
     if ( (!this.state.isLoadingComplete || !this.state.isAuthenticationReady) && !this.props.skipLoadingScreen) {
       return (
@@ -41,7 +47,7 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
-          {(this.state.isAuthenticated) ? <SidebarNavigator/> : <RootNavigation />}
+          {(this.state.isAuthenticated) ? <RootNavigation ref = {nav => {this.navigator = nav;}}/> : <RootNavigation />}
         </View>
       );
     }

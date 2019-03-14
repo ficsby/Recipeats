@@ -1,7 +1,7 @@
 import { Notifications } from 'expo';
 import React from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-import MainTabNavigator from './MainTabNavigator';
+import { SidebarNavigator } from './SidebarNavigator';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
 //import { EStyleSheet } from 'react-native-extended-stylesheet';
 
@@ -23,6 +23,33 @@ const RootStackNavigator = createAppContainer(
         //     header: null
         //   },
         // },  
+        Login: {
+          screen: LoginScreen,
+          navigationOptions: {
+            header: null
+          },
+        },
+
+        Signup: {
+          screen: SignupScreen,
+          navigationOptions: {
+            header: null
+          },
+        },
+
+        ForgotPassword: {
+          screen: ForgotPasswordScreen,
+          navigationOptions: {
+            header: null
+          },
+        },
+
+        Main: {
+          screen: SidebarNavigator,
+          navigationOptions: {
+            header: null
+          },
+        }, 
 
         EditAccount: { 
           screen: EditAccountScreen, 
@@ -30,36 +57,12 @@ const RootStackNavigator = createAppContainer(
             header: null
           },
         }, 
-
-        Login: { 
-          screen: LoginScreen, 
-          navigationOptions: {
-            header: null
-          },
-        },
-
-        Signup: { screen: SignupScreen,
-          navigationOptions: {
-            header: null
-          }, 
-        },
-
-        ForgotPassword : { screen: ForgotPasswordScreen,
-          navigationOptions: {
-            header: null
-          }, 
-        },
-
-        Main: { screen: MainTabNavigator, 
-          navigationOptions: {
-            header: null
-          }
-        },
     },
     {
-        navigationOptions: () => ({
-          header: null
-        }),
+      initialRouteName: "Login",
+      navigationOptions: () => ({
+        header: null
+      }),
     }
     )
 );
