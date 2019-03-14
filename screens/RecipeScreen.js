@@ -65,22 +65,36 @@ export default class HomeScreen extends React.Component {
         super(props);
         this.state = { 
             bookmarked: false,
+            liked: false,
             // search: '',
         };
         this.toggleBookmark = this.toggleBookmark.bind(this);
+        this.toggleHeart = this.toggleHeart.bind(this);
     };
 
     toggleBookmark() {
         this.setState({  bookmarked: !this.state.bookmarked  });
     };
 
+    toggleHeart() {
+        this.setState({  liked: !this.state.liked  });
+    };
+
     renderBookmark() {
         bookmarkStatus = this.state.bookmarked? "bookmark" : "bookmark-empty";
         return (
-            <Icon name={bookmarkStatus} size={28} color='rgba(175,76,99,1)'
-                  style={{paddingTop: 6}} />
+        <Icon name={bookmarkStatus} size={28} color='rgba(175,76,99,1)'
+                style={{paddingTop: 6}} />
         );
     };
+
+    renderHeart() {
+        heartStatus = this.state.liked? "heart" : "heart-empty";
+        return (
+            <Icon name={heartStatus} size={28} color='rgba(175,76,99,1)'
+                  style={{paddingTop: 6}} />
+        );
+    }
 
     // updateSearch = search => {
     //     this.setState({ search });
@@ -148,11 +162,14 @@ export default class HomeScreen extends React.Component {
                             <View style={styles.row}>
                                 <Text style={styles.title}> Some Recipe Title </Text>
                                 
-                                <TouchableOpacity  onPress={this.toggleBookmark} >
-                                    {this.renderBookmark() }
+                                <TouchableOpacity  onPress={this.toggleBookmark()} >
+                                    {this.renderBookmark()}
+                                </TouchableOpacity>
+
+                                <TouchableOpacity  onPress={this.toggleHeart()} >
+                                    {this.renderHeart()}
                                 </TouchableOpacity>
                                         
-                                
                             </View>
 
                             <View style={styles.row}>
