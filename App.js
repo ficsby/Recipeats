@@ -3,6 +3,7 @@ import { Platform, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { AppLoading, Asset, Font } from 'expo';
 import RootNavigation from './navigation/RootNavigation';
 import MainTabNavigator from './navigation/MainTabNavigator';
+import SidebarNavigator from './navigation/SidebarNavigator';
 import Firebase from './config/Firebase';
 import * as firebase from 'firebase';
 
@@ -27,8 +28,6 @@ export default class App extends React.Component {
     this.setState({isAuthenticated: !!user});
   }
 
-
-
   render() {
     if ( (!this.state.isLoadingComplete || !this.state.isAuthenticationReady) && !this.props.skipLoadingScreen) {
       return (
@@ -42,7 +41,7 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
-          {(this.state.isAuthenticated) ? <MainTabNavigator /> : <RootNavigation />}
+          {(this.state.isAuthenticated) ? <SidebarNavigator/> : <RootNavigation />}
         </View>
       );
     }
