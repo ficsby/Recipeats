@@ -58,18 +58,18 @@ const mapFoodlist = (transform, foodlist) => {
  * @param {*} foodlist - foodlist that you want prices from
  */
 export const getPrices = (foodlist) => {
-    return mapFoodlist((fooditem) => {fooditem.price}, foodlist);
+    return mapFoodlist(fooditem => fooditem.price, foodlist);
 };
 
 /**
  * Generic reducer function
  * @param {*} reducer - reducer function used to aggregate values
  * @param {*} initial - initial value to start with
- * @param {*} foodlist - list to aggregate from
+ * @param {*} list - list to aggregate from
  */
-const reduce = (reducer, initial, foodlist) => {
+const reduce = (reducer, initial, list) => {
     result = initial;
-    for (var item in foodlist) {
+    for (var item in list) {
         result = reducer(result, item);
     }
 
@@ -82,7 +82,7 @@ const reduce = (reducer, initial, foodlist) => {
  */
 export const getTotalPrice = (foodlist) => {
     return reduce(
-        (value, price) => {value += price}, 0,
+        (value, price) => { return value = value + price; }, 0,
         getPrices(foodlist)
     );
 };
