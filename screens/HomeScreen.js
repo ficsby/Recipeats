@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Button, Image, View, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { StackActions, DrawerActions } from 'react-navigation';
+import Autocomplete from 'react-native-autocomplete-input';
 import { SearchBar } from 'react-native-elements';
 import { Font, AppLoading } from 'expo';
+import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 //import * as firebase from 'firebase';
 
 //import logo from './../../assets/images/logo_transparent.png';
@@ -15,22 +17,58 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
 const { width: WIDTH } = Dimensions.get('window');
 var globalStyles = require('../styles/globalStyles.js');
+//var unirest = require('unirest');
+const fetch = require('node-fetch');
+// fetch.header("X-RapidAPI-Key" : "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2")
+// fetch.headers("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/autocomplete?number=10&query=chicken")
+// unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/autocomplete?number=10&query=chicken")
+//         .header("X-RapidAPI-Key", "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2")
+//         .end(function (result) {
+//         console.log(result.body[0].title);
+// });
+
 
 export default class HomeScreen extends React.Component {
     state = {
         search: '',
+        query: '',
+        recipes: []
     };
     
     updateSearch = search => {
         this.setState({ search });
     };
 
+    getRecipes = () => {
+        a = this;
+        const fetchPromise = fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/autocomplete?number=10&query=${this.state.query}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "X-RapidAPI-Key" : "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2"
+            },
+        });
+
+        const fetchResponse = fetchPromise.then(function(response) { return response.json(); })
+        const fetchJson = fetchResponse.then(function(json){
+            //console.log(json);
+            a.setState({recipes: json});
+        })
+    }
+    findRecipe = (query) => {
+        if( query === '') { return []; }
+        const { recipes } = this.state;
+        const regex = new RegExp(`${query.trim()}`, 'i');
+        return recipes.filter(recipe => recipe.title.search(regex) >= 0);
+    }
     async componentDidMount() {
         await Font.loadAsync({
           'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
         }); 
+        //this.getRecipes();
+        //console.log(this.recipes);
         this.setState({fontLoaded: true});
-    };
+    }
 
     onAccountIconPress = () => {
         var navActions = StackActions.reset({
@@ -47,7 +85,10 @@ export default class HomeScreen extends React.Component {
     render() {
 
         const { search } = this.state;
-
+        const { query } = this.state;
+        const recipes = this.findRecipe(query);
+        const comp = (a,b) => a.toLowerCase().trim() == b.toLowerCase().trim();
+        this.getRecipes();
         return (
             <View>
 
@@ -67,7 +108,7 @@ export default class HomeScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
 
-                    <SearchBar placeholder="Search recipes, ingredients..."
+                    {/* <SearchBar placeholder="Search recipes, ingredients..."
                                lightTheme={true}
                                round={true}
                                containerStyle={styles.searchContainer}
@@ -75,7 +116,34 @@ export default class HomeScreen extends React.Component {
                                inputStyle={styles.searchInput}
                                onChangeText={this.updateSearch}
                                value={search}
-                    />
+                    /> */}
+                    <Autocomplete
+                        containerStyle={styles.searchContainer}
+                        inputContainerStyle={styles.searchInputContainer}
+                        data={recipes.length === 1 && comp(query, recipes[0].title) ? [] : recipes}
+                        defaultValue = { query }
+                        autoCorrect={false}
+                        placeholder= "Search recipes, ingredients..."
+                        onChangeText={text => this.setState({ query: text })}
+                        renderItem={({ id, title }) => (
+                            <TouchableOpacity onPress={() => this.setState({ query: title })}>
+                              <Text style={styles.itemText}>
+                                {title}
+                              </Text>
+                            </TouchableOpacity>
+                          )}
+                    /> 
+
+                    {/* <View style={styles.descriptionContainer}>
+                        {this.state.recipes.length > 0 ? (
+                            this.findRecipe(this.state.recipes[0])
+                        ) : (
+                            <Text style={styles.infoText}>
+                            Enter a recipe
+                            </Text>
+                        )}
+                    </View> */}
+                    
                 </View>
                 
                 <View style={styles.newsfeedContainer}> 
@@ -140,15 +208,19 @@ const styles = StyleSheet.create({
       },
 
     searchContainer: {
-        height: 45,
+        // height: 45,
         width: '90%',
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
+        flex: 1,
+        position: 'absolute',
+        top: 0,
+        marginTop:hPercentage('7%'),
     },
 
     searchInputContainer: {
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
         width: '100%',
-        marginTop: -5,
+        // marginTop: -5,
     },
 
     searchInput: {
@@ -191,4 +263,29 @@ const styles = StyleSheet.create({
         width: '20%',
         height: 100, 
         backgroundColor: 'rgba(225, 218, 218, 0.7)'},
+
+     /*------------------------------------------------------------------------
+        Autocomplete Section
+    ------------------------------------------------------------------------*/
+    
+    autocompleteContainer: {
+        flex: 1,
+        left: 0,
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        zIndex: 1
+    },
+    
+    itemText: {
+        fontSize: 15,
+        margin: 2
+    },
+
+    descriptionContainer: {
+        // `backgroundColor` needs to be set otherwise the
+        // autocomplete input will disappear on text input.
+        // backgroundColor: '#F5FCFF',
+        marginTop: 25
+      },
 });

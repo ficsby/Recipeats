@@ -32,13 +32,6 @@ const RootStackNavigator = createAppContainer(
         //   },
         // },  
 
-        EditAccount: { 
-          screen: EditAccountScreen, 
-          navigationOptions: {
-            header: null
-          },
-        }, 
-
         Login: { 
           screen: LoginScreen, 
           navigationOptions: {
@@ -57,6 +50,14 @@ const RootStackNavigator = createAppContainer(
             header: null
           }, 
         },
+
+        EditAccount: { 
+          screen: EditAccountScreen, 
+          navigationOptions: {
+            header: null
+          },
+        }, 
+
 
         Main: { screen: MainTabNavigator, 
           navigationOptions: {
