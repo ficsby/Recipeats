@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Button, Image, ImageBackground, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { StackActions } from 'react-navigation';
-import { SearchBar, ListItem } from 'react-native-elements';
+import { SearchBar, ListItem, Badge } from 'react-native-elements';
 import Bar from 'react-native-bar-collapsible';
 import { Font, AppLoading } from 'expo';
 //import * as firebase from 'firebase';
@@ -41,6 +41,21 @@ const ingredientsList = [   // FOR TESTING PURPOSES
     {
         name: 'Vegetable Oil',
         quantity: '2 Tbsp'
+    },
+  ];
+
+  const instructionsList = [   // FOR TESTING PURPOSES
+    {
+        instruction: "In a saucepan, combine rice and water. Bring to a boil. Reduce heat, cover, and simmer for 20 minutes."
+    },
+    {
+        instruction: "In a small saucepan, boil carrots in water about 3 to 5 minutes. Drop peas into boiling water, and drain."
+    },
+    {
+        instruction: "Heat wok over high heat. Pour in oil, then stir in carrots and peas; cook about 30 seconds."
+    },
+    {
+        instruction: "Enjoy! (: "
     },
   ];
 
@@ -163,6 +178,20 @@ export default class HomeScreen extends React.Component {
                                     ingredientsList.map( (item, i) =>  
                                     ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
                                                 titleStyle={styles.ingredientText} rightTitleStyle={styles.quantityText} /> ))
+                                }
+                            </View>
+                        </Bar>
+
+                        {/* contentContainerStyle={styles.numberContainer} rightContentContainerStyle={styles.instructionStepContainer} />  */}
+
+                        <Bar title='Instructions' style={styles.collapsibleBar} titleStyle={styles.collapsibleTitle} tintColor='rgba(63, 52, 50, 0.75)'
+                             collapsible={true} showOnStart={true} iconSize={15} >
+                            <View style ={styles.instructionsContainer}>
+                                {
+                                    instructionsList.map( (item, i) =>  
+                                    ( <ListItem key={i} title={item.instruction} leftIcon={<Badge value={i+1} 
+                                       containerStyle={styles.numberContainer} badgeStyle={styles.numberBadge} textStyle={styles.instructionNumber} /> } 
+                                                /> ))
                                 }
                             </View>
                         </Bar>
@@ -332,7 +361,6 @@ const styles = StyleSheet.create({
     },
 
     ingredientsContainer: {
-        marginBottom: 300,
         paddingTop: 10,
         paddingBottom: 20,
         backgroundColor: 'rgba(255,255,255,1)',
@@ -346,7 +374,6 @@ const styles = StyleSheet.create({
         width: '80%',
         fontSize: 14,
         marginLeft: 20,
-        includeFontPadding: false,
         marginBottom: -15,
     },
 
@@ -354,10 +381,49 @@ const styles = StyleSheet.create({
         width: '100%',
         fontStyle: 'italic',
         marginRight: 20,
-        includeFontPadding: false,
         marginBottom: -15,
     },
     
+    instructionsContainer: {
+        marginBottom: 100,
+        paddingTop: 10,
+        paddingBottom: 20,
+        backgroundColor: 'rgba(255,255,255,1)',
+        borderBottomColor: 'rgba(0,0,0,0.3)',
+        borderTopColor: 'rgba(0,0,0,0.3)',
+        borderBottomWidth: 1,
+        borderTopWidth: 1,
+    },
+
+    instructionStepContainer: {
+        marginRight: 35,
+        marginLeft: '-100%', 
+        justifyContent: 'flex-start',
+    },
+
+    instructionStep: {
+        width: '100%',
+        fontSize: 16,
+    },
+
+    numberContainer: {
+        marginLeft: 20,
+        marginRight: 15,
+    },
+
+    numberBadge: {
+        backgroundColor: 'rgba(68, 72, 76, 0.82)',
+        borderRadius: 100,
+        width: 30,
+        height: 30,
+    },
+
+    instructionNumber: {
+        width: '100%',
+        fontSize: 15,
+        fontWeight: '500',
+        textAlign: 'center',
+    },
     /*------------------------------------------------------------------------
         Bottom Menu Section
     ------------------------------------------------------------------------*/
