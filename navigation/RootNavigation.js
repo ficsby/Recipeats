@@ -59,7 +59,7 @@ const RootStackNavigator = createAppContainer(
         }, 
     },
     {
-      initialRouteName: "Login",
+      initialRouteName: "Main",
       navigationOptions: () => ({
         header: null
       }),
