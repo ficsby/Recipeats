@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Button, Image, View, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { StackActions, DrawerActions } from 'react-navigation';
 import Autocomplete from 'react-native-autocomplete-input';
 import { SearchBar } from 'react-native-elements';
 import { Font, AppLoading } from 'expo';
+import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 //import * as firebase from 'firebase';
 
 //import logo from './../../assets/images/logo_transparent.png';
@@ -55,7 +56,7 @@ export default class HomeScreen extends React.Component {
         })
     }
     findRecipe = (query) => {
-        if( query == '') { return []; }
+        if( query === '') { return []; }
         const { recipes } = this.state;
         const regex = new RegExp(`${query.trim()}`, 'i');
         return recipes.filter(recipe => recipe.title.search(regex) >= 0);
@@ -134,11 +135,11 @@ export default class HomeScreen extends React.Component {
                     /> 
 
                     {/* <View style={styles.descriptionContainer}>
-                        {recipes.length > 0 ? (
-                            this.findRecipe(recipes[0])
+                        {this.state.recipes.length > 0 ? (
+                            this.findRecipe(this.state.recipes[0])
                         ) : (
                             <Text style={styles.infoText}>
-                            Enter Title of a Star Wars movie
+                            Enter a recipe
                             </Text>
                         )}
                     </View> */}
@@ -192,18 +193,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
     },
-      
-    itemText: {
-        fontSize: 15,
-        margin: 2
-    },
-
-    descriptionContainer: {
-        // `backgroundColor` needs to be set otherwise the
-        // autocomplete input will disappear on text input.
-        backgroundColor: '#F5FCFF',
-        marginTop: 25
-      },
 
     /*------------------------------------------------------------------------
        Top Section
@@ -219,15 +208,19 @@ const styles = StyleSheet.create({
       },
 
     searchContainer: {
-        height: 45,
+        // height: 45,
         width: '90%',
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
+        flex: 1,
+        position: 'absolute',
+        top: 0,
+        marginTop:hPercentage('7%'),
     },
 
     searchInputContainer: {
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
         width: '100%',
-        marginTop: -5,
+        // marginTop: -5,
     },
 
     searchInput: {
@@ -270,4 +263,29 @@ const styles = StyleSheet.create({
         width: '20%',
         height: 100, 
         backgroundColor: 'rgba(225, 218, 218, 0.7)'},
+
+     /*------------------------------------------------------------------------
+        Autocomplete Section
+    ------------------------------------------------------------------------*/
+    
+    autocompleteContainer: {
+        flex: 1,
+        left: 0,
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        zIndex: 1
+    },
+    
+    itemText: {
+        fontSize: 15,
+        margin: 2
+    },
+
+    descriptionContainer: {
+        // `backgroundColor` needs to be set otherwise the
+        // autocomplete input will disappear on text input.
+        // backgroundColor: '#F5FCFF',
+        marginTop: 25
+      },
 });
