@@ -19,7 +19,8 @@ export default class SignupScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
-            user: null
+            user: null,
+            editable: false,
         };
         this.toggleEditable = this.toggleEditable.bind(this);
         this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
@@ -95,6 +96,7 @@ export default class SignupScreen extends React.Component {
 
     render() {
         const { user } = this.state;
+        const { isEditable } = this.state.editable;
         if(this._ismounted)
         {
             return (

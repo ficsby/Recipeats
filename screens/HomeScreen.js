@@ -208,12 +208,12 @@ const styles = StyleSheet.create({
       },
 
     searchContainer: {
-        // height: 45,
         width: '90%',
         // backgroundColor: 'white',
         flex: 1,
-        position: 'absolute',
         top: 0,
+        zIndex: 1,
+        position: 'absolute',
         marginTop:hPercentage('7%'),
     },
 

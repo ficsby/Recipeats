@@ -162,11 +162,11 @@ export default class HomeScreen extends React.Component {
                             <View style={styles.row}>
                                 <Text style={styles.title}> Some Recipe Title </Text>
                                 
-                                <TouchableOpacity  onPress={this.toggleBookmark()} >
+                                <TouchableOpacity  onPress={this.toggleBookmark} >
                                     {this.renderBookmark()}
                                 </TouchableOpacity>
 
-                                <TouchableOpacity  onPress={this.toggleHeart()} >
+                                <TouchableOpacity  onPress={this.toggleHeart} >
                                     {this.renderHeart()}
                                 </TouchableOpacity>
                                         
