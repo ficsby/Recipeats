@@ -18,11 +18,8 @@
     "react-addons-transition-group": "^15.6.2",
     "react-dom": "^16.8.3",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
-<<<<<<< HEAD
     "react-native-bar-collapsible": "^1.6.0",
-=======
     "react-native-autocomplete-input": "^3.6.0",
->>>>>>> master
     "react-native-cli": "^2.0.1",
     "react-native-collapsible": "^1.4.0",
     "react-native-datepicker": "^1.7.2",
