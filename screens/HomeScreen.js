@@ -83,27 +83,23 @@ export default class HomeScreen extends React.Component {
 
         return (
             <View>
+                {/* Top panel of page. Contains the menu and user account buttons. 
+                    Does not actually contain the Autocomplete Search Bar, but is visually underneath it  */}
                 <View style={styles.topContainer}>
-
                     <View style={styles.row}>
-
                         {/* Side bar navigation icon */}
                         <TouchableOpacity onPress = { () => DrawerActions.openDrawer()}>
-                            <Icon name='menu' size={25} color='rgba(175,76,99,1)' backgroundColor='red' height={200}
-
-                                style={{marginLeft: 18}} />
+                            <Icon name='menu' size={25} color='rgba(175,76,99,1)' backgroundColor='red' height={200} style={{marginLeft: 18}} />
                         </TouchableOpacity>
 
                         {/* User account icon  */}
                         <TouchableOpacity onPress ={this.onAccountIconPress} >
-                            <Icon name='user' size={25} color='rgba(175,76,99,1)'
-                                style={{marginLeft: (WIDTH - 85)}} />
+                            <Icon name='user' size={25} color='rgba(175,76,99,1)' style={{marginLeft: (WIDTH - 85)}} />
                         </TouchableOpacity>
-
                     </View>
-
                 </View>
 
+                {/* Search Bar, capable of autocomplete */}
                 <Autocomplete
                     containerStyle={styles.searchContainer}  
                     inputContainerStyle={styles.searchInputContainer}
@@ -112,15 +108,16 @@ export default class HomeScreen extends React.Component {
                     autoCorrect={false}
                     placeholder= "Search recipes, ingredients..."
                     onChangeText={text => this.setState({ query: text })}
-                    renderItem={({ id, title }) => (
-                        <TouchableOpacity style={styles.itemTextContainer} onPress={() => this.setState({ query: title })}>
-                            <Text style={styles.itemText}>
+                    renderItem={({ id, title }) => 
+                    (
+                        // Search Results List
+                        <TouchableOpacity style={styles.searchResultsContainer} onPress={() => this.setState({ query: title })}>
+                            <Text style={styles.searchResult}>
                                 {title}
                             </Text>
                         </TouchableOpacity>
                     )}                       
                 />
-
             </View>
 
         )
@@ -180,24 +177,16 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
     },
 
-    itemTextContainer: {
+    searchResultsContainer: {
         width: '100%',
         marginLeft: 10,
         marginRight: 10,
         marginBottom: 5,
     },
 
-    itemText: {
+    searchResult: {
         width: '100%',
     },
-
-    descriptionContainer: {
-        // `backgroundColor` needs to be set otherwise the
-        // autocomplete input will disappear on text input.
-        // backgroundColor: '#F5FCFF',
-        // marginTop: 25,
-    },
-
 
     /*------------------------------------------------------------------------
         Sidebar Navigation Section
