@@ -110,7 +110,7 @@ export default class HomeScreen extends React.Component {
                     data={recipes.length === 1 && comp(query, recipes[0].title) ? [] : recipes}
                     defaultValue = { query }
                     autoCorrect={false}
-                    placeholder= "    Search recipes, ingredients..."
+                    placeholder= "Search recipes, ingredients..."
                     onChangeText={text => this.setState({ query: text })}
                     renderItem={({ id, title }) => (
                         <TouchableOpacity style={styles.itemTextContainer} onPress={() => this.setState({ query: title })}>
@@ -151,6 +151,53 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2.1,
       },
 
+      
+     /*------------------------------------------------------------------------
+        Autocomplete Section
+    ------------------------------------------------------------------------*/
+    
+    searchContainer: {
+        alignSelf: 'center',
+        width: '74%',
+        marginTop: 10,
+        flex: 1,
+        top: 17,
+        zIndex: 1,
+        position: 'absolute',
+    },
+
+    searchInputContainer: {
+        alignSelf: 'center',
+        width: '94%',
+        paddingLeft: 10,
+        backgroundColor: 'rgba(255,255,255,1)',
+        // marginTop: -5,
+    },
+
+    searchInput: {
+        width: '100%',
+        fontSize: 15,
+        paddingLeft: 10,
+    },
+
+    itemTextContainer: {
+        width: '100%',
+        marginLeft: 10,
+        marginRight: 10,
+        marginBottom: 5,
+    },
+
+    itemText: {
+        width: '100%',
+    },
+
+    descriptionContainer: {
+        // `backgroundColor` needs to be set otherwise the
+        // autocomplete input will disappear on text input.
+        // backgroundColor: '#F5FCFF',
+        // marginTop: 25,
+    },
+
 
     /*------------------------------------------------------------------------
         Sidebar Navigation Section
@@ -188,50 +235,6 @@ const styles = StyleSheet.create({
         width: '20%',
         height: 100, 
         backgroundColor: 'rgba(225, 218, 218, 0.7)'},
-
-     /*------------------------------------------------------------------------
-        Autocomplete Section
-    ------------------------------------------------------------------------*/
-    
-    searchContainer: {
-        alignSelf: 'center',
-        width: '74%',
-        marginTop: 10,
-        flex: 1,
-        top: 17,
-        zIndex: 1,
-        position: 'absolute',
     },
 
-    searchInputContainer: {
-        alignSelf: 'center',
-        width: '94%',
-        paddingLeft: 10,
-        backgroundColor: 'rgba(255,255,255,1)',
-        // marginTop: -5,
-    },
-
-    searchInput: {
-        width: '100%',
-        fontSize: 15,
-        paddingLeft: 10,
-    },
-
-    itemTextContainer: {
-        width: '100%',
-        marginLeft: 10,
-    },
-
-    itemText: {
-        width: '100%',
-        // backgroundColor: 'rgba(255,255,255,1)',
-        // backgroundColor: 'red',
-    },
-
-    descriptionContainer: {
-        // `backgroundColor` needs to be set otherwise the
-        // autocomplete input will disappear on text input.
-        // backgroundColor: '#F5FCFF',
-        // marginTop: 25,
-      },
-});
+);
