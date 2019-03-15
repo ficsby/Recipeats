@@ -24,6 +24,7 @@ export default class SignupScreen extends React.Component {
         this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
     }
 
+    // user is only able to edit after clicking on the edit button
     toggleEditable() {
         this.setState({
             editable: !this.state.editable

@@ -6,9 +6,6 @@ import Bar from 'react-native-bar-collapsible';
 import { Font, AppLoading } from 'expo';
 //import * as firebase from 'firebase';
 
-//import logo from './../../assets/images/logo_transparent.png';
-//import { reset } from 'expo/build/AR';
-
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from './../config/icon-font.json';
@@ -99,10 +96,6 @@ export default class HomeScreen extends React.Component {
             );
         }
     };
-
-    // updateSearch = search => {
-    //     this.setState({ search });
-    // };
     
     async componentDidMount() {
         await Font.loadAsync({
@@ -258,7 +251,6 @@ export default class HomeScreen extends React.Component {
                             
             </View>
         )
-        //return <Text style={{paddingTop:20}}>LoginScreen</Text>
     }
 }
 

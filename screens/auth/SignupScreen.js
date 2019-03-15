@@ -42,11 +42,13 @@ export default class SignupScreen extends React.Component {
         });
     }
 
+    // handles not a number exception
     handleNaN = (text) => {
         Alert.alert("Please enter a number");
         text = text.substring(0, text.length - 1);
     }
 
+    //
     onSignUpPress = () => {
         if(this.state.password !== this.state.passwordConfirm) {
             Alert.alert("Passwords do not match");
