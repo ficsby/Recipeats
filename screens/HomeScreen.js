@@ -50,6 +50,13 @@ export default class HomeScreen extends React.Component {
         }
     }
 
+    findRecipe = (query) => {
+        if( query === '') { return []; }
+        const { recipes } = this.state;
+        const regex = new RegExp(`${query.trim()}`, 'i');
+        return recipes.filter(recipe => recipe.title.search(regex) >= 0);
+    }
+
     async componentDidMount() {
         this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
         await Font.loadAsync({
