@@ -77,24 +77,28 @@ export default class HomeScreen extends React.Component {
     };
 
     toggleHeart() {
-        this.setState({  liked: !this.state.liked  });
+        this.setState({  liked: !this.state.liked });
     };
 
-    renderBookmark() {
-        bookmarkStatus = this.state.bookmarked? "bookmark" : "bookmark-empty";
-        return (
-        <Icon name={bookmarkStatus} size={28} color='rgba(175,76,99,1)'
-                style={{paddingTop: 6}} />
-        );
-    };
+    renderIcon(iconType) {
+        if(iconType == "bookmark")
+        {
+            bookmarkStatus = this.state.bookmarked? "bookmark" : "bookmark-empty";
+            return (
+                <Icon name={bookmarkStatus} size={28} color='rgba(175,76,99,1)'
+                      style={{paddingTop: 6, paddingLeft: 13}} />
+            );
+        }
 
-    renderHeart() {
-        heartStatus = this.state.liked? "heart" : "heart-empty";
-        return (
-            <Icon name={heartStatus} size={28} color='rgba(175,76,99,1)'
-                  style={{paddingTop: 6}} />
-        );
-    }
+        if(iconType == "heart")
+        {
+            heartStatus = this.state.liked? "heart" : "heart-empty";
+            return (
+                <Icon name={heartStatus} size={28} color='rgba(175,76,99,1)'
+                      style={{paddingTop: 6}} />
+            );
+        }
+    };
 
     // updateSearch = search => {
     //     this.setState({ search });
@@ -162,12 +166,12 @@ export default class HomeScreen extends React.Component {
                             <View style={styles.row}>
                                 <Text style={styles.title}> Some Recipe Title </Text>
                                 
-                                <TouchableOpacity  onPress={this.toggleBookmark} >
-                                    {this.renderBookmark()}
+                                <TouchableOpacity  onPress={this.toggleHeart} >
+                                    {this.renderIcon("heart") }
                                 </TouchableOpacity>
 
-                                <TouchableOpacity  onPress={this.toggleHeart} >
-                                    {this.renderHeart()}
+                                <TouchableOpacity  onPress={this.toggleBookmark} >
+                                    {this.renderIcon("bookmark") }
                                 </TouchableOpacity>
                                         
                             </View>
@@ -190,11 +194,18 @@ export default class HomeScreen extends React.Component {
 
                         <Bar title='Ingredients' style={styles.collapsibleBar} titleStyle={styles.collapsibleTitle} tintColor='rgba(63, 52, 50, 0.75)'
                              collapsible={true} showOnStart={true} iconSize={15} >
+
                             <View style ={styles.ingredientsContainer}>
+
+                                <TouchableOpacity  onPress={this.compareFoodLists} style={{alignItems: 'flex-end', marginRight: 15, marginTop: 10}}>
+                                    <Icon name='checklist-4' size={26} color='rgba(0,0,0,0.6)' />
+                                </TouchableOpacity>
+
                                 {
                                     ingredientsList.map( (item, i) =>  
                                     ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
                                                 titleStyle={styles.ingredientText} rightTitleStyle={styles.quantityText} /> ))
+                                        
                                 }
                             </View>
                         </Bar>
@@ -379,7 +390,7 @@ const styles = StyleSheet.create({
 
     ingredientsContainer: {
         paddingTop: 10,
-        paddingBottom: 20,
+        paddingBottom: 15,
         backgroundColor: 'rgba(255,255,255,1)',
         borderBottomColor: 'rgba(0,0,0,0.3)',
         borderTopColor: 'rgba(0,0,0,0.3)',
@@ -429,7 +440,7 @@ const styles = StyleSheet.create({
     },
 
     numberBadge: {
-        backgroundColor: 'rgba(68, 72, 76, 0.82)',
+        backgroundColor: 'rgba(68, 72, 76, 0.4)',
         borderRadius: 100,
         width: 30,
         height: 30,

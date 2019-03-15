@@ -91,23 +91,26 @@ export default class HomeScreen extends React.Component {
         this.getRecipes();
         return (
             <View>
-
                 <View style={styles.topContainer}>
 
                     <View style={styles.row}>
+
                         {/* Side bar navigation icon */}
-                        <TouchableOpacity style={{height: 80}} onPress = { () => DrawerActions.openDrawer()}>
-                            <Icon name='menu' size={30} color='rgba(175,76,99,1)'
-                                style={{marginLeft: '20%'}} />
+                        <TouchableOpacity onPress = { () => DrawerActions.openDrawer()}>
+                            <Icon name='menu' size={25} color='rgba(175,76,99,1)' backgroundColor='red' height={200}
+
+                                style={{marginLeft: 18}} />
                         </TouchableOpacity>
 
-                        {/* User account icon */}
-                        <TouchableOpacity style={{height: 80}} onPress ={this.onAccountIconPress}>
-                            <Icon name='user' size={30} color='rgba(175,76,99,1)'
-                                style={{marginLeft: '75%'}} />
+                        {/* User account icon  */}
+                        <TouchableOpacity onPress ={this.onAccountIconPress} >
+                            <Icon name='user' size={25} color='rgba(175,76,99,1)'
+                                style={{marginLeft: (WIDTH - 85)}} />
                         </TouchableOpacity>
+
                     </View>
 
+                </View>
                     {/* <SearchBar placeholder="Search recipes, ingredients..."
                                lightTheme={true}
                                round={true}
@@ -118,68 +121,26 @@ export default class HomeScreen extends React.Component {
                                value={search}
                     /> */}
                     <Autocomplete
-                        containerStyle={styles.searchContainer}
+                        containerStyle={styles.searchContainer}  
                         inputContainerStyle={styles.searchInputContainer}
                         data={recipes.length === 1 && comp(query, recipes[0].title) ? [] : recipes}
                         defaultValue = { query }
                         autoCorrect={false}
-                        placeholder= "Search recipes, ingredients..."
+                        placeholder= "    Search recipes, ingredients..."
                         onChangeText={text => this.setState({ query: text })}
                         renderItem={({ id, title }) => (
-                            <TouchableOpacity onPress={() => this.setState({ query: title })}>
-                              <Text style={styles.itemText}>
-                                {title}
-                              </Text>
+                            <TouchableOpacity style={styles.itemTextContainer} onPress={() => this.setState({ query: title })}>
+                                <Text style={styles.itemText}>
+                                    {title}
+                                </Text>
                             </TouchableOpacity>
-                          )}
-                    /> 
+                        )}                       
+                    />
 
-                    {/* <View style={styles.descriptionContainer}>
-                        {this.state.recipes.length > 0 ? (
-                            this.findRecipe(this.state.recipes[0])
-                        ) : (
-                            <Text style={styles.infoText}>
-                            Enter a recipe
-                            </Text>
-                        )}
-                    </View> */}
-                    
-                </View>
-                
-                <View style={styles.newsfeedContainer}> 
-
-                </View>
-
-                <View style={styles.row}> 
-                    <TouchableOpacity style={styles.menuBar}>
-                        <Icon name='home' size={33} color='rgba(175,76,99,1)'
-                                    style={{paddingTop: '16%', paddingLeft: '28%'}} />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.menuBar}>
-                        <Icon name='recipe-book' size={32} color='rgba(175,76,99,1)'
-                                    style={{paddingTop: '18%', paddingLeft: '28%'}} />
-                    </TouchableOpacity>
-                    
-                    <TouchableOpacity style={styles.menuBar}>
-                        <Icon name="budget" size={37} color='rgba(175,76,99,1)'
-                                    style={{paddingTop: '15%', paddingLeft: '28%'}} />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.menuBar}>
-                        <Icon name="food-stock" size={30} color='rgba(175,76,99,1)'
-                                    style={{paddingTop: '18%', paddingLeft: '24%'}} />
-                    </TouchableOpacity>
-                    
-                    <TouchableOpacity style={styles.menuBar}>
-                        <Icon name="food-diary" size={35} color='rgba(175,76,99,1)'
-                                    style={{paddingTop: '15%', paddingLeft: '29%'}} />
-                    </TouchableOpacity>
-                </View>
-                            
             </View>
+
         )
-        //return <Text style={{paddingTop:20}}>LoginScreen</Text>
+        {/* return <Text style={{paddingTop:20}}>LoginScreen</Text> */}
     }
 }
 
@@ -198,34 +159,15 @@ const styles = StyleSheet.create({
        Top Section
     ------------------------------------------------------------------------*/
     topContainer: {
-        height: '15%',
-        paddingTop: 20,
-        paddingBottom: 15,
-        alignItems: 'center',
+        width: '100%',
+        height: 80,
+        paddingTop: 30,
+        paddingBottom: 10,
         backgroundColor: 'rgba(244, 238, 238, 0.5)',
         borderBottomColor: 'rgba(225, 218, 218, 0.7)',
         borderBottomWidth: 2.1,
       },
 
-    searchContainer: {
-        width: '90%',
-        // backgroundColor: 'white',
-        flex: 1,
-        top: 0,
-        zIndex: 1,
-        position: 'absolute',
-        marginTop:hPercentage('7%'),
-    },
-
-    searchInputContainer: {
-        // backgroundColor: 'white',
-        width: '100%',
-        // marginTop: -5,
-    },
-
-    searchInput: {
-        fontSize: 15,
-    },
 
     /*------------------------------------------------------------------------
         Sidebar Navigation Section
@@ -268,24 +210,47 @@ const styles = StyleSheet.create({
         Autocomplete Section
     ------------------------------------------------------------------------*/
     
-    autocompleteContainer: {
+    searchContainer: {
+        alignSelf: 'center',
+        width: '80%',
+        radius: 100,
+        paddingTop: 5,
+        paddingLeft: 20,
+        paddingRight: 20,
         flex: 1,
-        left: 0,
+        top: 17,
+        zIndex: 1,
         position: 'absolute',
-        right: 0,
-        top: 0,
-        zIndex: 1
+        // marginTop:hPercentage('2%'),
     },
-    
-    itemText: {
+
+    searchInputContainer: {
+        // backgroundColor: 'white',
+        width: '100%',
+        // marginTop: -5,
+    },
+
+    searchInput: {
+        marginLeft: 20,
         fontSize: 15,
-        margin: 2
+    },
+
+    itemText: {
+        width: '100%',
+        marginLeft: 50,
+        // backgroundColor: 'rgba(255,255,255,1)',
+        // backgroundColor: 'red',
+    },
+
+    itemTextContainer: {
+        paddingLeft: 20,
+        paddingRight: 20,  
     },
 
     descriptionContainer: {
         // `backgroundColor` needs to be set otherwise the
         // autocomplete input will disappear on text input.
         // backgroundColor: '#F5FCFF',
-        marginTop: 25
+        // marginTop: 25,
       },
 });
