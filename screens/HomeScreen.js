@@ -213,37 +213,40 @@ const styles = StyleSheet.create({
     
     searchContainer: {
         alignSelf: 'center',
-        width: '70%',
+        width: '74%',
         marginTop: 10,
-        marginLeft: 20,
-        marginRight: 20,
+        // marginLeft: 20,
+        // marginRight: 20,
         flex: 1,
         top: 17,
         zIndex: 1,
         position: 'absolute',
-        backgroundColor: 'rgba(255,255,255,1)'
         // marginTop:hPercentage('2%'),
     },
 
     searchInputContainer: {
-        width: '100%',
+        alignSelf: 'center',
+        width: '94%',
         paddingLeft: 10,
+        backgroundColor: 'rgba(255,255,255,1)',
         // marginTop: -5,
     },
 
     searchInput: {
         width: '100%',
         fontSize: 15,
+        paddingLeft: 10,
+    },
+
+    itemTextContainer: {
+        width: '100%',
+        marginLeft: 10,
     },
 
     itemText: {
         width: '100%',
         // backgroundColor: 'rgba(255,255,255,1)',
         // backgroundColor: 'red',
-    },
-
-    itemTextContainer: {
-
     },
 
     descriptionContainer: {
