@@ -13,18 +13,27 @@ import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen';
 
 // screens displayed to a user
 import HomeScreen from '../screens/HomeScreen';
+import RecipeScreen from '../screens/RecipeScreen';
 
 const RootStackNavigator = createAppContainer(
     createStackNavigator (
-    {        
-        // Home: { 
-        //   screen: HomeScreen, 
+    {      
+        // Recipe: { 
+        //   screen: RecipeScreen, 
         //   navigationOptions: {
         //     header: null
         //   },
-        // },  
-        Login: {
-          screen: LoginScreen,
+        // }, 
+
+        Home: { 
+          screen: HomeScreen, 
+          navigationOptions: {
+            header: null
+          },
+        },  
+
+        Login: { 
+          screen: LoginScreen, 
           navigationOptions: {
             header: null
           },

@@ -6,17 +6,12 @@ import { Font } from 'expo';
 import * as firebase from 'firebase';
 
 import logo from './../../assets/images/logo_transparent.png';
-import { reset } from 'expo/build/AR';
-import { heightPercentageToDP } from 'react-native-responsive-screen';
-
 import KeyboardShift from './../../styles/KeyboardShift.js';
 
 const { width: WIDTH } = Dimensions.get('window')
 var globalStyles = require('./../../styles/globalStyles.js');
 
 export default class LoginScreen extends React.Component {
-    _isMounted = false;
-
     constructor(props) {
         super(props);
         this.state = { 
@@ -26,6 +21,7 @@ export default class LoginScreen extends React.Component {
         };
     }
 
+    // function for when user clicks the 'Login Button'
     onLoginPress = () => {
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
         .then( () => {
@@ -42,6 +38,7 @@ export default class LoginScreen extends React.Component {
         });
     }
 
+    // function for when user clicks the 'Signup Button'
     onSignUpPress = () => {
         var navActions = StackActions.reset({
             index: 0,
@@ -53,6 +50,7 @@ export default class LoginScreen extends React.Component {
         this.props.navigation.dispatch(navActions);
     }
 
+    // function for when user clicks the 'Forgot Password Button'
     onForgotPasswordPress = () => {
         var navActions = StackActions.reset({
             index: 0,
@@ -79,7 +77,9 @@ export default class LoginScreen extends React.Component {
     }
     
     async componentDidMount() {
-        this._isMounted = true;
+        this._isMounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
+
+        // load font first before using it
         await Font.loadAsync({
           'dancing-script': require('../../assets/fonts/DancingScript-Regular.otf'),
         }); 
@@ -87,7 +87,7 @@ export default class LoginScreen extends React.Component {
     }
     
     componentWillUnmount(){
-        this._isMounted = false;
+        this._isMounted = false; // after components is unmounted reset boolean
     }
 
     render() {
@@ -110,7 +110,6 @@ export default class LoginScreen extends React.Component {
                         onChangeText = {(text) => {
                             if (this._isMounted) this.setState( {email: text} ) 
                         } }
-                        //underLineColorAndroid= 'transparent'
                     />
 
                     <TextInput
@@ -141,7 +140,6 @@ export default class LoginScreen extends React.Component {
             
             </View>
         )
-        //return <Text style={{paddingTop:20}}>LoginScreen</Text>
     }
 }
 
