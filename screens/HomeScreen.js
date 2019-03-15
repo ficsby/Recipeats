@@ -213,7 +213,6 @@ const styles = StyleSheet.create({
     searchContainer: {
         alignSelf: 'center',
         width: '80%',
-        radius: 100,
         paddingTop: 5,
         paddingLeft: 20,
         paddingRight: 20,
@@ -231,20 +230,18 @@ const styles = StyleSheet.create({
     },
 
     searchInput: {
-        marginLeft: 20,
         fontSize: 15,
     },
 
     itemText: {
         width: '100%',
-        marginLeft: 50,
         // backgroundColor: 'rgba(255,255,255,1)',
         // backgroundColor: 'red',
     },
 
     itemTextContainer: {
-        paddingLeft: 20,
-        paddingRight: 20,  
+        paddingLeft: 10,
+
     },
 
     descriptionContainer: {
