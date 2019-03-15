@@ -123,6 +123,7 @@ export default class HomeScreen extends React.Component {
                     <Autocomplete
                         containerStyle={styles.searchContainer}  
                         inputContainerStyle={styles.searchInputContainer}
+                        
                         data={recipes.length === 1 && comp(query, recipes[0].title) ? [] : recipes}
                         defaultValue = { query }
                         autoCorrect={false}
@@ -212,24 +213,26 @@ const styles = StyleSheet.create({
     
     searchContainer: {
         alignSelf: 'center',
-        width: '80%',
-        paddingTop: 5,
-        paddingLeft: 20,
-        paddingRight: 20,
+        width: '70%',
+        marginTop: 10,
+        marginLeft: 20,
+        marginRight: 20,
         flex: 1,
         top: 17,
         zIndex: 1,
         position: 'absolute',
+        backgroundColor: 'rgba(255,255,255,1)'
         // marginTop:hPercentage('2%'),
     },
 
     searchInputContainer: {
-        // backgroundColor: 'white',
         width: '100%',
+        paddingLeft: 10,
         // marginTop: -5,
     },
 
     searchInput: {
+        width: '100%',
         fontSize: 15,
     },
 
@@ -240,7 +243,6 @@ const styles = StyleSheet.create({
     },
 
     itemTextContainer: {
-        paddingLeft: 10,
 
     },
 
