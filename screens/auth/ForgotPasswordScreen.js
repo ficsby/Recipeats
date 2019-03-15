@@ -13,6 +13,7 @@ export default class SignupScreen extends React.Component {
         };
     }
 
+    // function for when user clicks the 'Reset Password Button'
     onResetPassword = () => {
         firebase.auth().sendPasswordResetEmail(this.state.email)
         .then( () => {
@@ -22,6 +23,7 @@ export default class SignupScreen extends React.Component {
         });
     }
 
+    // function for when user clicks the 'Back to Login Button'
     onBackToLogin = () => {
         var navActions = StackActions.reset({
             index: 0,
@@ -48,7 +50,6 @@ export default class SignupScreen extends React.Component {
                         placeholderTextColor={'rgba(0, 0, 0, 0.35)'}
                         value = {this.state.email}
                         onChangeText = {(text) => {this.setState( {email: text} ) } }
-                        //underLineColorAndroid= 'transparent'
                     />
                 </View>
 
@@ -66,8 +67,6 @@ export default class SignupScreen extends React.Component {
     }
 }
 
-// {width: widthPercentageToDP('53%')}
-//const styles = EStyleSheet.create({
 const styles = StyleSheet.create({
     pageTitle: {
         marginTop: hPercentage('15%'),
