@@ -26,6 +26,7 @@ export default class SignupScreen extends React.Component {
             activityLevel: "",
             birthDate: "",
             selectedHeightMetric : "",
+            selectedGender: "",
         };
     }
 
@@ -38,7 +39,8 @@ export default class SignupScreen extends React.Component {
             weight: this.state.weight,
             activityLevel: this.state.activityLevel,
             birthDate: this.state.birthDate,
-            selectedHeightMetric: this.state.selectedHeightMetric
+            selectedHeightMetric: this.state.selectedHeightMetric,
+            selectedGender: this.state.selectedGender
         });
     }
 
@@ -85,6 +87,8 @@ export default class SignupScreen extends React.Component {
             <ScrollView>
         
                 <Text style={styles.pageTitle}>Sign Up</Text>
+
+                {/* BASIC USER INFORMATION  */}
 
                 <Text style={styles.inputHeading}>Your basic information</Text>
 
@@ -135,6 +139,7 @@ export default class SignupScreen extends React.Component {
                     />
                 </View>
 
+                {/* PHYSICAL INFORMATION  */}
 
                 <Text style={styles.inputHeading}>Your physical information</Text>
 
@@ -166,6 +171,19 @@ export default class SignupScreen extends React.Component {
                       onDateChange={(date) => {this.setState({birthDate: date})}}
                 />
                 </View>
+
+                
+                <Text style={styles.inputLabel}>Gender</Text>
+                <View style={styles.choiceContainer}>
+                    <Picker style={styles.choiceRow}
+                                selectedValue={this.state.selectedGender}
+                                onValueChange={ (itemValue, itemIndex) => this.setState({selectedGender : itemValue }) }
+                                mode = {'dropdown'}>
+                            <Picker.Item style={styles.picker} label="Male" value="0" />
+                            <Picker.Item style={styles.picker} label="Female" value="1" />
+                            <Picker.Item style={styles.picker} label="Other" value="2" />
+                    </Picker>
+                </View>   
                 
                 <Text style={styles.inputLabel}>Height</Text>
 
@@ -212,8 +230,8 @@ export default class SignupScreen extends React.Component {
 
 
                 <Text style={styles.inputLabel}>Activity Level</Text>
-                <View style={styles.activityContainer}>
-                    <Picker style={styles.activityRow}
+                <View style={styles.choiceContainer}>
+                    <Picker style={styles.choiceRow}
                                 selectedValue={this.state.selectedHeightMetric}
                                 onValueChange={ (itemValue, itemIndex) => this.setState({selectedHeightMetric : itemValue }) }
                                 mode = {'dropdown'}>
@@ -239,12 +257,35 @@ export default class SignupScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+
+/*------------------------------------------------------------------------
+    General
+------------------------------------------------------------------------*/
+    row: {
+        flex: 1,
+        flexDirection: "row",
+        alignItems: 'flex-start',
+        marginTop: hPercentage('2%'),
+        marginBottom: hPercentage('5%'),
+        marginLeft: 40,
+        marginRight: 40,
+        height: 40,
+        backgroundColor: 'rgba(244, 238, 238, 0.7)',
+    },
+
+/*------------------------------------------------------------------------
+    Top Section
+------------------------------------------------------------------------*/
     pageTitle: {
         paddingTop: 30,
         fontSize: 35,
         textAlign: 'center',
         color: 'rgba(181, 83, 102, 1)', // Medium Pink
     },
+
+/*------------------------------------------------------------------------
+    User Information Section
+------------------------------------------------------------------------*/
 
     inputHeading: {
         paddingTop: 30,
@@ -263,15 +304,6 @@ const styles = StyleSheet.create({
         color: 'rgba(91, 88, 88, 0.9)',
     },
 
-    selectDate:  {
-        marginBottom: hPercentage('5%'),
-        marginRight: 40,
-        paddingLeft: 40,
-        paddingTop: 10,
-        fontSize: 15,
-        color: 'rgba(91, 88, 88, 0.9)',
-    },
-
     inputContainer: {
         marginTop: hPercentage('2%'),
         marginLeft: 40,
@@ -282,47 +314,14 @@ const styles = StyleSheet.create({
         alignItems: 'center', // Used to set Text Component Horizontally Center
         backgroundColor: 'rgba(244, 238, 238, 0.5)', // Sandy 
     },
-  
-    row: {
-        flex: 1,
-        flexDirection: "row",
-        alignItems: 'flex-start',
-        marginTop: hPercentage('2%'),
-        marginBottom: hPercentage('5%'),
-        marginLeft: 40,
-        marginRight: 40,
+
+    input: {
+        width: WIDTH - 130,
         height: 40,
-        backgroundColor: 'rgba(244, 238, 238, 0.7)',
-    },
-
-    activityRow: {
-        flex: 1,
-        flexDirection: "row",
-        //alignItems: 'flex-start',
-        marginTop: 7,
-        marginBottom: 10,
-        marginLeft: 5,
-        height: 40,
-    },
-
-    pickerContainer: {
-        flex: 1,
-    },
-    
-
-    heightContainer : {
-        flex: 2,
-        flexWrap: 'wrap',
-        height: 40,
-        marginLeft: 40,
-    },
-
-    activityContainer : {
-        backgroundColor: 'rgba(244, 238, 238, 0.7)', 
-        height: 40, 
-        marginTop: 7,
-        marginLeft: 40,
-        marginRight: 40,
+        fontSize: 15,
+        marginLeft: -25, 
+        //borderBottomColor: 'rgba(181, 83, 102, 1)', // Medium Pink
+        //borderBottomWidth: 2,
     },
     
     inputActivity: {
@@ -335,14 +334,38 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(244, 238, 238, 0.7)', // Sandy 
     },
 
-    input: {
-        width: WIDTH - 130,
-        height: 40,
-        fontSize: 15,
-        marginLeft: -25, 
-        //borderBottomColor: 'rgba(181, 83, 102, 1)', // Medium Pink
-        //borderBottomWidth: 2,
+    pickerContainer: {
+        flex: 1,
     },
+
+    heightContainer : {
+        flex: 2,
+        flexWrap: 'wrap',
+        height: 40,
+        marginLeft: 40,
+    },
+
+    choiceContainer : {
+        backgroundColor: 'rgba(244, 238, 238, 0.7)', 
+        height: 40, 
+        marginTop: 7,
+        marginLeft: 40,
+        marginRight: 40,
+    },
+
+    choiceRow: {
+        flex: 1,
+        flexDirection: "row",
+        marginTop: 7,
+        marginBottom: 10,
+        marginLeft: 5,
+        height: 40,
+    },
+
+    
+/*------------------------------------------------------------------------
+    Buttons
+------------------------------------------------------------------------*/
 
     signupButton: {
         marginTop: 40,
@@ -356,6 +379,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 
+    signupText: {
+        color: 'rgba(255, 255, 255, 1)',
+        fontWeight: '500',
+        fontSize: 17,
+        width: 100,
+        textAlign: 'center',
+    },
+    
     loginButton: {
         marginBottom: 20,
         marginRight: 40,
@@ -365,11 +396,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 
-    signupText: {
-        color: 'rgba(255, 255, 255, 1)',
-        fontWeight: '500',
-        fontSize: 17,
-        width: 100,
-        textAlign: 'center',
+    selectDate:  {
+        marginBottom: hPercentage('5%'),
+        marginRight: 40,
+        paddingLeft: 40,
+        paddingTop: 10,
+        fontSize: 15,
+        color: 'rgba(91, 88, 88, 0.9)',
     },
   });

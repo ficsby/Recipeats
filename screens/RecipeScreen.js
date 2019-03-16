@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, Button, Image, ImageBackground, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { StackActions } from 'react-navigation';
-import { SearchBar, ListItem, Badge } from 'react-native-elements';
-import Bar from 'react-native-bar-collapsible';
+import Autocomplete from 'react-native-autocomplete-input';
+import { ListItem, Badge } from 'react-native-elements';
+// import Bar from 'react-native-bar-collapsible';
 import { Font, AppLoading } from 'expo';
 //import * as firebase from 'firebase';
 
@@ -62,6 +63,8 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
+            query: '',
+            recipes: [],
             bookmarked: false,
             liked: false,
 
@@ -138,10 +141,12 @@ export default class HomeScreen extends React.Component {
         this.setState({  bookmarked: !this.state.bookmarked  });
     };
 
+    // Toggles the like state when the "Heart" icon is tapped
     toggleHeart() {
         this.setState({  liked: !this.state.liked });
     };
 
+    // Renders the icon according to its current state
     renderIcon(iconType) {
         if(iconType == "bookmark")
         {
@@ -178,9 +183,11 @@ export default class HomeScreen extends React.Component {
 
     onAccountIconPress = () => {
         var navActions = StackActions.reset({
-            index: 0,
+            index: 1,
             actions: [
-                StackActions.push({ routeName: "EditAccount" })
+                // We need to push both the current screen and the next screen that we are transitioning to incase the user wants to go to previous screen
+                StackActions.push({ routeName: "Home" }),       
+                StackActions.push({ routeName: "EditAccount" }),
             ]
         });
 
@@ -190,36 +197,54 @@ export default class HomeScreen extends React.Component {
     render() {
 
         const { search } = this.state;
-        console.log(this.state);
+        // console.log(this.state);
 
-        return (
-            <View style={{flex: 1}}> 
+        return ( 
+            <View> 
 
+{               /*---------------------------------------------------------------------------------
+                   Top Bar 
+                ------------------------------------------------------------------------------------*/}
+                
+                {/* Top panel of page. Contains the menu and user account buttons. 
+                    Does not actually contain the Autocomplete Search Bar, but is visually underneath it  */}
                 <View style={styles.topContainer}>
-
                     <View style={styles.row}>
-                        {/* Side bar navigation icon */}
-                        <TouchableOpacity style={{height: 80}}>
-                            <Icon name='menu' size={30} color='rgba(175,76,99,1)'
-                                style={{marginLeft: '20%'}} />
+                        {/* Side bar navigation icon  */}
+                        <TouchableOpacity onPress = { () => DrawerActions.openDrawer()}>
+                            <Icon name='menu' size={25} color='rgba(175,76,99,1)' backgroundColor='red' height={200} style={{marginLeft: 18}} />
                         </TouchableOpacity>
 
-                        {/* User account icon */}
-                        <TouchableOpacity style={{height: 80}} onPress ={this.onAccountIconPress}>
-                            <Icon name='user' size={30} color='rgba(175,76,99,1)'
-                                style={{marginLeft: '75%'}} />
+                        {/* User account icon  */}
+                        <TouchableOpacity onPress ={this.onAccountIconPress} >
+                            <Icon name='user' size={25} color='rgba(175,76,99,1)' style={{marginLeft: (WIDTH - 85)}} />
                         </TouchableOpacity>
                     </View>
-
-                    <SearchBar placeholder="Search recipes, ingredients..."
-                               lightTheme={true}
-                               round={true}
-                               containerStyle={styles.searchContainer}
-                               inputContainerStyle={styles.searchInputContainer}
-                               inputStyle={styles.searchInput}
-                               onChangeText={this.updateSearch}
-                               value={search} />
                 </View>
+
+                {/* Search Bar, capable of autocomplete */}
+                {/* <Autocomplete
+                    containerStyle={styles.searchContainer}  
+                    inputContainerStyle={styles.searchInputContainer}
+                    data={recipes.length === 1 && comp(query, recipes[0].title) ? [] : recipes}
+                    defaultValue = { query }
+                    autoCorrect={false}
+                    placeholder= "Search recipes, ingredients..."
+                    onChangeText={text => this.setState({ query: text })}
+                    renderItem={({ id, title }) => 
+                    (
+                        // Search Results List
+                        <TouchableOpacity style={styles.searchResultsContainer} onPress={() => this.setState({ query: title })}>
+                            <Text style={styles.searchResult}>
+                                {title}
+                            </Text>
+                        </TouchableOpacity>
+                    )}                       
+                /> */}
+
+                {/*---------------------------------------------------------------------------------
+                   Recipe Page Contents 
+                ------------------------------------------------------------------------------------*/}
                 
                 <ScrollView style={styles.recipeContainer}> 
 
@@ -258,38 +283,53 @@ export default class HomeScreen extends React.Component {
                             </Text>
                         </View>
 
-                        <Bar title='Ingredients' style={styles.collapsibleBar} titleStyle={styles.collapsibleTitle} tintColor='rgba(63, 52, 50, 0.75)'
-                             collapsible={true} showOnStart={true} iconSize={15} >
-
-                            <View style ={styles.ingredientsContainer}>
-
-                                <TouchableOpacity  onPress={this.compareFoodLists} style={{alignItems: 'flex-end', marginRight: 15, marginTop: 10}}>
-                                    <Icon name='checklist-4' size={26} color='rgba(0,0,0,0.6)' />
-                                </TouchableOpacity>
-
-                                {
-                                    ingredientsList.map( (item, i) =>  
-                                    ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
-                                                titleStyle={styles.ingredientText} rightTitleStyle={styles.quantityText} /> ))
-                                        
-                                }
+                        <View style ={styles.macrosContainer}>
+                            <View style ={styles.macrosColumn}> 
+                                <Text style ={styles.macrosData}>  1000  </Text>
+                                <Text style ={styles.macrosLabel}>  CALORIES </Text>
                             </View>
-                        </Bar>
+                            <View style ={styles.macrosColumn}> 
+                                <Text style ={styles.macrosData}>  200g </Text>
+                                <Text style ={styles.macrosLabel}>  PROTEIN </Text>
+                            </View>
+                            <View style ={styles.macrosColumn}>
+                                <Text style ={styles.macrosData}> 25g </Text>
+                                <Text style ={styles.macrosLabel}>  CARBS </Text>
+                            </View>
+                            <View style={styles.macrosColumn}>
+                                <Text style ={styles.macrosData}>  10g </Text>
+                                <Text style ={styles.macrosLabel}> FATS </Text>
+                            </View>
+                        </View>
+
+                        <View style ={styles.sectionContainer}>
+                            < Text style={styles.sectionTitle}> Ingredients </Text>
+
+                            {
+                                ingredientsList.map( (item, i) =>  
+                                ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
+                                            titleStyle={styles.ingredientText} rightTitleStyle={styles.quantityText} /> ))
+                                    
+                            }
+                            <TouchableOpacity  onPress={this.compareFoodLists} style={{alignItems: 'flex-end', marginRight: 15, paddingTop: 20}}>
+                                <Icon name='checklist-2' size={26} color='rgba(0,0,0,0.6)' />
+                            </TouchableOpacity>
+                        </View>
 
                         {/* contentContainerStyle={styles.numberContainer} rightContentContainerStyle={styles.instructionStepContainer} />  */}
 
-                        <Bar title='Instructions' style={styles.collapsibleBar} titleStyle={styles.collapsibleTitle} tintColor='rgba(63, 52, 50, 0.75)'
-                             collapsible={true} showOnStart={true} iconSize={15} >
-                            <View style ={styles.instructionsContainer}>
-                                {
-                                    instructionsList.map( (item, i) =>  
-                                    ( <ListItem key={i} title={item.instruction} leftIcon={<Badge value={i+1} 
-                                       containerStyle={styles.numberContainer} badgeStyle={styles.numberBadge} textStyle={styles.instructionNumber} /> } 
-                                                /> ))
-                                }
-                            </View>
-                        </Bar>
+                        <View style ={styles.sectionContainer}>
+                            < Text style={styles.sectionTitle}> Instructions </Text>
+                            {
+                                instructionsList.map( (item, i) =>  
+                                ( <ListItem key={i} title={item.instruction} leftIcon={<Badge value={i+1} 
+                                    containerStyle={styles.numberContainer} badgeStyle={styles.numberBadge} textStyle={styles.instructionNumber} /> } 
+                                            /> ))
+                            }
+                        </View>
 
+                        {/* Padding at the bottom as a buffer */}
+                        <View style={{paddingBottom: 40}} />
                     </View>
 
 
@@ -329,9 +369,9 @@ export default class HomeScreen extends React.Component {
 
 const styles = StyleSheet.create({
 
-    /*------------------------------------------------------------------------
-        General Styles
-    ------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------
+    General Styles
+------------------------------------------------------------------------*/
     row: {
         flex: 1,
         flexDirection: 'row',
@@ -367,38 +407,64 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.05)',
     },
 
-    /*------------------------------------------------------------------------
-       Top Section
-    ------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------
+    Top Section
+------------------------------------------------------------------------*/
     topContainer: {
-        height: '15%',
-        paddingTop: 20,
-        paddingBottom: 15,
-        alignItems: 'center',
-        backgroundColor: 'rgba(246, 238, 238, 1)',
+        width: '100%',
+        height: 80,
+        paddingTop: 30,
+        paddingBottom: 10,
+        backgroundColor: 'rgba(244, 238, 238, 0.5)',
         borderBottomColor: 'rgba(225, 218, 218, 0.7)',
         borderBottomWidth: 2.1,
-      },
+    },
 
+  
+/*------------------------------------------------------------------------
+    Autocomplete Section
+------------------------------------------------------------------------*/
+    
     searchContainer: {
-        height: 45,
-        width: '90%',
-        backgroundColor: 'white',
+        alignSelf: 'center',
+        width: '74%',
+        marginTop: 10,
+        flex: 1,
+        top: 17,
+        zIndex: 1,
+        position: 'absolute',
     },
 
     searchInputContainer: {
-        backgroundColor: 'white',
-        width: '100%',
-        marginTop: -5,
+        alignSelf: 'center',
+        width: '94%',
+        paddingLeft: 10,
+        backgroundColor: 'rgba(255,255,255,1)',
+        // marginTop: -5,
     },
 
     searchInput: {
+        width: '100%',
         fontSize: 15,
+        paddingLeft: 10,
     },
 
-    /*------------------------------------------------------------------------
-       Recipe Info Section
-    ------------------------------------------------------------------------*/
+    searchResultsContainer: {
+        flex: 1,
+        width: '100%',
+        marginLeft: 10,
+        marginRight: 10,
+        marginBottom: 5,
+    },
+
+    searchResult: {
+        width: '100%',
+    },
+
+
+/*------------------------------------------------------------------------
+    Recipe Info Section
+------------------------------------------------------------------------*/
 
     recipeContainer: {
         backgroundColor: 'rgba(0, 0, 0, 0.05)',
@@ -437,11 +503,16 @@ const styles = StyleSheet.create({
         color: 'rgba(0,0,0, 0.5)',
     },
 
+        
+    /*-----------------------
+        Description
+    -------------------------*/
+
     descriptionContainer: {
-        marginBottom: 15,
+        paddingBottom: 5,
         backgroundColor: 'rgba(255,255,255,1)',
-        borderBottomWidth: 1,
-        borderBottomColor: 'rgba(0,0,0,0.3)',
+        // borderBottomWidth: 1,
+        // borderBottomColor: 'rgba(0,0,0,0.3)',
     },
 
     description: {
@@ -453,15 +524,63 @@ const styles = StyleSheet.create({
         color: 'rgba(0,0,0, 0.8)',
     },
 
-    ingredientsContainer: {
+    /*-----------------------
+        Macros
+    -------------------------*/
+
+      macrosContainer: {
+        paddingTop: 20,
+        marginBottom: 15,
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        width: '100%',
+        height: 80,
+        backgroundColor: 'rgba(255,255,255,1)',
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderTopColor: 'rgba(0,0,0,0.2)',
+        borderBottomColor: 'rgba(0,0,0,0.15)',
+    },
+
+    macrosLabel: {
+        textAlign: 'center',
+        fontSize: 12,
+        fontWeight: '400',
+    },
+
+    macrosData: {
+        textAlign: 'center',
+        fontSize: 15,
+    },
+
+    
+    /*-----------------------
+        Recipe Sections
+    -------------------------*/
+    
+    sectionContainer: {
+        marginBottom: 15,
         paddingTop: 10,
         paddingBottom: 15,
         backgroundColor: 'rgba(255,255,255,1)',
-        borderBottomColor: 'rgba(0,0,0,0.3)',
-        borderTopColor: 'rgba(0,0,0,0.3)',
+        borderBottomColor: 'rgba(0,0,0,0.15)',
+        borderTopColor: 'rgba(0,0,0,0.15)',
         borderBottomWidth: 1,
         borderTopWidth: 1,
     },
+
+    sectionTitle: {
+        marginTop: 10,
+        marginBottom: 5,
+        marginLeft: 20,
+        fontSize: 20,
+        fontWeight: '600',
+    },
+
+    /*-----------------------
+       Ingredients
+    -------------------------*/
 
     ingredientText: {
         width: '80%',
@@ -476,17 +595,11 @@ const styles = StyleSheet.create({
         marginRight: 20,
         marginBottom: -15,
     },
-    
-    instructionsContainer: {
-        marginBottom: 100,
-        paddingTop: 10,
-        paddingBottom: 20,
-        backgroundColor: 'rgba(255,255,255,1)',
-        borderBottomColor: 'rgba(0,0,0,0.3)',
-        borderTopColor: 'rgba(0,0,0,0.3)',
-        borderBottomWidth: 1,
-        borderTopWidth: 1,
-    },
+
+
+    /*-----------------------
+       Instructions
+    -------------------------*/
 
     instructionStepContainer: {
         marginRight: 35,
@@ -500,12 +613,12 @@ const styles = StyleSheet.create({
     },
 
     numberContainer: {
-        marginLeft: 20,
+        marginLeft: 10,
         marginRight: 15,
     },
 
     numberBadge: {
-        backgroundColor: 'rgba(68, 72, 76, 0.4)',
+        backgroundColor: 'rgba(68, 72, 76, 0.6)',
         borderRadius: 100,
         width: 30,
         height: 30,
@@ -517,6 +630,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         textAlign: 'center',
     },
+
     /*------------------------------------------------------------------------
         Bottom Menu Section
     ------------------------------------------------------------------------*/
@@ -529,7 +643,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: 0,
         right: 0,
-        bottom: 10,
+        bottom: 90,
     },
 
     menuBar: {
