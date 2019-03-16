@@ -297,7 +297,7 @@ export default class HomeScreen extends React.Component {
                         </View>
 
                         {/* Padding at the bottom as a buffer */}
-                        <View style={{paddingBottom: 40}} />
+                        <View style={{paddingBottom: 130}} />
                     </View>
 
 
