@@ -10,10 +10,11 @@ import { Font, AppLoading } from 'expo';
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from './../config/icon-font.json';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
+const fetch = require('node-fetch');
 
 const { width: WIDTH } = Dimensions.get('window');
 var globalStyles = require('../styles/globalStyles.js');
-
+const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 const ingredientsList = [   // FOR TESTING PURPOSES
     {
         name: 'Rice',
@@ -63,11 +64,75 @@ export default class HomeScreen extends React.Component {
         this.state = { 
             bookmarked: false,
             liked: false,
+
+            id: 0,
+            title: '',
+            instructions: '',
+            servings: 0,
+            readyInMinutes: '',
+
+            sourceUrl: '',
+            creditText: '',
+            sourceName: '',
+            image: '',
+
+            extendedIngredients: [],
+            nutritionalTags: {'vegetarian': false,
+                              'vegan': false,
+                              'glutenFree': false,
+                              'dairyFree': false,
+                              'veryHealthy': false,
+                              'cheap': false,
+                              'veryPopular': false,
+                              'sustainable': false,
+                              'weightWatcherSmartPoints': false,
+                              'lowFodmap': false,
+                              'keotgenic': false,
+                              'whole30': false,
+                             }
             // search: '',
         };
         this.toggleBookmark = this.toggleBookmark.bind(this);
         this.toggleHeart = this.toggleHeart.bind(this);
     };
+
+    getRecipeInfoFromId = (id) => {
+        currentThis = this;
+
+        // Returns a promise which then gets the result from the request call
+        const fetchRecipeInfoByIdPromise = fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/479101/information`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+            },
+        });
+
+        const fetchRecipeInfoByIdResponse = fetchRecipeInfoByIdPromise.then(function(response) { return response.json(); })
+        // Check if component is mounted before changing state, this check is to prevent memory leaks
+        if(this._ismounted)
+        {
+            nutrtionTags = {}
+            fetchRecipeInfoByIdResponse.then(function(json){
+                for(key in json)
+                {   
+                    if(key in currentThis.state){
+                        currentThis.setState({
+                            [key]: json[key]
+                        });
+                    }
+                    else if(key in currentThis.state.nutritionalTags)
+                    {
+                        nutrtionTags[key] = json[key];
+                    }
+                }
+
+                currentThis.setState({
+                    nutritionalTags: nutrtionTags
+                });
+            })
+        }
+    }
 
     toggleBookmark() {
         this.setState({  bookmarked: !this.state.bookmarked  });
@@ -98,11 +163,18 @@ export default class HomeScreen extends React.Component {
     };
     
     async componentDidMount() {
+        this._ismounted = true;
         await Font.loadAsync({
           'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
         }); 
         this.setState({fontLoaded: true});
+
+        this.getRecipeInfoFromId(this.recipeID);
     };
+
+    componentWillUnmount () {
+        this._ismounted = false; // after component is unmounted reste boolean
+     }
 
     onAccountIconPress = () => {
         var navActions = StackActions.reset({
@@ -118,6 +190,7 @@ export default class HomeScreen extends React.Component {
     render() {
 
         const { search } = this.state;
+        console.log(this.state);
 
         return (
             <View style={{flex: 1}}> 

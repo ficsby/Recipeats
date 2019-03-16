@@ -26,27 +26,27 @@ export default class HomeScreen extends React.Component {
     /* <Francis Buendia> March 15, 2019
         API Request call to 'Autocomplete recipe search' recipes by name 
     */
-    getRecipes = () => {
-        currentThis = this;   // Need to keep a reference of the current 'this' because the 'this' context changes in the callback of the promise
+   getRecipeSearchResultsByName = () => {
+    currentThis = this;   // Need to keep a reference of the current 'this' because the 'this' context changes in the callback of the promise
 
-        // Returns a promise which then gets the result from the request call
-        const fetchPromise = fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/autocomplete?number=10&query=${this.state.query}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "X-RapidAPI-Key" : "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2"     // API key registered for Spoonacular API
-            },
-        });
+    // Returns a promise which then gets the result from the request call
+    const fetchRecipeByNamePromise = fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/autocomplete?number=10&query=chicken`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "X-RapidAPI-Key" : "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2"     // API key registered for Spoonacular API
+        },
+    });
 
-        const fetchResponse = fetchPromise.then(function(response) { return response.json(); })
-        // Check if component is mounted before changing state, this check is to prevent memory leaks
-        if(this._ismounted)
-        {
-            fetchResponse.then(function(json){
-                currentThis.setState({recipes: json});
-            })
-        }
+    const fetchRecipeByNameResponse = fetchRecipeByNamePromise.then(function(response) { return response.json(); })
+    // Check if component is mounted before changing state, this check is to prevent memory leaks
+    if(this._ismounted)
+    {
+        fetchRecipeByNameResponse.then(function(json){
+            currentThis.setState({recipes: json});
+        })
     }
+}
 
     findRecipe = (query) => {
         if( query === '') { return []; }
@@ -54,7 +54,7 @@ export default class HomeScreen extends React.Component {
         const regex = new RegExp(`${query.trim()}`, 'i');
         return recipes.filter(recipe => recipe.title.search(regex) >= 0);
     }
-    
+
     async componentDidMount() {
         this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
         await Font.loadAsync({
@@ -86,7 +86,7 @@ export default class HomeScreen extends React.Component {
         const { query } = this.state;
         const recipes = this.findRecipe(query);
         const comp = (a,b) => a.toLowerCase().trim() == b.toLowerCase().trim();
-        this.getRecipes();
+        this.getRecipeSearchResultsByName();
 
         return (
             <View>
