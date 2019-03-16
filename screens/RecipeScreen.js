@@ -197,7 +197,7 @@ export default class HomeScreen extends React.Component {
     render() {
 
         const { search } = this.state;
-        // console.log(this.state);
+        console.log(this.state);
 
         return ( 
             <View> 
