@@ -90,44 +90,41 @@ export default class HomeScreen extends React.Component {
 
         return (
             <View>
+                {/* Top panel of page. Contains the menu and user account buttons. 
+                    Does not actually contain the Autocomplete Search Bar, but is visually underneath it  */}
                 <View style={styles.topContainer}>
-
                     <View style={styles.row}>
-
                         {/* Side bar navigation icon */}
                         <TouchableOpacity onPress = { () => DrawerActions.openDrawer()}>
-                            <Icon name='menu' size={25} color='rgba(175,76,99,1)' backgroundColor='red' height={200}
-
-                                style={{marginLeft: 18}} />
+                            <Icon name='menu' size={25} color='rgba(175,76,99,1)' backgroundColor='red' height={200} style={{marginLeft: 18}} />
                         </TouchableOpacity>
 
                         {/* User account icon  */}
                         <TouchableOpacity onPress ={this.onAccountIconPress} >
-                            <Icon name='user' size={25} color='rgba(175,76,99,1)'
-                                style={{marginLeft: (WIDTH - 85)}} />
+                            <Icon name='user' size={25} color='rgba(175,76,99,1)' style={{marginLeft: (WIDTH - 85)}} />
                         </TouchableOpacity>
-
                     </View>
-
                 </View>
 
+                {/* Search Bar, capable of autocomplete */}
                 <Autocomplete
                     containerStyle={styles.searchContainer}  
                     inputContainerStyle={styles.searchInputContainer}
                     data={recipes.length === 1 && comp(query, recipes[0].title) ? [] : recipes}
                     defaultValue = { query }
                     autoCorrect={false}
-                    placeholder= "    Search recipes, ingredients..."
+                    placeholder= "Search recipes, ingredients..."
                     onChangeText={text => this.setState({ query: text })}
-                    renderItem={({ id, title }) => (
-                        <TouchableOpacity style={styles.itemTextContainer} onPress={() => this.setState({ query: title })}>
-                            <Text style={styles.itemText}>
+                    renderItem={({ id, title }) => 
+                    (
+                        // Search Results List
+                        <TouchableOpacity style={styles.searchResultsContainer} onPress={() => this.setState({ query: title })}>
+                            <Text style={styles.searchResult}>
                                 {title}
                             </Text>
                         </TouchableOpacity>
                     )}                       
                 />
-
             </View>
 
         )
@@ -158,6 +155,45 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2.1,
       },
 
+      
+     /*------------------------------------------------------------------------
+        Autocomplete Section
+    ------------------------------------------------------------------------*/
+    
+    searchContainer: {
+        alignSelf: 'center',
+        width: '74%',
+        marginTop: 10,
+        flex: 1,
+        top: 17,
+        zIndex: 1,
+        position: 'absolute',
+    },
+
+    searchInputContainer: {
+        alignSelf: 'center',
+        width: '94%',
+        paddingLeft: 10,
+        backgroundColor: 'rgba(255,255,255,1)',
+        // marginTop: -5,
+    },
+
+    searchInput: {
+        width: '100%',
+        fontSize: 15,
+        paddingLeft: 10,
+    },
+
+    searchResultsContainer: {
+        width: '100%',
+        marginLeft: 10,
+        marginRight: 10,
+        marginBottom: 5,
+    },
+
+    searchResult: {
+        width: '100%',
+    },
 
     /*------------------------------------------------------------------------
         Sidebar Navigation Section
@@ -195,50 +231,6 @@ const styles = StyleSheet.create({
         width: '20%',
         height: 100, 
         backgroundColor: 'rgba(225, 218, 218, 0.7)'},
-
-     /*------------------------------------------------------------------------
-        Autocomplete Section
-    ------------------------------------------------------------------------*/
-    
-    searchContainer: {
-        alignSelf: 'center',
-        width: '74%',
-        marginTop: 10,
-        flex: 1,
-        top: 17,
-        zIndex: 1,
-        position: 'absolute',
     },
 
-    searchInputContainer: {
-        alignSelf: 'center',
-        width: '94%',
-        paddingLeft: 10,
-        backgroundColor: 'rgba(255,255,255,1)',
-        // marginTop: -5,
-    },
-
-    searchInput: {
-        width: '100%',
-        fontSize: 15,
-        paddingLeft: 10,
-    },
-
-    itemTextContainer: {
-        width: '100%',
-        marginLeft: 10,
-    },
-
-    itemText: {
-        width: '100%',
-        // backgroundColor: 'rgba(255,255,255,1)',
-        // backgroundColor: 'red',
-    },
-
-    descriptionContainer: {
-        // `backgroundColor` needs to be set otherwise the
-        // autocomplete input will disappear on text input.
-        // backgroundColor: '#F5FCFF',
-        // marginTop: 25,
-      },
-});
+);
