@@ -5,6 +5,7 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 //import Colors from '../constants/Colors';
 import TestScreen from './../screens/TestScreen';
 import HomeScreen from './../screens/HomeScreen';
+import FoodstockScreen from './../screens/FoodstockScreen';
 import EditAccountScreen from './../screens/auth/EditAccountScreen';
 
 const MainTabNavigator = createAppContainer(
@@ -23,6 +24,13 @@ const MainTabNavigator = createAppContainer(
             header: null
           }, 
         }, 
+        
+        Foodstock: {
+          screen: FoodstockScreen,
+          navigationOptions: {
+            header: null
+          },
+        },
     },
     {
       navigationOptions: () => ({

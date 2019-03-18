@@ -87,7 +87,7 @@ export default class HomeScreen extends React.Component {
             index: 1,
             actions: [
                 StackActions.push({ routeName: "Home" }),
-                StackActions.push({ routeName: "Foodstock " }),
+                StackActions.push({ routeName: "Foodstock" }),
             ]
         });
 
@@ -179,7 +179,7 @@ export default class HomeScreen extends React.Component {
                                     style={{paddingTop: '15%', paddingLeft: '28%'}} />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.menuBar} onPress = {this.onFoodstockPress} >
+                    <TouchableOpacity style={styles.menuBar} onPress = {this.onFoodstockIconPress} >
                         <Icon name="food-stock" size={30} color='rgba(175,76,99,1)'
                                     style={{paddingTop: '18%', paddingLeft: '24%'}} />
                     </TouchableOpacity>
