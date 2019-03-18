@@ -11,7 +11,7 @@ import EditAccountScreen from './../screens/auth/EditAccountScreen';
 const MainTabNavigator = createAppContainer(
   createStackNavigator (
     {
-      Home: { 
+        Home: { 
           screen: HomeScreen, 
           navigationOptions: {
             header: null
