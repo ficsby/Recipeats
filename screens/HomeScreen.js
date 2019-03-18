@@ -82,6 +82,18 @@ export default class HomeScreen extends React.Component {
         this.props.navigation.dispatch(navActions);
     };
 
+    onFoodstockIconPress = () => {
+        var navActions = StackActions.reset({
+            index: 1,
+            actions: [
+                StackActions.push({ routeName: "Home" }),
+                StackActions.push({ routeName: "Foodstock " }),
+            ]
+        });
+
+        this.props.navigation.dispatch(navActions);
+    };
+
     render() {
 
         const { search } = this.state;
@@ -106,6 +118,7 @@ export default class HomeScreen extends React.Component {
                             <Icon name='user' size={30} color='rgba(175,76,99,1)'
                                 style={{marginLeft: '75%'}} />
                         </TouchableOpacity>
+
                     </View>
 
                     {/* <SearchBar placeholder="Search recipes, ingredients..."
@@ -166,7 +179,7 @@ export default class HomeScreen extends React.Component {
                                     style={{paddingTop: '15%', paddingLeft: '28%'}} />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.menuBar}>
+                    <TouchableOpacity style={styles.menuBar} onPress = {this.onFoodstockPress} >
                         <Icon name="food-stock" size={30} color='rgba(175,76,99,1)'
                                     style={{paddingTop: '18%', paddingLeft: '24%'}} />
                     </TouchableOpacity>
