@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, View, ScrollView, Text, TextInput, TouchableOpacity, Picker, Button, Alert, Dimensions } from 'react-native';
 import { StackActions } from 'react-navigation';
 import * as firebase from 'firebase';
-import {AsyncStorage} from 'react-native';
 
 import logo from './../../assets/images/logo_transparent.png';
 import { stringify } from 'qs';
@@ -14,24 +13,36 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
 const { width: WIDTH } = Dimensions.get('window');
 
-var isEditable = false;
-
 export default class SignupScreen extends React.Component {
-    //user = firebase.database().ref('users/' + firebase.auth().currentUser.uid);
     constructor(props) {
         super(props);
         this.state = { 
-            user: null
+            user: null,
+            editable: false,
         };
+        this.toggleEditable = this.toggleEditable.bind(this);
+        this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
+    }
+
+    // user is only able to edit after clicking on the edit button
+    toggleEditable() {
+        this.setState({
+            editable: !this.state.editable
+        });
+
+        this.state.editable?  Alert.alert("Not editable now") : Alert.alert("Values should be editable now.");
     }
 
     componentDidMount() {
-        this._ismounted = true;
+        this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
+
+        // returns a promise of the user's value
         retrieveData = () => {
             ref = firebase.database().ref('users/' + firebase.auth().currentUser.uid);
             return ref.once("value");
         }
 
+        // snapshot is the depiction of the user's current data
         retrieveData().then( (snapshot) => {
             if(this._ismounted)
             {
@@ -42,10 +53,12 @@ export default class SignupScreen extends React.Component {
         })
     }
 
+    
     componentWillUnmount () {
-        this._ismounted = false;
+        this._ismounted = false; // after components is unmounted reset boolean
      }
     
+    // writes user data to the database
     writeUserData = (userId) => {
         firebase.database().ref('users/' + userId).set({
             name: this.state.name,
@@ -55,29 +68,35 @@ export default class SignupScreen extends React.Component {
             weight: this.state.weight,
             activityLevel: this.state.activityLevel,
             birthDate: this.state.birthDate,
-            selectedHeightMetric: this.state.selectedHeightMetric
+            height: this.state.height
+
+            // calories: this.state.calories,
+            // protein: this.state.email,
+            // fats: this.state.fats,
+            // carbs: this.state.carbs,
+
+            // budget: this.state.budget
         });
     }
 
+    // handles not a number exceoption
     handleNaN = (text) => {
         Alert.alert("Please enter a number");
         text = text.substring(0, text.length - 1);
     }
-
-    onEditPress = () => {
-        Alert.alert("Account info should now be editable.");
-        isEditable = true;
-    }
     
+    // function for when user clicks the 'Save Button'
     onSaveChangesPress = () => {
         var user = firebase.auth().currentUser;
         this.writeUserData(user.uid);
         Alert.alert("Your changes has been updated..");
     }
 
+    // function for when user clicks the 'Arrow back Button'
     onGoBack = () => {
+        // to go back to previous screen pop the current screen
         var navActions = StackActions.pop({
-            n: 1,
+            n: 1,   // n is number of screens to pop
         });
         
         this.props.navigation.dispatch(navActions);
@@ -85,6 +104,7 @@ export default class SignupScreen extends React.Component {
 
     render() {
         const { user } = this.state;
+        const { isEditable } = this.state.editable;
         if(this._ismounted)
         {
             return (
@@ -301,6 +321,10 @@ const styles = StyleSheet.create({
         //justifyContent: 'center',
     },
 
+    whitespaceBuffer: {
+        marginBottom: '10%',
+    },
+
     saveButton: {
         marginTop: 50,
         marginBottom: 50,
@@ -318,6 +342,18 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '600',
     },
+
+    deleteAccount: {
+        marginTop: 20,
+        marginBottom: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    deleteAccountText: {
+        fontSize: 15,
+        fontWeight: '500',
+    }
 
 
   });

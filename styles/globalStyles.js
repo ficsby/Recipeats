@@ -291,4 +291,4 @@ export const Styles = StyleSheet.create({
           borderTopWidth: 2.1,
       },
       
-  });
+});

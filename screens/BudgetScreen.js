@@ -4,7 +4,7 @@ import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage}
 import { StackActions } from 'react-navigation';
 import * as firebase from 'firebase';
 
-export default class SignupScreen extends React.Component {
+export default class BudgetScreen extends React.Component {
 
     constructor(props) {
         super(props);
@@ -39,28 +39,7 @@ export default class SignupScreen extends React.Component {
         
         return (
             <View>
-        
-                <Text style={styles.pageTitle}>Forgot your password?</Text>
-                <Text style={styles.subTitle}>Enter your email address to reset your password.</Text>
-
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder={'Email Address...'}
-                        placeholderTextColor={'rgba(0, 0, 0, 0.35)'}
-                        value = {this.state.email}
-                        onChangeText = {(text) => {this.setState( {email: text} ) } }
-                    />
-                </View>
-
-                
-                <TouchableOpacity style={styles.resetPwButton } onPress={this.onResetPassword}>
-                    <Text style={styles.resetPwText}>Reset Password</Text>
-                 </TouchableOpacity>
-
-                 <TouchableOpacity style={styles.button} onPress ={this.onBackToLogin}> 
-                    <Text style={styles.loginText}>Back to Login</Text>
-                 </TouchableOpacity>  
+                <Text>Budget Screen</Text>
             </View>
         )
      

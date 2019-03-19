@@ -1,6 +1,7 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { AppLoading, Asset, Font } from 'expo';
+import Navigations from './navigation/Navigations';
 import RootNavigation from './navigation/RootNavigation';
 import MainTabNavigator from './navigation/MainTabNavigator';
 import SidebarNavigator from './navigation/SidebarNavigator';
@@ -8,7 +9,6 @@ import Firebase from './config/Firebase';
 import * as firebase from 'firebase';
 
 export default class App extends React.Component {
-  
   constructor(props) {
     super(props);
     
@@ -28,6 +28,13 @@ export default class App extends React.Component {
     this.setState({isAuthenticated: !!user});
   }
 
+  toHomeScreen = () => {
+    this.navigator &&
+      this.navigator.dispatch(
+        StackActions.push({ routeName: "Main" })
+      );
+  }
+
   render() {
     if ( (!this.state.isLoadingComplete || !this.state.isAuthenticationReady) && !this.props.skipLoadingScreen) {
       return (
@@ -41,7 +48,7 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
-          {(this.state.isAuthenticated) ? <SidebarNavigator/> : <RootNavigation />}
+          {(this.state.isAuthenticated) ? <Navigations ref = {nav => {this.navigator = nav;}}/> : <Navigations />}
         </View>
       );
     }

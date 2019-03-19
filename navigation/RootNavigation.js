@@ -1,7 +1,7 @@
 import { Notifications } from 'expo';
 import React from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-import MainTabNavigator from './MainTabNavigator';
+import { SidebarNavigator } from './SidebarNavigator';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
 //import { EStyleSheet } from 'react-native-extended-stylesheet';
 
@@ -14,17 +14,11 @@ import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen';
 // screens displayed to a user
 import HomeScreen from '../screens/HomeScreen';
 import FoodstockScreen from '../screens/FoodstockScreen';
+import RecipeScreen from '../screens/RecipeScreen';
 
 const RootStackNavigator = createAppContainer(
     createStackNavigator (
-    {        
-        // Home: { 
-        //   screen: HomeScreen, 
-        //   navigationOptions: {
-        //     header: null
-        //   },
-        // },  
-
+    {      
         Login: { 
           screen: LoginScreen, 
           navigationOptions: {
@@ -32,20 +26,36 @@ const RootStackNavigator = createAppContainer(
           },
         },
 
-        Signup: { screen: SignupScreen,
+        // Recipe: { 
+        //   screen: RecipeScreen, 
+        //   navigationOptions: {
+        //     header: null
+        //   },
+        // }, 
+
+        Home: { 
+          screen: HomeScreen, 
           navigationOptions: {
             header: null
-          }, 
-        },
-
-        ForgotPassword : { screen: ForgotPasswordScreen,
+          },
+        },  
+        
+        Signup: {
+          screen: SignupScreen,
           navigationOptions: {
             header: null
-          }, 
+          },
         },
 
-        EditAccount: { 
-          screen: EditAccountScreen, 
+        ForgotPassword: {
+          screen: ForgotPasswordScreen,
+          navigationOptions: {
+            header: null
+          },
+        },
+
+        Main: {
+          screen: SidebarNavigator,
           navigationOptions: {
             header: null
           },
@@ -58,16 +68,18 @@ const RootStackNavigator = createAppContainer(
           },
         },
 
-        Main: { screen: MainTabNavigator, 
+        EditAccount: { 
+          screen: EditAccountScreen, 
           navigationOptions: {
             header: null
-          }
-        },
+          },
+        }, 
     },
     {
-        navigationOptions: () => ({
-          header: null
-        }),
+      initialRouteName: "Main",
+      navigationOptions: () => ({
+        header: null
+      }),
     }
     )
 );
