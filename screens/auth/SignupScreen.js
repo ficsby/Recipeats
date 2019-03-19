@@ -67,14 +67,15 @@ export default class SignupScreen extends React.Component {
     }
 
     onBackToLogin = () => {
-        var navActions = StackActions.reset({
-            index: 0,
-            actions: [
-                StackActions.push({ routeName: "Login" })
-            ]
-        });
+        // var navActions = StackActions.reset({
+        //     index: 0,
+        //     actions: [
+        //         StackActions.push({ routeName: "Login" })
+        //     ]
+        // });
 
-        this.props.navigation.dispatch(navActions);
+        // this.props.navigation.dispatch(navActions);
+        this.props.navigation.navigate('Login');
     }
 
     render() {

@@ -10,6 +10,7 @@ import KeyboardShift from './../../styles/KeyboardShift.js';
 
 const { width: WIDTH } = Dimensions.get('window')
 var globalStyles = require('./../../styles/globalStyles.js');
+import Signup from './SignupScreen';
 
 export default class LoginScreen extends React.Component {
     constructor(props) {
@@ -40,14 +41,15 @@ export default class LoginScreen extends React.Component {
 
     // function for when user clicks the 'Signup Button'
     onSignUpPress = () => {
-        var navActions = StackActions.reset({
-            index: 0,
-            actions: [
-                StackActions.push({ routeName: "Signup" })
-            ]
-        });
+        // var navActions = StackActions.reset({
+        //     index: 0,
+        //     actions: [
+        //         StackActions.push({ routeName: "Signup" })
+        //     ]
+        // });
 
-        this.props.navigation.dispatch(navActions);
+        // this.props.navigation.dispatch(navActions);
+        this.props.navigation.navigate('Signup');
     }
 
     // function for when user clicks the 'Forgot Password Button'

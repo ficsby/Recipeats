@@ -29,46 +29,4 @@ export const MainTabNavigator = createStackNavigator (
         header: null
       }),
     }
-  // // createBottomTabNavigator(
-  // //   {
-  // //     Home: {
-  // //       screen: HomeScreen,
-  // //     },
-  // //     EditAccount: { 
-  // //       screen: EditAccountScreen, 
-  // //       navigationOptions: {
-  // //         header: null
-  // //       }, 
-  // //     }, 
-  // //   },
-  // //   {
-  // //     navigationOptions: ({ navigation }) => ({
-  // //       tabBarIcon: ({ focused }) => {
-  // //         const { routeName } = navigation.state;
-  // //         let iconName;
-  // //         switch (routeName) {
-  // //           case 'Home':
-  // //             iconName =
-  // //               Platform.OS === 'ios'
-  // //                 ? `ios-information-circle${focused ? '' : '-outline'}`
-  // //                 : 'md-information-circle';
-  // //             break;
-  // //           case 'EditAccount':
-  // //             iconName =
-  // //               Platform.OS === 'ios'
-  // //                 ? `ios-information-circle${focused ? '' : '-outline'}`
-  // //                 : 'md-information-circle';
-  // //             break;
-  // //         }
-  // //         return (
-  // //           <Text>Main page</Text>
-  // //         );
-  // //       },
-  // //     }),
-  // //     tabBarComponent: TabBarBottom,
-  // //     tabBarPosition: 'bottom',
-  // //     animationEnabled: false,
-  // //     swipeEnabled: false,
-  // //   }
-  // )
 );

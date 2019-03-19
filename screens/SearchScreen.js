@@ -4,7 +4,7 @@ import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage}
 import { StackActions } from 'react-navigation';
 import * as firebase from 'firebase';
 
-export default class BudgetScreen extends React.Component {
+export default class SearchScreen extends React.Component {
 
     constructor(props) {
         super(props);
@@ -39,7 +39,7 @@ export default class BudgetScreen extends React.Component {
         
         return (
             <View>
-                <Text>Budget Screen</Text>
+                <Text>Search Screen</Text>
             </View>
         )
      
