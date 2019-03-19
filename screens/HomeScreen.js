@@ -16,7 +16,7 @@ import fontelloConfig from './../config/icon-font.json';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
 const { width: WIDTH } = Dimensions.get('window');
-var globalStyles = require('../styles/globalStyles.js');
+var globalStyles = require('../styles/GlobalStyles.js');
 //var unirest = require('unirest');
 const fetch = require('node-fetch');
 // fetch.header("X-RapidAPI-Key" : "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2")
