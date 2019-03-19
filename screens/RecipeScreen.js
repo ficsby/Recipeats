@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Button, Image, ImageBackground, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Image, ImageBackground, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { StackActions } from 'react-navigation';
 import Autocomplete from 'react-native-autocomplete-input';
 import { ListItem, Badge } from 'react-native-elements';
@@ -93,9 +93,9 @@ export default class HomeScreen extends React.Component {
                               'keotgenic': false,
                               'whole30': false,
                              },
-            // Ingredient Data
-            aisle: '',
-            test: '',
+            // // Ingredient Data
+            // aisle: '',
+            // test: '',
             // search: '',
         };
         this.toggleBookmark = this.toggleBookmark.bind(this);

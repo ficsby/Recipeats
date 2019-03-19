@@ -279,7 +279,11 @@ const styles = StyleSheet.create({
     ------------------------------------------------------------------------*/
     foodTipContainer: {
         backgroundColor: 'rgba(255,255,255,1)',
-        margin: 40,
+        paddingTop: 20,
+        paddingBottom: 40,
+        paddingLeft: 20,
+        paddingRight: 20,
+        margin: 20,
     },
 
     foodTipHeader: {
