@@ -92,7 +92,10 @@ export default class HomeScreen extends React.Component {
                               'lowFodmap': false,
                               'keotgenic': false,
                               'whole30': false,
-                             }
+                             },
+            // Ingredient Data
+            aisle: '',
+            test: '',
             // search: '',
         };
         this.toggleBookmark = this.toggleBookmark.bind(this);
@@ -173,7 +176,6 @@ export default class HomeScreen extends React.Component {
           'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
         }); 
         this.setState({fontLoaded: true});
-
         this.getRecipeInfoFromId(this.recipeID);
     };
 
@@ -197,7 +199,11 @@ export default class HomeScreen extends React.Component {
     render() {
 
         const { search } = this.state;
-        console.log(this.state);
+        console.log("------------------------ START HERE ----------------------");
+        test =JSON.stringify(this.state.extendedIngredients[0]); // Works
+        console.log(Object.values(this.state.extendedIngredients));  // Works
+        console.log(Object.values(this.state.extendedIngredients[0])); // Doesn't work ( Says that the input parameter is null or undefined )
+
 
         return ( 
             <View> 
@@ -255,7 +261,9 @@ export default class HomeScreen extends React.Component {
 
                         <View style={styles.titleContainer}>
                             <View style={styles.row}>
-                                <Text style={styles.title}> Some Recipe Title </Text>
+                                <Text style={styles.title}> 
+                                    {/* {this.state.title}   */}
+                                </Text>
                                 
                                 <TouchableOpacity  onPress={this.toggleHeart} >
                                     {this.renderIcon("heart") }
@@ -309,6 +317,9 @@ export default class HomeScreen extends React.Component {
                                 ingredientsList.map( (item, i) =>  
                                 ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
                                             titleStyle={styles.ingredientText} rightTitleStyle={styles.quantityText} /> ))
+                                // this.state.extendedIngredients.map( (item, i) =>  
+                                // ( <ListItem key={i} title={item.name} rightTitle={item.amount} 
+                                //             titleStyle={styles.ingredientText} rightTitleStyle={styles.quantityText} /> ))
                                     
                             }
                             <TouchableOpacity  onPress={this.compareFoodLists} style={{alignItems: 'flex-end', marginRight: 15, paddingTop: 20}}>
@@ -485,7 +496,7 @@ const styles = StyleSheet.create({
     title: {
         marginLeft: 13,
         marginRight: 13,
-        fontSize: 28,
+        fontSize: 20,
         fontWeight: '500',
         color: 'rgba(181, 83, 102, 1)', // Medium Pink
     },

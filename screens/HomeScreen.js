@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Button, Image, View, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Image, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { StackActions, DrawerActions } from 'react-navigation';
 import Autocomplete from 'react-native-autocomplete-input';
 import { SearchBar } from 'react-native-elements';
 import { Font, AppLoading } from 'expo';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
+
 //import * as firebase from 'firebase';
 
 /* Custom Icons */
@@ -16,11 +17,39 @@ const { width: WIDTH } = Dimensions.get('window');
 var globalStyles = require('../styles/globalStyles.js');
 const fetch = require('node-fetch');
 
+// Fetch News Components
+import Button from './components/Button';
+import NewsItem from './components/NewsItem';
 
 export default class HomeScreen extends React.Component {
-    state = {
-        query: '',
-        recipes: []
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            query: '',
+            recipes: [],
+            news_items: 
+            [
+                {
+                    pretext: '',
+                    title: 'Brain Foods to Make You Smarter',
+                    summary: 'Museum visits increase test scores, generate social responsibility and increase appreciation of the arts by students.',
+                    image: require('./../assets/images/newsimage1.jpg'),
+                },
+                {
+                    pretext: '',
+                    title: 'Tension and Flaws Before Health Website Crash',
+                    summary: 'Interviews and documents offer new details into how the rollout of President Obama\'s signature program turned into a major humiliation.',
+                    image: require('./../assets/images/newsimage2.jpg')
+                },
+                {
+                    pretext: '',
+                    title: '36 Hours in Charleston, S.C.',
+                    summary: 'Crowds are thinner and temperatures are mild during winter in this..',
+                    image: require('./../assets/images/newsimage3.jpg')
+                },
+            ],
+        };
     };
 
     /* <Francis Buendia> March 15, 2019
@@ -61,11 +90,11 @@ export default class HomeScreen extends React.Component {
           'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
         }); 
         this.setState({fontLoaded: true});
-    }
+    };
 
     componentWillUnmount () {
         this._ismounted = false; // after component is unmounted reste boolean
-     }
+     };
 
 
     onAccountIconPress = () => {
@@ -81,6 +110,16 @@ export default class HomeScreen extends React.Component {
         this.props.navigation.dispatch(navActions);
     };
 
+    newsItemPress(txt) {
+        console.log(txt);
+    };
+
+    renderNews() {
+        return this.state.news_items.map((news, index) => {
+            return <NewsItem key={index} index={index} news={news} />
+        });
+    };
+    
     render() {
 
         const { query } = this.state;
@@ -89,7 +128,7 @@ export default class HomeScreen extends React.Component {
         this.getRecipeSearchResultsByName();
 
         return (
-            <View>
+            <View style={styles.pageContainer}>
                 {/* Top panel of page. Contains the menu and user account buttons. 
                     Does not actually contain the Autocomplete Search Bar, but is visually underneath it  */}
                 <View style={styles.topContainer}>
@@ -125,6 +164,22 @@ export default class HomeScreen extends React.Component {
                         </TouchableOpacity>
                     )}                       
                 />
+                
+                <ScrollView style={styles.newsContainer}>
+
+                    <View style={styles.foodTipContainer}>
+                        <Text style={styles.foodTipHeader}> Food Tip of the Day </Text>
+                        <Text style= {styles.foodTip}> 
+                            Use ice cube trays to freeze small portions of pesto, broth, applesauce and pizza sauce. 
+                            Transfer the cubes to a Ziplock bag or other freezer-proof container and it will be easy 
+                            to pull out exactly how much you need.
+                        </Text>
+                    </View>
+
+                    {/* <Text style={{fontSize:100, color: 'black'}}> Hi 2</Text> */}
+                    { this.renderNews() }
+                </ScrollView>
+                
             </View>
 
         )
@@ -145,12 +200,17 @@ const styles = StyleSheet.create({
     /*------------------------------------------------------------------------
        Top Section
     ------------------------------------------------------------------------*/
+    pageContainer: {
+        flex: 1,
+        width: '100%',
+    },
+
     topContainer: {
         width: '100%',
         height: 80,
         paddingTop: 30,
         paddingBottom: 10,
-        backgroundColor: 'rgba(244, 238, 238, 0.5)',
+        backgroundColor: 'rgba(244, 238, 238, 0.9)',
         borderBottomColor: 'rgba(225, 218, 218, 0.7)',
         borderBottomWidth: 2.1,
       },
@@ -159,7 +219,6 @@ const styles = StyleSheet.create({
      /*------------------------------------------------------------------------
         Autocomplete Section
     ------------------------------------------------------------------------*/
-    
     searchContainer: {
         alignSelf: 'center',
         width: '74%',
@@ -218,11 +277,61 @@ const styles = StyleSheet.create({
     /*------------------------------------------------------------------------
         Newsfeed Section
     ------------------------------------------------------------------------*/
-    newsfeedContainer: {
-        height: '81.2%',
-        backgroundColor: 'rgba(215, 215, 215, 0.2)',
+    foodTipContainer: {
+        backgroundColor: 'rgba(255,255,255,1)',
+        margin: 40,
     },
 
+    foodTipHeader: {
+        fontSize: 20,
+        marginBottom: 10,
+    },
+
+    foodTip: {
+        fontSize: 15,
+    },
+
+    // header: {
+    //     flexDirection: 'row',
+    //     backgroundColor: '#FFF',
+    //     padding: 5,
+    //     fontSize: 25,
+    //     borderBottomColor: '#E1E1E1',
+    //     borderBottomWidth: 1
+    // },
+
+    // headerButton: {
+    //     flex: 1,
+    // },
+
+    // headerText: {
+    //     flex: 1,
+    // },
+
+    // headerTextLabel: {
+    //     width: '100%',
+    //     fontSize: 20,
+    //     textAlign: 'center'
+    // },
+
+    newsContainer: {
+        backgroundColor: 'rgba(239, 214, 218, 0.1)',
+        alignContent: 'center',
+        width: '100%',
+    },
+
+    whitespace: {
+        flex: 1
+    },
+    
+    backButton: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    // back_button_label: {
+    //     color: '#397CA9',
+    //     fontSize: 20,
+    // },
 
     /*------------------------------------------------------------------------
         Bottom Menu Section
