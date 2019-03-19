@@ -3,7 +3,7 @@ import { StyleSheet, Button, Image, View, Text, TextInput, Dimensions, Touchable
 import { StackActions, DrawerActions } from 'react-navigation';
 import { Font, AppLoading } from 'expo';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
-import { Styles } from './../styles/GlobalStyles';
+import { Styles } from '../styles/GlobalStyles';
 import { ListItem } from 'react-native-elements';
 
 // import Bar from 'react-native-bar-collapsible';
