@@ -18,7 +18,7 @@ import HomeScreen from './../screens/HomeScreen';
 import RecipeScreen from './../screens/HomeScreen';
 import BudgetScreen from './../screens/BudgetScreen';
 import BookmarksScreen from './../screens/BookmarksScreen';
-import FoodStockScreen from './../screens/FoodStockScreen';
+import FoodStockScreen from '../screens/FoodstockScreen';
 import MacrosScreen from './../screens/MacrosScreen';
 
 export default class AppNavigations extends React.Component {

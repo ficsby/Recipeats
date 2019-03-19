@@ -6,6 +6,7 @@ import { SearchBar } from 'react-native-elements';
 import { Font, AppLoading } from 'expo';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 //import * as firebase from 'firebase';
+import SearchHeader from 'react-native-search-header';
 
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
