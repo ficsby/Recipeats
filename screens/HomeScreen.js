@@ -15,7 +15,8 @@ import NavigationService from '../navigation/NavigationService.js';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
 const { width: WIDTH } = Dimensions.get('window');
-var globalStyles = require('../styles/globalStyles.js');
+var globalStyles = require('../styles/GlobalStyles.js');
+//var unirest = require('unirest');
 const fetch = require('node-fetch');
 
 

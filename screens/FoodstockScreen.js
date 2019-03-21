@@ -1,110 +1,64 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput, Button, Image,  Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Button, Image, View, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { StackActions, DrawerActions } from 'react-navigation';
+import { Font, AppLoading } from 'expo';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
-import { StackActions } from 'react-navigation';
-import * as firebase from 'firebase';
+import { Styles } from '../styles/GlobalStyles';
+import { ListItem } from 'react-native-elements';
 
-export default class FoodStockScreen extends React.Component {
+// import Bar from 'react-native-bar-collapsible';
 
-    constructor(props) {
-        super(props);
-        this.state = { 
-            email: "",
-        };
-    }
+//import * as firebase from 'firebase';
 
-    // function for when user clicks the 'Reset Password Button'
-    onResetPassword = () => {
-        firebase.auth().sendPasswordResetEmail(this.state.email)
-        .then( () => {
-            Alert.alert("Password reset email has been sent.");
-        }, (error) => {
-            Alert.alert(error.message);
-        });
-    }
+/* Custom Icons */
+import { createIconSetFromFontello } from 'react-native-vector-icons';
+import fontelloConfig from './../config/icon-font.json';
 
-    // function for when user clicks the 'Back to Login Button'
-    onBackToLogin = () => {
-        var navActions = StackActions.reset({
-            index: 0,
-            actions: [
-                StackActions.push({ routeName: "Login" })
-            ]
-        });
 
-        this.props.navigation.dispatch(navActions);
-    }
+const inventoryList = [   // FOR TESTING PURPOSES
+    {
+        name: 'Rice',
+        quantity: '4'
+    },
+    {
+        name: 'Peas',
+        quantity: '1'
+    },
+    {
+        name: 'Carrots',
+        quantity: '1'
+    },
+    {
+        name: 'Corn',
+        quantity: '4'
+    },
+    {
+        name: 'Garlic',
+        quantity: '3'
+    },
+    {
+        name: 'Vegetable Oil',
+        quantity: '2'
+    },
+];
+
+export default class FoodstockScreen extends React.Component {
+    state = {
+        
+    };
 
     render() {
-        
-        return (
-            <View>
-                <Text>FoodStock Screen</Text>
-            </View>
-        )
-     
+        return(
+        <View style ={Styles.sectionContainer}>
+            <Text style={Styles.sectionTitle}> Inventory </Text>
+
+            {
+                inventoryList.map( (item, i) =>  
+                ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
+                    titleStyle={Styles.inventoryText} rightTitleStyle={Styles.quantityText} /> ))
+                                    
+            }
+        </View>
+        );
     }
 }
-
-const styles = StyleSheet.create({
-    pageTitle: {
-        marginTop: hPercentage('15%'),
-        marginLeft: 40,
-        marginRight: 40,
-        fontSize: 25,
-        color: 'rgba(182, 93, 93, 0.8)',
-    },
-    
-    subTitle: {
-        marginTop: hPercentage('5%'),
-        marginLeft: 40,
-        marginRight: 40,
-        fontSize: 15,
-        color: 'rgba(121, 107, 107, 1)',
-    },
-
-    input: {
-        fontSize: 15,
-        color: 'rgba(0,0,0,1)',
-    },
-
-    inputContainer: {
-        marginTop: hPercentage('5%'),
-        marginLeft: 40,
-        marginRight: 40,
-        paddingTop: 8,
-        paddingRight: 10,
-        paddingLeft: 10,
-        paddingBottom: 5,
-        backgroundColor: 'rgba(200, 125, 125, 0.2)',
-    },
-
-    resetPwButton: {
-        marginTop: hPercentage('2%'),
-        marginBottom: hPercentage('5%'),
-        marginLeft: 40,
-        marginRight: 40,
-        paddingTop: 8,
-        paddingBottom: 8,
-        paddingRight: 10,
-        paddingLeft: 10,
-        backgroundColor: 'rgba(190, 75, 75, 1)',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-
-    resetPwText: {
-        width: '100%',
-        color: 'rgba(255,255,255,1)',
-        fontSize: 15,
-        textAlign: 'center',
-    },
-
-    loginText: {
-        marginTop: 10,
-        width: '100%',
-        color: 'rgba(0,0,0,0.45)',
-        fontSize: 13,
-        textAlign: 'center',
-    },
-  });

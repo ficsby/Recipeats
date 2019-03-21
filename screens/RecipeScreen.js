@@ -14,8 +14,9 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 const fetch = require('node-fetch');
 
 const { width: WIDTH } = Dimensions.get('window');
-var globalStyles = require('../styles/globalStyles.js');
+var globalStyles = require('../styles/GlobalStyles.js');
 const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
+
 const ingredientsList = [   // FOR TESTING PURPOSES
     {
         name: 'Rice',
