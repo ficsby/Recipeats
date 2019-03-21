@@ -18,19 +18,19 @@ import RecipeScreen from '../screens/RecipeScreen';
 const RootStackNavigator = createAppContainer(
     createStackNavigator (
     {      
-        Recipe: { 
-          screen: RecipeScreen, 
-          navigationOptions: {
-            header: null
-          },
-        }, 
-
-        // Home: { 
-        //   screen: HomeScreen, 
+        // Recipe: { 
+        //   screen: RecipeScreen, 
         //   navigationOptions: {
         //     header: null
         //   },
-        // },  
+        // }, 
+
+        Home: { 
+          screen: HomeScreen, 
+          navigationOptions: {
+            header: null
+          },
+        },  
 
         Login: { 
           screen: LoginScreen, 

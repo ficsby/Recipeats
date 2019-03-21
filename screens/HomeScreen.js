@@ -33,19 +33,19 @@ export default class HomeScreen extends React.Component {
                 {
                     pretext: '',
                     title: 'Brain Foods to Make You Smarter',
-                    summary: 'Museum visits increase test scores, generate social responsibility and increase appreciation of the arts by students.',
+                    summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ex ea commodo consequat.',
                     image: require('./../assets/images/newsimage1.jpg'),
                 },
                 {
                     pretext: '',
-                    title: 'Tension and Flaws Before Health Website Crash',
-                    summary: 'Interviews and documents offer new details into how the rollout of President Obama\'s signature program turned into a major humiliation.',
+                    title: 'Eat Healthy to Live Healthy',
+                    summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ex ea commodo consequat.',
                     image: require('./../assets/images/newsimage2.jpg')
                 },
                 {
                     pretext: '',
-                    title: '36 Hours in Charleston, S.C.',
-                    summary: 'Crowds are thinner and temperatures are mild during winter in this..',
+                    title: 'Best Kitchenware for Measuring Food',
+                    summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ex ea commodo consequat.',
                     image: require('./../assets/images/newsimage3.jpg')
                 },
             ],
@@ -168,7 +168,12 @@ export default class HomeScreen extends React.Component {
                 <ScrollView style={styles.newsContainer}>
 
                     <View style={styles.foodTipContainer}>
-                        <Text style={styles.foodTipHeader}> Food Tip of the Day </Text>
+
+                        <View style={styles.row}>
+                            <Icon name='lightbulb' size={30} color='rgba(0,0,0,1)' height={200} style={{marginRight: 10}} />
+                            <Text style={styles.foodTipHeader}> Food Tip of the Day </Text>
+                        </View>
+                        
                         <Text style= {styles.foodTip}> 
                             Use ice cube trays to freeze small portions of pesto, broth, applesauce and pizza sauce. 
                             Transfer the cubes to a Ziplock bag or other freezer-proof container and it will be easy 
@@ -279,17 +284,19 @@ const styles = StyleSheet.create({
     ------------------------------------------------------------------------*/
     foodTipContainer: {
         backgroundColor: 'rgba(255, 232, 229, 0.4)',
-        // borderColor: 'rgba(229, 195, 204, 1)',
-        // borderWidth: 2,
-        paddingTop: 20,
-        paddingBottom: 40,
+        borderColor: 'rgba(229, 195, 204, 1)',
+        borderWidth: 2,
+        paddingTop: 15,
+        paddingBottom: 30,
         paddingLeft: 20,
         paddingRight: 20,
         margin: 20,
     },
 
     foodTipHeader: {
-        fontSize: 20,
+        width: '100%',
+        fontSize: 25,
+        fontWeight: '500',
         marginBottom: 10,
     },
 
