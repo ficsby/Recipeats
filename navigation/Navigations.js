@@ -1,12 +1,15 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, View, StyleSheet, TouchableOpacity, Dimensions, TextInput } from 'react-native';
 import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createBottomTabNavigator, createAppContainer , DrawerItems } from 'react-navigation';
+import { StackActions, DrawerActions } from 'react-navigation';
 
+import SearchHeaderNav from './SearchHeaderNav';
 
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from './../config/icon-font.json';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
+const { width: WIDTH } = Dimensions.get('window');
 
 //import Colors from '../constants/Colors';
 import LoginScreen from './../screens/auth/LoginScreen';
@@ -20,6 +23,7 @@ import BudgetScreen from './../screens/BudgetScreen';
 import BookmarksScreen from './../screens/BookmarksScreen';
 import FoodStockScreen from '../screens/FoodstockScreen';
 import MacrosScreen from './../screens/MacrosScreen';
+import NavigationService from './NavigationService';
 
 export default class AppNavigations extends React.Component {
     render(){
@@ -85,9 +89,6 @@ const HomeTabNavigator = createBottomTabNavigator({
 const HomeStackNavigator = createStackNavigator({
     HomeTabNavigator: {
         screen: HomeTabNavigator,
-        navigationOptions: {
-            header: null
-        }
     },
     
     EditAccount: {
@@ -96,6 +97,14 @@ const HomeStackNavigator = createStackNavigator({
             header: null
         }
     }
+},{
+    defaultNavigationOptions:({navigation}) => {
+        NavigationService.setTopLevelNavigator(navigation);
+
+        return{
+            header: <SearchHeaderNav/>
+        }
+    },
 })
 
 // Side bar navigation works on all screens other than login, signup and forgot password screen
@@ -115,7 +124,7 @@ const AppSwitchNavigator = createSwitchNavigator({
     Login: { screen: LoginScreen},
     ForgotPassword: { screen: ForgotPasswordScreen },
     Signup: {screen: SignupScreen },
+    EditAccount: {screen: EditAccountScreen},
 });
-
 
 const AppContainer = createAppContainer(AppSwitchNavigator);

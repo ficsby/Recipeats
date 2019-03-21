@@ -5,8 +5,8 @@ import Autocomplete from 'react-native-autocomplete-input';
 import { SearchBar } from 'react-native-elements';
 import { Font, AppLoading } from 'expo';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
+
 //import * as firebase from 'firebase';
-import SearchHeader from 'react-native-search-header';
 
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
@@ -19,120 +19,11 @@ const fetch = require('node-fetch');
 
 
 export default class HomeScreen extends React.Component {
-    state = {
-        query: '',
-        recipes: [],
-        recipeTitle: '',
-        recipeId: '',
-    };
-
-    /* <Francis Buendia> March 15, 2019
-        API Request call to 'Autocomplete recipe search' recipes by name 
-    */
-    getRecipes = () => {
-        currentThis = this;   // Need to keep a reference of the current 'this' because the 'this' context changes in the callback of the promise
-
-        // Returns a promise which then gets the result from the request call
-        const fetchPromise = fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/autocomplete?number=10&query=${this.state.query}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "X-RapidAPI-Key" : "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2"     // API key registered for Spoonacular API
-            },
-        });
-
-        const fetchResponse = fetchPromise.then(function(response) { return response.json(); })
-        // Check if component is mounted before changing state, this check is to prevent memory leaks
-        if(this._ismounted)
-        {
-            fetchResponse.then(function(json){
-                currentThis.setState({recipes: json});
-            })
-        }
-    }
-
-    findRecipe = (query) => {
-        if( query === '') { return []; }
-        const { recipes } = this.state;
-        const regex = new RegExp(`${query.trim()}`, 'i');
-        return recipes.filter(recipe => recipe.title.search(regex) >= 0);
-    }
-
-    async componentDidMount() {
-        this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
-        await Font.loadAsync({
-          'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
-        }); 
-        this.setState({fontLoaded: true});
-    }
-
-    componentWillUnmount () {
-        this._ismounted = false; // after component is unmounted reste boolean
-     }
-
-
-    onAccountIconPress = () => {
-        var navActions = StackActions.reset({
-            index: 1,
-            actions: [
-                // We need to push both the current screen and the next screen that we are transitioning to incase the user wants to go to previous screen
-                StackActions.push({ routeName: "HomeTabNavigator" }),       
-                StackActions.push({ routeName: "EditAccount" }),
-            ]
-        });
-
-        this.props.navigation.dispatch(navActions);
-    };
-
     render() {
-
-        const { query } = this.state;
-        const recipes = this.findRecipe(query);
-        const comp = (a,b) => a.toLowerCase().trim() == b.toLowerCase().trim();
-        this.getRecipes();
-
         return (
             <View>
-                <View style={styles.topContainer}>
-
-                    <View style={styles.row}>
-
-                        {/* Side bar navigation icon */}
-                        <TouchableOpacity onPress = { () => DrawerActions.openDrawer()}>
-                            <Icon name='menu' size={25} color='rgba(175,76,99,1)' backgroundColor='red' height={200}
-
-                                style={{marginLeft: 18}} />
-                        </TouchableOpacity>
-
-                        {/* User account icon  */}
-                        <TouchableOpacity onPress ={this.onAccountIconPress} >
-                            <Icon name='user' size={25} color='rgba(175,76,99,1)'
-                                style={{marginLeft: (WIDTH - 85)}} />
-                        </TouchableOpacity>
-
-                    </View>
-
-                </View>
-
-                <Autocomplete
-                    containerStyle={styles.searchContainer}  
-                    inputContainerStyle={styles.searchInputContainer}
-                    data={recipes.length === 1 && comp(query, recipes[0].title) ? [] : recipes}
-                    defaultValue = { query }
-                    autoCorrect={false}
-                    placeholder= "    Search recipes, ingredients..."
-                    onChangeText={text => this.setState({ query: text })}
-                    renderItem={({ id, title }) => (
-                        <TouchableOpacity style={styles.itemTextContainer} onPress={() => this.setState({ query: title })}>
-                            <Text style={styles.itemText}>
-                                {title}
-                            </Text>
-                        </TouchableOpacity>
-                    )}                       
-                />
-
+                <Text>Home Screen</Text>
             </View>
-
         )
     }
 }
