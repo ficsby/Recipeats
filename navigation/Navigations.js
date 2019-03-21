@@ -18,7 +18,7 @@ import SignupScreen from './../screens/auth/SignupScreen';
 import EditAccountScreen from './../screens/auth/EditAccountScreen';
 
 import HomeScreen from './../screens/HomeScreen';
-import RecipeScreen from './../screens/HomeScreen';
+import RecipeScreen from './../screens/RecipeScreen';
 import BudgetScreen from './../screens/BudgetScreen';
 import BookmarksScreen from './../screens/BookmarksScreen';
 import FoodStockScreen from '../screens/FoodstockScreen';
@@ -96,7 +96,12 @@ const HomeStackNavigator = createStackNavigator({
         navigationOptions: {
             header: null
         }
-    }
+    },
+
+    Recipe: {
+        screen: RecipeScreen,
+    },
+
 },{
     defaultNavigationOptions:({navigation}) => {
         NavigationService.setTopLevelNavigator(navigation);
@@ -111,7 +116,18 @@ const HomeStackNavigator = createStackNavigator({
 const AppDrawerNavigator = createDrawerNavigator({
     _Home__: {
         screen: HomeStackNavigator
+    },
+    _Recipe_: {
+        screen: RecipeScreen,
     }
+},{
+    defaultNavigationOptions:({navigation}) => {
+        NavigationService.setTopLevelNavigator(navigation);
+
+        return{
+            header: <SearchHeaderNav/>
+        }
+    },
 });
 
 /*

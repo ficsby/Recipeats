@@ -6,10 +6,17 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import TestScreen from './../screens/TestScreen';
 import HomeScreen from './../screens/HomeScreen';
 import EditAccountScreen from './../screens/auth/EditAccountScreen';
-import { SidebarNavigator } from './SidebarNavigator';
+import RecipeScreen from '../screens/RecipeScreen';
 
 export const MainTabNavigator = createStackNavigator (
     {
+      Recipe: { 
+        screen: RecipeScreen, 
+        navigationOptions: {
+          header: null
+        },
+      },
+
       Home: { 
           screen: HomeScreen, 
           navigationOptions: {

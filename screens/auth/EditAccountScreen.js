@@ -24,7 +24,8 @@ export default class SignupScreen extends React.Component {
         this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
     }
 
-    // user is only able to edit after clicking on the edit button
+    //  Toggles whether the information is editable by the user.
+    //  User is only able to edit after clicking on the edit button
     toggleEditable() {
         this.setState({
             editable: !this.state.editable
@@ -34,15 +35,15 @@ export default class SignupScreen extends React.Component {
     }
 
     componentDidMount() {
-        this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
+        this._ismounted = true; // Set boolean to true, then for each setState call have a condition that checks if _ismounted is true
 
-        // returns a promise of the user's value
+        // Returns a promise of the user's value
         retrieveData = () => {
             ref = firebase.database().ref('users/' + firebase.auth().currentUser.uid);
             return ref.once("value");
         }
 
-        // snapshot is the depiction of the user's current data
+        // Snapshot is the depiction of the user's current data
         retrieveData().then( (snapshot) => {
             if(this._ismounted)
             {
@@ -55,10 +56,10 @@ export default class SignupScreen extends React.Component {
 
     
     componentWillUnmount () {
-        this._ismounted = false; // after components is unmounted reset boolean
+        this._ismounted = false; // After components is unmounted reset boolean
      }
     
-    // writes user data to the database
+    // Writes user data to the database
     writeUserData = (userId) => {
         firebase.database().ref('users/' + userId).set({
             name: this.state.name,
@@ -68,33 +69,32 @@ export default class SignupScreen extends React.Component {
             weight: this.state.weight,
             activityLevel: this.state.activityLevel,
             birthDate: this.state.birthDate,
-            height: this.state.height
-
+            height: this.state.height,
+            gender: this.state.gender,
             // calories: this.state.calories,
             // protein: this.state.email,
             // fats: this.state.fats,
             // carbs: this.state.carbs,
-
             // budget: this.state.budget
         });
     }
 
-    // handles not a number exceoption
+    // Handles not a number exception
     handleNaN = (text) => {
         Alert.alert("Please enter a number");
         text = text.substring(0, text.length - 1);
     }
     
-    // function for when user clicks the 'Save Button'
+    // Function for when user clicks the 'Save Button'
     onSaveChangesPress = () => {
         var user = firebase.auth().currentUser;
         this.writeUserData(user.uid);
         Alert.alert("Your changes has been updated..");
     }
 
-    // function for when user clicks the 'Arrow back Button'
+    // Function for when user clicks the 'Arrow back Button'
     onGoBack = () => {
-        // to go back to previous screen pop the current screen
+        // To go back to previous screen pop the current screen
         var navActions = StackActions.pop({
             n: 1,   // n is number of screens to pop
         });
@@ -110,7 +110,7 @@ export default class SignupScreen extends React.Component {
             return (
                 <ScrollView>
                     <View style={styles.titleRow}>
-                        {/* Side bar navigation icon */}
+                        {/* Left Arrow Button (Goes back to previous page) */}
                         <TouchableOpacity style={{height: 80}} onPress={this.onGoBack}>
                             <Icon name='left' size={30} color='rgba(100, 92, 92, 0.8)'
                                     style={{marginLeft: '20%'}}/>
@@ -118,12 +118,16 @@ export default class SignupScreen extends React.Component {
     
                         <Text style={styles.pageTitle}>Account Settings</Text>
     
+                        {/* Edit Button (When pressed, makes the information content editable) */}
                         <TouchableOpacity>
                             <Text style={styles.editButton} onPress ={this.onEditPress}>Edit</Text>
                         </TouchableOpacity>
     
                     </View>
-    
+
+
+                    {/* BASIC USER INFORMATION */}
+
                     <Text style={styles.inputHeading}>Your basic information</Text>
                     
                     <View style={styles.dataRow}>
@@ -156,13 +160,21 @@ export default class SignupScreen extends React.Component {
                     <View style={styles.separationLine} />
     
     
-    
+                    {/* PHYSICAL INFORMATION */}
+
                     <Text style={styles.inputHeading}>Your physical information</Text>
     
                     <View style={styles.dataRow}>
                         <Text style={styles.inputLabel}>Birthday</Text>
                         <TextInput style={styles.inputData} 
                                    value ={user.birthDate} editable={isEditable}/>
+                    </View>
+                    <View style={styles.separationLine} />
+
+                    <View style={styles.dataRow}>
+                        <Text style={styles.inputLabel}>Gender</Text>
+                        <TextInput style={styles.inputData} 
+                                   value ={user.gender} editable={isEditable}/>
                     </View>
                     <View style={styles.separationLine} />
     
@@ -237,6 +249,10 @@ export default class SignupScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+
+ /*------------------------------------------------------------------------
+    Top Section
+------------------------------------------------------------------------*/
     
     titleRow: {
         flex: 1,
@@ -257,12 +273,15 @@ const styles = StyleSheet.create({
         color: 'rgba(100, 92, 92, 0.8)', // Dark grey
     },
 
-    editButton: {
-        textAlign: 'right',
-        marginTop: 5,
-        height: 100,
-        marginLeft: 20,
-        textDecorationLine: 'underline',
+ /*------------------------------------------------------------------------
+    Information Section
+------------------------------------------------------------------------*/
+
+    dataRow: {
+        flex: 1,
+        flexDirection: "row",
+        marginLeft: 30,
+        //alignItems: 'flex-start',
     },
 
     inputHeading: {
@@ -272,13 +291,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: '600',
         color: 'rgba(163, 143, 143, 1)',
-    },
-
-    dataRow: {
-        flex: 1,
-        flexDirection: "row",
-        marginLeft: 30,
-        //alignItems: 'flex-start',
     },
 
     inputLabel: {
@@ -325,6 +337,19 @@ const styles = StyleSheet.create({
         marginBottom: '10%',
     },
 
+   
+ /*------------------------------------------------------------------------
+    Buttons
+------------------------------------------------------------------------*/
+            
+    editButton: {
+        textAlign: 'right',
+        marginTop: 5,
+        height: 100,
+        marginLeft: 20,
+        textDecorationLine: 'underline',
+    },
+
     saveButton: {
         marginTop: 50,
         marginBottom: 50,
@@ -355,5 +380,4 @@ const styles = StyleSheet.create({
         fontWeight: '500',
     }
 
-
-  });
+});
