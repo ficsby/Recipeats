@@ -278,7 +278,9 @@ const styles = StyleSheet.create({
         Newsfeed Section
     ------------------------------------------------------------------------*/
     foodTipContainer: {
-        backgroundColor: 'rgba(255,255,255,1)',
+        backgroundColor: 'rgba(255, 232, 229, 0.4)',
+        // borderColor: 'rgba(229, 195, 204, 1)',
+        // borderWidth: 2,
         paddingTop: 20,
         paddingBottom: 40,
         paddingLeft: 20,
@@ -319,7 +321,7 @@ const styles = StyleSheet.create({
     // },
 
     newsContainer: {
-        backgroundColor: 'rgba(239, 214, 218, 0.1)',
+        backgroundColor: 'rgba(255,255,255,1)',
         alignContent: 'center',
         width: '100%',
     },
