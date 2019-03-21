@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     },
 
     newsTitle: {
-        fontSize: 28,
+        fontSize: 24,
         fontWeight: 'bold',
         color: '#000',
         // fontFamily: 'georgia'

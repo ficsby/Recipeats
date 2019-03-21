@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Button, Image, ImageBackground, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Image, ImageBackground, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { StackActions } from 'react-navigation';
 import Autocomplete from 'react-native-autocomplete-input';
 import { ListItem, Badge } from 'react-native-elements';
@@ -11,6 +11,7 @@ import { Font, AppLoading } from 'expo';
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from './../config/icon-font.json';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
+
 const fetch = require('node-fetch');
 
 const { width: WIDTH } = Dimensions.get('window');
@@ -93,9 +94,9 @@ export default class HomeScreen extends React.Component {
                               'keotgenic': false,
                               'whole30': false,
                              },
-            // Ingredient Data
-            aisle: '',
-            test: '',
+            // // Ingredient Data
+            // aisle: '',
+            // test: '',
             // search: '',
         };
         this.toggleBookmark = this.toggleBookmark.bind(this);
@@ -155,8 +156,9 @@ export default class HomeScreen extends React.Component {
         {
             bookmarkStatus = this.state.bookmarked? "bookmark" : "bookmark-empty";
             return (
-                <Icon name={bookmarkStatus} size={28} color='rgba(175,76,99,1)'
-                      style={{paddingTop: 6, paddingLeft: 13}} />
+                // <Icon name={bookmarkStatus} size={28} color='rgba(175,76,99,1)'
+                //       style={{paddingTop: 6, paddingLeft: 13}} />
+                  <Icon name={bookmarkStatus} size={28} color='rgba(255,255,255,1)' style={styles.overlayButtons} />
             );
         }
 
@@ -164,8 +166,9 @@ export default class HomeScreen extends React.Component {
         {
             heartStatus = this.state.liked? "heart" : "heart-empty";
             return (
-                <Icon name={heartStatus} size={28} color='rgba(175,76,99,1)'
-                      style={{paddingTop: 6}} />
+                // <Icon name={heartStatus} size={28} color='rgba(175,76,99,1)'
+                //       style={{paddingTop: 6}} />
+                <Icon name={heartStatus} size={28} color='rgba(255,255,255,1)' style={styles.overlayButtons} />
             );
         }
     };
@@ -199,11 +202,7 @@ export default class HomeScreen extends React.Component {
     render() {
 
         const { search } = this.state;
-        console.log("------------------------ START HERE ----------------------");
-        test =JSON.stringify(this.state.extendedIngredients[0]); // Works
-        console.log(Object.values(this.state.extendedIngredients));  // Works
-        console.log(Object.values(this.state.extendedIngredients[0])); // Doesn't work ( Says that the input parameter is null or undefined )
-
+        console.log(this.state);
 
         return ( 
             <View> 
@@ -255,40 +254,37 @@ export default class HomeScreen extends React.Component {
                 <ScrollView style={styles.recipeContainer}> 
 
                     {/* <ImageBackground source={require('./../assets/images/test_photo.jpg')} /> */}
-                    <ImageBackground source={require('./../assets/images/test_photo.jpg')} style={styles.image}>
+                    <ImageBackground source={{ uri: this.state.image}} style={styles.image}>
+                        <View style={styles.overlayButtonsContainer}> 
+                            <TouchableOpacity onPress={this.toggleHeart} >
+                                {this.renderIcon("heart") }
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={this.toggleBookmark} >
+                                {this.renderIcon("bookmark") }
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={this.downloadRecipe} >
+                                <Icon name='download' size={27} color='rgba(255,255,255,1)' style={styles.overlayButtons}/>   
+                            </TouchableOpacity>
+                        </View>
                     </ImageBackground>
+
                     <View style={styles.contents}>
 
                         <View style={styles.titleContainer}>
                             <View style={styles.row}>
                                 <Text style={styles.title}> 
-                                    {/* {this.state.title}   */}
+                                    {this.state.title}  
                                 </Text>
-                                
-                                <TouchableOpacity  onPress={this.toggleHeart} >
-                                    {this.renderIcon("heart") }
-                                </TouchableOpacity>
-
-                                <TouchableOpacity  onPress={this.toggleBookmark} >
-                                    {this.renderIcon("bookmark") }
-                                </TouchableOpacity>
-                                        
                             </View>
 
-                            <View style={styles.row}>
+                            <View style={styles.statsContainer}>
                                 <Icon style={styles.statsIcon} name='clock' size={13} color='rgba(0,0,0, 0.5)' />
-                                <Text style={styles.stats}> 60 mins </Text>
+                                <Text style={styles.stats}> {this.state.readyInMinutes} mins </Text>
                                 <Icon style={styles.statsIcon} name='adult' size={13} color='rgba(0,0,0, 0.5)' />
-                                <Text style={styles.stats}> 2 servings </Text>
+                                <Text style={styles.stats}> {this.state.servings} servings </Text>
                             </View>
-                        </View>
-
-                        <View style ={styles.descriptionContainer}>
-                            <Text style={styles.description}> 
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
-                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
-                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                            </Text>
                         </View>
 
                         <View style ={styles.macrosContainer}>
@@ -477,6 +473,24 @@ const styles = StyleSheet.create({
     Recipe Info Section
 ------------------------------------------------------------------------*/
 
+    overlayButtonsContainer: {
+        flexDirection: 'row',
+        position: 'absolute',
+        justifyContent: 'flex-end',
+        bottom: 0,
+        right: 0,
+        paddingTop: 5,
+        paddingBottom: 5,
+        paddingRight: 3,
+        width: '100%',
+        backgroundColor: 'rgba(0,0,0,0.6)',
+    },
+
+    overlayButtons: {
+        paddingTop: 6, 
+        paddingRight: 22,
+    },
+
     recipeContainer: {
         backgroundColor: 'rgba(0, 0, 0, 0.05)',
     },
@@ -494,23 +508,34 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        marginLeft: 13,
-        marginRight: 13,
+        marginTop: 10,
+        marginLeft: 25,
+        marginRight: 25,
         fontSize: 20,
         fontWeight: '500',
         color: 'rgba(181, 83, 102, 1)', // Medium Pink
     },
 
+    statsContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        width: '100%',
+        marginTop: 10,
+        marginLeft: 10,
+        paddingBottom: 15,
+    },
+
+
     stats: {
-        fontSize: 16,
-        color: 'rgba(0,0,0, 0.5)',
-        marginLeft: 5,
+        fontSize: 18,
+        color: 'rgba(0,0,0, 0.8)',
+        marginLeft: 6,
     },
     
     statsIcon: {
         marginTop: 3,
-        marginLeft: 20,
-        fontSize: 15,
+        marginLeft: 15,
+        fontSize: 18,
         color: 'rgba(0,0,0, 0.5)',
     },
 
@@ -519,21 +544,21 @@ const styles = StyleSheet.create({
         Description
     -------------------------*/
 
-    descriptionContainer: {
-        paddingBottom: 5,
-        backgroundColor: 'rgba(255,255,255,1)',
-        // borderBottomWidth: 1,
-        // borderBottomColor: 'rgba(0,0,0,0.3)',
-    },
+    // descriptionContainer: {
+    //     paddingBottom: 5,
+    //     backgroundColor: 'rgba(255,255,255,1)',
+    //     // borderBottomWidth: 1,
+    //     // borderBottomColor: 'rgba(0,0,0,0.3)',
+    // },
 
-    description: {
-        marginTop: 8,
-        marginBottom: 15,
-        marginLeft: 17,
-        marginRight: 17,
-        fontSize: 14,
-        color: 'rgba(0,0,0, 0.8)',
-    },
+    // description: {
+    //     marginTop: 8,
+    //     marginBottom: 15,
+    //     marginLeft: 17,
+    //     marginRight: 17,
+    //     fontSize: 14,
+    //     color: 'rgba(0,0,0, 0.8)',
+    // },
 
     /*-----------------------
         Macros
