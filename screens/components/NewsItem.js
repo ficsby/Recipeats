@@ -24,9 +24,6 @@ const NewsItem = ({ news, index }) => {
         <Button key={index} noDefaultStyles={true} onPress={onPress.bind(this, news)} >
             <View style={styles.newsItem}>
                 <View style={styles.newsText}>
-                    <View style={styles.newsNumber}>
-                        <Text style={styles.newsTitle}>{number}</Text>
-                    </View>
                     <View style={styles.newsTextContainer}>
                         { getPretext(news) }
                         <Text style={styles.newsTitle}>{news.title}</Text>
@@ -59,10 +56,6 @@ const styles = StyleSheet.create({
         padding: 10
     },
 
-    newsNumber: {
-        flex: 0.5,
-        fontSize: 10,
-    },
     newsTextContainer: {
         flex: 3
     },
