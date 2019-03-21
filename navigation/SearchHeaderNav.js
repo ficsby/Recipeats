@@ -14,7 +14,7 @@ import fontelloConfig from './../config/icon-font.json';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
 const { width: WIDTH } = Dimensions.get('window');
-var globalStyles = require('../styles/globalStyles.js');
+var globalStyles = require('../styles/GlobalStyles.js');
 
 export default class SearchHeaderNav extends React.Component {
     state = {

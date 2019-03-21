@@ -29,6 +29,10 @@ export default class HomeScreen extends React.Component {
                 <TouchableOpacity onPress={ () => NavigationService.navigate('Recipe')}>
                     <Text>Go to Recipe Screen </Text>
                 </TouchableOpacity>
+
+                <TouchableOpacity onPress={ () => NavigationService.navigate('Foodstock')}>
+                    <Text>Go to Recipe Screen </Text>
+                </TouchableOpacity>
             </View>
         )
     }
