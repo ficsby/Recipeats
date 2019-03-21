@@ -23,6 +23,17 @@ function closeDrawer(){
     _navigator.closeDrawer();
 }
 
+function reset(routes){
+    idx = routes.length;
+    var navActions = _navigator.reset({
+        index: idx,
+        actions: routes
+    })
+    _navigator.dispatch(navActions), (error) => {
+        Alert.alert(error.message);
+    };
+}
+
 export default {
     navigate, 
     setTopLevelNavigator,

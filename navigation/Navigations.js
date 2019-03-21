@@ -18,10 +18,11 @@ import SignupScreen from './../screens/auth/SignupScreen';
 import EditAccountScreen from './../screens/auth/EditAccountScreen';
 
 import HomeScreen from './../screens/HomeScreen';
+import LoadingScreen from './../screens/LoadingScreen';
 import RecipeScreen from './../screens/RecipeScreen';
 import BudgetScreen from './../screens/BudgetScreen';
 import BookmarksScreen from './../screens/BookmarksScreen';
-import FoodStockScreen from '../screens/FoodstockScreen';
+import FoodstockScreen from './../screens/FoodstockScreen';
 import MacrosScreen from './../screens/MacrosScreen';
 import NavigationService from './NavigationService';
 
@@ -66,7 +67,7 @@ const HomeTabNavigator = createBottomTabNavigator({
     },
     
     FoodStock: {
-        screen: FoodStockScreen,
+        screen: BudgetScreen,
         navigationOptions: {
             tabBarIcon: ({}) => (
                 <Icon name='food-stock' size={30} color='rgba(175,76,99,1)' />
@@ -91,6 +92,12 @@ const HomeStackNavigator = createStackNavigator({
         screen: HomeTabNavigator,
     },
     
+    Loading: {
+        screen: LoadingScreen,
+        navigationOptions: {
+            header: null
+        }
+    },
     EditAccount: {
         screen: EditAccountScreen,
         navigationOptions: {
@@ -100,6 +107,10 @@ const HomeStackNavigator = createStackNavigator({
 
     Recipe: {
         screen: RecipeScreen,
+    },
+
+    Foodstock: {
+        screen: FoodstockScreen,
     },
 
 },{

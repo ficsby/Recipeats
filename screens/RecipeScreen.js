@@ -3,15 +3,16 @@ import { StyleSheet, Button, Image, ImageBackground, View, ScrollView, Text, Tex
 import { StackActions } from 'react-navigation';
 import Autocomplete from 'react-native-autocomplete-input';
 import { ListItem, Badge } from 'react-native-elements';
-// import Bar from 'react-native-bar-collapsible';
 import { Font, AppLoading } from 'expo';
-//import * as firebase from 'firebase';
+// import NavigationService from '../navigation/NavigationService.js';
 
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from './../config/icon-font.json';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 const fetch = require('node-fetch');
+
+import LoadingScreen from './LoadingScreen';
 
 const { width: WIDTH } = Dimensions.get('window');
 var globalStyles = require('../styles/GlobalStyles.js');
@@ -63,7 +64,9 @@ export default class HomeScreen extends React.Component {
     
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
+            isLoading: true,
+
             query: '',
             recipes: [],
             bookmarked: false,
@@ -134,6 +137,13 @@ export default class HomeScreen extends React.Component {
                 nutritionalTags: nutrtionTags
             });
         }
+
+        return new Promise((resolve) =>
+            setTimeout(
+            () => { resolve('result') },
+            5000
+        )
+  );
     }
 
     toggleBookmark() {
@@ -173,7 +183,12 @@ export default class HomeScreen extends React.Component {
         }); 
         this.setState({fontLoaded: true});
 
-        this.getRecipeInfoFromId(this.recipeID);
+        const data = await this.getRecipeInfoFromId(this.recipeID);
+        
+        if(data != null)
+        {
+            this.setState({ isLoading: false });
+        }
     };
 
     componentWillUnmount () {
@@ -194,41 +209,13 @@ export default class HomeScreen extends React.Component {
     };
 
     render() {
-
-        const { search } = this.state;
-        if(this.state.extendedIngredients.length > 0 && this.state.extendedIngredients[0].aisle)
-        {
-            console.log(this.state.extendedIngredients[0].aisle);
+           
+        if (this.state.isLoading) {
+            return <LoadingScreen />;
         }
-        
+
         return ( 
             <View> 
-
-{               /*---------------------------------------------------------------------------------
-                   Top Bar 
-                ------------------------------------------------------------------------------------*/}
-                
-                
-                {/* Search Bar, capable of autocomplete */}
-                {/* <Autocomplete
-                    containerStyle={styles.searchContainer}  
-                    inputContainerStyle={styles.searchInputContainer}
-                    data={recipes.length === 1 && comp(query, recipes[0].title) ? [] : recipes}
-                    defaultValue = { query }
-                    autoCorrect={false}
-                    placeholder= "Search recipes, ingredients..."
-                    onChangeText={text => this.setState({ query: text })}
-                    renderItem={({ id, title }) => 
-                    (
-                        // Search Results List
-                        <TouchableOpacity style={styles.searchResultsContainer} onPress={() => this.setState({ query: title })}>
-                            <Text style={styles.searchResult}>
-                                {title}
-                            </Text>
-                        </TouchableOpacity>
-                    )}                       
-                /> */}
-
                 {/*---------------------------------------------------------------------------------
                    Recipe Page Contents 
                 ------------------------------------------------------------------------------------*/}
@@ -320,35 +307,7 @@ export default class HomeScreen extends React.Component {
                     </View>
 
 
-                </ScrollView>
-
-                {/* <View style={styles.menubarRow}> 
-                    <TouchableOpacity style={styles.menuBar}>
-                        <Icon name='home' size={33} color='rgba(175,76,99,1)'
-                                    style={{paddingTop: '16%', paddingLeft: '28%'}} />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.menuBar}>
-                        <Icon name='recipe-book' size={32} color='rgba(175,76,99,1)'
-                                    style={{paddingTop: '18%', paddingLeft: '28%'}} />
-                    </TouchableOpacity>
-                    
-                    <TouchableOpacity style={styles.menuBar}>
-                        <Icon name="budget" size={37} color='rgba(175,76,99,1)'
-                                    style={{paddingTop: '15%', paddingLeft: '28%'}} />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.menuBar}>
-                        <Icon name="food-stock" size={30} color='rgba(175,76,99,1)'
-                                    style={{paddingTop: '18%', paddingLeft: '24%'}} />
-                    </TouchableOpacity>
-                    
-                    <TouchableOpacity style={styles.menuBar}>
-                        <Icon name="food-diary" size={35} color='rgba(175,76,99,1)'
-                                    style={{paddingTop: '15%', paddingLeft: '29%'}} />
-                    </TouchableOpacity>
-                </View> */}
-                            
+                </ScrollView>                            
             </View>
         )
     }
