@@ -5,10 +5,12 @@ import { Font, AppLoading } from 'expo';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 import { Styles } from '../styles/GlobalStyles';
 import { ListItem } from 'react-native-elements';
+import { addToFoodStock, logPurchaseDate} from '../utils/FoodListUtils';
+
 
 // import Bar from 'react-native-bar-collapsible';
 
-//import * as firebase from 'firebase';
+import * as firebase from 'firebase';
 
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
@@ -48,6 +50,13 @@ export default class FoodstockScreen extends React.Component {
     };
 
     render() {
+
+        // inventoryList.map( (item, i) =>  
+        //         ( addToFoodStock(firebase.auth().currentUser.uid, item.name, item.quantity)));
+
+        inventoryList.forEach(item =>  
+            addToFoodStock(firebase.auth().currentUser.uid, item.name, item.quantity));
+
         return(
         <View style ={Styles.sectionContainer}>
             <Text style={Styles.sectionTitle}> Inventory </Text>

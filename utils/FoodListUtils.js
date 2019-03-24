@@ -38,7 +38,8 @@ export const getFoodList = (foodListID) => {
  * @param {*} quantity - The quantity of food item being added to food stock
  */
 export const addToFoodStock = (userId, foodItemID, quantity) => {
-    firebase.database().ref('foodlist/' + userId).set({
+    console.log(foodItemID + ": " + quantity);
+    firebase.database().ref('foodlist/' + userId).update({
         [foodItemID]: quantity
     });
 }
