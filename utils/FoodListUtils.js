@@ -31,9 +31,27 @@ export const getFoodList = (foodListID) => {
     //return newList;
 };
 
-export const addToFoodList = (userId, foodItemID, quantity) => {
+/**
+ * Function to add a new food item to a user's food inventory
+ * @param {*} userId - User's user ID
+ * @param {*} foodItemID - ID of the food item being added to the food stock
+ * @param {*} quantity - The quantity of food item being added to food stock
+ */
+export const addToFoodStock = (userId, foodItemID, quantity) => {
     firebase.database().ref('foodlist/' + userId).set({
-        foodItemID: quantity
+        [foodItemID]: quantity
+    });
+}
+
+/**
+ * Function to log the date a food item was purchased
+ * @param {*} userId 
+ * @param {*} foodItemID 
+ * @param {*} date 
+ */
+export const logPurchaseDate = (userId, foodItemID, date) => {
+    firebase.database().ref('purchaseDates/' + userId).set({
+        [foodItemID]: date
     });
 }
 
