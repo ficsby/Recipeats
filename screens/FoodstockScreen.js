@@ -5,7 +5,7 @@ import { Font, AppLoading } from 'expo';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 import { Styles } from '../styles/GlobalStyles';
 import { ListItem } from 'react-native-elements';
-import { addToFoodStock, logPurchaseDate} from '../utils/FoodListUtils';
+import { addToFoodStock, logPurchaseDate, getFoodList} from '../utils/FoodListUtils';
 
 
 // import Bar from 'react-native-bar-collapsible';
@@ -62,9 +62,16 @@ export default class FoodstockScreen extends React.Component {
             <Text style={Styles.sectionTitle}> Inventory </Text>
 
             {
-                inventoryList.map( (item, i) =>  
-                ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
-                    titleStyle={Styles.inventoryText} rightTitleStyle={Styles.quantityText} /> ))
+                // inventoryList.map( (item, i) =>  
+                // ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
+                //     titleStyle={Styles.inventoryText} rightTitleStyle={Styles.quantityText} /> ))
+                
+                
+                console.log(getFoodList(firebase.auth().currentUser.uid))
+                // .map((item, i) =>  
+                // ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
+                //     titleStyle={Styles.inventoryText} rightTitleStyle={Styles.quantityText} /> ))
+
                                     
             }
         </View>
