@@ -31,17 +31,9 @@ export const getFoodList = (foodListID) => {
     //return newList;
 };
 
-export const writeFoodList = (userId) => {
+export const addToFoodList = (userId, foodItemID, quantity) => {
     firebase.database().ref('foodlist/' + userId).set({
-        name: this.state.name,
-        email: this.state.email,
-        password: this.state.password,
-        username: this.state.username,
-        weight: this.state.weight,
-        activityLevel: this.state.activityLevel,
-        birthDate: this.state.birthDate,
-        selectedHeightMetric: this.state.selectedHeightMetric,
-        selectedGender: this.state.selectedGender
+        foodItemID: quantity
     });
 }
 
