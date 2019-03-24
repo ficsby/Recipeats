@@ -15,11 +15,13 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
 const { width: WIDTH } = Dimensions.get('window');
 var globalStyles = require('../styles/globalStyles.js');
-const fetch = require('node-fetch');
 
 // Fetch News Components
+const fetch = require('node-fetch');
+
 import Button from './components/Button';
 import NewsItem from './components/NewsItem';
+const API_KEY = "260b79df3cmsh60d67ae305873d9p188fc5jsnd45d59e0cbdd";
 
 export default class HomeScreen extends React.Component {
 
@@ -28,6 +30,8 @@ export default class HomeScreen extends React.Component {
         this.state = {
             query: '',
             recipes: [],
+            foodTrivia: '',
+            text: '',
             news_items: 
             [
                 {
@@ -51,6 +55,7 @@ export default class HomeScreen extends React.Component {
             ],
         };
     };
+    
 
     /* <Francis Buendia> March 15, 2019
         API Request call to 'Autocomplete recipe search' recipes by name 
@@ -90,6 +95,7 @@ export default class HomeScreen extends React.Component {
           'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
         }); 
         this.setState({fontLoaded: true});
+        this.getRandomFoodTip();
     };
 
     componentWillUnmount () {
@@ -119,6 +125,36 @@ export default class HomeScreen extends React.Component {
             return <NewsItem key={index} index={index} news={news} />
         });
     };
+
+    
+    getRandomFoodTip = () => {
+        currentThis = this;
+
+        // Returns a promise which then gets the result from the request call HEREEEEEE
+        const fetchfoodTriviaByIdPromise = fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/trivia/random`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+            },
+        });
+
+        const fetchfoodTriviaByIdResponse = fetchfoodTriviaByIdPromise.then(function(response) { return response.json(); })
+        // Check if component is mounted before changing state, this check is to prevent memory leaks
+        if(this._ismounted)
+        {
+            fetchfoodTriviaByIdResponse.then(function(json){
+            for(key in json)
+            {   
+                if(key in currentThis.state){
+                    currentThis.setState({
+                        [key]: json[key]
+                    });
+                }
+            }
+        })
+    }
+}
     
     render() {
 
@@ -126,6 +162,8 @@ export default class HomeScreen extends React.Component {
         const recipes = this.findRecipe(query);
         const comp = (a,b) => a.toLowerCase().trim() == b.toLowerCase().trim();
         this.getRecipeSearchResultsByName();
+
+        console.log("\n\nFood Trivia: ", this.state.text);
 
         return (
             <View style={styles.pageContainer}>
@@ -164,25 +202,24 @@ export default class HomeScreen extends React.Component {
                         </TouchableOpacity>
                     )}                       
                 />
-                
+
                 <ScrollView style={styles.newsContainer}>
+                        <View style={styles.foodTriviaContainer}>
 
-                    <View style={styles.foodTipContainer}>
-
-                        <View style={styles.row}>
-                            <Icon name='lightbulb' size={30} color='rgba(0,0,0,1)' height={200} style={{marginRight: 10}} />
-                            <Text style={styles.foodTipHeader}> Food Tip of the Day </Text>
+                            <View style={styles.row}>
+                                <Icon name='lightbulb' size={30} color='rgba(0,0,0,1)' height={200} style={{marginLeft: 15}} />
+                                <Text style={styles.foodTriviaHeader}> Food Trivia of the Day </Text>
+                            </View>
+                            
+                            <Text style= {styles.foodTrivia}> 
+                                Use ice cube trays to freeze small portions of pesto, broth, applesauce and pizza sauce. 
+                                Transfer the cubes to a Ziplock bag or other freezer-proof container and it will be easy 
+                                to pull out exactly how much you need.
+                            </Text>
                         </View>
-                        
-                        <Text style= {styles.foodTip}> 
-                            Use ice cube trays to freeze small portions of pesto, broth, applesauce and pizza sauce. 
-                            Transfer the cubes to a Ziplock bag or other freezer-proof container and it will be easy 
-                            to pull out exactly how much you need.
-                        </Text>
-                    </View>
 
-                    {/* <Text style={{fontSize:100, color: 'black'}}> Hi 2</Text> */}
-                    { this.renderNews() }
+                        {/* <Text style={{fontSize:100, color: 'black'}}> Hi 2</Text> */}
+                        { this.renderNews() }
                 </ScrollView>
                 
             </View>
@@ -282,28 +319,33 @@ const styles = StyleSheet.create({
     /*------------------------------------------------------------------------
         Newsfeed Section
     ------------------------------------------------------------------------*/
-    foodTipContainer: {
-        backgroundColor: 'rgba(255, 232, 229, 0.4)',
-        borderColor: 'rgba(229, 195, 204, 1)',
-        borderWidth: 2,
-        paddingTop: 15,
-        paddingBottom: 30,
+    foodTriviaContainer: {
+        backgroundColor: 'white',
+        paddingRight: 25,
         paddingLeft: 20,
-        paddingRight: 20,
-        margin: 20,
+        paddingTop: 20,
+        paddingBottom: 30,
+        marginTop: 13,
+        marginBottom: 13,
     },
 
-    foodTipHeader: {
+    foodTriviaHeader: {
         width: '100%',
         fontSize: 25,
         fontWeight: '500',
-        marginBottom: 10,
+        marginBottom: 15,
+        marginLeft: 10,
+        marginRight: 40,
+
     },
 
-    foodTip: {
+    foodTrivia: {
+        paddingLeft: 13,
+        paddingRight: 13,
         fontSize: 15,
     },
 
+   
     // header: {
     //     flexDirection: 'row',
     //     backgroundColor: '#FFF',
@@ -328,7 +370,7 @@ const styles = StyleSheet.create({
     // },
 
     newsContainer: {
-        backgroundColor: 'rgba(255,255,255,1)',
+        backgroundColor: 'rgba(226, 226, 226, 0.5)',
         alignContent: 'center',
         width: '100%',
     },

@@ -44,20 +44,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingRight: 20,
         paddingLeft: 20,
-        paddingTop: 30,
+        paddingTop: 10,
         paddingBottom: 30,
-        borderBottomWidth: 1,
-        borderBottomColor: '#E4E4E4'
+        backgroundColor: 'white',
+        marginBottom: 13,
     },
 
     newsText: {
         flex: 2,
         flexDirection: 'row',
-        padding: 10
+        padding: 10,
     },
 
     newsTextContainer: {
-        flex: 3
+        flex: 3,
+        marginTop: 13,
     },
      
     newsPretext: {
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     },
 
     newsTitle: {
-        fontSize: 24,
+        fontSize: 16,
         fontWeight: 'bold',
         color: '#000',
         // fontFamily: 'georgia'
