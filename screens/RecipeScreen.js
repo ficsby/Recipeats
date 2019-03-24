@@ -1,9 +1,11 @@
 import React from 'react';
-import { StyleSheet, Button, Image, ImageBackground, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Image, ImageBackground, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { StackActions } from 'react-navigation';
 import Autocomplete from 'react-native-autocomplete-input';
 import { ListItem, Badge } from 'react-native-elements';
+// import Bar from 'react-native-bar-collapsible';
 import { Font, AppLoading } from 'expo';
+import LoadingScreen from './../screens/LoadingScreen';
 // import NavigationService from '../navigation/NavigationService.js';
 
 /* Custom Icons */
@@ -12,12 +14,9 @@ import fontelloConfig from './../config/icon-font.json';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 const fetch = require('node-fetch');
 
-import LoadingScreen from './LoadingScreen';
-
 const { width: WIDTH } = Dimensions.get('window');
 var globalStyles = require('../styles/GlobalStyles.js');
 const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
-
 const ingredientsList = [   // FOR TESTING PURPOSES
     {
         name: 'Rice',
@@ -96,7 +95,10 @@ export default class HomeScreen extends React.Component {
                               'lowFodmap': false,
                               'keotgenic': false,
                               'whole30': false,
-                             }
+                             },
+            // // Ingredient Data
+            // aisle: '',
+            // test: '',
             // search: '',
         };
         this.toggleBookmark = this.toggleBookmark.bind(this);
@@ -229,7 +231,9 @@ export default class HomeScreen extends React.Component {
 
                         <View style={styles.titleContainer}>
                             <View style={styles.row}>
-                                <Text style={styles.title}> Some Recipe Title </Text>
+                                <Text style={styles.title}> 
+                                    {/* {this.state.title}   */}
+                                </Text>
                                 
                                 <TouchableOpacity  onPress={this.toggleHeart} >
                                     {this.renderIcon("heart") }
@@ -431,7 +435,7 @@ const styles = StyleSheet.create({
     title: {
         marginLeft: 13,
         marginRight: 13,
-        fontSize: 28,
+        fontSize: 20,
         fontWeight: '500',
         color: 'rgba(181, 83, 102, 1)', // Medium Pink
     },

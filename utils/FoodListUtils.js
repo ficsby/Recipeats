@@ -1,3 +1,4 @@
+import { firebaseApp } from "./../App";
 import FoodList from "../data/FoodList";
 import * as firebase from "firebase";
 import { value } from "react-native-extended-stylesheet";
@@ -24,11 +25,25 @@ export const findMissingFoodItems = (secondList) => {
  * @param {*} foodListID 
  */
 export const getFoodList = (foodListID) => {
-    var newList = new FoodList();
-    newList.list = firebase.database().ref().child("foodlist").child(foodListID);
-    newList.owner = foodListID;
-    return newList;
+    //var newList = new FoodList();
+    return firebase.database().ref().child("foodlist").child(foodListID);
+    //newList.owner = foodListID;
+    //return newList;
 };
+
+export const writeFoodList = (userId) => {
+    firebase.database().ref('foodlist/' + userId).set({
+        name: this.state.name,
+        email: this.state.email,
+        password: this.state.password,
+        username: this.state.username,
+        weight: this.state.weight,
+        activityLevel: this.state.activityLevel,
+        birthDate: this.state.birthDate,
+        selectedHeightMetric: this.state.selectedHeightMetric,
+        selectedGender: this.state.selectedGender
+    });
+}
 
 /**
  * 
