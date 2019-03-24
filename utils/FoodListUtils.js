@@ -25,10 +25,8 @@ export const findMissingFoodItems = (secondList) => {
  * @param {*} foodListID 
  */
 export const getFoodList = (foodListID) => {
-    //var newList = new FoodList();
-    return firebase.database().ref().child("foodlist").child(foodListID);
-    //newList.owner = foodListID;
-    //return newList;
+    ref = firebase.database().ref('foodlist/' + foodListID);
+    return ref.once("value");
 };
 
 /**
@@ -38,7 +36,7 @@ export const getFoodList = (foodListID) => {
  * @param {*} quantity - The quantity of food item being added to food stock
  */
 export const addToFoodStock = (userId, foodItemID, quantity) => {
-    console.log(foodItemID + ": " + quantity);
+    //console.log(foodItemID + ": " + quantity);
     firebase.database().ref('foodlist/' + userId).update({
         [foodItemID]: quantity
     });
