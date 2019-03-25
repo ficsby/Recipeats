@@ -49,6 +49,27 @@ export default class FoodstockScreen extends React.Component {
 
     };
 
+    renderFoodItem(name, quantity) {
+        return( 
+            <ListItem title={name} rightTitle={quantity} 
+                titleStyle={Styles.inventoryText} rightTitleStyle={Styles.quantityText} />
+        );
+    }
+
+    renderFoodstock() {
+        ref = getFoodList(firebase.auth().currentUser.uid);
+
+        ref.once("value", (snapshot) => {
+            foodlistSnapshot = snapshot.val();
+            
+            for (var key in foodlistSnapshot) {
+                if (foodlistSnapshot.hasOwnProperty(key)) {
+                    renderFoodItem(key, foodlistSnapshot[key]);
+                }
+            }
+        });
+    }
+
     render() {
         
         //Push data to firebase
@@ -69,9 +90,8 @@ export default class FoodstockScreen extends React.Component {
                 //     titleStyle={Styles.inventoryText} rightTitleStyle={Styles.quantityText} /> ))
 
                 //getFoodList(firebase.auth().currentUser.uid).once("value", (snapshot) => snapshot.val())
-                getFoodList(firebase.auth().currentUser.uid).once("value", (snapshot) => snapshot.val().map((item, i) =>  
-                ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
-                    titleStyle={Styles.inventoryText} rightTitleStyle={Styles.quantityText} /> )))
+                
+                this.renderFoodstock()
             }
             
         </View>
