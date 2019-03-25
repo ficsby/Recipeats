@@ -46,14 +46,12 @@ const inventoryList = [   // FOR TESTING PURPOSES
 
 export default class FoodstockScreen extends React.Component {
     state = {
-        
+
     };
 
     render() {
-
-        // inventoryList.map( (item, i) =>  
-        //         ( addToFoodStock(firebase.auth().currentUser.uid, item.name, item.quantity)));
-
+        
+        //Push data to firebase
         inventoryList.forEach(item =>  
             addToFoodStock(firebase.auth().currentUser.uid, item.name, item.quantity));
 
@@ -66,14 +64,16 @@ export default class FoodstockScreen extends React.Component {
                 // ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
                 //     titleStyle={Styles.inventoryText} rightTitleStyle={Styles.quantityText} /> ))
                 
-                
-                console.log(getFoodList(firebase.auth().currentUser.uid))
-                // .map((item, i) =>  
+                // getFoodList(firebase.auth().currentUser.uid).map((item, i) =>  
                 // ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
                 //     titleStyle={Styles.inventoryText} rightTitleStyle={Styles.quantityText} /> ))
 
-                                    
+                //getFoodList(firebase.auth().currentUser.uid).once("value", (snapshot) => snapshot.val())
+                getFoodList(firebase.auth().currentUser.uid).once("value", (snapshot) => snapshot.val().map((item, i) =>  
+                ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
+                    titleStyle={Styles.inventoryText} rightTitleStyle={Styles.quantityText} /> )))
             }
+            
         </View>
         );
     }

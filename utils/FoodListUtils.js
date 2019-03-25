@@ -26,7 +26,8 @@ export const findMissingFoodItems = (secondList) => {
  */
 export const getFoodList = (foodListID) => {
     ref = firebase.database().ref('foodlist/' + foodListID);
-    return ref.once("value");
+    //return ref.once("value", (snapshot) => console.log(snapshot.val()) );
+    return ref;
 };
 
 /**
