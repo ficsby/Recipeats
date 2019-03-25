@@ -44,29 +44,25 @@ const inventoryList = [   // FOR TESTING PURPOSES
     },
 ];
 
+
 export default class FoodstockScreen extends React.Component {
     state = {
-
+        externalFoodlist: []
     };
 
-    renderFoodItem(name, quantity) {
-        return( 
-            <ListItem title={name} rightTitle={quantity} 
-                titleStyle={Styles.inventoryText} rightTitleStyle={Styles.quantityText} />
-        );
-    }
-
-    renderFoodstock() {
+    componentDidMount() {
         ref = getFoodList(firebase.auth().currentUser.uid);
+        foodlist = [];
 
-        ref.once("value", (snapshot) => {
+        ref.once("value").then( snapshot => {
             foodlistSnapshot = snapshot.val();
             
             for (var key in foodlistSnapshot) {
                 if (foodlistSnapshot.hasOwnProperty(key)) {
-                    renderFoodItem(key, foodlistSnapshot[key]);
+                    foodlist.push( {name: key, quantity: foodlistSnapshot[key]} );
                 }
             }
+            this.setState({externalFoodlist: foodlist})
         });
     }
 
@@ -81,17 +77,10 @@ export default class FoodstockScreen extends React.Component {
             <Text style={Styles.sectionTitle}> Inventory </Text>
 
             {
-                // inventoryList.map( (item, i) =>  
-                // ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
-                //     titleStyle={Styles.inventoryText} rightTitleStyle={Styles.quantityText} /> ))
-                
-                // getFoodList(firebase.auth().currentUser.uid).map((item, i) =>  
-                // ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
-                //     titleStyle={Styles.inventoryText} rightTitleStyle={Styles.quantityText} /> ))
-
-                //getFoodList(firebase.auth().currentUser.uid).once("value", (snapshot) => snapshot.val())
-                
-                this.renderFoodstock()
+                //Fetch and display data from firebase
+                this.state.externalFoodlist && this.state.externalFoodlist.map( (item, i) =>  
+                ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
+                    titleStyle={Styles.inventoryText} rightTitleStyle={Styles.quantityText} /> ))
             }
             
         </View>
