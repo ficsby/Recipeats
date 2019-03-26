@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, View, ScrollView, Text, TextInput, TouchableOpacity, Picker, Button, Alert, Dimensions } from 'react-native';
 import { StackActions } from 'react-navigation';
 import * as firebase from 'firebase';
-import DatePicker from 'react-native-datepicker';
 
 import logo from './../../assets/images/logo_transparent.png';
 import { stringify } from 'qs';
@@ -15,43 +14,18 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 const { width: WIDTH } = Dimensions.get('window');
 
 export default class SignupScreen extends React.Component {
-    //user = firebase.database().ref('users/' + firebase.auth().currentUser.uid);
-
-    user = firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-            return user;
-          // User is signed in.
-        } else {
-          // No user is signed in.
-            return null;
-        }
-      });
-      
     constructor(props) {
         super(props);
         this.state = { 
+            user: null,
             editable: false,
-
-            name : "someName",
-            email: "someEmail",
-            password: "somePw",
-            username: "someUsername",
-            height: "someHeight",
-            weight: "someWeight",
-            activityLevel: "someActivityLevel",
-            birthDate: "someBirthday",
-
-            calories: "1000",
-            protein: "100",
-            fats: "100",
-            carbs: "100",
-
-            budget: "2000 weekly"
         };
         this.toggleEditable = this.toggleEditable.bind(this);
         this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
     }
 
+    //  Toggles whether the information is editable by the user.
+    //  User is only able to edit after clicking on the edit button
     toggleEditable() {
         this.setState({
             editable: !this.state.editable
@@ -60,6 +34,32 @@ export default class SignupScreen extends React.Component {
         this.state.editable?  Alert.alert("Not editable now") : Alert.alert("Values should be editable now.");
     }
 
+    componentDidMount() {
+        this._ismounted = true; // Set boolean to true, then for each setState call have a condition that checks if _ismounted is true
+
+        // Returns a promise of the user's value
+        retrieveData = () => {
+            ref = firebase.database().ref('users/' + firebase.auth().currentUser.uid);
+            return ref.once("value");
+        }
+
+        // Snapshot is the depiction of the user's current data
+        retrieveData().then( (snapshot) => {
+            if(this._ismounted)
+            {
+                this.setState( {
+                    user: snapshot.val()
+                })
+            }
+        })
+    }
+
+    
+    componentWillUnmount () {
+        this._ismounted = false; // After components is unmounted reset boolean
+     }
+    
+    // Writes user data to the database
     writeUserData = (userId) => {
         firebase.database().ref('users/' + userId).set({
             name: this.state.name,
@@ -69,181 +69,190 @@ export default class SignupScreen extends React.Component {
             weight: this.state.weight,
             activityLevel: this.state.activityLevel,
             birthDate: this.state.birthDate,
-            height: this.state.height
-
+            height: this.state.height,
+            gender: this.state.gender,
             // calories: this.state.calories,
             // protein: this.state.email,
             // fats: this.state.fats,
             // carbs: this.state.carbs,
-
             // budget: this.state.budget
         });
     }
 
+    // Handles not a number exception
     handleNaN = (text) => {
         Alert.alert("Please enter a number");
         text = text.substring(0, text.length - 1);
     }
     
+    // Function for when user clicks the 'Save Button'
     onSaveChangesPress = () => {
-        Alert.alert("Saved... (Testing)");
-        this.toggleEditable();
+        var user = firebase.auth().currentUser;
+        this.writeUserData(user.uid);
+        Alert.alert("Your changes has been updated..");
     }
 
-    onBackToHome = () => {
-        var navActions = StackActions.reset({
-            index: 0,
-            actions: [
-                StackActions.push({ routeName: "Home" })
-            ]
+    // Function for when user clicks the 'Arrow back Button'
+    onGoBack = () => {
+        // To go back to previous screen pop the current screen
+        var navActions = StackActions.pop({
+            n: 1,   // n is number of screens to pop
         });
-
+        
         this.props.navigation.dispatch(navActions);
     }
 
     render() {
-        
-        return (
-            <ScrollView>
-
-                <View style={styles.titleRow}>
-                    {/* Side bar navigation icon */}
-                    <TouchableOpacity style={{height: 80}}>
-                        <Icon name='left' size={30} color='rgba(100, 92, 92, 0.8)'
-                              style={{marginLeft: '20%'}} />
-                    </TouchableOpacity>
-
-                    <Text style={styles.pageTitle}>Account Settings</Text>
-                    {
-                        !(this.state.editable)? 
+        const { user } = this.state;
+        const { isEditable } = this.state.editable;
+        if(this._ismounted)
+        {
+            return (
+                <ScrollView>
+                    <View style={styles.titleRow}>
+                        {/* Left Arrow Button (Goes back to previous page) */}
+                        <TouchableOpacity style={{height: 80}} onPress={this.onGoBack}>
+                            <Icon name='left' size={30} color='rgba(100, 92, 92, 0.8)'
+                                    style={{marginLeft: '20%'}}/>
+                        </TouchableOpacity>
+    
+                        <Text style={styles.pageTitle}>Account Settings</Text>
+    
+                        {/* Edit Button (When pressed, makes the information content editable) */}
                         <TouchableOpacity>
-                            <Text style={styles.editButton} onPress ={this.toggleEditable}>Edit</Text>
-                        </TouchableOpacity> : null
-                    }
-                </View>
-
-                <Text style={styles.inputHeading}>Your basic information</Text>
- 
-                <View style={styles.dataRow}>
-                    <Text style={styles.inputLabel}>Name</Text>
-                    <TextInput style={styles.inputData} 
-                               value ={this.state.name}  onChangeText={(name) => this.setState({name})}
-                               editable={this.state.editable}/>
-                </View>
-                <View style={styles.separationLine} />
-
-                <View style={styles.dataRow}>
-                    <Text style={styles.inputLabel}>Username</Text>
-                    <TextInput style={styles.inputData} 
-                               value ={this.state.username}  onChangeText={(username) => this.setState({username})}
-                               editable={this.state.editable}/>
-                </View>
-                <View style={styles.separationLine} />
-
-                <View style={styles.dataRow}>
-                    <Text style={styles.inputLabel}>Email</Text>
-                    <TextInput style={styles.inputData} 
-                               value ={this.state.email}  onChangeText={(email) => this.setState({email})}
-                               editable={this.state.editable}/>
-                </View>
-                <View style={styles.separationLine} />
-        
-                <View style={styles.dataRow}>
-                    <Text style={styles.inputLabel}>Password</Text>
-                    <TextInput style={styles.inputData} 
-                               value ={this.state.password}  onChangeText={(password) => this.setState({password})}
-                               editable={this.state.editable}/>
-                </View>
-                <View style={styles.separationLine} />
+                            <Text style={styles.editButton} onPress ={this.onEditPress}>Edit</Text>
+                        </TouchableOpacity>
+    
+                    </View>
 
 
+                    {/* BASIC USER INFORMATION */}
 
-                <Text style={styles.inputHeading}>Your physical information</Text>
+                    <Text style={styles.inputHeading}>Your basic information</Text>
+                    
+                    <View style={styles.dataRow}>
+                        <Text style={styles.inputLabel}>Name</Text>
+                        <TextInput style={styles.inputData} 
+                                   value = {user.name} editable={false}/>
+                    </View>
+    
+                    <View style={styles.separationLine} />
+    
+                    <View style={styles.dataRow}>
+                        <Text style={styles.inputLabel}>Username</Text>
+                        <TextInput style={styles.inputData} 
+                                   value ={user.username} editable={isEditable}/>
+                    </View>
+                    <View style={styles.separationLine} />
+    
+                    <View style={styles.dataRow}>
+                        <Text style={styles.inputLabel}>Email</Text>
+                        <TextInput style={styles.inputData} 
+                                   value ={user.email} editable={isEditable}/>
+                    </View>
+                    <View style={styles.separationLine} />
+            
+                    <View style={styles.dataRow}>
+                        <Text style={styles.inputLabel}>Password</Text>
+                        <TextInput style={styles.inputData} 
+                                   value ={user.password} editable={isEditable}/>
+                    </View>
+                    <View style={styles.separationLine} />
+    
+    
+                    {/* PHYSICAL INFORMATION */}
 
-                <View style={styles.dataRow}>
-                    <Text style={styles.inputLabel}>Birthday</Text>
-                    <TextInput style={styles.inputData} 
-                               value ={this.state.birthDate}  onChangeText={(birthDate) => this.setState({birthDate})}
-                               editable={this.state.editable}/>
-                </View>
-                <View style={styles.separationLine} />
+                    <Text style={styles.inputHeading}>Your physical information</Text>
+    
+                    <View style={styles.dataRow}>
+                        <Text style={styles.inputLabel}>Birthday</Text>
+                        <TextInput style={styles.inputData} 
+                                   value ={user.birthDate} editable={isEditable}/>
+                    </View>
+                    <View style={styles.separationLine} />
 
-                <View style={styles.dataRow}>
-                    <Text style={styles.inputLabel}>Height</Text>
-                    <TextInput style={styles.inputData} 
-                               value ={this.state.height}  onChangeText={(height) => this.setState({height})}
-                               editable={this.state.editable}/>
-                </View>
-                <View style={styles.separationLine} />
-
-                <View style={styles.dataRow}>
-                    <Text style={styles.inputLabel}>Weight</Text>
-                    <TextInput style={styles.inputData} 
-                               value ={this.state.weight}  onChangeText={(weight) => this.setState({weight})}
-                               editable={this.state.editable}/>
-                </View>
-                <View style={styles.separationLine} />
-
-                <View style={styles.dataRow}>
-                    <Text style={styles.inputLabel}>Level of Activity</Text>
-                    <TextInput style={styles.inputData} 
-                               value ={this.state.activityLevel}  onChangeText={(activityLevel) => this.setState({activityLevel})}
-                               editable={this.state.editable}/>
-                </View>
-                <View style={styles.separationLine} />
-
-
-                <Text style={styles.inputHeading}>Macro Goals</Text>
-
-                <View style={styles.dataRow}>
-                    <Text style={styles.macroLabel}>Calories</Text>
-                    <TextInput style={{ width: 200}}
-                               value ={this.state.calories}  onChangeText={(calories) => this.setState({calories})}
-                               editable={this.state.editable}/>
-                </View>
-                <View style={styles.dataRow}>
-                    <Text style={styles.macroLabel}>Protein</Text>
-                    <TextInput style={{ width: 200}}
-                               value ={this.state.protein}  onChangeText={(protein) => this.setState({protein})}
-                               editable={this.state.editable}/>                
-                </View>
-                <View style={styles.dataRow}>
-                    <Text style={styles.macroLabel}>Fats</Text>
-                    <TextInput style={{ width: 200}}
-                               value ={this.state.fats}  onChangeText={(fats) => this.setState({fats})}
-                               editable={this.state.editable}/>                
-                </View>
-                <View style={styles.dataRow}>
-                    <Text style={styles.macroLabel}>Carbs</Text>
-                    <TextInput style={{ width: 200}}
-                               value ={this.state.carbs}  onChangeText={(carbs) => this.setState({carbs})}
-                               editable={this.state.editable}/>                
-                </View>
-                <View style={styles.macroSeparationLine} />
-
-
-                <Text style={styles.inputHeading}>Budget Information</Text>
-
-                <View style={styles.dataRow}>
-                    <Text style={styles.inputLabel}>Budget</Text>
-                    <TextInput style={styles.inputData} 
-                               value ={this.state.budget}  onChangeText={(budget) => this.setState({budget})} 
-                               editable={this.state.editable}/>                
-                </View>                
-                <View style={styles.separationLine} />
-                <View style={styles.whitespaceBuffer} />
-                {
-                    this.state.editable?            
+                    <View style={styles.dataRow}>
+                        <Text style={styles.inputLabel}>Gender</Text>
+                        <TextInput style={styles.inputData} 
+                                   value ={user.gender} editable={isEditable}/>
+                    </View>
+                    <View style={styles.separationLine} />
+    
+                    <View style={styles.dataRow}>
+                        <Text style={styles.inputLabel}>Height</Text>
+                        <TextInput style={styles.inputData} 
+                                   value ={user.height} editable={isEditable}/>
+                    </View>
+                    <View style={styles.separationLine} />
+    
+                    <View style={styles.dataRow}>
+                        <Text style={styles.inputLabel}>Weight</Text>
+                        <TextInput style={styles.inputData} 
+                                   value ={user.weight} editable={isEditable}/>
+                    </View>
+                    <View style={styles.separationLine} />
+    
+                    <View style={styles.dataRow}>
+                        <Text style={styles.inputLabel}>Level of Activity</Text>
+                        <TextInput style={styles.inputData} 
+                                   value ={user.activityLevel} editable={isEditable}/>
+                    </View>
+                    <View style={styles.separationLine} />
+    
+    
+                    <Text style={styles.inputHeading}>Macro Goals</Text>
+    
+                    <View style={styles.dataRow}>
+                        <Text style={styles.macroLabel}>Calories</Text>
+                        <TextInput style={{ width: 200}}
+                                   value ={'1000'} editable={isEditable}/>
+                    </View>
+                    <View style={styles.dataRow}>
+                        <Text style={styles.macroLabel}>Protein</Text>
+                        <TextInput style={{ width: 200}}
+                                   value ={'100'} editable={isEditable}/>                
+                    </View>
+                    <View style={styles.dataRow}>
+                        <Text style={styles.macroLabel}>Fats</Text>
+                        <TextInput style={{ width: 200}}
+                                   value ={'100'} editable={isEditable}/>                
+                    </View>
+                    <View style={styles.dataRow}>
+                        <Text style={styles.macroLabel}>Carbs</Text>
+                        <TextInput style={{ width: 200}}
+                                   value ={'100'} editable={isEditable}/>                
+                    </View>
+                    <View style={styles.macroSeparationLine} />
+    
+    
+                    <Text style={styles.inputHeading}>Budget Information</Text>
+    
+                    <View style={styles.dataRow}>
+                        <Text style={styles.inputLabel}>Budget</Text>
+                        <TextInput style={styles.inputData} 
+                                   value ={'$200 weekly'} editable={isEditable}/>                
+                    </View>                
+                    <View style={styles.separationLine} />
+    
+                               
                     <TouchableOpacity style={styles.saveButton} onPress ={this.onSaveChangesPress}> 
                         <Text style={styles.saveChanges}>Save Changes</Text>
-                    </TouchableOpacity> : null
-                }
-            </ScrollView>
-        ) 
+                    </TouchableOpacity>
+                  
+                </ScrollView>
+            )
+        }
+        else{
+            return null;
+        }
     }
 }
 
 const styles = StyleSheet.create({
+
+ /*------------------------------------------------------------------------
+    Top Section
+------------------------------------------------------------------------*/
     
     titleRow: {
         flex: 1,
@@ -264,12 +273,15 @@ const styles = StyleSheet.create({
         color: 'rgba(100, 92, 92, 0.8)', // Dark grey
     },
 
-    editButton: {
-        textAlign: 'right',
-        marginTop: 5,
-        height: 100,
-        marginLeft: 20,
-        textDecorationLine: 'underline',
+ /*------------------------------------------------------------------------
+    Information Section
+------------------------------------------------------------------------*/
+
+    dataRow: {
+        flex: 1,
+        flexDirection: "row",
+        marginLeft: 30,
+        //alignItems: 'flex-start',
     },
 
     inputHeading: {
@@ -279,13 +291,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: '600',
         color: 'rgba(163, 143, 143, 1)',
-    },
-
-    dataRow: {
-        flex: 1,
-        flexDirection: "row",
-        marginLeft: 30,
-        //alignItems: 'flex-start',
     },
 
     inputLabel: {
@@ -332,6 +337,19 @@ const styles = StyleSheet.create({
         marginBottom: '10%',
     },
 
+   
+ /*------------------------------------------------------------------------
+    Buttons
+------------------------------------------------------------------------*/
+            
+    editButton: {
+        textAlign: 'right',
+        marginTop: 5,
+        height: 100,
+        marginLeft: 20,
+        textDecorationLine: 'underline',
+    },
+
     saveButton: {
         marginTop: 50,
         marginBottom: 50,
@@ -347,8 +365,19 @@ const styles = StyleSheet.create({
     saveChanges: {
         color: 'rgba(255,255,255,1)',
         fontSize: 16,
-        fontweight: '600',
+        fontWeight: '600',
     },
 
+    deleteAccount: {
+        marginTop: 20,
+        marginBottom: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 
-  });
+    deleteAccountText: {
+        fontSize: 15,
+        fontWeight: '500',
+    }
+
+});
