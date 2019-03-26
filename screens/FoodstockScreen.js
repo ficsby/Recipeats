@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleSheet, Button, Image, View, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Button, Image, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { StackActions, DrawerActions } from 'react-navigation';
 import { Font, AppLoading } from 'expo';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 import { Styles } from '../styles/GlobalStyles';
 import { ListItem } from 'react-native-elements';
-import { addToFoodStock, logPurchaseDate, getFoodList} from '../utils/FoodListUtils';
-
+import { addToFoodStock, logPurchaseDate, getFoodList, deleteFromFoodStock} from '../utils/FoodListUtils';
+import KeyboardShift from '../styles/KeyboardShift.js';
 
 // import Bar from 'react-native-bar-collapsible';
 
@@ -20,7 +20,7 @@ import fontelloConfig from './../config/icon-font.json';
 const inventoryList = [   // FOR TESTING PURPOSES
     {
         name: 'Rice',
-        quantity: '4'
+        quantity: '5'
     },
     {
         name: 'Peas',
@@ -49,15 +49,23 @@ export default class FoodstockScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            externalFoodlist: []
+            externalFoodlist: [],
+            editable: false,
         };
-        //this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
-
+        this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
+        this.toggleEditable = this.toggleEditable.bind(this);
+        this.onDeletePress = this.onDeletePress.bind(this);
     }
 
-    // state = {
-    //     externalFoodlist: []
-    // };
+//  Toggles whether the information is editable by the user.
+    //  User is only able to edit after clicking on the edit button
+    toggleEditable() {
+        this.setState({
+            editable: !this.state.editable
+        });
+        
+        this.state.editable?  Alert.alert("Not editable now") : Alert.alert("Values should be editable now.");
+    }
 
     componentDidMount() {
         this._ismounted = true;
@@ -91,6 +99,16 @@ export default class FoodstockScreen extends React.Component {
         this._ismounted = false; // After components is unmounted reset boolean
     }
 
+    onSaveChangesPress = () => {
+        //var user = firebase.auth().currentUser;
+        //this.writeUserData(user.uid);
+        Alert.alert("Your changes has been updated..");
+    }
+
+    onDeletePress = () => {
+        deleteFromFoodStock(firebase.auth().currentUser.uid, 'Carrots');
+    }
+
     render() {
         
         //Push data to firebase
@@ -98,17 +116,37 @@ export default class FoodstockScreen extends React.Component {
             addToFoodStock(firebase.auth().currentUser.uid, item.name, item.quantity));
 
         return(
-        <View style ={Styles.sectionContainer}>
-            <Text style={Styles.sectionTitle}> Inventory </Text>
+        
+            <KeyboardShift>
+            {() => (
+                <ScrollView>
+                    <View style ={Styles.sectionContainer}>
+                        <Text style={Styles.sectionTitle}> Inventory </Text>
 
-            {
-                //Fetch and display data from firebase
-                this.state.externalFoodlist && this.state.externalFoodlist.map( (item, i) =>  
-                ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
-                    titleStyle={Styles.inventoryText} rightTitleStyle={Styles.quantityText} /> ))
-            }
-            
-        </View>
+                        {
+                            //Fetch and display data from firebase
+                            this.state.externalFoodlist && this.state.externalFoodlist.map( (item, i) =>  
+                            ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
+                                titleStyle={Styles.inventoryText} rightTitleStyle={Styles.quantityText} /> ))
+                        }
+                        
+                        <TouchableOpacity style={Styles.saveButton} onPress ={this.onSaveChangesPress}> 
+                            <Text style={Styles.saveChanges}>Save Changes</Text>
+                        </TouchableOpacity>
+
+                        {/* Edit Button (When pressed, makes the information content editable) */}
+                        <TouchableOpacity>
+                            <Text style={Styles.editButton} onPress ={this.toggleEditable}>Edit</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={Styles.deleteButton} onPress ={this.onDeletePress}> 
+                            <Text style={Styles.saveChanges}>Delete</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                </ScrollView>
+            )}
+        </KeyboardShift>
         );
     }
 }
