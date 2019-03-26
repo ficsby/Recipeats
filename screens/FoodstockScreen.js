@@ -46,24 +46,49 @@ const inventoryList = [   // FOR TESTING PURPOSES
 
 
 export default class FoodstockScreen extends React.Component {
-    state = {
-        externalFoodlist: []
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            externalFoodlist: []
+        };
+        //this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
+
+    }
+
+    // state = {
+    //     externalFoodlist: []
+    // };
 
     componentDidMount() {
-        ref = getFoodList(firebase.auth().currentUser.uid);
-        foodlist = [];
+        this._ismounted = true;
+        foodlist = []
 
-        ref.once("value").then( snapshot => {
-            foodlistSnapshot = snapshot.val();
-            
-            for (var key in foodlistSnapshot) {
-                if (foodlistSnapshot.hasOwnProperty(key)) {
-                    foodlist.push( {name: key, quantity: foodlistSnapshot[key]} );
+        // Returns a promise of the user's value
+        retrieveData = () => {
+            ref = getFoodList(firebase.auth().currentUser.uid);
+            return ref.once("value");
+        }
+
+        // Snapshot is the depiction of the user's current data
+        retrieveData().then( (snapshot) => {
+            if(this._ismounted)
+            {
+                foodlistSnapshot = snapshot.val();
+
+                for (var key in foodlistSnapshot) {
+                    if (foodlistSnapshot.hasOwnProperty(key)) {
+                        foodlist.push( {name: key, quantity: foodlistSnapshot[key]} );
+                    }
                 }
+                this.setState( {
+                    externalFoodlist: foodlist
+                })
             }
-            this.setState({externalFoodlist: foodlist})
-        });
+        })
+    }
+
+    componentWillUnmount () {
+        this._ismounted = false; // After components is unmounted reset boolean
     }
 
     render() {
