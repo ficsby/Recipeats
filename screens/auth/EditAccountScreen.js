@@ -58,8 +58,6 @@ export default class SignupScreen extends React.Component {
         this.setState({
             editable: !this.state.editable
         });
-
-        this.state.editable?  Alert.alert("Not editable now") : Alert.alert("Values should be editable now.");
     }
 
     writeUserData = (userId) => {
@@ -104,293 +102,148 @@ export default class SignupScreen extends React.Component {
     }
 
     render() {
-<<<<<<< HEAD
-        const { user } = this.state;
-        const { isEditable } = this.state.editable;
-        if(this._ismounted)
-        {
-            return (
-                <KeyboardShift>
-                {() => (
-                    <ScrollView>
-                        <View style={styles.titleRow}>
-                            {/* Left Arrow Button (Goes back to previous page) */}
-                            <TouchableOpacity style={{height: 80}} onPress={this.onGoBack}>
-                                <Icon name='left' size={30} color='rgba(100, 92, 92, 0.8)'
-                                        style={{marginLeft: '20%'}}/>
-                            </TouchableOpacity>
-        
-                            <Text style={styles.pageTitle}>Account Settings</Text>
-        
-                            {/* Edit Button (When pressed, makes the information content editable) */}
-                            <TouchableOpacity>
-                                <Text style={styles.editButton} onPress ={this.toggleEditable}>Edit</Text>
-                            </TouchableOpacity>
-        
-                        </View>
-
-
-                        {/* BASIC USER INFORMATION */}
-
-                        <Text style={styles.inputHeading}>Your basic information</Text>
-                        
-                        <View style={styles.dataRow}>
-                            <Text style={styles.inputLabel}>Name</Text>
-                            <TextInput style={styles.inputData} 
-                                    value = {user.name} editable={false}/>
-                        </View>
-        
-                        <View style={styles.separationLine} />
-        
-                        <View style={styles.dataRow}>
-                            <Text style={styles.inputLabel}>Username</Text>
-                            <TextInput style={styles.inputData} 
-                                    value ={user.username} editable={isEditable}/>
-                        </View>
-                        <View style={styles.separationLine} />
-        
-                        <View style={styles.dataRow}>
-                            <Text style={styles.inputLabel}>Email</Text>
-                            <TextInput style={styles.inputData} 
-                                    value ={user.email} editable={isEditable}/>
-                        </View>
-                        <View style={styles.separationLine} />
-                
-                        <View style={styles.dataRow}>
-                            <Text style={styles.inputLabel}>Password</Text>
-                            <TextInput style={styles.inputData} 
-                                    value ={user.password} editable={isEditable}/>
-                        </View>
-                        <View style={styles.separationLine} />
-        
-        
-                        {/* PHYSICAL INFORMATION */}
-
-                        <Text style={styles.inputHeading}>Your physical information</Text>
-        
-                        <View style={styles.dataRow}>
-                            <Text style={styles.inputLabel}>Birthday</Text>
-                            <TextInput style={styles.inputData} 
-                                    value ={user.birthDate} editable={isEditable}/>
-                        </View>
-                        <View style={styles.separationLine} />
-
-                        <View style={styles.dataRow}>
-                            <Text style={styles.inputLabel}>Gender</Text>
-                            <TextInput style={styles.inputData} 
-                                    value ={user.gender} editable={isEditable}/>
-                        </View>
-                        <View style={styles.separationLine} />
-        
-                        <View style={styles.dataRow}>
-                            <Text style={styles.inputLabel}>Height</Text>
-                            <TextInput style={styles.inputData} 
-                                    value ={user.height} editable={isEditable}/>
-                        </View>
-                        <View style={styles.separationLine} />
-        
-                        <View style={styles.dataRow}>
-                            <Text style={styles.inputLabel}>Weight</Text>
-                            <TextInput style={styles.inputData} 
-                                    value ={user.weight} editable={isEditable}/>
-                        </View>
-                        <View style={styles.separationLine} />
-        
-                        <View style={styles.dataRow}>
-                            <Text style={styles.inputLabel}>Level of Activity</Text>
-                            <TextInput style={styles.inputData} 
-                                    value ={user.activityLevel} editable={isEditable}/>
-                        </View>
-                        <View style={styles.separationLine} />
-        
-        
-                        <Text style={styles.inputHeading}>Macro Goals</Text>
-        
-                        <View style={styles.dataRow}>
-                            <Text style={styles.macroLabel}>Calories</Text>
-                            <TextInput style={{ width: 200}}
-                                    value ={'1000'} editable={isEditable}/>
-                        </View>
-                        <View style={styles.dataRow}>
-                            <Text style={styles.macroLabel}>Protein</Text>
-                            <TextInput style={{ width: 200}}
-                                    value ={'100'} editable={isEditable}/>                
-                        </View>
-                        <View style={styles.dataRow}>
-                            <Text style={styles.macroLabel}>Fats</Text>
-                            <TextInput style={{ width: 200}}
-                                    value ={'100'} editable={isEditable}/>                
-                        </View>
-                        <View style={styles.dataRow}>
-                            <Text style={styles.macroLabel}>Carbs</Text>
-                            <TextInput style={{ width: 200}}
-                                    value ={'100'} editable={isEditable}/>                
-                        </View>
-                        <View style={styles.macroSeparationLine} />
-        
-        
-                        <Text style={styles.inputHeading}>Budget Information</Text>
-        
-                        <View style={styles.dataRow}>
-                            <Text style={styles.inputLabel}>Budget</Text>
-                            <TextInput style={styles.inputData} 
-                                    value ={'$200 weekly'} editable={isEditable}/>                
-                        </View>                
-                        <View style={styles.separationLine} />
-        
-                                
-                        <TouchableOpacity style={styles.saveButton} onPress ={this.onSaveChangesPress}> 
-                            <Text style={styles.saveChanges}>Save Changes</Text>
-                        </TouchableOpacity>
-                    
-                    </ScrollView>
-                    )}
-                </KeyboardShift>
-            )
-        }
-        else{
-            return null;
-        }
-=======
         
         return (
-            <ScrollView>
+            <KeyboardShift>
+            {() => (
+                <ScrollView>
 
-                <View style={styles.titleRow}>
-                    {/* Side bar navigation icon */}
-                    <TouchableOpacity style={{height: 80}}>
-                        <Icon name='left' size={30} color='rgba(100, 92, 92, 0.8)'
-                              style={{marginLeft: '20%'}} />
-                    </TouchableOpacity>
+                    <View style={styles.titleRow}>
+                        {/* Side bar navigation icon */}
+                        <TouchableOpacity style={{height: 80}}>
+                            <Icon name='left' size={30} color='rgba(100, 92, 92, 0.8)'
+                                style={{marginLeft: '20%'}} />
+                        </TouchableOpacity>
 
-                    <Text style={styles.pageTitle}>Account Settings</Text>
+                        <Text style={styles.pageTitle}>Account Settings</Text>
+                        {
+                            !(this.state.editable)? 
+                            <TouchableOpacity>
+                                <Text style={styles.editButton} onPress ={this.toggleEditable}>Edit</Text>
+                            </TouchableOpacity> : null
+                        }
+                    </View>
+
+                    <Text style={styles.inputHeading}>Your basic information</Text>
+    
+                    <View style={styles.dataRow}>
+                        <Text style={styles.inputLabel}>Name</Text>
+                        <TextInput style={styles.inputData} 
+                                value ={this.state.name}  onChangeText={(name) => this.setState({name})}
+                                editable={this.state.editable}/>
+                    </View>
+                    <View style={styles.separationLine} />
+
+                    <View style={styles.dataRow}>
+                        <Text style={styles.inputLabel}>Username</Text>
+                        <TextInput style={styles.inputData} 
+                                value ={this.state.username}  onChangeText={(username) => this.setState({username})}
+                                editable={this.state.editable}/>
+                    </View>
+                    <View style={styles.separationLine} />
+
+                    <View style={styles.dataRow}>
+                        <Text style={styles.inputLabel}>Email</Text>
+                        <TextInput style={styles.inputData} 
+                                value ={this.state.email}  onChangeText={(email) => this.setState({email})}
+                                editable={this.state.editable}/>
+                    </View>
+                    <View style={styles.separationLine} />
+            
+                    <View style={styles.dataRow}>
+                        <Text style={styles.inputLabel}>Password</Text>
+                        <TextInput style={styles.inputData} 
+                                value ={this.state.password}  onChangeText={(password) => this.setState({password})}
+                                editable={this.state.editable}/>
+                    </View>
+                    <View style={styles.separationLine} />
+
+
+
+                    <Text style={styles.inputHeading}>Your physical information</Text>
+
+                    <View style={styles.dataRow}>
+                        <Text style={styles.inputLabel}>Birthday</Text>
+                        <TextInput style={styles.inputData} 
+                                value ={this.state.birthDate}  onChangeText={(birthDate) => this.setState({birthDate})}
+                                editable={this.state.editable}/>
+                    </View>
+                    <View style={styles.separationLine} />
+
+                    <View style={styles.dataRow}>
+                        <Text style={styles.inputLabel}>Height</Text>
+                        <TextInput style={styles.inputData} 
+                                value ={this.state.height}  onChangeText={(height) => this.setState({height})}
+                                editable={this.state.editable}/>
+                    </View>
+                    <View style={styles.separationLine} />
+
+                    <View style={styles.dataRow}>
+                        <Text style={styles.inputLabel}>Weight</Text>
+                        <TextInput style={styles.inputData} 
+                                value ={this.state.weight}  onChangeText={(weight) => this.setState({weight})}
+                                editable={this.state.editable}/>
+                    </View>
+                    <View style={styles.separationLine} />
+
+                    <View style={styles.dataRow}>
+                        <Text style={styles.inputLabel}>Level of Activity</Text>
+                        <TextInput style={styles.inputData} 
+                                value ={this.state.activityLevel}  onChangeText={(activityLevel) => this.setState({activityLevel})}
+                                editable={this.state.editable}/>
+                    </View>
+                    <View style={styles.separationLine} />
+
+
+                    <Text style={styles.inputHeading}>Macro Goals</Text>
+
+                    <View style={styles.dataRow}>
+                        <Text style={styles.macroLabel}>Calories</Text>
+                        <TextInput style={{ width: 200}}
+                                value ={this.state.calories}  onChangeText={(calories) => this.setState({calories})}
+                                editable={this.state.editable}/>
+                    </View>
+                    <View style={styles.dataRow}>
+                        <Text style={styles.macroLabel}>Protein</Text>
+                        <TextInput style={{ width: 200}}
+                                value ={this.state.protein}  onChangeText={(protein) => this.setState({protein})}
+                                editable={this.state.editable}/>                
+                    </View>
+                    <View style={styles.dataRow}>
+                        <Text style={styles.macroLabel}>Fats</Text>
+                        <TextInput style={{ width: 200}}
+                                value ={this.state.fats}  onChangeText={(fats) => this.setState({fats})}
+                                editable={this.state.editable}/>                
+                    </View>
+                    <View style={styles.dataRow}>
+                        <Text style={styles.macroLabel}>Carbs</Text>
+                        <TextInput style={{ width: 200}}
+                                value ={this.state.carbs}  onChangeText={(carbs) => this.setState({carbs})}
+                                editable={this.state.editable}/>                
+                    </View>
+                    <View style={styles.macroSeparationLine} />
+
+
+                    <Text style={styles.inputHeading}>Budget Information</Text>
+
+                    <View style={styles.dataRow}>
+                        <Text style={styles.inputLabel}>Budget</Text>
+                        <TextInput style={styles.inputData} 
+                                value ={this.state.budget}  onChangeText={(budget) => this.setState({budget})} 
+                                editable={this.state.editable}/>                
+                    </View>                
+                    <View style={styles.separationLine} />
+                    <View style={styles.whitespaceBuffer} />
                     {
-                        !(this.state.editable)? 
-                        <TouchableOpacity>
-                            <Text style={styles.editButton} onPress ={this.toggleEditable}>Edit</Text>
+                        this.state.editable?            
+                        <TouchableOpacity style={styles.saveButton} onPress ={this.onSaveChangesPress}> 
+                            <Text style={styles.saveChanges}>Save Changes</Text>
                         </TouchableOpacity> : null
                     }
-                </View>
-
-                <Text style={styles.inputHeading}>Your basic information</Text>
- 
-                <View style={styles.dataRow}>
-                    <Text style={styles.inputLabel}>Name</Text>
-                    <TextInput style={styles.inputData} 
-                               value ={this.state.name}  onChangeText={(name) => this.setState({name})}
-                               editable={this.state.editable}/>
-                </View>
-                <View style={styles.separationLine} />
-
-                <View style={styles.dataRow}>
-                    <Text style={styles.inputLabel}>Username</Text>
-                    <TextInput style={styles.inputData} 
-                               value ={this.state.username}  onChangeText={(username) => this.setState({username})}
-                               editable={this.state.editable}/>
-                </View>
-                <View style={styles.separationLine} />
-
-                <View style={styles.dataRow}>
-                    <Text style={styles.inputLabel}>Email</Text>
-                    <TextInput style={styles.inputData} 
-                               value ={this.state.email}  onChangeText={(email) => this.setState({email})}
-                               editable={this.state.editable}/>
-                </View>
-                <View style={styles.separationLine} />
-        
-                <View style={styles.dataRow}>
-                    <Text style={styles.inputLabel}>Password</Text>
-                    <TextInput style={styles.inputData} 
-                               value ={this.state.password}  onChangeText={(password) => this.setState({password})}
-                               editable={this.state.editable}/>
-                </View>
-                <View style={styles.separationLine} />
-
-
-
-                <Text style={styles.inputHeading}>Your physical information</Text>
-
-                <View style={styles.dataRow}>
-                    <Text style={styles.inputLabel}>Birthday</Text>
-                    <TextInput style={styles.inputData} 
-                               value ={this.state.birthDate}  onChangeText={(birthDate) => this.setState({birthDate})}
-                               editable={this.state.editable}/>
-                </View>
-                <View style={styles.separationLine} />
-
-                <View style={styles.dataRow}>
-                    <Text style={styles.inputLabel}>Height</Text>
-                    <TextInput style={styles.inputData} 
-                               value ={this.state.height}  onChangeText={(height) => this.setState({height})}
-                               editable={this.state.editable}/>
-                </View>
-                <View style={styles.separationLine} />
-
-                <View style={styles.dataRow}>
-                    <Text style={styles.inputLabel}>Weight</Text>
-                    <TextInput style={styles.inputData} 
-                               value ={this.state.weight}  onChangeText={(weight) => this.setState({weight})}
-                               editable={this.state.editable}/>
-                </View>
-                <View style={styles.separationLine} />
-
-                <View style={styles.dataRow}>
-                    <Text style={styles.inputLabel}>Level of Activity</Text>
-                    <TextInput style={styles.inputData} 
-                               value ={this.state.activityLevel}  onChangeText={(activityLevel) => this.setState({activityLevel})}
-                               editable={this.state.editable}/>
-                </View>
-                <View style={styles.separationLine} />
-
-
-                <Text style={styles.inputHeading}>Macro Goals</Text>
-
-                <View style={styles.dataRow}>
-                    <Text style={styles.macroLabel}>Calories</Text>
-                    <TextInput style={{ width: 200}}
-                               value ={this.state.calories}  onChangeText={(calories) => this.setState({calories})}
-                               editable={this.state.editable}/>
-                </View>
-                <View style={styles.dataRow}>
-                    <Text style={styles.macroLabel}>Protein</Text>
-                    <TextInput style={{ width: 200}}
-                               value ={this.state.protein}  onChangeText={(protein) => this.setState({protein})}
-                               editable={this.state.editable}/>                
-                </View>
-                <View style={styles.dataRow}>
-                    <Text style={styles.macroLabel}>Fats</Text>
-                    <TextInput style={{ width: 200}}
-                               value ={this.state.fats}  onChangeText={(fats) => this.setState({fats})}
-                               editable={this.state.editable}/>                
-                </View>
-                <View style={styles.dataRow}>
-                    <Text style={styles.macroLabel}>Carbs</Text>
-                    <TextInput style={{ width: 200}}
-                               value ={this.state.carbs}  onChangeText={(carbs) => this.setState({carbs})}
-                               editable={this.state.editable}/>                
-                </View>
-                <View style={styles.macroSeparationLine} />
-
-
-                <Text style={styles.inputHeading}>Budget Information</Text>
-
-                <View style={styles.dataRow}>
-                    <Text style={styles.inputLabel}>Budget</Text>
-                    <TextInput style={styles.inputData} 
-                               value ={this.state.budget}  onChangeText={(budget) => this.setState({budget})} 
-                               editable={this.state.editable}/>                
-                </View>                
-                <View style={styles.separationLine} />
-                <View style={styles.whitespaceBuffer} />
-                {
-                    this.state.editable?            
-                    <TouchableOpacity style={styles.saveButton} onPress ={this.onSaveChangesPress}> 
-                        <Text style={styles.saveChanges}>Save Changes</Text>
-                    </TouchableOpacity> : null
-                }
-            </ScrollView>
+                </ScrollView>
+            )}
+            </KeyboardShift>
         ) 
->>>>>>> master
     }
 }
 
@@ -498,7 +351,7 @@ const styles = StyleSheet.create({
     saveChanges: {
         color: 'rgba(255,255,255,1)',
         fontSize: 16,
-        fontweight: '600',
+        fontWeight: '600',
     },
 
 

@@ -5,7 +5,7 @@ import { Font, AppLoading } from 'expo';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 import { Styles } from '../styles/GlobalStyles';
 import { ListItem } from 'react-native-elements';
-import { addToFoodStock, logPurchaseDate, getFoodList, deleteFromFoodStock} from '../utils/FoodListUtils';
+import { modifyFoodStock, logPurchaseDate, getFoodList, removeFromFoodStock} from '../utils/FoodListUtils';
 import KeyboardShift from '../styles/KeyboardShift.js';
 
 // import Bar from 'react-native-bar-collapsible';
@@ -51,6 +51,8 @@ export default class FoodstockScreen extends React.Component {
         this.state = {
             externalFoodlist: [],
             editable: false,
+            itemName: '',
+            itemQuantity: '',
         };
         this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
         this.toggleEditable = this.toggleEditable.bind(this);
@@ -102,18 +104,19 @@ export default class FoodstockScreen extends React.Component {
     onSaveChangesPress = () => {
         //var user = firebase.auth().currentUser;
         //this.writeUserData(user.uid);
+        modifyFoodStock(firebase.auth().currentUser.uid, this.state.itemName, this.state.itemQuantity);
         Alert.alert("Your changes has been updated..");
     }
 
     onDeletePress = () => {
-        deleteFromFoodStock(firebase.auth().currentUser.uid, 'Carrots');
+        removeFromFoodStock(firebase.auth().currentUser.uid, 'Carrots');
     }
 
     render() {
         
         //Push data to firebase
-        inventoryList.forEach(item =>  
-            addToFoodStock(firebase.auth().currentUser.uid, item.name, item.quantity));
+        // inventoryList.forEach(item =>  
+        //     modifyFoodStock(firebase.auth().currentUser.uid, item.name, item.quantity));
 
         return(
         
@@ -130,9 +133,6 @@ export default class FoodstockScreen extends React.Component {
                                 titleStyle={Styles.inventoryText} rightTitleStyle={Styles.quantityText} /> ))
                         }
                         
-                        <TouchableOpacity style={Styles.saveButton} onPress ={this.onSaveChangesPress}> 
-                            <Text style={Styles.saveChanges}>Save Changes</Text>
-                        </TouchableOpacity>
 
                         {/* Edit Button (When pressed, makes the information content editable) */}
                         <TouchableOpacity>
@@ -142,6 +142,26 @@ export default class FoodstockScreen extends React.Component {
                         <TouchableOpacity style={Styles.deleteButton} onPress ={this.onDeletePress}> 
                             <Text style={Styles.saveChanges}>Delete</Text>
                         </TouchableOpacity>
+
+                        <TouchableOpacity style={Styles.saveButton} onPress ={this.onSaveChangesPress}> 
+                            <Text style={Styles.saveChanges}>Save Changes</Text>
+                        </TouchableOpacity>
+
+
+                        <View style={Styles.dataRow}>
+                        <Text style={Styles.inputLabel}>Name</Text>
+                        <TextInput style={Styles.inputData} 
+                                value ={this.state.itemName}  onChangeText={(itemName) => this.setState({itemName})}
+                                editable={this.state.editable}/>
+                        </View>
+
+                        <View style={Styles.dataRow}>
+                        <Text style={Styles.inputLabel}>Quantity</Text>
+                        <TextInput style={Styles.inputData} 
+                                value ={this.state.itemQuantity}  onChangeText={(itemQuantity) => this.setState({itemQuantity})}
+                                editable={this.state.editable}/>
+                        </View>
+
                     </View>
 
                 </ScrollView>

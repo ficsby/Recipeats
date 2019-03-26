@@ -36,12 +36,17 @@ export const getFoodList = (foodListID) => {
  * @param {*} foodItemID - ID of the food item being added to the food stock
  * @param {*} quantity - The quantity of food item being added to food stock
  */
-export const addToFoodStock = (userId, foodItemID, quantity) => {
+export const modifyFoodStock = (userId, foodItemID, quantity) => {
     //console.log(foodItemID + ": " + quantity);
     firebase.database().ref('foodlist/' + userId).update({
         [foodItemID]: quantity
     });
 }
+
+export const removeFromFoodStock = (userId, foodItemID) => {
+    firebase.database().ref('foodlist/' + userId + '/' + foodItemID).remove();
+}
+
 
 /**
  * Function to log the date a food item was purchased
