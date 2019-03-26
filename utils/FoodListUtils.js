@@ -31,7 +31,7 @@ export const getFoodList = (foodListID) => {
 };
 
 /**
- * Function to add a new food item to a user's food inventory
+ * Function to add a new food item to a user's food inventory in the database
  * @param {*} userId - User's user ID
  * @param {*} foodItemID - ID of the food item being added to the food stock
  * @param {*} quantity - The quantity of food item being added to food stock
@@ -49,7 +49,7 @@ export const removeFromFoodStock = (userId, foodItemID) => {
 
 
 /**
- * Function to log the date a food item was purchased
+ * Function to log the date a food item was purchased to the database
  * @param {*} userId 
  * @param {*} foodItemID 
  * @param {*} date 
