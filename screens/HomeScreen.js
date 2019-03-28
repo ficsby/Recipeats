@@ -56,39 +56,6 @@ export default class HomeScreen extends React.Component {
             ],
         };
     };
-    
-
-    /* <Francis Buendia> March 15, 2019
-        API Request call to 'Autocomplete recipe search' recipes by name 
-    */
-   getRecipeSearchResultsByName = () => {
-    currentThis = this;   // Need to keep a reference of the current 'this' because the 'this' context changes in the callback of the promise
-
-    // Returns a promise which then gets the result from the request call
-    const fetchRecipeByNamePromise = fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/autocomplete?number=10&query=chicken`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "X-RapidAPI-Key" : "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2"     // API key registered for Spoonacular API
-        },
-    });
-
-    const fetchRecipeByNameResponse = fetchRecipeByNamePromise.then(function(response) { return response.json(); })
-    // Check if component is mounted before changing state, this check is to prevent memory leaks
-    if(this._ismounted)
-    {
-        fetchRecipeByNameResponse.then(function(json){
-            currentThis.setState({recipes: json});
-        })
-    }
-}
-
-    findRecipe = (query) => {
-        if( query === '') { return []; }
-        const { recipes } = this.state;
-        const regex = new RegExp(`${query.trim()}`, 'i');
-        return recipes.filter(recipe => recipe.title.search(regex) >= 0);
-    }
 
     async componentDidMount() {
         this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
@@ -128,7 +95,7 @@ export default class HomeScreen extends React.Component {
     };
 
     
-    getRandomFoodTrivia = () => {
+    async getRandomFoodTrivia(){
         currentThis = this;
 
         // Returns a promise which then gets the result from the request call HEREEEEEE
@@ -149,12 +116,6 @@ export default class HomeScreen extends React.Component {
     }
     
     render() {
-
-        const { query } = this.state;
-        const recipes = this.findRecipe(query);
-        const comp = (a,b) => a.toLowerCase().trim() == b.toLowerCase().trim();
-        this.getRecipeSearchResultsByName();
-
         console.log("\n\nFood Trivia: ", this.state.text);
 
         return (

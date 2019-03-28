@@ -14,6 +14,7 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 const fetch = require('node-fetch');
 
 import LoadingScreen from './LoadingScreen';
+import apiUtils from '../api/apiUtils.js';
 
 const { width: WIDTH } = Dimensions.get('window');
 var globalStyles = require('../styles/GlobalStyles.js');
@@ -73,7 +74,7 @@ export default class HomeScreen extends React.Component {
             bookmarked: false,
             liked: false,
 
-            id: 0,
+            id: 479101,
             title: '',
             instructions: '',
             servings: 0,
@@ -98,56 +99,13 @@ export default class HomeScreen extends React.Component {
                               'keotgenic': false,
                               'whole30': false,
                              },
-            // // Ingredient Data
-            // aisle: '',
-            // test: '',
-            // search: '',
         };
         this.toggleBookmark = this.toggleBookmark.bind(this);
         this.toggleHeart = this.toggleHeart.bind(this);
     };
 
     async getRecipeInfoFromId(id){
-        currentThis = this;
-
-        // Returns a promise which then gets the result from the request call
-        const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/479101/information`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
-            },
-        });
-
-        const json = await response.json();
-        // Check if component is mounted before changing state, this check is to prevent memory leaks
-        if(this._ismounted)
-        {
-            nutrtionTags = {}
-            for(key in json)
-            {   
-                if(key in currentThis.state){
-                    currentThis.setState({
-                        [key]: json[key]
-                    });
-                }
-                else if(key in currentThis.state.nutritionalTags)
-                {
-                    nutrtionTags[key] = json[key];
-                }
-            }
-
-            currentThis.setState({
-                nutritionalTags: nutrtionTags
-            });
-        }
-
-        return new Promise((resolve) =>
-            setTimeout(
-            () => { resolve('result') },
-            5000
-        )
-  );
+        return await apiUtils.getRecipeInfoFromId(id, this);
     }
 
     toggleBookmark() {
@@ -189,7 +147,7 @@ export default class HomeScreen extends React.Component {
         }); 
         this.setState({fontLoaded: true});
 
-        const data = await this.getRecipeInfoFromId(this.recipeID);
+        const data = await this.getRecipeInfoFromId(this.state.id);
         
         if(data != null)
         {
