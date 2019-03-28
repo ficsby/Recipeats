@@ -15,14 +15,9 @@ import NavigationService from '../navigation/NavigationService.js';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
 const { width: WIDTH } = Dimensions.get('window');
-<<<<<<< HEAD
 var globalStyles = require('../styles/globalStyles.js');
 
 // Fetch News Components
-=======
-var globalStyles = require('../styles/GlobalStyles.js');
-//var unirest = require('unirest');
->>>>>>> master
 const fetch = require('node-fetch');
 
 import Button from './components/Button';
@@ -30,7 +25,6 @@ import NewsItem from './components/NewsItem';
 const API_KEY = "260b79df3cmsh60d67ae305873d9p188fc5jsnd45d59e0cbdd";
 
 export default class HomeScreen extends React.Component {
-<<<<<<< HEAD
 
     constructor(props) {
         super(props);
@@ -176,40 +170,6 @@ export default class HomeScreen extends React.Component {
             <View style={styles.pageContainer}>
                 {/* Top panel of page. Contains the menu and user account buttons. 
                     Does not actually contain the Autocomplete Search Bar, but is visually underneath it  */}
-                <View style={styles.topContainer}>
-                    <View style={styles.row}>
-                        {/* Side bar navigation icon */}
-                        <TouchableOpacity onPress = { () => DrawerActions.openDrawer()}>
-                            <Icon name='menu' size={25} color='rgba(175,76,99,1)' backgroundColor='red' height={200} style={{marginLeft: 18}} />
-                        </TouchableOpacity>
-
-                        {/* User account icon  */}
-                        <TouchableOpacity onPress ={this.onAccountIconPress} >
-                            <Icon name='user' size={25} color='rgba(175,76,99,1)' style={{marginLeft: (WIDTH - 85)}} />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-                {/* Search Bar, capable of autocomplete */}
-                <Autocomplete
-                    containerStyle={styles.searchContainer}  
-                    inputContainerStyle={styles.searchInputContainer}
-                    data={recipes.length === 1 && comp(query, recipes[0].title) ? [] : recipes}
-                    defaultValue = { query }
-                    autoCorrect={false}
-                    placeholder= "Search recipes, ingredients..."
-                    onChangeText={text => this.setState({ query: text })}
-                    renderItem={({ id, title }) => 
-                    (
-                        // Search Results List
-                        <TouchableOpacity style={styles.searchResultsContainer} onPress={() => this.setState({ query: title })}>
-                            <Text style={styles.searchResult}>
-                                {title}
-                            </Text>
-                        </TouchableOpacity>
-                    )}                       
-                />
-
                 <ScrollView style={styles.newsContainer}>
                         <View style={styles.foodTriviaContainer}>
 
@@ -229,20 +189,6 @@ export default class HomeScreen extends React.Component {
                         { this.renderNews() }
                 </ScrollView>
                 
-=======
-    render() {
-
-        return (
-            <View>
-                <Text>Home Screen</Text>
-                <TouchableOpacity onPress={ () => NavigationService.navigate('Recipe')}>
-                    <Text>Go to Recipe Screen </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={ () => NavigationService.navigate('Foodstock')}>
-                    <Text>Go to Recipe Screen </Text>
-                </TouchableOpacity>
->>>>>>> master
             </View>
         )
     }

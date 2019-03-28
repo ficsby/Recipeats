@@ -1,7 +1,6 @@
 import React from 'react';
 import { Platform, View, StyleSheet, TouchableOpacity, Dimensions, TextInput } from 'react-native';
 import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createBottomTabNavigator, createAppContainer , DrawerItems } from 'react-navigation';
-import { StackActions, DrawerActions } from 'react-navigation';
 
 import SearchHeaderNav from './SearchHeaderNav';
 
