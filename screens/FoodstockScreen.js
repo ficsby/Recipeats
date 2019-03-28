@@ -4,6 +4,7 @@ import { Font, AppLoading } from 'expo';
 import { ListItem } from 'react-native-elements';
 import KeyboardShift from '../styles/KeyboardShift.js';
 import TouchableScale from 'react-native-touchable-scale';
+import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 
 import { Styles } from '../styles/GlobalStyles';
 import { modifyFoodStock, logPurchaseDate, getFoodList, removeFromFoodStock } from '../utils/FoodListUtils';
@@ -51,7 +52,8 @@ export default class FoodstockScreen extends React.Component {
         super(props);
         this.state = {
             addModalVisible: false,
-            externalFoodlist: [],
+            tableHead: ['Name', 'Quantity', ''],
+            externalFoodList: [],
             editable: false,
             itemName: '',
             itemQuantity: '',
@@ -74,7 +76,7 @@ export default class FoodstockScreen extends React.Component {
 
     componentDidMount() {
         this._ismounted = true;
-        foodlist = []
+        foodList = []
 
         // Returns a promise of the user's value
         retrieveData = () => {
@@ -86,15 +88,15 @@ export default class FoodstockScreen extends React.Component {
         retrieveData().then( (snapshot) => {
             if(this._ismounted)
             {
-                foodlistSnapshot = snapshot.val();
+                foodListSnapshot = snapshot.val();
 
-                for (var key in foodlistSnapshot) {
-                    if (foodlistSnapshot.hasOwnProperty(key)) {
-                        foodlist.push( {name: key, quantity: foodlistSnapshot[key]} );
+                for (var key in foodListSnapshot) {
+                    if (foodListSnapshot.hasOwnProperty(key)) {
+                        foodList.push( {name: key, quantity: foodListSnapshot[key]} );
                     }
                 }
                 this.setState( {
-                    externalFoodlist: foodlist
+                    externalFoodList: foodList
                 })
             }
         })
@@ -133,8 +135,21 @@ export default class FoodstockScreen extends React.Component {
         this.setState({addModalVisible: !this.state.addModalVisible});
     }
 
+    _alertIndex(index) {
+      Alert.alert(`This is row ${index + 1}`);
+    }
+
     render() {
         
+        const state = this.state;
+        const element = (data, index) => (
+        <TouchableOpacity onPress={() => this._alertIndex(index)}>
+        <View style={Styles.btn}>
+          <Text style={Styles.btnText}>button</Text>
+        </View>
+        </TouchableOpacity>
+    );
+
         //Push data to firebase
         // inventoryList.forEach(item =>  
         //     modifyFoodStock(firebase.auth().currentUser.uid, item.name, item.quantity));
@@ -168,8 +183,8 @@ export default class FoodstockScreen extends React.Component {
                   <Text style={Styles.sectionTitle}> Inventory </Text>
 
                   {//Fetch and display data from firebase
-                  this.state.externalFoodlist &&
-                    this.state.externalFoodlist.map((item, i) => (
+                  this.state.externalFoodList &&
+                    this.state.externalFoodList.map((item, i) => (
                       <ListItem
                         key={i}
                         title={item.name}
