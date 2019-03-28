@@ -188,9 +188,6 @@ export default class HomeScreen extends React.Component {
           'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
         }); 
         this.setState({fontLoaded: true});
-<<<<<<< HEAD
-        this.getRecipeInfoFromId(this.recipeID);
-=======
 
         const data = await this.getRecipeInfoFromId(this.recipeID);
         
@@ -198,7 +195,6 @@ export default class HomeScreen extends React.Component {
         {
             this.setState({ isLoading: false });
         }
->>>>>>> master
     };
 
     componentWillUnmount () {

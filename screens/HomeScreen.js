@@ -96,7 +96,7 @@ export default class HomeScreen extends React.Component {
           'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
         }); 
         this.setState({fontLoaded: true});
-        this.getRandomFoodTip();
+        this.getRandomFoodTrivia();
     };
 
     componentWillUnmount () {
@@ -128,11 +128,11 @@ export default class HomeScreen extends React.Component {
     };
 
     
-    getRandomFoodTip = () => {
+    getRandomFoodTrivia = () => {
         currentThis = this;
 
         // Returns a promise which then gets the result from the request call HEREEEEEE
-        const fetchfoodTriviaByIdPromise = fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/trivia/random`, {
+        const response = fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/trivia/random`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -140,22 +140,13 @@ export default class HomeScreen extends React.Component {
             },
         });
 
-        const fetchfoodTriviaByIdResponse = fetchfoodTriviaByIdPromise.then(function(response) { return response.json(); })
+        const json = await response.json();
         // Check if component is mounted before changing state, this check is to prevent memory leaks
         if(this._ismounted)
         {
-            fetchfoodTriviaByIdResponse.then(function(json){
-            for(key in json)
-            {   
-                if(key in currentThis.state){
-                    currentThis.setState({
-                        [key]: json[key]
-                    });
-                }
-            }
-        })
+            this.setState({foodTrivia: json});
+        }
     }
-}
     
     render() {
 
