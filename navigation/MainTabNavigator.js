@@ -57,7 +57,7 @@ const HomeTabNavigator = createBottomTabNavigator({
     },
     
     FoodStock: {
-        screen: BudgetScreen,
+        screen: FoodstockScreen,
         navigationOptions: {
             tabBarIcon: ({}) => (
                 <Icon name='food-stock' size={30} color='rgba(175,76,99,1)' />

@@ -8,6 +8,7 @@ import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-ta
 
 import { Styles } from '../styles/GlobalStyles';
 import { modifyFoodStock, logPurchaseDate, getFoodList, removeFromFoodStock } from '../utils/FoodListUtils';
+import FoodItem from './components/FoodItem';
 
 
 // import Bar from 'react-native-bar-collapsible';
@@ -194,6 +195,7 @@ export default class FoodstockScreen extends React.Component {
                       />
                     ))}
 
+                  <FoodItem index={5} name="temp" quantity={0} />  
                   <ListItem
                     Component={TouchableScale}
                     friction={90}

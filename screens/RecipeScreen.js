@@ -5,7 +5,6 @@ import Autocomplete from 'react-native-autocomplete-input';
 import { ListItem, Badge } from 'react-native-elements';
 // import Bar from 'react-native-bar-collapsible';
 import { Font, AppLoading } from 'expo';
-import LoadingScreen from './../screens/LoadingScreen';
 // import NavigationService from '../navigation/NavigationService.js';
 
 /* Custom Icons */
