@@ -23,10 +23,11 @@ export default class SignupScreen extends React.Component {
             passwordConfirm: "",
             username: "",
             weight: "",
-            activityLevel: "",
+            height: "",
+            activityLevel: "Sedentary",
             birthDate: "",
-            selectedHeightMetric : "",
-            selectedGender: "",
+            selectedHeightMetric : "in",
+            selectedGender: "Male",
         };
     }
 
@@ -39,6 +40,7 @@ export default class SignupScreen extends React.Component {
             weight: this.state.weight,
             activityLevel: this.state.activityLevel,
             birthDate: this.state.birthDate,
+            height: this.state.height,
             selectedHeightMetric: this.state.selectedHeightMetric,
             selectedGender: this.state.selectedGender
         });
@@ -61,7 +63,8 @@ export default class SignupScreen extends React.Component {
         .then( () => {
             var user = firebase.auth().currentUser;
             this.writeUserData(user.uid);
-            user.sendEmailVerification(); 
+            user.sendEmailVerification();
+            this.props.navigation.navigate('Home'); 
             // do nothing, success of creating will move onto the main page
         }, (error) => {
             Alert.alert(error.message);
@@ -69,14 +72,6 @@ export default class SignupScreen extends React.Component {
     }
 
     onBackToLogin = () => {
-        // var navActions = StackActions.reset({
-        //     index: 0,
-        //     actions: [
-        //         StackActions.push({ routeName: "Login" })
-        //     ]
-        // });
-
-        // this.props.navigation.dispatch(navActions);
         this.props.navigation.navigate('Login');
     }
 
@@ -180,9 +175,9 @@ export default class SignupScreen extends React.Component {
                                 selectedValue={this.state.selectedGender}
                                 onValueChange={ (itemValue, itemIndex) => this.setState({selectedGender : itemValue }) }
                                 mode = {'dropdown'}>
-                            <Picker.Item style={styles.picker} label="Male" value="0" />
-                            <Picker.Item style={styles.picker} label="Female" value="1" />
-                            <Picker.Item style={styles.picker} label="Other" value="2" />
+                            <Picker.Item style={styles.picker} label="Male" value="Male" />
+                            <Picker.Item style={styles.picker} label="Female" value="Female" />
+                            <Picker.Item style={styles.picker} label="Other" value="Other" />
                     </Picker>
                 </View>   
                 
@@ -193,7 +188,7 @@ export default class SignupScreen extends React.Component {
                         <TextInput
                             style={styles.input}
                             value = {this.state.height}
-                            //onChangeText = {(text) => {this.setState( {height: text} ) } }
+                            onChangeText = {(text) => {this.setState( {height: text} ) } }
                         />
                     </View>
                     <View style={style={ backgroundColor: 'rgba(215, 203, 203, 0.35)', height: 40, width: 90}}>
@@ -233,13 +228,13 @@ export default class SignupScreen extends React.Component {
                 <Text style={styles.inputLabel}>Activity Level</Text>
                 <View style={styles.choiceContainer}>
                     <Picker style={styles.choiceRow}
-                                selectedValue={this.state.selectedHeightMetric}
-                                onValueChange={ (itemValue, itemIndex) => this.setState({selectedHeightMetric : itemValue }) }
+                                selectedValue={this.state.activityLevel}
+                                onValueChange={ (itemValue, itemIndex) => this.setState({activityLevel : itemValue }) }
                                 mode = {'dropdown'}>
-                            <Picker.Item style={styles.picker} label="Sedentary" value="0" />
-                            <Picker.Item style={styles.picker} label="Lightly Active" value="1" />
-                            <Picker.Item style={styles.picker} label="Active" value="2" />
-                            <Picker.Item style={styles.picker} label="Very Active" value="3" />
+                            <Picker.Item style={styles.picker} label="Sedentary" value="Sedentary" />
+                            <Picker.Item style={styles.picker} label="Lightly Active" value="Lightly Active" />
+                            <Picker.Item style={styles.picker} label="Active" value="Active" />
+                            <Picker.Item style={styles.picker} label="Very Active" value="Very Active" />
                     </Picker>
                 </View>   
                 

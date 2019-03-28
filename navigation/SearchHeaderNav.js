@@ -5,12 +5,14 @@ import { StackActions, DrawerActions } from 'react-navigation';
 import Autocomplete from 'react-native-autocomplete-input';
 import SearchHeader from 'react-native-search-header';
 import NavigationService from './NavigationService';
+import ApiUtils from './../api/apiUtils';
 
 const fetch = require('node-fetch');
 
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from './../config/icon-font.json';
+
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
 const { width: WIDTH } = Dimensions.get('window');
@@ -27,26 +29,9 @@ export default class SearchHeaderNav extends React.Component {
     /* <Francis Buendia> March 15, 2019
         API Request call to 'Autocomplete recipe search' recipes by name 
     */
-    async getRecipes(text){
+    async getAutoCompleteRecipesByName(text){
         this.setState({query: text});
-
-        try{
-            // Returns a promise which then gets the result from the request call
-            const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/autocomplete?number=10&query=${this.state.query}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-RapidAPI-Key" : "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2"     // API key registered for Spoonacular API
-                },
-            });
-
-            const json = await response.json();
-            this.setState({recipes: json});
-            
-        } catch (err) {
-            console.log(err);
-        }
-        
+        await ApiUtils.getAutoCompleteRecipesByName(text, this);
     }
 
     findRecipe = (query) => {
@@ -78,7 +63,7 @@ export default class SearchHeaderNav extends React.Component {
         const { query } = this.state;
         const recipes = this.findRecipe(query);
         const comp = (a,b) => a.toLowerCase().trim() == b.toLowerCase().trim();
-        console.log('test2');
+        
         return (
             <View>
                 <View style={styles.topContainer}>
@@ -109,7 +94,7 @@ export default class SearchHeaderNav extends React.Component {
                     defaultValue = { query }
                     autoCorrect={false}
                     placeholder= "    Search recipes, ingredients..."
-                    onChangeText={text => this.getRecipes(text)}
+                    onChangeText={text => this.getAutoCompleteRecipesByName(text)}
                     
                     renderItem={({ id, title }) => (
                         <TouchableOpacity style={styles.itemTextContainer} onPress={() => this.setState({ query: title })}>
