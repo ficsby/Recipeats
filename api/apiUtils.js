@@ -40,7 +40,7 @@ async function getRecipeInfoFromId(id, context){
     });
 
     const json = await response.json();
-    console.log(json);
+    
     // Check if component is mounted before changing state, this check is to prevent memory leaks
     if(context._ismounted)
     {
@@ -71,7 +71,29 @@ async function getRecipeInfoFromId(id, context){
     );
 }
 
+/* <Francis Buendia> March 15, 2019
+        API Request call to 'Get Random Food Trivia' to get food trivia info
+*/
+async function getRandomFoodTrivia(context){
+    // Returns a promise which then gets the result from the request call HEREEEEEE
+    const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/trivia/random`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+        },
+    });
+
+    const json = await response.json();
+    // Check if component is mounted before changing state, this check is to prevent memory leaks
+    if(context._ismounted)
+    {
+        context.setState({foodTrivia: json.text});
+    }
+}
+
 export default {
     getAutoCompleteRecipesByName,
-    getRecipeInfoFromId
+    getRecipeInfoFromId,
+    getRandomFoodTrivia
 }

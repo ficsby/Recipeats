@@ -104,10 +104,6 @@ export default class HomeScreen extends React.Component {
         this.toggleHeart = this.toggleHeart.bind(this);
     };
 
-    async getRecipeInfoFromId(id){
-        return await apiUtils.getRecipeInfoFromId(id, this);
-    }
-
     toggleBookmark() {
         this.setState({  bookmarked: !this.state.bookmarked  });
     };
@@ -147,7 +143,7 @@ export default class HomeScreen extends React.Component {
         }); 
         this.setState({fontLoaded: true});
 
-        const data = await this.getRecipeInfoFromId(this.state.id);
+        const data = await apiUtils.getRecipeInfoFromId(this.state.id, this);
         
         if(data != null)
         {

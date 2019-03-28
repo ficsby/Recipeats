@@ -22,7 +22,8 @@ const fetch = require('node-fetch');
 
 import Button from './components/Button';
 import NewsItem from './components/NewsItem';
-const API_KEY = "260b79df3cmsh60d67ae305873d9p188fc5jsnd45d59e0cbdd";
+import apiUtils from '../api/apiUtils.js';
+const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 
 export default class HomeScreen extends React.Component {
 
@@ -63,7 +64,7 @@ export default class HomeScreen extends React.Component {
           'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
         }); 
         this.setState({fontLoaded: true});
-        this.getRandomFoodTrivia();
+        apiUtils.getRandomFoodTrivia(this);
     };
 
     componentWillUnmount () {
@@ -94,29 +95,8 @@ export default class HomeScreen extends React.Component {
         });
     };
 
-    
-    async getRandomFoodTrivia(){
-        currentThis = this;
-
-        // Returns a promise which then gets the result from the request call HEREEEEEE
-        const response = fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/trivia/random`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
-            },
-        });
-
-        const json = await response.json();
-        // Check if component is mounted before changing state, this check is to prevent memory leaks
-        if(this._ismounted)
-        {
-            this.setState({foodTrivia: json});
-        }
-    }
-    
     render() {
-        console.log("\n\nFood Trivia: ", this.state.text);
+        console.log("\n\nFood Trivia: ", this.state.foodTrivia);
 
         return (
             <View style={styles.pageContainer}>
