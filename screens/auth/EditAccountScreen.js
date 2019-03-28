@@ -13,7 +13,7 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
 const { width: WIDTH } = Dimensions.get('window');
 
-export default class SignupScreen extends React.Component {
+export default class EditAccountScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
@@ -32,6 +32,11 @@ export default class SignupScreen extends React.Component {
         });
 
         this.state.editable?  Alert.alert("Not editable now") : Alert.alert("Values should be editable now.");
+    }
+
+    onSaveChangesPress = () => {
+        Alert.alert("Saved... (Testing)");
+        this.toggleEditable();
     }
 
     componentDidMount() {
@@ -62,15 +67,15 @@ export default class SignupScreen extends React.Component {
     // Writes user data to the database
     writeUserData = (userId) => {
         firebase.database().ref('users/' + userId).set({
-            name: this.state.name,
-            email: this.state.email,
-            password: this.state.password,
-            username: this.state.username,
-            weight: this.state.weight,
-            activityLevel: this.state.activityLevel,
-            birthDate: this.state.birthDate,
-            height: this.state.height,
-            gender: this.state.gender,
+            name: user.name,
+            email: user.email,
+            password: user.password,
+            username: user.username,
+            weight: user.weight,
+            activityLevel: user.activityLevel,
+            birthDate: user.birthDate,
+            selectedHeightMetric: user.selectedHeightMetric,
+            selectedGender: user.selectedGender
             // calories: this.state.calories,
             // protein: this.state.email,
             // fats: this.state.fats,
@@ -120,7 +125,7 @@ export default class SignupScreen extends React.Component {
     
                         {/* Edit Button (When pressed, makes the information content editable) */}
                         <TouchableOpacity>
-                            <Text style={styles.editButton} onPress ={this.onEditPress}>Edit</Text>
+                            <Text style={styles.editButton} onPress ={this.toggleEditable}>Edit</Text>
                         </TouchableOpacity>
     
                     </View>
@@ -133,7 +138,8 @@ export default class SignupScreen extends React.Component {
                     <View style={styles.dataRow}>
                         <Text style={styles.inputLabel}>Name</Text>
                         <TextInput style={styles.inputData} 
-                                   value = {user.name} editable={false}/>
+                                   value = {user.name} onChangeText={(name) => this.setState({name})} 
+                                   editable={this.state.editable}/>
                     </View>
     
                     <View style={styles.separationLine} />
@@ -141,21 +147,24 @@ export default class SignupScreen extends React.Component {
                     <View style={styles.dataRow}>
                         <Text style={styles.inputLabel}>Username</Text>
                         <TextInput style={styles.inputData} 
-                                   value ={user.username} editable={isEditable}/>
+                                   value ={user.username} onChangeText={(username) => this.setState({username})} 
+                                   editable={this.state.editable}/>
                     </View>
                     <View style={styles.separationLine} />
     
                     <View style={styles.dataRow}>
                         <Text style={styles.inputLabel}>Email</Text>
                         <TextInput style={styles.inputData} 
-                                   value ={user.email} editable={isEditable}/>
+                                   value ={user.email} onChangeText={(email) => this.setState({email})} 
+                                   editable={this.state.editable}/>
                     </View>
                     <View style={styles.separationLine} />
             
                     <View style={styles.dataRow}>
                         <Text style={styles.inputLabel}>Password</Text>
                         <TextInput style={styles.inputData} 
-                                   value ={user.password} editable={isEditable}/>
+                                   value ={user.password} onChangeText={(password) => this.setState({password})} 
+                                   editable={this.state.editable}/>
                     </View>
                     <View style={styles.separationLine} />
     
@@ -167,36 +176,44 @@ export default class SignupScreen extends React.Component {
                     <View style={styles.dataRow}>
                         <Text style={styles.inputLabel}>Birthday</Text>
                         <TextInput style={styles.inputData} 
-                                   value ={user.birthDate} editable={isEditable}/>
+                                   value ={user.birthDate} onChangeText={(birthDate) => this.setState({birthDate})} 
+                                   editable={this.state.editable}/>
                     </View>
                     <View style={styles.separationLine} />
 
                     <View style={styles.dataRow}>
                         <Text style={styles.inputLabel}>Gender</Text>
                         <TextInput style={styles.inputData} 
-                                   value ={user.gender} editable={isEditable}/>
+                                   value ={user.selectedGender} onChangeText={(selectedGender) => this.setState({selectedGender})} 
+                                   editable={this.state.editable}/>
                     </View>
                     <View style={styles.separationLine} />
     
                     <View style={styles.dataRow}>
                         <Text style={styles.inputLabel}>Height</Text>
                         <TextInput style={styles.inputData} 
-                                   value ={user.height} editable={isEditable}/>
+                                   value ={user.height} onChangeText={(height) => this.setState({height})} 
+                                   editable={this.state.editable}/>
                     </View>
                     <View style={styles.separationLine} />
     
                     <View style={styles.dataRow}>
                         <Text style={styles.inputLabel}>Weight</Text>
                         <TextInput style={styles.inputData} 
-                                   value ={user.weight} editable={isEditable}/>
+                                   value ={user.weight} onChangeText={(weight) => this.setState({weight})} 
+                                   editable={this.state.editable}/>
                     </View>
+
                     <View style={styles.separationLine} />
     
                     <View style={styles.dataRow}>
                         <Text style={styles.inputLabel}>Level of Activity</Text>
+                        
                         <TextInput style={styles.inputData} 
-                                   value ={user.activityLevel} editable={isEditable}/>
+                                   value ={user.activityLevel} onChangeText={(activityLevel) => this.setState({activityLevel})} 
+                                   editable={this.state.editable}/>
                     </View>
+
                     <View style={styles.separationLine} />
     
     
@@ -205,22 +222,22 @@ export default class SignupScreen extends React.Component {
                     <View style={styles.dataRow}>
                         <Text style={styles.macroLabel}>Calories</Text>
                         <TextInput style={{ width: 200}}
-                                   value ={'1000'} editable={isEditable}/>
+                                   value ={'1000'} editable={this.state.editable}/>
                     </View>
                     <View style={styles.dataRow}>
                         <Text style={styles.macroLabel}>Protein</Text>
                         <TextInput style={{ width: 200}}
-                                   value ={'100'} editable={isEditable}/>                
+                                   value ={'100'} editable={this.state.editable}/>                
                     </View>
                     <View style={styles.dataRow}>
                         <Text style={styles.macroLabel}>Fats</Text>
                         <TextInput style={{ width: 200}}
-                                   value ={'100'} editable={isEditable}/>                
+                                   value ={'100'} editable={this.state.editable}/>                
                     </View>
                     <View style={styles.dataRow}>
                         <Text style={styles.macroLabel}>Carbs</Text>
                         <TextInput style={{ width: 200}}
-                                   value ={'100'} editable={isEditable}/>                
+                                   value ={'100'} editable={this.state.editable}/>                
                     </View>
                     <View style={styles.macroSeparationLine} />
     
@@ -230,7 +247,7 @@ export default class SignupScreen extends React.Component {
                     <View style={styles.dataRow}>
                         <Text style={styles.inputLabel}>Budget</Text>
                         <TextInput style={styles.inputData} 
-                                   value ={'$200 weekly'} editable={isEditable}/>                
+                                   value ={'$200 weekly'} editable={this.state.editable}/>                
                     </View>                
                     <View style={styles.separationLine} />
     

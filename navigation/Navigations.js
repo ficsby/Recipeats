@@ -147,10 +147,10 @@ End of Home Page Navigations
 */
 
 const AppSwitchNavigator = createSwitchNavigator({
-    Home: { screen: AppDrawerNavigator },
     Login: { screen: LoginScreen},
     ForgotPassword: { screen: ForgotPasswordScreen },
     Signup: {screen: SignupScreen },
+    Home: { screen: AppDrawerNavigator },
     EditAccount: {screen: EditAccountScreen},
 });
 

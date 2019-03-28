@@ -1,9 +1,14 @@
 import { NavigationActions } from 'react-navigation';
 
 let _navigator;
+let _homeNavigator;
 
 function setTopLevelNavigator(navigatorRef) {
   _navigator = navigatorRef;
+}
+
+function getTopLevelNavigator(navigatorRef) {
+    return _navigator;
 }
 
 function navigate(routeName, params) {
@@ -37,6 +42,7 @@ function reset(routes){
 export default {
     navigate, 
     setTopLevelNavigator,
+    getTopLevelNavigator,
     openDrawer,
     closeDrawer,
 }

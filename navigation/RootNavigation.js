@@ -1,108 +1,45 @@
-import { Notifications } from 'expo';
 import React from 'react';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
-import { SidebarNavigator } from './SidebarNavigator';
-import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
-//import { EStyleSheet } from 'react-native-extended-stylesheet';
+import { Platform, View, StyleSheet, TouchableOpacity, Dimensions, TextInput } from 'react-native';
+import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createBottomTabNavigator, createAppContainer , DrawerItems } from 'react-navigation';
+import { StackActions, DrawerActions } from 'react-navigation';
 
-// authentication screens
-import LoginScreen from '../screens/auth/LoginScreen';
-import SignupScreen from '../screens/auth/SignupScreen';
-import EditAccountScreen from '../screens/auth/EditAccountScreen';
-import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen';
+import SearchHeaderNav from './SearchHeaderNav';
 
-// screens displayed to a user
-import HomeScreen from '../screens/HomeScreen';
-import FoodstockScreen from '../screens/FoodstockScreen';
-import RecipeScreen from '../screens/RecipeScreen';
+/* Custom Icons */
+import { createIconSetFromFontello } from 'react-native-vector-icons';
+import fontelloConfig from './../config/icon-font.json';
+const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
+const { width: WIDTH } = Dimensions.get('window');
 
-const RootStackNavigator = createAppContainer(
-    createStackNavigator (
-    {      
-        Recipe: { 
-          screen: RecipeScreen, 
-          navigationOptions: {
-            header: null
-          },
-        }, 
+//import Colors from '../constants/Colors';
+import LoginScreen from './../screens/auth/LoginScreen';
+import ForgotPasswordScreen from './../screens/auth/ForgotPasswordScreen';
+import SignupScreen from './../screens/auth/SignupScreen';
+import EditAccountScreen from './../screens/auth/EditAccountScreen';
 
-        // Home: { 
-        //   screen: HomeScreen, 
-        //   navigationOptions: {
-        //     header: null
-        //   },
-        // },  
+import HomeScreen from './../screens/HomeScreen';
+import LoadingScreen from './../screens/LoadingScreen';
+import RecipeScreen from './../screens/RecipeScreen';
+import BudgetScreen from './../screens/BudgetScreen';
+import BookmarksScreen from './../screens/BookmarksScreen';
+import FoodstockScreen from './../screens/FoodstockScreen';
+import MacrosScreen from './../screens/MacrosScreen';
+import NavigationService from './NavigationService';
 
-        Login: { 
-          screen: LoginScreen, 
-          navigationOptions: {
-            header: null
-          },
-        },
+import HomeDrawerNavigator from './MainTabNavigator';
 
-        ForgotPassword: {
-          screen: ForgotPasswordScreen,
-          navigationOptions: {
-            header: null
-          },
-        },
+const AppSwitchNavigator = createSwitchNavigator({
+    Login: { screen: LoginScreen},
+    ForgotPassword: { screen: ForgotPasswordScreen },
+    Signup: {screen: SignupScreen },
+    Home: { screen: HomeDrawerNavigator },
+    EditAccount: {screen: EditAccountScreen},
+});
 
-        Main: {
-          screen: SidebarNavigator,
-          navigationOptions: {
-            header: null
-          },
-        },
-        
-        Foodstock: {
-          screen: FoodstockScreen,
-          navigationOptions: {
-            header: null
-          },
-        },
+const AppContainer = createAppContainer(AppSwitchNavigator);
 
-        EditAccount: { 
-          screen: EditAccountScreen, 
-          navigationOptions: {
-            header: null
-          },
-        }, 
-    },
-    {
-      initialRouteName: "Main",
-      navigationOptions: () => ({
-        header: null
-      }),
-    }
-    )
-);
-
-export default class RootNavigator extends React.Component {
-  /*
-  componentDidMount() {
-    this._notificationSubscription = this._registerForPushNotifications();
+export default class RootNavigation extends React.Component {
+  render(){
+      return <AppContainer />
   }
-
-  componentWillUnmount() {
-    this._notificationSubscription && this._notificationSubscription.remove();
-  }
-  */
-  render() {
-    return <RootStackNavigator />;
-  }
-
-  _registerForPushNotifications() {
-    // Send our push token over to our backend so we can receive notifications
-    // You can comment the following line out if you want to stop receiving
-    // a notification every time you open the app. Check out the source
-    // for this function in api/registerForPushNotificationsAsync.js
-    registerForPushNotificationsAsync();
-
-    // Watch for incoming notifications
-    this._notificationSubscription = Notifications.addListener(this._handleNotification);
-  }
-
-  _handleNotification = ({ origin, data }) => {
-    console.log(`Push notification ${origin} with data: ${JSON.stringify(data)}`);
-  };
 }
