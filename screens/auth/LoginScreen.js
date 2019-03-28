@@ -6,10 +6,13 @@ import { Font } from 'expo';
 import * as firebase from 'firebase';
 
 import logo from './../../assets/images/logo_transparent.png';
+import { Styles } from './../../styles/GlobalStyles';
+import { reset } from 'expo/build/AR';
+import { heightPercentageToDP } from 'react-native-responsive-screen';
+
 import KeyboardShift from './../../styles/KeyboardShift.js';
 
 const { width: WIDTH } = Dimensions.get('window')
-var globalStyles = require('./../../styles/globalStyles.js');
 
 export default class LoginScreen extends React.Component {
     constructor(props) {
@@ -25,7 +28,7 @@ export default class LoginScreen extends React.Component {
     onLoginPress = () => {
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
         .then( () => {
-
+            this.props.navigation.navigate('Home');
         }, (error) => {
             Alert.alert(error.message);
         });
@@ -33,40 +36,19 @@ export default class LoginScreen extends React.Component {
 
     // function for when user clicks the 'Signup Button'
     onSignUpPress = () => {
-        var navActions = StackActions.reset({
-            index: 0,
-            actions: [
-                StackActions.push({ routeName: "Signup" })
-            ]
-        });
-
-        this.props.navigation.dispatch(navActions);
+        this.props.navigation.navigate('Signup');
     }
 
     // function for when user clicks the 'Forgot Password Button'
     onForgotPasswordPress = () => {
-        var navActions = StackActions.reset({
-            index: 0,
-            actions: [
-                StackActions.push({ routeName: "ForgotPassword" })
-            ]
-        });
-
-        this.props.navigation.dispatch(navActions);
+        this.props.navigation.navigate('ForgotPassword');
     }
 
     /* NOTE: THIS IS FOR TESTING PURPOSES ONLY....  
              Normally you access this page through logging in with your credentials 
     */ 
     onHomePress = () => {
-        var navActions = StackActions.reset({
-            index: 0,
-            actions: [
-                StackActions.push({ routeName: "Home" })
-            ]
-        });
-
-        this.props.navigation.dispatch(navActions);
+        this.props.navigation.goBack();
     }
     
     async componentDidMount() {
@@ -85,7 +67,7 @@ export default class LoginScreen extends React.Component {
 
     render() {
         return (
-            <View style={ globalStyles.background }>
+            <View style={ Styles.background }>
 
                 <View style={styles.logoContainer}>
                     <Image source={logo} style={styles.logo}/>

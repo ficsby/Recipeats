@@ -12,6 +12,9 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 const { width: WIDTH } = Dimensions.get('window');
 
 //import Colors from '../constants/Colors';
+import LoginScreen from './../screens/auth/LoginScreen';
+import ForgotPasswordScreen from './../screens/auth/ForgotPasswordScreen';
+import SignupScreen from './../screens/auth/SignupScreen';
 import EditAccountScreen from './../screens/auth/EditAccountScreen';
 
 import HomeScreen from './../screens/HomeScreen';
@@ -22,6 +25,12 @@ import BookmarksScreen from './../screens/BookmarksScreen';
 import FoodstockScreen from './../screens/FoodstockScreen';
 import MacrosScreen from './../screens/MacrosScreen';
 import NavigationService from './NavigationService';
+
+export default class AppNavigations extends React.Component {
+    render(){
+        return <AppContainer />
+    }
+}
 
 /*
 Home Page Navigations
@@ -136,10 +145,13 @@ const AppDrawerNavigator = createDrawerNavigator({
 End of Home Page Navigations
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
-const AppContainer = createAppContainer(AppDrawerNavigator);
 
-export default class MainTabNavigator extends React.Component {
-  render(){
-      return <AppContainer />
-  }
-}
+const AppSwitchNavigator = createSwitchNavigator({
+    Login: { screen: LoginScreen},
+    ForgotPassword: { screen: ForgotPasswordScreen },
+    Signup: {screen: SignupScreen },
+    Home: { screen: AppDrawerNavigator },
+    EditAccount: {screen: EditAccountScreen},
+});
+
+const AppContainer = createAppContainer(AppSwitchNavigator);

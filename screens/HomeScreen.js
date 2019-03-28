@@ -11,12 +11,18 @@ import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage}
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from './../config/icon-font.json';
+import NavigationService from '../navigation/NavigationService.js';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
 const { width: WIDTH } = Dimensions.get('window');
+<<<<<<< HEAD
 var globalStyles = require('../styles/globalStyles.js');
 
 // Fetch News Components
+=======
+var globalStyles = require('../styles/GlobalStyles.js');
+//var unirest = require('unirest');
+>>>>>>> master
 const fetch = require('node-fetch');
 
 import Button from './components/Button';
@@ -24,6 +30,7 @@ import NewsItem from './components/NewsItem';
 const API_KEY = "260b79df3cmsh60d67ae305873d9p188fc5jsnd45d59e0cbdd";
 
 export default class HomeScreen extends React.Component {
+<<<<<<< HEAD
 
     constructor(props) {
         super(props);
@@ -222,8 +229,21 @@ export default class HomeScreen extends React.Component {
                         { this.renderNews() }
                 </ScrollView>
                 
-            </View>
+=======
+    render() {
 
+        return (
+            <View>
+                <Text>Home Screen</Text>
+                <TouchableOpacity onPress={ () => NavigationService.navigate('Recipe')}>
+                    <Text>Go to Recipe Screen </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={ () => NavigationService.navigate('Foodstock')}>
+                    <Text>Go to Recipe Screen </Text>
+                </TouchableOpacity>
+>>>>>>> master
+            </View>
         )
     }
 }
