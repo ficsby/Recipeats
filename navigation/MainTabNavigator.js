@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, View, StyleSheet, TouchableOpacity, Dimensions, TextInput } from 'react-native';
+import { Platform, View, StyleSheet, TouchableOpacity, Dimensions, TextInput, SafeAreaView, ScrollView } from 'react-native';
 import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createBottomTabNavigator, createAppContainer , DrawerItems } from 'react-navigation';
 
 import SearchHeaderNav from './SearchHeaderNav';
@@ -113,18 +113,38 @@ const HomeStackNavigator = createStackNavigator({
     },
 })
 
+const CustomDrawerComponent = (props) => (
+    <SafeAreaView style ={{ flex: 1 }}>
+        <ScrollView>
+            <DrawerItems { ...props} />
+        </ScrollView>
+    </SafeAreaView>
+)
+
+const navigationOptions = {
+    
+}   
 // Side bar navigation works on all screens other than login, signup and forgot password screen
 const AppDrawerNavigator = createDrawerNavigator({
-    _Home__: {
-        screen: HomeStackNavigator
+    Home_: {
+        screen: HomeStackNavigator,
+        navigationOptions: {
+            drawerIcon: ({tintColor}) => (
+                <Icon name="home" style ={{fontSize: 24, color:tintColor}} />
+            )
+        }
     },
     _Recipe_: {
         screen: RecipeScreen,
     }
 },{
+    contentComponent: CustomDrawerComponent,
+    contentOptions:{
+        activeTintColor: 'orange'
+    },
     defaultNavigationOptions:({navigation}) => {
         NavigationService.setTopLevelNavigator(navigation);
-
+        
         return{
             header: <SearchHeaderNav/>
         }

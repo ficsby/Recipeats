@@ -74,6 +74,10 @@ async function getRecipeInfoFromId(id, context){
 /* <Francis Buendia> March 15, 2019
         API Request call to 'Get Random Food Trivia' to get food trivia info
 */
+/**
+ * Random food trivia
+ * @param {reference} context 
+ */
 async function getRandomFoodTrivia(context){
     // Returns a promise which then gets the result from the request call HEREEEEEE
     const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/trivia/random`, {
@@ -95,5 +99,5 @@ async function getRandomFoodTrivia(context){
 export default {
     getAutoCompleteRecipesByName,
     getRecipeInfoFromId,
-    getRandomFoodTrivia
+    getRandomFoodTrivia,
 }

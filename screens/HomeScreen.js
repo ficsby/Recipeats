@@ -58,6 +58,12 @@ export default class HomeScreen extends React.Component {
         };
     };
 
+    static navigationOptions = {
+        drawerIcon: ({tintColor}) => (
+            <Icon name="home" style ={{fontSize: 24, color:tintColor}} />
+        )
+    } 
+
     async componentDidMount() {
         this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
         await Font.loadAsync({
