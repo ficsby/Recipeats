@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Image, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert, Modal, SafeAreaView } from 'react-native';
 import { StackActions, DrawerActions } from 'react-navigation';
 import Autocomplete from 'react-native-autocomplete-input';
 import { SearchBar } from 'react-native-elements';
@@ -30,6 +30,7 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            visible: false,
             query: '',
             recipes: [],
             foodTrivia: '',
@@ -79,16 +80,17 @@ export default class HomeScreen extends React.Component {
 
 
     onAccountIconPress = () => {
-        var navActions = StackActions.reset({
-            index: 1,
-            actions: [
-                // We need to push both the current screen and the next screen that we are transitioning to incase the user wants to go to previous screen
-                StackActions.push({ routeName: "Home" }),       
-                StackActions.push({ routeName: "EditAccount" }),
-            ]
-        });
+        // var navActions = StackActions.reset({
+        //     index: 1,
+        //     actions: [
+        //         // We need to push both the current screen and the next screen that we are transitioning to incase the user wants to go to previous screen
+        //         StackActions.push({ routeName: "Home" }),       
+        //         StackActions.push({ routeName: "EditAccount" }),
+        //     ]
+        // });
 
-        this.props.navigation.dispatch(navActions);
+        // this.props.navigation.dispatch(navActions);
+        this.setState({visible: true});
     };
 
     newsItemPress(txt) {
@@ -105,29 +107,30 @@ export default class HomeScreen extends React.Component {
         console.log("\n\nFood Trivia: ", this.state.foodTrivia);
 
         return (
-            <View style={styles.pageContainer}>
-                {/* Top panel of page. Contains the menu and user account buttons. 
-                    Does not actually contain the Autocomplete Search Bar, but is visually underneath it  */}
-                <ScrollView style={styles.newsContainer}>
-                        <View style={styles.foodTriviaContainer}>
+            <SafeAreaView style = {globalStyles.droidSafeArea}>
+                <View style={styles.pageContainer}>
+                    {/* Top panel of page. Contains the menu and user account buttons. 
+                        Does not actually contain the Autocomplete Search Bar, but is visually underneath it  */}
+                    <ScrollView style={styles.newsContainer}>
+                            <View style={styles.foodTriviaContainer}>
 
-                            <View style={styles.row}>
-                                <Icon name='lightbulb' size={30} color='rgba(0,0,0,1)' height={200} style={{marginLeft: 15}} />
-                                <Text style={styles.foodTriviaHeader}> Food Trivia of the Day </Text>
+                                <View style={styles.row}>
+                                    <Icon name='lightbulb' size={30} color='rgba(0,0,0,1)' height={200} style={{marginLeft: 15}} />
+                                    <Text style={styles.foodTriviaHeader}> Food Trivia of the Day </Text>
+                                </View>
+                                
+                                <Text style= {styles.foodTrivia}> 
+                                    Use ice cube trays to freeze small portions of pesto, broth, applesauce and pizza sauce. 
+                                    Transfer the cubes to a Ziplock bag or other freezer-proof container and it will be easy 
+                                    to pull out exactly how much you need.
+                                </Text>
                             </View>
-                            
-                            <Text style= {styles.foodTrivia}> 
-                                Use ice cube trays to freeze small portions of pesto, broth, applesauce and pizza sauce. 
-                                Transfer the cubes to a Ziplock bag or other freezer-proof container and it will be easy 
-                                to pull out exactly how much you need.
-                            </Text>
-                        </View>
 
-                        {/* <Text style={{fontSize:100, color: 'black'}}> Hi 2</Text> */}
-                        { this.renderNews() }
-                </ScrollView>
-                
-            </View>
+                            {/* <Text style={{fontSize:100, color: 'black'}}> Hi 2</Text> */}
+                            { this.renderNews() }
+                    </ScrollView>
+                </View>
+            </SafeAreaView>
         )
     }
 }

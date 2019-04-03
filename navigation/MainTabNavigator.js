@@ -20,6 +20,7 @@ import BudgetScreen from './../screens/BudgetScreen';
 import BookmarksScreen from './../screens/BookmarksScreen';
 import FoodstockScreen from './../screens/FoodstockScreen';
 import MacrosScreen from './../screens/MacrosScreen';
+import SearchScreen from './../screens/SearchScreen';
 import NavigationService from './NavigationService';
 
 /*
@@ -76,6 +77,15 @@ const HomeTabNavigator = createBottomTabNavigator({
 
 })
 
+const SearchStack = createStackNavigator({
+    Search: {
+        screen: SearchScreen,
+        navigationOptions: {
+            header: <SearchHeaderNav/>
+        }
+    },
+})
+
 // Stack navigator for home screen, use stack navigator to transition to screens linked from the home screen
 const HomeStackNavigator = createStackNavigator({
     HomeTabNavigator: {
@@ -121,9 +131,6 @@ const CustomDrawerComponent = (props) => (
     </SafeAreaView>
 )
 
-const navigationOptions = {
-    
-}   
 // Side bar navigation works on all screens other than login, signup and forgot password screen
 const AppDrawerNavigator = createDrawerNavigator({
     Home_: {
@@ -134,8 +141,8 @@ const AppDrawerNavigator = createDrawerNavigator({
             )
         }
     },
-    _Recipe_: {
-        screen: RecipeScreen,
+    _Search_: {
+        screen: SearchStack,
     }
 },{
     contentComponent: CustomDrawerComponent,
