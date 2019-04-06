@@ -5,6 +5,8 @@ import Autocomplete from 'react-native-autocomplete-input';
 import { SearchBar } from 'react-native-elements';
 import { Font, AppLoading } from 'expo';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
+import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view-forked'
+import LoadingScreen from './LoadingScreen';
 
 //import * as firebase from 'firebase';
 
@@ -31,30 +33,10 @@ export default class HomeScreen extends React.Component {
         super(props);
         this.state = {
             query: '',
+            isLoading: true,
             recipes: [],
+            video_items: [],
             foodTrivia: '',
-            text: '',
-            news_items: 
-            [
-                {
-                    pretext: '',
-                    title: 'Brain Foods to Make You Smarter',
-                    summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ex ea commodo consequat.',
-                    image: require('./../assets/images/newsimage1.jpg'),
-                },
-                {
-                    pretext: '',
-                    title: 'Eat Healthy to Live Healthy',
-                    summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ex ea commodo consequat.',
-                    image: require('./../assets/images/newsimage2.jpg')
-                },
-                {
-                    pretext: '',
-                    title: 'Best Kitchenware for Measuring Food',
-                    summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ex ea commodo consequat.',
-                    image: require('./../assets/images/newsimage3.jpg')
-                },
-            ],
         };
     };
 
@@ -65,12 +47,17 @@ export default class HomeScreen extends React.Component {
         }); 
         this.setState({fontLoaded: true});
         apiUtils.getRandomFoodTrivia(this);
+
+        const foodVids = await apiUtils.getRandomFoodVideos(this);
+        if(foodVids != null)
+        {
+            this.setState({ isLoading: false });
+        }
     };
 
     componentWillUnmount () {
         this._ismounted = false; // after component is unmounted reste boolean
      };
-
 
     onAccountIconPress = () => {
         var navActions = StackActions.reset({
@@ -85,44 +72,45 @@ export default class HomeScreen extends React.Component {
         this.props.navigation.dispatch(navActions);
     };
 
-    newsItemPress(txt) {
-        console.log(txt);
-    };
-
-    renderNews() {
-        return this.state.news_items.map((news, index) => {
+    renderVideos() {
+        return this.state.video_items.map((news, index) => {
             return <NewsItem key={index} index={index} news={news} />
         });
     };
 
     render() {
-        console.log("\n\nFood Trivia: ", this.state.foodTrivia);
-
+        if (this.state.isLoading) {
+            return <LoadingScreen />;
+        };
+        console.log(this.video_items);
         return (
             <View style={styles.pageContainer}>
-                {/* Top panel of page. Contains the menu and user account buttons. 
-                    Does not actually contain the Autocomplete Search Bar, but is visually underneath it  */}
-                <ScrollView style={styles.newsContainer}>
-                        <View style={styles.foodTriviaContainer}>
+                <ScrollableTabView  renderTabBar={() => ( <ScrollableTabBar  style={styles.scrollStyle} tabStyle={styles.tabStyle} /> )}
+                tabBarTextStyle={styles.tabBarTextStyle}
+                tabBarInactiveTextColor={'black'}
+                tabBarActiveTextColor={'red'}
+                tabBarUnderlineStyle={styles.underlineStyle}
+                initialPage={1}
+                >
 
-                            <View style={styles.row}>
-                                <Icon name='lightbulb' size={30} color='rgba(0,0,0,1)' height={200} style={{marginLeft: 15}} />
-                                <Text style={styles.foodTriviaHeader}> Food Trivia of the Day </Text>
-                            </View>
-                            
-                            <Text style= {styles.foodTrivia}> 
-                                Use ice cube trays to freeze small portions of pesto, broth, applesauce and pizza sauce. 
-                                Transfer the cubes to a Ziplock bag or other freezer-proof container and it will be easy 
-                                to pull out exactly how much you need.
-                            </Text>
+                <View key={'1'} tabLabel={'   Trivia'} style={styles.tabContentSyle}>
+                    <View style={styles.foodTriviaContainer}>
+
+                        <View style={styles.row}>
+                            <Icon name='lightbulb' size={30} color='rgba(0,0,0,1)' height={200} style={{marginLeft: 15}} />
+                            <Text style={styles.foodTriviaHeader}> Food Trivia of the Day </Text>
                         </View>
-
-                        {/* <Text style={{fontSize:100, color: 'black'}}> Hi 2</Text> */}
-                        { this.renderNews() }
-                </ScrollView>
-                
-            </View>
-        )
+                        
+                        <Text style= {styles.foodTrivia}>  {this.state.foodTrivia}  </Text>
+                    </View>
+                </View>
+                <View key={'2'} tabLabel={'Popular'} style={styles.tabContentSyle}/>
+                <View key={'3'} tabLabel={'Videos'} style={styles.tabContentSyle}>   
+                    <ScrollView>{this.renderVideos()}</ScrollView>
+                </View>
+                </ScrollableTabView>            
+        </View>
+        );
     }
 }
 
@@ -215,12 +203,41 @@ const styles = StyleSheet.create({
     */
 
     /*------------------------------------------------------------------------
+        Tabs Styles
+    ------------------------------------------------------------------------*/
+    tabStyle: {
+    },
+
+    tabContentSyle: {
+        flex: 1,
+        backgroundColor: 'rgb(247, 247, 247)',
+    },
+
+    scrollStyle: {
+        backgroundColor: 'white',
+        // justifyContent: 'center',
+    },
+
+    tabBarTextStyle: {
+        width: 50,
+        fontSize: 14,
+        fontWeight: 'normal',
+    },
+
+    underlineStyle: { 
+        height: 3,
+        backgroundColor: 'red',
+        borderRadius: 3,
+        width: 30,
+    },
+
+    /*------------------------------------------------------------------------
         Newsfeed Section
     ------------------------------------------------------------------------*/
     foodTriviaContainer: {
         backgroundColor: 'white',
-        paddingRight: 25,
-        paddingLeft: 20,
+        paddingRight: 30,
+        paddingLeft: 30,
         paddingTop: 20,
         paddingBottom: 30,
         marginTop: 13,
@@ -238,8 +255,6 @@ const styles = StyleSheet.create({
     },
 
     foodTrivia: {
-        paddingLeft: 13,
-        paddingRight: 13,
         fontSize: 15,
     },
 

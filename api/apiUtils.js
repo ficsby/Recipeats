@@ -59,7 +59,7 @@ async function getRecipeInfoFromId(id, context){
         }
 
         context.setState({
-            nutritionalTags: nutrtionTags
+            nutritionalTags: nutrtionTags 
         });
     }
 
@@ -75,7 +75,7 @@ async function getRecipeInfoFromId(id, context){
         API Request call to 'Get Random Food Trivia' to get food trivia info
 */
 async function getRandomFoodTrivia(context){
-    // Returns a promise which then gets the result from the request call HEREEEEEE
+    // Returns a promise which then gets the result from the request call
     const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/trivia/random`, {
         method: "GET",
         headers: {
@@ -92,8 +92,118 @@ async function getRandomFoodTrivia(context){
     }
 }
 
+
+/* <Christine Tran> March 28, 2019
+        API Request call to 'Get Random Recipes' to get random recipe suggestions
+*/
+// async function getRandomRecipe(context){
+//     // Returns a promise which then gets the result from the request call
+//     const response = await fetch(``, {C
+//         method: "GET",
+//         headers: {
+//             "Content-Type": "application/json",
+//             "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+//         },
+//     });
+
+//     const json = await response.json();
+//     // Check if component is mounted before changing state, this check is to prevent memory leaks
+//     if(context._ismounted)
+//     {
+//         context.setState({randomRecipeId: json.});
+//     }
+// }
+
+/* <Christine Tran> March 28, 2019
+    API Request call to 'Get Random Food Video' to get food videos
+*/
+async function getRandomFoodVideos(context){
+    // Returns a promise which then gets the result from the request call
+    // randomCuisine = cusines[(Math.random() * cuisines.length) | 0];
+    // cuisineUrl = 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/videos/search?cuisine=' + randomCuisine + '&minLength=0&maxLength=999&offset=0&number=10';
+    // cuisineUrl = 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/videos/search?cuisine=chinese&minLength=0&maxLength=999&offset=0&number=10';
+    const response = await fetch('https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/videos/search?type=main+course&minLength=0&maxLength=999&offset=0&number=10', {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+        },
+    });
+    const json = await response.json();
+    const foodVideoObjects = json.videos;
+    const videoTags = new Set(['shortTitle', 'youTubeId', 'thumbnail']);
+
+     // Check if component is mounted before changing state, this check is to prevent memory leaks
+     if(context._ismounted)
+     {
+        const foodVideos = [];
+        for(idx in foodVideoObjects)
+        {   
+            object = foodVideoObjects[idx];
+            video = {};
+            for(key in object)
+            {
+                if(videoTags.has(key))
+                {
+                    video[key] = object[key];
+                }
+            }
+            foodVideos.push(video);
+        }
+
+        context.setState({
+            video_items: 
+            [
+                {
+                    pretext: '',
+                    title: foodVideos[0].shortTitle,
+                    summary: '',
+                    videoId: foodVideos[0].youTubeId,
+                    image: '',
+                },
+                {
+                    pretext: '',
+                    title: foodVideos[1].shortTitle,
+                    summary: '',
+                    videoId: foodVideos[1].youTubeId,
+                    image: '',
+                },
+                {
+                    pretext: '',
+                    title: foodVideos[2].shortTitle,
+                    summary: '',
+                    videoId: foodVideos[2].youTubeId,
+                    image: '',
+                },
+                {
+                    pretext: '',
+                    title: foodVideos[3].shortTitle,
+                    summary: '',
+                    videoId: foodVideos[3].youTubeId,
+                    image: '',
+                },
+                {
+                    pretext: '',
+                    title: foodVideos[4].shortTitle,
+                    summary: '',
+                    videoId: foodVideos[4].youTubeId,
+                    image: '',
+                }
+            ]
+        });
+
+     }
+    return new Promise((resolve) =>
+        setTimeout(
+        () => { resolve('result') },
+        5000
+        )
+    );
+}
+
 export default {
     getAutoCompleteRecipesByName,
     getRecipeInfoFromId,
-    getRandomFoodTrivia
+    getRandomFoodTrivia,
+    getRandomFoodVideos,
 }
