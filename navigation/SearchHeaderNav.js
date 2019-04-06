@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, SafeAreaView, Platform, View, StyleSheet, TouchableOpacity, Dimensions, Text, Modal, Alert } from 'react-native';
+import { TextInput, SafeAreaView, Button, View, StyleSheet, TouchableOpacity, Dimensions, Text, Modal, Alert, Keyboard } from 'react-native';
 import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createBottomTabNavigator, createAppContainer , DrawerItems } from 'react-navigation';
 import { StackActions, DrawerActions } from 'react-navigation';
 import Autocomplete from 'react-native-autocomplete-input';
@@ -20,12 +20,15 @@ const { width: WIDTH } = Dimensions.get('window');
 var globalStyles = require('./../styles/GlobalStyles.js');
 
 export default class SearchHeaderNav extends React.Component {
+    
     state = {
         visible: false,
+        modalVisible: false,
         query: '',
         recipes: [],
         recipeTitle: '',
         recipeId: '',
+        searchBarSensitivity: true,
     };
 
     /* <Francis Buendia> March 15, 2019
@@ -48,6 +51,7 @@ export default class SearchHeaderNav extends React.Component {
         await Font.loadAsync({
           'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
         }); 
+        Keyboard.addListener('keyboardDidHide', this._forceLoseFocus);
         this.setState({fontLoaded: true});
     }
 
@@ -61,9 +65,14 @@ export default class SearchHeaderNav extends React.Component {
         this.setState({visible: true});
     };
 
-    onModalVisibleChange = () => {
-        this.setState({visible: true});
+    onModalOpen = () => {
+        this.setState({modalVisible: true, searchBarSensitivity:false});
     }
+
+    onModalClose = () => {
+        Alert.alert("Closed Modal");
+    }
+
     render() {
 
         const { query } = this.state;
@@ -72,6 +81,10 @@ export default class SearchHeaderNav extends React.Component {
         
         return (
             <SafeAreaView style = {globalStyles.droidSafeArea}>
+                {/* <Button style={{width:0, height:0}} >
+
+                </Button> */}
+
                 <View style={styles.topContainer}>
 
                     <View style={styles.row}>
@@ -92,8 +105,9 @@ export default class SearchHeaderNav extends React.Component {
                     </View>
                 
                 </View>
-            
+
                 <Autocomplete
+                    editable = {this.state.searchBarSensitivity}
                     containerStyle={styles.searchContainer}  
                     inputContainerStyle={styles.searchInputContainer}
                     data={recipes.length === 1 && comp(query, recipes[0].title) ? [] : recipes}
@@ -101,7 +115,8 @@ export default class SearchHeaderNav extends React.Component {
                     autoCorrect={false}
                     placeholder= "    Search recipes, ingredients..."
                     onChangeText={text => this.getAutoCompleteRecipesByName(text)}
-                    onFocus = {this.onModalVisibleChange}
+                    onFocus = {this.onModalOpen}
+                    onSelectionChange = {this.onModalClose}
                     renderItem={({ id, title }) => (
                         <TouchableOpacity style={styles.itemTextContainer} onPress={() => this.setState({ query: title })}>
                             <Text style={styles.itemText}>
@@ -110,12 +125,12 @@ export default class SearchHeaderNav extends React.Component {
                         </TouchableOpacity>
                     )}                       
                 />
-
+                
                 <Modal
                 animationType ="fade"
                 transparent = {false}
-                visible = {this.state.visible}
-                onRequestClose= {()=> {Alert.alert('Modal has been closed'); this.setState({visible: false}); }}>
+                visible = {this.state.modalVisible}
+                onRequestClose= {this.onModalClose}>
                 
                     <SearchScreen/>
                 </Modal>

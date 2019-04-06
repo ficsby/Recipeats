@@ -77,7 +77,7 @@ export default class SearchScreen extends React.Component {
 
         return (
             <View styles={globalStyles.droidSafeArea}>
-                <View>
+                <View style={styles.topContainer}>
 
                         <View style={styles.row}>
 
@@ -99,6 +99,7 @@ export default class SearchScreen extends React.Component {
                 </View>
                 
                     <Autocomplete
+                        autoFocus={true}
                         containerStyle={styles.searchContainer}  
                         inputContainerStyle={styles.searchInputContainer}
                         data={recipes.length === 1 && comp(query, recipes[0].title) ? [] : recipes}
