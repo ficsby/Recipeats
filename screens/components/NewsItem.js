@@ -1,5 +1,5 @@
 import React, { Component } from 'react'; 
-import { StyleSheet, Text, View, WebView, Linking } from 'react-native';
+import { StyleSheet, Text, View, WebView, Linking, Image } from 'react-native';
 import YouTube from 'react-native-youtube';
 
 // Fetch the necessary Components
@@ -27,9 +27,10 @@ const NewsItem = ({ news, index, type }) => {
     } 
     else if (type==2) // Type 2: Popular tab (Articles are listed here)
     {
-        newsContent = <Text>hi 2</Text>;
+        // newsContent = <Text>hi 2</Text>;
         // NewsContent is set as an image (NOT WORKING)
-        // newsContent = <Image source={news.image} style={styles.articleImage}/> 
+        console.log(news.image);
+        newsContent = <Image source={{uri:news.image}} style={styles.articleImage}/>; 
 
     }
     else if (type==3) // Type 3: Videos tab
