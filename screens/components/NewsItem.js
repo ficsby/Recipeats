@@ -27,8 +27,8 @@ const NewsItem = ({ news, index, type }) => {
     } 
     else if (type==2)
     {
-        newsContent = <Text>hi 2</Text>;
-        // newsContent = <Image source={news.image} style={styles.articleImage}/> 
+        // newsContent = <Text>hi 2</Text>;
+        newsContent = <Image source={news.image} style={styles.articleImage}/> 
     }
     else if (type==3)
     {
