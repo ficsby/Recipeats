@@ -82,7 +82,6 @@ export default class HomeScreen extends React.Component {
     //     });
     // };
 
-
     /**
      *  Renders food articles, in which each article_item is mapped as a NewsItem. 
      *  Each NewsItem contains a title, image, and link. 
@@ -131,10 +130,10 @@ export default class HomeScreen extends React.Component {
                     </View> */}
                 </View>
                 <View key={'2'} tabLabel={'Popular'} style={styles.tabContentSyle}>
-                    <ScrollView>{this.renderArticles()}</ScrollView>          {/* Invokes renderArticles, which renders the food articles  */} 
+                    <ScrollView>{this.renderArticles()}</ScrollView>
                 </View>
                 <View key={'3'} tabLabel={'Videos'} style={styles.tabContentSyle}>   
-                    <ScrollView>{this.renderVideos()}</ScrollView>            {/* Invokes renderVideos, which renders the food videos */}
+                    <ScrollView>{this.renderVideos()}</ScrollView>
                 </View>
                 </ScrollableTabView>            
         </View>
