@@ -37,7 +37,7 @@ export default class HomeScreen extends React.Component {
             recipes: [],
             article_items: [],
             video_items: [],
-            foodTrivia: '',
+            food_trivia: '',
         };
     };
 
@@ -48,12 +48,11 @@ export default class HomeScreen extends React.Component {
         }); 
         this.setState({fontLoaded: true});
 
-        apiUtils.getRandomFoodTrivia(this);
-
+        const foodTrivia = await apiUtils.getRandomFoodTrivia(this);
         const foodArticles = await apiUtils.getRandomFoodArticles(this);
         const foodVids = await apiUtils.getRandomFoodVideos(this);
         
-        if(foodVids != null && foodArticles != null)
+        if((foodTrivia != null) && (foodVids != null) && (foodArticles != null))
         {
             this.setState({ isLoading: false });
         }
@@ -75,12 +74,6 @@ export default class HomeScreen extends React.Component {
 
         this.props.navigation.dispatch(navActions);
     };
-
-    // renderTrivia() {
-    //     return this.state.trivia_items.map((triv, index) => {
-    //         return <NewsItem key={index} news={triv} index={index} type={1} />
-    //     });
-    // };
 
     /**
      *  Renders food articles, in which each article_item is mapped as a NewsItem. 
@@ -117,22 +110,19 @@ export default class HomeScreen extends React.Component {
                 initialPage={1}
                 >
 
-                <View key={'1'} tabLabel={'   Trivia'} style={styles.tabContentSyle}>
-                    <ScrollView><Text>hi</Text></ScrollView>
-                    {/* <View style={styles.foodTriviaContainer}>
-
-                        <View style={styles.row}>
-                            <Icon name='lightbulb' size={30} color='rgba(0,0,0,1)' height={200} style={{marginLeft: 15}} />
-                            <Text style={styles.foodTriviaHeader}> Food Trivia of the Day </Text>
+                <View key={'1'} tabLabel={'Popular'} style={styles.tabContentSyle}>
+                    <ScrollView>
+                        <View style={styles.foodTriviaContainer}>
+                            <View style={styles.row}>
+                                <Icon name='lightbulb' size={30} color='rgba(0,0,0,1)' height={200} style={{marginLeft: 15}} />
+                                <Text style={styles.foodTriviaHeader}> Food Trivia of the Day </Text>
+                            </View>
+                            <Text style= {styles.foodTrivia}>  {this.state.food_trivia}  </Text>
                         </View>
-                        
-                        <Text style= {styles.foodTrivia}>  {this.state.foodTrivia}  </Text>
-                    </View> */}
+                        {this.renderArticles()}
+                    </ScrollView>
                 </View>
-                <View key={'2'} tabLabel={'Popular'} style={styles.tabContentSyle}>
-                    <ScrollView>{this.renderArticles()}</ScrollView>
-                </View>
-                <View key={'3'} tabLabel={'Videos'} style={styles.tabContentSyle}>   
+                <View key={'2'} tabLabel={'Videos'} style={styles.tabContentSyle}>   
                     <ScrollView>{this.renderVideos()}</ScrollView>
                 </View>
                 </ScrollableTabView>            

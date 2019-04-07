@@ -89,8 +89,10 @@ async function getRandomFoodTrivia(context){
     // Check if component is mounted before changing state, this check is to prevent memory leaks
     if(context._ismounted)
     {
-        context.setState({foodTrivia: json.text});
-    }
+        context.setState({food_trivia: json.text});
+    };
+
+    return new Promise((resolve) => setTimeout( () => { resolve('result') }, 5000 ) );
 }
 
 
@@ -126,18 +128,14 @@ async function getRandomFoodArticles(context){
         }  
     }
 
-     // Check if component is mounted before changing state, this check is to prevent memory leaks
-     if(context._ismounted)
-     {
-        context.setState({ article_items: foodArticles });
-     }
+    // Check if component is mounted before changing state, this check is to prevent memory leaks
+    if(context._ismounted)
+    {
+       context.setState({ article_items: foodArticles });
+    }
 
-    return new Promise((resolve) =>
-        setTimeout(
-        () => { resolve('result') },
-        5000
-        )
-    );
+    return new Promise((resolve) => setTimeout( () => { resolve('result') }, 5000 ) );
+
 }
 
 /* <Christine Tran> March 28, 2019
@@ -177,7 +175,7 @@ async function getRandomFoodVideos(context){
             foodVideos.push(video);
         }
         shuffle(foodVideos);
-        
+
         context.setState({
             video_items: 
             [
@@ -218,14 +216,8 @@ async function getRandomFoodVideos(context){
                 }
             ]
         });
-
-     }
-    return new Promise((resolve) =>
-        setTimeout(
-        () => { resolve('result') },
-        5000
-        )
-    );
+    }
+    return new Promise((resolve) => setTimeout( () => { resolve('result') }, 5000 ) );
 }
 
 export default {
