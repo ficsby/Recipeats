@@ -22,8 +22,10 @@ var globalStyles = require('./../styles/GlobalStyles.js');
 // Fetch News Components
 const fetch = require('node-fetch');
 
+import Button from './components/Button';
 import NewsItem from './components/NewsItem';
 import apiUtils from '../api/apiUtils.js';
+const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 
 export default class HomeScreen extends React.Component {
 
@@ -53,7 +55,6 @@ export default class HomeScreen extends React.Component {
         
         if(foodVids != null && foodArticles != null)
         {
-            console.log("In did mount");
             this.setState({ isLoading: false });
         }
     };
@@ -81,7 +82,6 @@ export default class HomeScreen extends React.Component {
     //     });
     // };
 
-
     /**
      *  Renders food articles, in which each article_item is mapped as a NewsItem. 
      *  Each NewsItem contains a title, image, and link. 
@@ -106,7 +106,7 @@ export default class HomeScreen extends React.Component {
         if (this.state.isLoading) {
             return <LoadingScreen />;
         };
-        // console.log(this.state.article_items);
+        console.log(this.state.article_items);
         return (
             <View style={styles.pageContainer}>
                 <ScrollableTabView  renderTabBar={() => ( <ScrollableTabBar  style={styles.scrollStyle} tabStyle={styles.tabStyle} /> )}
@@ -130,10 +130,10 @@ export default class HomeScreen extends React.Component {
                     </View> */}
                 </View>
                 <View key={'2'} tabLabel={'Popular'} style={styles.tabContentSyle}>
-                    <ScrollView>{this.renderArticles()}</ScrollView>          {/* Invokes renderArticles, which renders the food articles  */} 
+                    <ScrollView>{this.renderArticles()}</ScrollView>
                 </View>
                 <View key={'3'} tabLabel={'Videos'} style={styles.tabContentSyle}>   
-                    <ScrollView>{this.renderVideos()}</ScrollView>            {/* Invokes renderVideos, which renders the food videos */}
+                    <ScrollView>{this.renderVideos()}</ScrollView>
                 </View>
                 </ScrollableTabView>            
         </View>
