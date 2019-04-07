@@ -35,6 +35,7 @@ export default class HomeScreen extends React.Component {
             query: '',
             isLoading: true,
             recipes: [],
+            article_items: [],
             video_items: [],
             foodTrivia: '',
         };
@@ -46,10 +47,13 @@ export default class HomeScreen extends React.Component {
           'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
         }); 
         this.setState({fontLoaded: true});
+
         apiUtils.getRandomFoodTrivia(this);
 
+        const foodArticles = await apiUtils.getRandomFoodArticles(this);
         const foodVids = await apiUtils.getRandomFoodVideos(this);
-        if(foodVids != null)
+        
+        if(foodVids != null && foodArticles != null)
         {
             this.setState({ isLoading: false });
         }
@@ -72,9 +76,21 @@ export default class HomeScreen extends React.Component {
         this.props.navigation.dispatch(navActions);
     };
 
+    // renderTrivia() {
+    //     return this.state.trivia_items.map((triv, index) => {
+    //         return <NewsItem key={index} news={triv} index={index} type={1} />
+    //     });
+    // };
+
+    renderArticles() {
+        return this.state.article_items.map((articles, index) => {
+            return <NewsItem key={index} news={articles} index={index} type={2} />
+        });
+    };
+
     renderVideos() {
-        return this.state.video_items.map((news, index) => {
-            return <NewsItem key={index} index={index} news={news} />
+        return this.state.video_items.map((vids, index) => {
+            return <NewsItem key={index} news={vids} index={index} type={3} />
         });
     };
 
@@ -82,7 +98,7 @@ export default class HomeScreen extends React.Component {
         if (this.state.isLoading) {
             return <LoadingScreen />;
         };
-        console.log(this.video_items);
+        console.log(this.state.article_items);
         return (
             <View style={styles.pageContainer}>
                 <ScrollableTabView  renderTabBar={() => ( <ScrollableTabBar  style={styles.scrollStyle} tabStyle={styles.tabStyle} /> )}
@@ -94,7 +110,8 @@ export default class HomeScreen extends React.Component {
                 >
 
                 <View key={'1'} tabLabel={'   Trivia'} style={styles.tabContentSyle}>
-                    <View style={styles.foodTriviaContainer}>
+                    <ScrollView><Text>hi</Text></ScrollView>
+                    {/* <View style={styles.foodTriviaContainer}>
 
                         <View style={styles.row}>
                             <Icon name='lightbulb' size={30} color='rgba(0,0,0,1)' height={200} style={{marginLeft: 15}} />
@@ -102,9 +119,11 @@ export default class HomeScreen extends React.Component {
                         </View>
                         
                         <Text style= {styles.foodTrivia}>  {this.state.foodTrivia}  </Text>
-                    </View>
+                    </View> */}
                 </View>
-                <View key={'2'} tabLabel={'Popular'} style={styles.tabContentSyle}/>
+                <View key={'2'} tabLabel={'Popular'} style={styles.tabContentSyle}>
+                    <ScrollView>{this.renderArticles()}</ScrollView>
+                </View>
                 <View key={'3'} tabLabel={'Videos'} style={styles.tabContentSyle}>   
                     <ScrollView>{this.renderVideos()}</ScrollView>
                 </View>

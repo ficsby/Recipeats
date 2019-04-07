@@ -1,5 +1,5 @@
 import React, { Component } from 'react'; 
-import { StyleSheet, Text, View, WebView} from 'react-native';
+import { StyleSheet, Text, View, WebView, Linking } from 'react-native';
 import YouTube from 'react-native-youtube';
 
 // Fetch the necessary Components
@@ -17,9 +17,28 @@ function onPress(news) {
     alert(news.title);
 };
 
-const NewsItem = ({ news, index }) => {
+const NewsItem = ({ news, index, type }) => {
     let number = (index + 1).toString();
- 
+    let newsContent;
+
+    if (type==1) 
+    {
+        newsContent = <Text>hi 1</Text>;
+    } 
+    else if (type==2)
+    {
+        newsContent = <Text>hi 2</Text>;
+        // newsContent = <Image source={news.image} style={styles.articleImage}/> 
+    }
+    else if (type==3)
+    {
+        newsContent =  <WebView style= { {flex : 1} }
+                        mediaPlaybackRequiresUserAction = {false}
+                        domStorageEnabled={true}
+                        source={{ uri: "https://www.youtube.com/embed/" + news.videoId }}
+                        style={styles.video}
+                        />;
+    }
     return (
         // <Button key={index} noDefaultStyles={true} style = {{ flex: 1 }} >
             <View style={styles.newsItem}>
@@ -30,16 +49,7 @@ const NewsItem = ({ news, index }) => {
                         {/* <Text>{news.summary}</Text> */}
                     </View>
                 </View>
-                {/* <View style={styles.newsImageContainer}> */}
-                    {/* <Image source={news.image} style={styles.newsImage} /> */}
-                {/* </View> */}
-                <WebView
-                style= { {flex : 1} }
-                mediaPlaybackRequiresUserAction = {false}
-                domStorageEnabled={true}
-                source={{ uri: "https://www.youtube.com/embed/" + news.videoId }}
-                style={styles.newsImage}
-                />
+                {newsContent}
             </View>
         // </Button>
     );
@@ -79,13 +89,18 @@ const styles = StyleSheet.create({
         // fontFamily: 'georgia'
     },
 
-    newsImageContainer: {
+    articleImageContainer: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
-    
-    newsImage: {
+
+    articleImage: {
+        width: 400,
+        height: 200,
+    },
+
+    video: {
         width: 400,
         height: 200
     }
