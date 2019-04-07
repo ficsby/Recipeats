@@ -82,12 +82,21 @@ export default class HomeScreen extends React.Component {
     //     });
     // };
 
+
+    /**
+     *  Renders food articles, in which each article_item is mapped as a NewsItem. 
+     *  Each NewsItem contains a title, image, and link. 
+     */
     renderArticles() {
         return this.state.article_items.map((articles, index) => {
             return <NewsItem key={index} news={articles} index={index} type={2} />
         });
     };
 
+    /**
+     *  Renders food videos, in which each video_item is mapped as a NewsItem. 
+     *  Each NewsItem contains a title and its corresponding video.
+     */
     renderVideos() {
         return this.state.video_items.map((vids, index) => {
             return <NewsItem key={index} news={vids} index={index} type={3} />
@@ -122,10 +131,10 @@ export default class HomeScreen extends React.Component {
                     </View> */}
                 </View>
                 <View key={'2'} tabLabel={'Popular'} style={styles.tabContentSyle}>
-                    <ScrollView>{this.renderArticles()}</ScrollView>
+                    <ScrollView>{this.renderArticles()}</ScrollView>          {/* Invokes renderArticles, which renders the food articles  */} 
                 </View>
                 <View key={'3'} tabLabel={'Videos'} style={styles.tabContentSyle}>   
-                    <ScrollView>{this.renderVideos()}</ScrollView>
+                    <ScrollView>{this.renderVideos()}</ScrollView>            {/* Invokes renderVideos, which renders the food videos */}
                 </View>
                 </ScrollableTabView>            
         </View>
