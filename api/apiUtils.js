@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
+var shuffle = require('shuffle-array');
 
 
 /* <Francis Buendia> March 15, 2019
@@ -97,8 +98,9 @@ async function getRandomFoodTrivia(context){
         API Request call to 'Search Site Content" in order to get food articles
 */
 async function getRandomFoodArticles(context){
-    // searchKeys = ['what', 'why', 'when', 'how', 'best', 'most', 'healthy', 'food', 'avoid',  'bread', 'cheese', 'protein', 'fruit', 'dessert', 'snack', 'candy', 'dinner', 'restaurant', 'easy', 'breakfast', 'kitchen', 'where'];
-    searchKeys = ['what'];
+    searchKeys = ['restaurant', 'easy', 'breakfast', 'kitchen', 'where', 'food', 'avoid', 'why', 'best', 'healthy', 'when', 'how', 'bread', 'cheese', 'protein', 'fruit', 'dessert', 'snack', 'candy', 'dinner'];
+    shuffle(searchKeys);
+    console.log(searchKeys);
     // Returns a promise which then gets the result from the request call
     const foodArticles = [];
 
@@ -115,9 +117,12 @@ async function getRandomFoodArticles(context){
 
         for (jdx=0; jdx < json.Articles.length; ++jdx)
         {
-            foodArticles.push({ 'title':  json.Articles[jdx].name,
-                                'image':  json.Articles[jdx].image,
-                                'link':  json.Articles[jdx].link  })
+            if (json.Articles[jdx].image != null)
+            {
+                foodArticles.push({ 'title': json.Articles[jdx].name,
+                                    'image': json.Articles[jdx].image,
+                                    'link':  json.Articles[jdx].link  })
+            }
         }  
     }
 
@@ -171,7 +176,8 @@ async function getRandomFoodVideos(context){
             }
             foodVideos.push(video);
         }
-
+        shuffle(foodVideos);
+        
         context.setState({
             video_items: 
             [
