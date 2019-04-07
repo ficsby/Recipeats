@@ -1,6 +1,6 @@
 import React from 'react';
-import { Platform, View, StyleSheet, TouchableOpacity, Dimensions, TextInput, SafeAreaView, ScrollView } from 'react-native';
-import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createBottomTabNavigator, createAppContainer , DrawerItems } from 'react-navigation';
+import { Platform, View, StyleSheet, TouchableOpacity, Dimensions, TextInput, SafeAreaView, ScrollView, Text, Alert } from 'react-native';
+import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createBottomTabNavigator, createAppContainer , DrawerItems, NavigationActions, StackActions } from 'react-navigation';
 
 import SearchHeaderNav from './SearchHeaderNav';
 
@@ -29,7 +29,7 @@ Home Page Navigations
 */
 
 // Bottom tab navigator
-const HomeTabNavigator = createBottomTabNavigator({
+const Tabs = createBottomTabNavigator({
     Home: {
         screen: HomeScreen,
         navigationOptions: {
@@ -81,15 +81,18 @@ const SearchStack = createStackNavigator({
     Search: {
         screen: SearchScreen,
         navigationOptions: {
-            header: <SearchHeaderNav/>
+            header: null
         }
     },
 })
 
 // Stack navigator for home screen, use stack navigator to transition to screens linked from the home screen
-const HomeStackNavigator = createStackNavigator({
-    HomeTabNavigator: {
-        screen: HomeTabNavigator,
+const HomeTab = createStackNavigator({
+    Home: {
+        screen: Tabs,
+        navigationOptions: {
+            header: null,
+        }
     },
     
     Loading: {
@@ -105,56 +108,57 @@ const HomeStackNavigator = createStackNavigator({
         }
     },
 
-    Recipe: {
-        screen: RecipeScreen,
-    },
-
-    Foodstock: {
-        screen: FoodstockScreen,
-    },
-
 },{
     defaultNavigationOptions:({navigation}) => {
         NavigationService.setTopLevelNavigator(navigation);
-
-        return{
-            header: <SearchHeaderNav/>
-        }
     },
 })
 
+function navToTab( tabNav, tabName, props)
+{
+    props.navigation.dispatch(
+        StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({routeName: tabNav})]
+        })
+    );
+    // Alert.alert("Button pressed");
+    props.navigation.navigate(tabName);
+}
+
 const CustomDrawerComponent = (props) => (
-    <SafeAreaView style ={{ flex: 1 }}>
-        <ScrollView>
-            <DrawerItems { ...props} />
-        </ScrollView>
-    </SafeAreaView>
+    <View style={styles.container}>
+        <TouchableOpacity
+            onPress={() => navToTab('Home', 'Home', props)}
+            style={styles.uglyDrawerItem}>
+            <Text>Home</Text>
+            
+        </TouchableOpacity>
+        <TouchableOpacity
+            onPress={() => navToTab('Home', 'Recipes', props)}
+            style={styles.uglyDrawerItem}>
+            <Text>Bookmarks</Text>
+        </TouchableOpacity>
+    </View>
 )
 
 // Side bar navigation works on all screens other than login, signup and forgot password screen
 const AppDrawerNavigator = createDrawerNavigator({
-    Home_: {
-        screen: HomeStackNavigator,
-        navigationOptions: {
-            drawerIcon: ({tintColor}) => (
-                <Icon name="home" style ={{fontSize: 24, color:tintColor}} />
-            )
-        }
+    Home: {
+        screen: HomeTab,
+        // navigationOptions: {
+        //     drawerIcon: ({tintColor}) => (
+        //         <Icon name="home" style ={{fontSize: 24, color:tintColor}} />
+        //     )
+        // }
     },
-    _Search_: {
-        screen: SearchStack,
+    Bookmarks:{
+        screen: Tabs
     }
 },{
-    contentComponent: CustomDrawerComponent,
-    contentOptions:{
-        activeTintColor: 'orange'
-    },
+    contentComponent: props => <CustomDrawerComponent {...props} />,
     defaultNavigationOptions:({navigation}) => {
         NavigationService.setTopLevelNavigator(navigation);
-        
-        return{
-            header: <SearchHeaderNav/>
-        }
     },
 });
 
@@ -169,3 +173,25 @@ export default class MainTabNavigator extends React.Component {
       return <AppContainer />
   }
 }
+
+const styles = StyleSheet.create({
+
+    container: {
+      flex: 1,
+      backgroundColor: '#f6f6f6',
+      paddingTop: 40,
+      paddingHorizontal: 20
+    },
+
+    uglyDrawerItem: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      color: '#E73536',
+      padding: 15,
+      margin: 5,
+      borderRadius: 2,
+      borderColor: '#E73536',
+      borderWidth: 1,
+      textAlign: 'center'
+    }
+  })

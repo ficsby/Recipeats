@@ -4,6 +4,7 @@ import { StackActions, DrawerActions } from 'react-navigation';
 import Autocomplete from 'react-native-autocomplete-input';
 import { SearchBar } from 'react-native-elements';
 import { Font, AppLoading } from 'expo';
+import SearchHeaderNav from './../navigation/SearchHeaderNav';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 
 //import * as firebase from 'firebase';
@@ -108,6 +109,7 @@ export default class HomeScreen extends React.Component {
 
         return (
             <SafeAreaView style = {globalStyles.droidSafeArea}>
+                <SearchHeaderNav/>
                 <View style={styles.pageContainer}>
                     {/* Top panel of page. Contains the menu and user account buttons. 
                         Does not actually contain the Autocomplete Search Bar, but is visually underneath it  */}
