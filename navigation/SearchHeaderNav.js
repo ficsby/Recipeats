@@ -6,8 +6,6 @@ import NavigationService from './NavigationService';
 import SearchScreen from './../screens/SearchScreen';
 import ApiUtils from './../api/apiUtils';
 
-const fetch = require('node-fetch');
-
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from './../config/icon-font.json';
@@ -29,21 +27,6 @@ export default class SearchHeaderNav extends React.Component {
         searchBarSensitivity: true,
     };
 
-    /* <Francis Buendia> March 15, 2019
-        API Request call to 'Autocomplete recipe search' recipes by name 
-    */
-    async getAutoCompleteRecipesByName(text){
-        this.setState({query: text});
-        await ApiUtils.getAutoCompleteRecipesByName(text, this);
-    }
-
-    findRecipe = (query) => {
-        if( query === '') { return []; }
-        const { recipes } = this.state;
-        const regex = new RegExp(`${query.trim()}`, 'i');
-        return recipes.filter(recipe => recipe.title.search(regex) >= 0);
-    }
-
     async componentDidMount() {
         this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
         await Font.loadAsync({
@@ -58,8 +41,7 @@ export default class SearchHeaderNav extends React.Component {
 
 
     onAccountIconPress = () => {
-        // NavigationService.navigate('EditAccount');
-        this.setState({visible: true});
+        NavigationService.navigate('EditAccount');
     };
 
     onModalOpen = () => {
@@ -68,30 +50,22 @@ export default class SearchHeaderNav extends React.Component {
 
     onModalClose = () => {
         Alert.alert("Closed Modal");
-        this.setState({modalVisible: false});
+        this.setState({modalVisible: false, searchBarSensitivity:true});
     }
 
     render() {
-
-        const { query } = this.state;
-        const recipes = this.findRecipe(query);
-        const comp = (a,b) => a.toLowerCase().trim() == b.toLowerCase().trim();
-        
         return (
             <SafeAreaView style = {globalStyles.droidSafeArea}>
-                {/* <Button style={{width:0, height:0}} >
-
-                </Button> */}
-
                 <View style={styles.topContainer}>
 
                     <View style={styles.row}>
 
                         {/* Side bar navigation icon */}
                         <TouchableOpacity onPress = { () => NavigationService.openDrawer()}>
-                            <Icon name='menu' size={25} color='rgba(175,76,99,1)' backgroundColor='red' height={200}
 
+                            <Icon name='menu' size={25} color='rgba(175,76,99,1)' backgroundColor='red' height={200}
                                 style={{marginLeft: 18}} />
+
                         </TouchableOpacity>
 
                         {/* User account icon  */}
@@ -108,27 +82,15 @@ export default class SearchHeaderNav extends React.Component {
                     editable = {this.state.searchBarSensitivity}
                     containerStyle={styles.searchContainer}  
                     inputContainerStyle={styles.searchInputContainer}
-                    data={recipes.length === 1 && comp(query, recipes[0].title) ? [] : recipes}
-                    defaultValue = { query }
-                    autoCorrect={false}
                     placeholder= "    Search recipes, ingredients..."
-                    onChangeText={text => this.getAutoCompleteRecipesByName(text)}
-                    onFocus = {this.onModalOpen}
-                    onSelectionChange = {this.onModalClose}
-                    renderItem={({ id, title }) => (
-                        <TouchableOpacity style={styles.itemTextContainer} onPress={() => this.setState({ query: title })}>
-                            <Text style={styles.itemText}>
-                                {title}
-                            </Text>
-                        </TouchableOpacity>
-                    )}                       
+                    onFocus = {this.onModalOpen}    
                 />
                 
                 <Modal
-                animationType ="fade"
-                transparent = {false}
-                visible = {this.state.modalVisible}
-                onRequestClose= {this.onModalClose}>
+                    animationType ="fade"
+                    transparent = {false}
+                    visible = {this.state.modalVisible}
+                    onRequestClose= {this.onModalClose}>
                 
                     <SearchScreen/>
                 </Modal>

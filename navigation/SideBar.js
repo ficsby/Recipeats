@@ -1,5 +1,5 @@
 import React from 'react'
-import { Platform, View, StyleSheet, TouchableOpacity, Dimensions, ScrollView, SafeAreaView, Text, Header, Image, Body } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ScrollView, Text, Image} from 'react-native';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 
 import { NavigationActions, StackActions } from 'react-navigation'
@@ -58,7 +58,7 @@ export default class Sidebar extends React.Component {
                         <Text>FoodDiary</Text>
                     </TouchableOpacity>
                 </View>
-                
+
             </ScrollView>
         )
     }
