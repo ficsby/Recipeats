@@ -70,7 +70,7 @@ export default class SearchHeaderNav extends React.Component {
 
                         {/* User account icon  */}
                         <TouchableOpacity onPress ={this.onAccountIconPress} >
-                            <Icon name='filter' size={25} color='rgba(175,76,99,1)'
+                            <Icon name='user' size={25} color='rgba(175,76,99,1)'
                                 style={{marginLeft: (WIDTH - 85)}} />
                         </TouchableOpacity>
 
