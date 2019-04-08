@@ -1,7 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput, Button, Image,  Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
-import { StackActions } from 'react-navigation';
 import * as firebase from 'firebase';
 
 export default class SignupScreen extends React.Component {

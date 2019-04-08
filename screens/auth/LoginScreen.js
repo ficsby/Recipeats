@@ -7,8 +7,6 @@ import * as firebase from 'firebase';
 
 import logo from './../../assets/images/logo_transparent.png';
 import { Styles } from './../../styles/GlobalStyles';
-import { reset } from 'expo/build/AR';
-import { heightPercentageToDP } from 'react-native-responsive-screen';
 
 import KeyboardShift from './../../styles/KeyboardShift.js';
 

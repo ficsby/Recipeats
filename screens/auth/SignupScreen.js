@@ -1,11 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, ScrollView, Text, TextInput, TouchableOpacity, Picker, Button, Alert, Dimensions } from 'react-native';
-import { StackActions } from 'react-navigation';
 import * as firebase from 'firebase';
 import DatePicker from 'react-native-datepicker';
-
-import logo from './../../assets/images/logo_transparent.png';
-import { stringify } from 'qs';
 
 import KeyboardShift from './../../styles/KeyboardShift.js';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';

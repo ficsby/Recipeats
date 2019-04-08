@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Image, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert, Modal, SafeAreaView } from 'react-native';
 import { StackActions, DrawerActions } from 'react-navigation';
 import Autocomplete from 'react-native-autocomplete-input';
 import { SearchBar } from 'react-native-elements';
 import { Font, AppLoading } from 'expo';
+import SearchHeaderNav from './../navigation/SearchHeaderNav';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view-forked'
 import LoadingScreen from './LoadingScreen';
@@ -32,6 +33,7 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            visible: false,
             query: '',
             isLoading: true,
             recipes: [],
@@ -40,6 +42,12 @@ export default class HomeScreen extends React.Component {
             foodTrivia: '',
         };
     };
+
+    static navigationOptions = {
+        drawerIcon: ({tintColor}) => (
+            <Icon name="home" style ={{fontSize: 24, color:tintColor}} />
+        )
+    } 
 
     async componentDidMount() {
         this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
@@ -64,16 +72,17 @@ export default class HomeScreen extends React.Component {
      };
 
     onAccountIconPress = () => {
-        var navActions = StackActions.reset({
-            index: 1,
-            actions: [
-                // We need to push both the current screen and the next screen that we are transitioning to incase the user wants to go to previous screen
-                StackActions.push({ routeName: "Home" }),       
-                StackActions.push({ routeName: "EditAccount" }),
-            ]
-        });
+        // var navActions = StackActions.reset({
+        //     index: 1,
+        //     actions: [
+        //         // We need to push both the current screen and the next screen that we are transitioning to incase the user wants to go to previous screen
+        //         StackActions.push({ routeName: "Home" }),       
+        //         StackActions.push({ routeName: "EditAccount" }),
+        //     ]
+        // });
 
-        this.props.navigation.dispatch(navActions);
+        // this.props.navigation.dispatch(navActions);
+        this.setState({visible: true});
     };
 
     // renderTrivia() {
