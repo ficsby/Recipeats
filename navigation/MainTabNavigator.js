@@ -1,14 +1,14 @@
 import React from 'react';
-import { Platform, View, StyleSheet, TouchableOpacity, Dimensions, TextInput, SafeAreaView, ScrollView, Text, Alert } from 'react-native';
-import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createBottomTabNavigator, createAppContainer , DrawerItems, NavigationActions, StackActions } from 'react-navigation';
-
-import SearchHeaderNav from './SearchHeaderNav';
+import { View, StyleSheet, TouchableOpacity, Dimensions, ScrollView, Text, Image } from 'react-native';
+import { createStackNavigator, createDrawerNavigator, createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
+import { Font } from 'expo';
 
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from './../config/icon-font.json';
+import defAccIcon from './../assets/images/default_acc_icon.png';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
-const { width: WIDTH } = Dimensions.get('window');
 
 //import Colors from '../constants/Colors';
 import EditAccountScreen from './../screens/auth/EditAccountScreen';
@@ -22,6 +22,7 @@ import FoodstockScreen from './../screens/FoodstockScreen';
 import MacrosScreen from './../screens/MacrosScreen';
 import SearchScreen from './../screens/SearchScreen';
 import NavigationService from './NavigationService';
+import Sidebar from './SideBar';
 
 /*
 Home Page Navigations
@@ -58,7 +59,7 @@ const Tabs = createBottomTabNavigator({
     },
     
     FoodStock: {
-        screen: BudgetScreen,
+        screen: FoodstockScreen,
         navigationOptions: {
             tabBarIcon: ({}) => (
                 <Icon name='food-stock' size={30} color='rgba(175,76,99,1)' />
@@ -114,32 +115,44 @@ const HomeTab = createStackNavigator({
     },
 })
 
-function navToTab( tabNav, tabName, props)
-{
-    props.navigation.dispatch(
-        StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({routeName: tabNav})]
-        })
-    );
-    // Alert.alert("Button pressed");
-    props.navigation.navigate(tabName);
-}
-
 const CustomDrawerComponent = (props) => (
-    <View style={styles.container}>
-        <TouchableOpacity
-            onPress={() => navToTab('Home', 'Home', props)}
-            style={styles.uglyDrawerItem}>
-            <Text>Home</Text>
-            
-        </TouchableOpacity>
-        <TouchableOpacity
-            onPress={() => navToTab('Home', 'Recipes', props)}
-            style={styles.uglyDrawerItem}>
-            <Text>Bookmarks</Text>
-        </TouchableOpacity>
-    </View>
+    <ScrollView>
+        <View style={{justifyContent: 'center', alignItems:'center'}}>
+            <Image source= {defAccIcon} style={{flex:1, width: wPercentage('30%'), height: hPercentage('30%'), resizeMode: 'center'}}/>
+        </View>
+        <View style={styles.container}>
+            <TouchableOpacity
+                onPress={() => navToTab('Home', 'Home', props)}
+                style={styles.uglyDrawerItem}>
+                <Text>Home</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                onPress={() => navToTab('Home', 'Recipes', props)}
+                style={styles.uglyDrawerItem}>
+                <Text>Bookmarks</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                onPress={() => navToTab('Home', 'Budget', props)}
+                style={styles.uglyDrawerItem}>
+                <Text>Budget</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                onPress={() => navToTab('Home', 'FoodStock', props)}
+                style={styles.uglyDrawerItem}>
+                <Text>Foodstock</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                onPress={() => navToTab('Home', 'FoodDiary', props)}
+                style={styles.uglyDrawerItem}>
+                <Text>FoodDiary</Text>
+            </TouchableOpacity>
+        </View>
+    </ScrollView>
+    
 )
 
 // Side bar navigation works on all screens other than login, signup and forgot password screen
@@ -152,11 +165,8 @@ const AppDrawerNavigator = createDrawerNavigator({
         //     )
         // }
     },
-    Bookmarks:{
-        screen: Tabs
-    }
 },{
-    contentComponent: props => <CustomDrawerComponent {...props} />,
+    contentComponent: props => <Sidebar {...props} />,
     defaultNavigationOptions:({navigation}) => {
         NavigationService.setTopLevelNavigator(navigation);
     },

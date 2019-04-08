@@ -1,9 +1,7 @@
 import React from 'react';
-import { TextInput, SafeAreaView, Button, View, StyleSheet, TouchableOpacity, Dimensions, Text, Modal, Alert, Keyboard } from 'react-native';
-import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createBottomTabNavigator, createAppContainer , DrawerItems } from 'react-navigation';
-import { StackActions, DrawerActions } from 'react-navigation';
+import {SafeAreaView, View, StyleSheet, TouchableOpacity, Dimensions, Text, Modal, Alert} from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
-import SearchHeader from 'react-native-search-header';
+import { Font } from 'expo';
 import NavigationService from './NavigationService';
 import SearchScreen from './../screens/SearchScreen';
 import ApiUtils from './../api/apiUtils';
@@ -51,7 +49,6 @@ export default class SearchHeaderNav extends React.Component {
         await Font.loadAsync({
           'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
         }); 
-        Keyboard.addListener('keyboardDidHide', this._forceLoseFocus);
         this.setState({fontLoaded: true});
     }
 
@@ -71,6 +68,7 @@ export default class SearchHeaderNav extends React.Component {
 
     onModalClose = () => {
         Alert.alert("Closed Modal");
+        this.setState({modalVisible: false});
     }
 
     render() {
