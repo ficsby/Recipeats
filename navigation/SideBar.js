@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, ScrollView, Text, Image} from 'reac
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 
 import { NavigationActions, StackActions } from 'react-navigation'
+import NavigationService from './NavigationService';
 
 import defAccIcon from './../assets/images/default_acc_icon.png';
 import * as firebase from 'firebase';
@@ -41,6 +42,16 @@ export default class Sidebar extends React.Component {
         })
     }
 
+    onAccountIconPress = () => {
+        this.props.navigation.dispatch(
+            StackActions.reset({
+                index: 1,
+                actions: [NavigationActions.navigate({routeName: 'Home'}),
+                          NavigationActions.navigate({routeName: 'EditAccount'})]
+            })
+        );
+    };
+
     navToTab( parTabNav, tabName)
     {
         const tab = tabName.toLowerCase();
@@ -54,8 +65,8 @@ export default class Sidebar extends React.Component {
             StackActions.reset({
                 index: 0,
                 actions: [NavigationActions.navigate({routeName: parTabNav})]
-        })
-    );
+            })
+        );
 
         this.props.navigation.navigate(tabName);
     }
@@ -66,9 +77,9 @@ export default class Sidebar extends React.Component {
             return (
                 <ScrollView style={styles.container}>
                     <View style={styles.header}>
-                        <View style={styles.imageContainer}>
+                        <TouchableOpacity style={styles.imageContainer } onPress ={this.onAccountIconPress}>
                             <Image source= {defAccIcon} style={{flex:1, width: wPercentage('35%'), height: hPercentage('35%'), resizeMode: 'center'}}/> 
-                        </View>
+                        </TouchableOpacity>
                         <Text style={styles.name}>{this.state.user.name}</Text>
                     </View>
 

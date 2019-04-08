@@ -34,8 +34,8 @@ const Tabs = createBottomTabNavigator({
     Home: {
         screen: HomeScreen,
         navigationOptions: {
-            tabBarIcon: ({}) => (
-                <Icon name='home' size={33} color='rgba(175,76,99,1)' />
+            tabBarIcon: ({tintColor}) => (
+                <Icon name='home' size={33} color={tintColor} />
             )
         }
     },
@@ -43,8 +43,8 @@ const Tabs = createBottomTabNavigator({
     Recipes: {
         screen: BookmarksScreen,
         navigationOptions: {
-            tabBarIcon: ({}) => (
-                <Icon name='recipe-book' size={32} color='rgba(175,76,99,1)' />
+            tabBarIcon: ({tintColor}) => (
+                <Icon name='recipe-book' size={32} color={tintColor} />
             )
         }
     },
@@ -52,8 +52,8 @@ const Tabs = createBottomTabNavigator({
     Budget: {
         screen: BudgetScreen,
         navigationOptions: {
-            tabBarIcon: ({}) => (
-                <Icon name='budget' size={37} color='rgba(175,76,99,1)' />
+            tabBarIcon: ({tintColor}) => (
+                <Icon name='budget' size={37} color={tintColor} />
             )
         }
     },
@@ -61,8 +61,8 @@ const Tabs = createBottomTabNavigator({
     FoodStock: {
         screen: FoodstockScreen,
         navigationOptions: {
-            tabBarIcon: ({}) => (
-                <Icon name='food-stock' size={30} color='rgba(175,76,99,1)' />
+            tabBarIcon: ({tintColor}) => (
+                <Icon name='food-stock' size={30} color={tintColor} />
             )
         }
     },
@@ -70,12 +70,19 @@ const Tabs = createBottomTabNavigator({
     FoodDiary: {
         screen: MacrosScreen,
         navigationOptions: {
-            tabBarIcon: ({}) => (
-                <Icon name='food-diary' size={35} color='rgba(175,76,99,1)' />
+            tabBarIcon: ({tintColor}) => (
+                <Icon name='food-diary' size={35} color={tintColor} />
             )
         }
     },
 
+},{
+    tabBarOptions: {
+        activeTintColor: 'rgba(249, 248, 248, 1)',
+        activeBackgroundColor: 'rgba(175,76,99,1)',
+        inactiveTintColor: 'rgba(175,76,99,1)',
+        inactiveBackgroundColor: 'rgba(249, 248, 248, 1)',
+    },
 })
 
 const SearchStack = createStackNavigator({
