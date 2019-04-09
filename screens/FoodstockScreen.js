@@ -196,7 +196,13 @@ export default class FoodstockScreen extends React.Component {
                 Alert.alert("Modal has been closed.");
               }}
             >
-              <FoodItemForm />
+              <FoodItemForm
+                datePurchased={new Date()}
+                metric=""
+                name=""
+                price={null}
+                quantity={null}
+              />
               <TouchableHighlight onPress={this.toggleAddModalVisible}>
                 <Text>Hide Modal</Text>
               </TouchableHighlight>
@@ -257,47 +263,6 @@ export default class FoodstockScreen extends React.Component {
                 titleStyle={{ color: "white", fontWeight: "bold" }}
                 onPress={this.toggleAddModalVisible}
               />
-
-              {/* Edit Button (When pressed, makes the information content editable) */}
-              <TouchableOpacity>
-                <Text style={Styles.editButton} onPress={this.toggleEditable}>
-                  Edit
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={Styles.deleteButton}
-                onPress={this.onDeletePress}
-              >
-                <Text style={Styles.saveChanges}>Delete</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={Styles.saveButton}
-                onPress={this.onSaveChangesPress}
-              >
-                <Text style={Styles.saveChanges}>Save Changes</Text>
-              </TouchableOpacity>
-
-              <View style={Styles.dataRow}>
-                <Text style={Styles.inputLabel}>Name</Text>
-                <TextInput
-                  style={Styles.inputData}
-                  value={this.state.itemName}
-                  onChangeText={itemName => this.setState({ itemName })}
-                  editable={this.state.editable}
-                />
-              </View>
-
-              <View style={Styles.dataRow}>
-                <Text style={Styles.inputLabel}>Quantity</Text>
-                <TextInput
-                  style={Styles.inputData}
-                  value={this.state.itemQuantity}
-                  onChangeText={itemQuantity => this.setState({ itemQuantity })}
-                  editable={this.state.editable}
-                />
-              </View>
             </View>
           </ScrollView>
         )}

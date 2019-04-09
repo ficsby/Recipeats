@@ -23,12 +23,12 @@ export default class FoodItemForm extends React.Component {
     super(props);
 
     this.state = {
-      datePurchased: null,
+      datePurchased: this.props.datePurchased,
       ingredients: [],
-      metric: "",
-      name: "",
-      price: null,
-      quantity: null,
+      metric: this.props.metric,
+      name: this.props.name,
+      price: this.props.price,
+      quantity: this.props.quantity,
       query: ""
     };
   }
