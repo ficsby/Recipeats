@@ -1,4 +1,8 @@
 import {StyleSheet} from 'react-native';
+import {
+    widthPercentageToDP as wPercentage,
+    heightPercentageToDP as hPercentage
+} from "react-native-responsive-screen";
 
 export const Styles = StyleSheet.create({
   /*------------------------------------------------------------------------
@@ -291,4 +295,30 @@ export const Styles = StyleSheet.create({
           borderTopWidth: 2.1,
       },
       
+      //Temporary ctrl c + ctrl v
+      selectDate: {
+          marginBottom: hPercentage("5%"),
+          marginRight: 40,
+          paddingLeft: 40,
+          paddingTop: 10,
+          fontSize: 15,
+          color: "rgba(91, 88, 88, 0.9)"
+      },
+
+      choiceContainer: {
+        backgroundColor: "rgba(244, 238, 238, 0.7)",
+        height: 40,
+        marginTop: 7,
+        marginLeft: 40,
+        marginRight: 40
+    },
+
+    choiceRow: {
+        flex: 1,
+        flexDirection: "row",
+        marginTop: 7,
+        marginBottom: 10,
+        marginLeft: 5,
+        height: 40
+    },
 });

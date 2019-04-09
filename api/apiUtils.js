@@ -26,6 +26,36 @@ async function getAutoCompleteRecipesByName(text, context){
     
 }
 
+/**
+ * API request call to 'Autocomplete ingredients search' ingredients by name
+ * @param {*} text - text to autocomplete
+ * @param {*} context 
+ */
+async function getAutoCompleteIngredientsByName(text, context) {
+
+    try {
+        // Returns a promise which then gets the result from the request call
+        const response = await fetch(
+          `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/ingredients/autocomplete?number=10&query=${text}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "X-RapidAPI-Key": API_KEY // API key registered for Spoonacular API
+            }
+          }
+        );
+
+
+        const json = await response.json();
+        context.setState({ ingredients: json });
+
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
 /* <Francis Buendia> March 15, 2019
         API Request call to 'Get Recipe Info from Id' to get the recipe information
 */
@@ -94,6 +124,7 @@ async function getRandomFoodTrivia(context){
 
 export default {
     getAutoCompleteRecipesByName,
+    getAutoCompleteIngredientsByName,
     getRecipeInfoFromId,
     getRandomFoodTrivia
 }
