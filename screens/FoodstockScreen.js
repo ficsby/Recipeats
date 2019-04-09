@@ -9,6 +9,7 @@ import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-ta
 import { Styles } from '../styles/GlobalStyles';
 import { modifyFoodStock, logPurchaseDate, getFoodList, removeFromFoodStock } from '../utils/FoodListUtils';
 import FoodItem from './components/FoodItem';
+import Button from './components/Button';
 
 
 // import Bar from 'react-native-bar-collapsible';
@@ -183,7 +184,7 @@ export default class FoodstockScreen extends React.Component {
                 <View style={Styles.sectionContainer}>
                   <Text style={Styles.sectionTitle}> Inventory </Text>
 
-                  {//Fetch and display data from firebase
+                  {/* {//Fetch and display data from firebase
                   this.state.externalFoodList &&
                     this.state.externalFoodList.map((item, i) => (
                       <ListItem
@@ -193,7 +194,26 @@ export default class FoodstockScreen extends React.Component {
                         titleStyle={Styles.inventoryText}
                         rightTitleStyle={Styles.quantityText}
                       />
-                    ))}
+                    ))} */}
+
+                    {
+                      <View style={Styles.container}>
+                      <Table borderStyle={{borderColor: 'transparent'}}>
+                        <Row data={state.tableHead} style={Styles.head} textStyle={Styles.text}/>
+                        {
+                          state.externalFoodList && state.externalFoodList.map((rowData, index) => (
+                            // <TableWrapper key={index} style={Styles.row}>
+                            //   {
+                                <FoodItem index={index} name={rowData.name} quantity={rowData.quantity} />
+                                
+                            //   }
+                            // </TableWrapper>
+                            
+                          ))
+                        }
+                      </Table>
+                    </View>
+                    }
 
                   <FoodItem index={5} name="temp" quantity={0} />  
                   <ListItem
