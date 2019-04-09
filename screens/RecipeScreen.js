@@ -307,20 +307,13 @@ export default class HomeScreen extends React.Component {
                         </View>
 
                         <View style ={styles.sectionContainer}>
-                            < Text style={styles.sectionTitle}> Ingredients </Text>
-
+                            <Text style={styles.sectionTitle}> Ingredients </Text> 
                             {
                                 ingredientsList.map( (item, i) =>  
                                 ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
                                             titleStyle={styles.ingredientText} rightTitleStyle={styles.quantityText} /> ))
-                                // this.state.extendedIngredients.map( (item, i) =>  
-                                // ( <ListItem key={i} title={item.name} rightTitle={item.amount} 
-                                //             titleStyle={styles.ingredientText} rightTitleStyle={styles.quantityText} /> ))
-                                    
                             }
-                            <TouchableOpacity  onPress={this.compareFoodLists} style={{alignItems: 'flex-end', marginRight: 15, paddingTop: 20}}>
-                                <Icon name='checklist-2' size={26} color='rgba(0,0,0,0.6)' />
-                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.compareButton}><Text style={styles.compareText}>Compare To Food Stock</Text></TouchableOpacity>
                         </View>
 
                         {/* contentContainerStyle={styles.numberContainer} rightContentContainerStyle={styles.instructionStepContainer} />  */}
@@ -333,6 +326,7 @@ export default class HomeScreen extends React.Component {
                                     containerStyle={styles.numberContainer} badgeStyle={styles.numberBadge} textStyle={styles.instructionNumber} /> } 
                                             /> ))
                             }
+                            <View style={{paddingBottom: 20}} />
                         </View>
 
                         {/* Padding at the bottom as a buffer */}
@@ -463,7 +457,6 @@ const styles = StyleSheet.create({
         marginRight: 10,
         marginBottom: 5,
     },
-
     searchResult: {
         width: '100%',
     },
@@ -472,7 +465,6 @@ const styles = StyleSheet.create({
 /*------------------------------------------------------------------------
     Recipe Info Section
 ------------------------------------------------------------------------*/
-
     overlayButtonsContainer: {
         flexDirection: 'row',
         position: 'absolute',
@@ -598,7 +590,6 @@ const styles = StyleSheet.create({
     sectionContainer: {
         marginBottom: 15,
         paddingTop: 10,
-        paddingBottom: 15,
         backgroundColor: 'rgba(255,255,255,1)',
         borderBottomColor: 'rgba(0,0,0,0.15)',
         borderTopColor: 'rgba(0,0,0,0.15)',
@@ -607,22 +598,42 @@ const styles = StyleSheet.create({
     },
 
     sectionTitle: {
+        flex: 1,
         marginTop: 10,
         marginBottom: 5,
         marginLeft: 20,
         fontSize: 20,
         fontWeight: '600',
+        color: 'rgba(0,0,0,1)',
     },
 
     /*-----------------------
        Ingredients
     -------------------------*/
 
+    compareButton: {
+        backgroundColor: 'rgba(188, 107, 107, 1)',
+        marginTop: 25,
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+    },
+    
+    compareText: {
+        fontSize: 15,
+        fontWeight: '500',
+        width: '100%',
+        color: 'rgba(255, 255, 255, 1)',
+        textAlign: 'center',
+    },
+
     ingredientText: {
         width: '80%',
         fontSize: 14,
         marginLeft: 20,
         marginBottom: -15,
+        color: 'rgba(105,105,105,1)',
     },
 
     quantityText: {
