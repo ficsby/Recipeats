@@ -198,6 +198,7 @@ export default class FoodstockScreen extends React.Component {
             >
               <FoodItemForm
                 datePurchased={new Date()}
+                id={null}
                 metric=""
                 name=""
                 price={null}

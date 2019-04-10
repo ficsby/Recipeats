@@ -29,14 +29,13 @@ async function getAutoCompleteRecipesByName(text, context){
 /**
  * API request call to 'Autocomplete ingredients search' ingredients by name
  * @param {*} text - text to autocomplete
- * @param {*} context 
+ * @param {*} context - Reference to the object that the function is called in
  */
 async function getAutoCompleteIngredientsByName(text, context) {
-
     try {
         // Returns a promise which then gets the result from the request call
         const response = await fetch(
-          `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/ingredients/autocomplete?number=10&query=${text}`,
+          `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/ingredients/autocomplete?number=10&metaInformation=true&query=${text}`,
           {
             method: "GET",
             headers: {
@@ -46,14 +45,11 @@ async function getAutoCompleteIngredientsByName(text, context) {
           }
         );
 
-
         const json = await response.json();
         context.setState({ ingredients: json });
-
     } catch (err) {
         console.log(err);
     }
-
 }
 
 /* <Francis Buendia> March 15, 2019
@@ -101,6 +97,55 @@ async function getRecipeInfoFromId(id, context){
     );
 }
 
+/**
+ * API request call to "Get food information" to get information about a specific food (ingredient)
+ * @param {int} id - API ID of the food
+ * @param {reference} context - Reference to the object that the function is called in
+ */
+async function getIngredientInfoFromId(id, context) {
+    // Returns a promise which then gets the result from the request call
+    const response = await fetch(
+      `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/ingredients/${id}/information?amount=100&unit=gram`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "X-RapidAPI-Key": API_KEY // API key registered for Spoonacular API
+        }
+      }
+    );
+
+    const json = await response.json();
+
+    // Check if component is mounted before changing state, this check is to prevent memory leaks
+    if (context._ismounted) {
+        console.log("context is mounted");
+        nutritionTags = {}
+        for (key in json) {
+            if (key in context.state) {
+                context.setState({
+                    [key]: json[key]
+                });
+            }
+            else {
+                nutritionTags[key] = json[key];
+                console.log(key + ": " + json[key]);
+            }
+        }
+
+        context.setState({
+            nutritionalTags: nutritionTags
+        });
+    }
+
+    return new Promise((resolve) =>
+        setTimeout(
+            () => { resolve('result') },
+            5000
+        )
+    );
+}
+
 /* <Francis Buendia> March 15, 2019
         API Request call to 'Get Random Food Trivia' to get food trivia info
 */
@@ -126,5 +171,6 @@ export default {
     getAutoCompleteRecipesByName,
     getAutoCompleteIngredientsByName,
     getRecipeInfoFromId,
+    getIngredientInfoFromId,
     getRandomFoodTrivia
 }

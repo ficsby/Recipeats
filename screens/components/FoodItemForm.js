@@ -24,9 +24,11 @@ export default class FoodItemForm extends React.Component {
 
     this.state = {
       datePurchased: this.props.datePurchased,
+      id: this.props.id,
       ingredients: [],
       metric: this.props.metric,
       name: this.props.name,
+      nutritionalTags: {},
       price: this.props.price,
       quantity: this.props.quantity,
       query: ""
@@ -43,9 +45,19 @@ export default class FoodItemForm extends React.Component {
   }
 
   render() {
+    if (this.state.id != null) {
+      console.log(this.state.id);
+      ApiUtils.getIngredientInfoFromId(this.state.id, this);
+
+      if (Object.keys(this.state.nutritionalTags).length != 0) {
+        console.log(this.state.nutritionalTags);
+      }
+
+    }
+    
     return (
       <View style={Styles.sectionContainer}>
-        {/* <View style={Styles.dataRow}>
+        <View style={Styles.dataRow}>
           <Text style={Styles.inputLabel}>Ingredient Name</Text>
           <Autocomplete
             containerStyle={styles.searchContainer}
@@ -63,24 +75,26 @@ export default class FoodItemForm extends React.Component {
             renderItem={({ id, name }) => (
               <TouchableOpacity
                 style={styles.itemTextContainer}
-                onPress={() => this.setState({ query: name })}
+                onPress={() =>
+                  this.setState({ query: name, name: name, id: id })
+                }
               >
                 <Text style={styles.itemText}>{name}</Text>
               </TouchableOpacity>
             )}
           />
-        </View> */}
+        </View>
 
-        <View style={Styles.dataRow}>
+        {/* <View style={Styles.dataRow}>
           <Text style={Styles.inputLabel}>Ingredient Name</Text>
           <TextInput
             style={Styles.inputData}
             value={this.state.name}
             onChangeText={itemName => this.setState({ name: itemName })}
           />
-        </View>
+        </View> */}
 
-        <View style={Styles.dataRow}>
+        {/* <View style={Styles.dataRow}>
           <Text style={Styles.inputLabel}>Price</Text>
           <TextInput
             style={Styles.inputData}
@@ -153,7 +167,7 @@ export default class FoodItemForm extends React.Component {
             />
             <Picker.Item style={styles.picker} label="Solids" value="grams" />
           </Picker>
-        </View>
+        </View> */}
       </View>
     );
   }
