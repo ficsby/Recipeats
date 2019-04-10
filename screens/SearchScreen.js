@@ -28,6 +28,7 @@ export default class SearchScreen extends React.Component {
             recipeId: '',
             selectedCuisine: '',
             selectedDiet: '',
+
             // intolerances 
             dairy: false,
             egg : false,
@@ -233,17 +234,8 @@ export default class SearchScreen extends React.Component {
                         checked={this.state.wheat}
                         onPress={() => this.setState({wheat: !this.state.wheat})}
                     />
-                    {/* <Picker style={styles.choiceRow}
-                                selectedValue={this.state.selectedIntolerances}
-                                onValueChange={ (itemValue, itemIndex) => this.setState({selectedIntolerances : itemValue }) }
-                                mode = {'dropdown'}>
-                            <Picker.Item style={styles.picker} label='None' value='' />
-                            <Picker.Item style={styles.picker} label='Dairy' value='dairy' />
-                            <Picker.Item style={styles.picker} label='Egg' value='egg' />
-                            <Picker.Item style={styles.picker} label='Gluten' value='gluten' />
-                            <Picker.Item style={styles.picker} label='Vegan' value='vegan' />
-                            <Picker.Item style={styles.picker} label='Vegetarian' value='vegetarian' />
-                    </Picker> */}
+
+                    <Text>Food you want to exclude</Text>
             </ScrollView>
         )
     }
