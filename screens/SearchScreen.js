@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput, Button, Image,  Dimensions, TouchableOpacity, Alert, SafeAreaView, Picker } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, TextInput, Button, Image,  Dimensions, TouchableOpacity, Alert, SafeAreaView, Picker } from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
 import { CheckBox } from 'react-native-elements'
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
@@ -28,6 +28,7 @@ export default class SearchScreen extends React.Component {
             recipeId: '',
             selectedCuisine: '',
             selectedDiet: '',
+            // intolerances 
             dairy: false,
             egg : false,
             gluten : false,
@@ -79,7 +80,7 @@ export default class SearchScreen extends React.Component {
         const comp = (a,b) => a.toLowerCase().trim() == b.toLowerCase().trim();
 
         return (
-            <View styles={globalStyles.droidSafeArea}>
+            <ScrollView styles={globalStyles.droidSafeArea}>
                 <View style={styles.topContainer}>
 
                         <View style={styles.row}>
@@ -182,6 +183,56 @@ export default class SearchScreen extends React.Component {
                         checked={this.state.dairy}
                         onPress={() => this.setState({dairy: !this.state.dairy})}
                     />
+                    <CheckBox
+                        title='Egg'
+                        checked={this.state.egg}
+                        onPress={() => this.setState({egg: !this.state.egg})}
+                    />
+                    <CheckBox
+                        title='Gluten'
+                        checked={this.state.gluten}
+                        onPress={() => this.setState({gluten: !this.state.gluten})}
+                    />
+                    <CheckBox
+                        title='Peanut'
+                        checked={this.state.peanut}
+                        onPress={() => this.setState({peanut: !this.state.peanut})}
+                    />
+                    <CheckBox
+                        title='Sesame'
+                        checked={this.state.sesame}
+                        onPress={() => this.setState({sesame: !this.state.sesame})}
+                    />
+                    <CheckBox
+                        title='Seafood'
+                        checked={this.state.seafood}
+                        onPress={() => this.setState({seafood: !this.state.seafood})}
+                    />
+                    <CheckBox
+                        title='Shellfish'
+                        checked={this.state.shellfish}
+                        onPress={() => this.setState({shellfish: !this.state.shellfish})}
+                    />
+                    <CheckBox
+                        title='Soy'
+                        checked={this.state.soy}
+                        onPress={() => this.setState({soy: !this.state.soy})}
+                    />
+                    <CheckBox
+                        title='Sulfite'
+                        checked={this.state.sulfite}
+                        onPress={() => this.setState({sulfite: !this.state.sulfite})}
+                    />
+                    <CheckBox
+                        title='Treenut'
+                        checked={this.state.treenut}
+                        onPress={() => this.setState({treenut: !this.state.treenut})}
+                    />
+                    <CheckBox
+                        title='Wheat'
+                        checked={this.state.wheat}
+                        onPress={() => this.setState({wheat: !this.state.wheat})}
+                    />
                     {/* <Picker style={styles.choiceRow}
                                 selectedValue={this.state.selectedIntolerances}
                                 onValueChange={ (itemValue, itemIndex) => this.setState({selectedIntolerances : itemValue }) }
@@ -193,7 +244,7 @@ export default class SearchScreen extends React.Component {
                             <Picker.Item style={styles.picker} label='Vegan' value='vegan' />
                             <Picker.Item style={styles.picker} label='Vegetarian' value='vegetarian' />
                     </Picker> */}
-            </View>
+            </ScrollView>
         )
     }
 }
