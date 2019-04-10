@@ -29,6 +29,7 @@
     "react-native-firebase": "^5.2.2",
     "react-native-indicators": "^0.13.0",
     "react-native-modal": "^9.0.0",
+    "react-native-radio-buttons": "^1.0.0",
     "react-native-responsive-screen": "^1.2.0",
     "react-native-scrollable-tab-view-forked": "^1.0.1",
     "react-native-search-header": "^0.3.2",

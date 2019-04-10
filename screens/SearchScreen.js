@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput, Button, Image,  Dimensions, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button, Image,  Dimensions, TouchableOpacity, Alert, SafeAreaView, Picker } from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
+import { CheckBox } from 'react-native-elements'
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 import { StackActions } from 'react-navigation';
 import ApiUtils from './../api/apiUtils';
@@ -15,20 +16,6 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
 const { width: WIDTH } = Dimensions.get('window');
 
-const cuisines = [
-    'african', 'chinese', 'japanese', 'korean', 'vietnamese', 'thai', 'indian',
-    'british', 'irish', 'french', 'italian', 'mexican', 'spanish', 'middle eastern', 'jewish', 'american', 'cajun',
-    'southern', 'greek', 'german', 'nordic', 'eastern european', 'caribbean', 'latin american'
-]
-
-const diet = [
-    'pescetarian', 'lacto vegetarian', 'ovo vegetarian', 'vegan', 'vegetarian'
-]
-
-const intolerances = [
-    'dairy', 'egg', 'gluten', 'peanut', 'sesame', 'seafood', 'shellfish', 'soy', 'sulfite', 'tree nut', 'wheat'
-]
-
 export default class SearchScreen extends React.Component {
 
     constructor(props) {
@@ -39,6 +26,19 @@ export default class SearchScreen extends React.Component {
             recipes: [],
             recipeTitle: '',
             recipeId: '',
+            selectedCuisine: '',
+            selectedDiet: '',
+            dairy: false,
+            egg : false,
+            gluten : false,
+            peanut : false,
+            sesame : false,
+            seafood : false,
+            shellfish : false,
+            soy : false,
+            sulfite : false,
+            treenut : false,
+            wheat : false
         };
     }
 
@@ -69,6 +69,9 @@ export default class SearchScreen extends React.Component {
         this._ismounted = false; // after component is unmounted reste boolean
     }
 
+    toggleDairy () {
+        this.setState({dairy: !this.state.dairy})
+    }
     render() {
 
         const { query } = this.state;
@@ -116,6 +119,80 @@ export default class SearchScreen extends React.Component {
                             </TouchableOpacity>
                         )}                       
                     />
+
+                    {/* const cuisines = [
+                        'african', 'chinese', 'japanese', 'korean', 'vietnamese', 'thai', 'indian',
+                        'british', 'irish', 'french', 'italian', 'mexican', 'spanish', 'middle eastern', 'jewish', 'american', 'cajun',
+                        'southern', 'greek', 'german', 'nordic', 'eastern european', 'caribbean', 'latin american'
+                    ] */}
+                    <Text>Cuisine</Text>
+                    <Picker style={styles.choiceRow}
+                                selectedValue={this.state.selectedCuisine}
+                                onValueChange={ (itemValue, itemIndex) => this.setState({selectedCuisine : itemValue }) }
+                                mode = {'dropdown'}>
+                            <Picker.Item style={styles.picker} label='None' value='' />
+                            <Picker.Item style={styles.picker} label='African' value='african' />
+                            <Picker.Item style={styles.picker} label='Chinese' value='chinese' />
+                            <Picker.Item style={styles.picker} label='Japanese' value='japanese' />
+                            <Picker.Item style={styles.picker} label='Vietnamese' value='vietnamese' />
+                            <Picker.Item style={styles.picker} label='Thai' value='thai' />
+                            <Picker.Item style={styles.picker} label='British' value='british' />
+                            <Picker.Item style={styles.picker} label='Irish' value='irish' />
+                            <Picker.Item style={styles.picker} label='French' value='french' />
+                            <Picker.Item style={styles.picker} label='Italian' value='italian' />
+                            <Picker.Item style={styles.picker} label='Mexican' value='mexican' />
+                            <Picker.Item style={styles.picker} label='Spanish' value='spanish' />
+                            <Picker.Item style={styles.picker} label='Middle Eastern' value='middle eastern' />
+                            <Picker.Item style={styles.picker} label='Jewish' value='jewish' />
+                            <Picker.Item style={styles.picker} label='American' value='american' />
+                            <Picker.Item style={styles.picker} label='Cajun' value='cajun' />
+                            <Picker.Item style={styles.picker} label='Southern' value='southern' />
+                            <Picker.Item style={styles.picker} label='Greek' value='greek' />
+                            <Picker.Item style={styles.picker} label='German' value='german' />
+                            <Picker.Item style={styles.picker} label='Nordic' value='nordic' />
+                            <Picker.Item style={styles.picker} label='Eastern European' value='eastern european' />
+                            <Picker.Item style={styles.picker} label='Caribbean' value='caribbean' />
+                            <Picker.Item style={styles.picker} label='Latin American' value='latin american' />
+                    </Picker>
+
+                    
+                    {/* // const diet = [
+                    //     'pescetarian', 'lacto vegetarian', 'ovo vegetarian', 'vegan', 'vegetarian'
+                    // ] */}
+
+                    <Text>Diet</Text>
+                    <Picker style={styles.choiceRow}
+                                selectedValue={this.state.selectedDiet}
+                                onValueChange={ (itemValue, itemIndex) => this.setState({selectedDiet : itemValue }) }
+                                mode = {'dropdown'}>
+                            <Picker.Item style={styles.picker} label='None' value='' />
+                            <Picker.Item style={styles.picker} label='Pescetarian' value='pescetarian' />
+                            <Picker.Item style={styles.picker} label='Lacto Vegetarian' value='lacto vegetarian' />
+                            <Picker.Item style={styles.picker} label='Ovo Vegetarian' value='ovo vegetarian' />
+                            <Picker.Item style={styles.picker} label='Vegan' value='vegan' />
+                            <Picker.Item style={styles.picker} label='Vegetarian' value='vegetarian' />
+                    </Picker>
+
+                    {/* // const intolerances = [
+                    //     'dairy', 'egg', 'gluten', 'peanut', 'sesame', 'seafood', 'shellfish', 'soy', 'sulfite', 'tree nut', 'wheat'
+                    // ] */}
+                    <Text>Intolerances</Text>
+                    <CheckBox
+                        title='Dairy'
+                        checked={this.state.dairy}
+                        onPress={() => this.setState({dairy: !this.state.dairy})}
+                    />
+                    {/* <Picker style={styles.choiceRow}
+                                selectedValue={this.state.selectedIntolerances}
+                                onValueChange={ (itemValue, itemIndex) => this.setState({selectedIntolerances : itemValue }) }
+                                mode = {'dropdown'}>
+                            <Picker.Item style={styles.picker} label='None' value='' />
+                            <Picker.Item style={styles.picker} label='Dairy' value='dairy' />
+                            <Picker.Item style={styles.picker} label='Egg' value='egg' />
+                            <Picker.Item style={styles.picker} label='Gluten' value='gluten' />
+                            <Picker.Item style={styles.picker} label='Vegan' value='vegan' />
+                            <Picker.Item style={styles.picker} label='Vegetarian' value='vegetarian' />
+                    </Picker> */}
             </View>
         )
     }

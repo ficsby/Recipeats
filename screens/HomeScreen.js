@@ -115,9 +115,10 @@ export default class HomeScreen extends React.Component {
         if (this.state.isLoading) {
             return <LoadingScreen />;
         };
-        console.log(this.state.article_items);
+        
         return (
             <View style={styles.pageContainer}>
+                <SearchHeaderNav/>
                 <ScrollableTabView  renderTabBar={() => ( <ScrollableTabBar  style={styles.scrollStyle} tabStyle={styles.tabStyle} /> )}
                 tabBarTextStyle={styles.tabBarTextStyle}
                 tabBarInactiveTextColor={'black'}
