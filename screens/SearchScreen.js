@@ -203,6 +203,7 @@ export default class SearchScreen extends React.Component {
                     //     'dairy', 'egg', 'gluten', 'peanut', 'sesame', 'seafood', 'shellfish', 'soy', 'sulfite', 'tree nut', 'wheat'
                     // ] */}
                     <Text>Intolerances</Text>
+                    
                     <View style={styles.row}>
                         <View style={styles.col}>
                             <CheckBox
