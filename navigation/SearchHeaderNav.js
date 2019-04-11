@@ -45,14 +45,14 @@ export default class SearchHeaderNav extends React.Component {
     };
 
     onModalOpen = () => {
-        NavigationService.setModalVisibility(true);
         this.setState({modalVisible: true, searchBarSensitivity:false});
+        NavigationService.navigate('SearchScreen');
     }
 
     onModalClose = () => {
         Alert.alert("Closed Modal");
-        NavigationService.setModalVisibility(false);
         this.setState({modalVisible: false, searchBarSensitivity:true});
+        // NavigationService.setModalVisibility(false);
     }
 
     render() {
@@ -88,14 +88,14 @@ export default class SearchHeaderNav extends React.Component {
                     onFocus = {this.onModalOpen}    
                 />
                 
-                <Modal
+                {/* <Modal
                     animationType ="fade"
                     transparent = {false}
                     visible = {this.state.modalVisible}
                     onRequestClose= {this.onModalClose}>
                 
                     <SearchScreen/>
-                </Modal>
+                </Modal> */}
 
             </SafeAreaView>
         )

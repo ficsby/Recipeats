@@ -30,7 +30,7 @@ function navigate(routeName, params) {
 }
 
 function goBack(){
-  _navigator.goBack();
+  _navigator.goBack(null);
 }
 
 function openDrawer(){

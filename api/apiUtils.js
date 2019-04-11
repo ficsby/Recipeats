@@ -71,6 +71,20 @@ async function getRecipeInfoFromId(id, context){
     );
 }
 
+async function searchRecipeByName(name, cuisine, diet, intolerances, context){
+    //"https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=thai&diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&offset=0&type=main+course&query=burger"
+    const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=${cuisine}&diet=${diet}&excludeIngredients=''&intolerances=${intolerances}&number=10&offset=0&type=main+course&query=${name}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+        },
+    });
+
+    const json = await response.json();
+    console.log(json);
+}
+
 /* <Francis Buendia> March 15, 2019
         API Request call to 'Get Random Food Trivia' to get food trivia info
 */
@@ -231,5 +245,6 @@ export default {
     getRecipeInfoFromId,
     getRandomFoodTrivia,
     getRandomFoodVideos,
-    getRandomFoodArticles
+    getRandomFoodArticles,
+    searchRecipeByName
 }

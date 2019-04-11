@@ -46,7 +46,9 @@ export default class SearchScreen extends React.Component {
                 'sulfite' : false,
                 'treenut' : false,
                 'wheat' : false
-            }
+            },
+
+            searchQuery: {}
 
         };
     }
@@ -72,12 +74,10 @@ export default class SearchScreen extends React.Component {
         'dancing-script': require('./../assets/fonts/DancingScript-Regular.otf'),
         }); 
         this.setState({fontLoaded: true});
-        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
 
     componentWillUnmount () {
         this._ismounted = false; // after component is unmounted reste boolean
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
 
     toggleIntolerance(type){
@@ -96,12 +96,29 @@ export default class SearchScreen extends React.Component {
     toggleVisibility(){
         NavigationService.setModalVisibility(false);
     }
+
+    createSearchQueryInfo() {
+        const query = this.state.query;
+        const cuisine = this.state.selectedCuisine;
+        const diet = this.state.selectedDiet;
+        let foodIntolerances = '';
+        for(intolerance in this.state.intolerances)
+        {
+            if(this.state.intolerances[intolerance]) {
+                foodIntolerances += intolerance + '%2C+';
+            }
+        }
+        
+        foodIntolerances = foodIntolerances.substring(0, foodIntolerances.length-2);
+        NavigationService.navigate('SearchResults', {name: query, cuisine: cuisine, diet: diet, foodIntolerances: foodIntolerances});
+    }
+
     render() {
 
         const { query } = this.state;
         const recipes = this.findRecipe(query);
         const comp = (a,b) => a.toLowerCase().trim() == b.toLowerCase().trim();
-
+        // console.log(this.state);
         return (
             <ScrollView styles={styles.searchScreenContainer}>
                 <View style={styles.topContainer}>
@@ -109,15 +126,15 @@ export default class SearchScreen extends React.Component {
                         <View style={styles.row}>
 
                             {/* Side bar navigation icon */}
-                            <TouchableOpacity onPress = { () => this.props.navigation.goBack(null)}>
+                            <TouchableOpacity onPress = { () => NavigationService.goBack()}>
                                 <Icon name='back' size={25} color='rgba(175,76,99,1)' backgroundColor='red' height={200}
 
                                     style={{marginLeft: 18}} />
                             </TouchableOpacity>
 
                             {/* User account icon  */}
-                            <TouchableOpacity onPress ={this.onAccountIconPress} >
-                                <Icon name='filter' size={25} color='rgba(175,76,99,1)'
+                            <TouchableOpacity onPress ={() => this.createSearchQueryInfo()} >
+                                <Icon name='right' size={25} color='rgba(175,76,99,1)'
                                     style={{marginLeft: (WIDTH - 85)}} />
                             </TouchableOpacity>
 
