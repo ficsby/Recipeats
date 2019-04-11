@@ -75,7 +75,7 @@ async function getRecipeInfoFromId(id, context){
 */
 async function getAnalyzedInstructions(id, context){
     // Returns a promise which then gets the result from the request call
-    const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/324695/analyzedInstructions?stepBreakdown=true`, {
+    const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/analyzedInstructions?stepBreakdown=true`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -262,5 +262,6 @@ export default {
     getRecipeInfoFromId,
     getRandomFoodTrivia,
     getRandomFoodVideos,
-    getRandomFoodArticles
+    getRandomFoodArticles,
+    getAnalyzedInstructions
 }

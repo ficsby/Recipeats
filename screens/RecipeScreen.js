@@ -146,7 +146,7 @@ export default class HomeScreen extends React.Component {
 
         const recipeData = await apiUtils.getRecipeInfoFromId(this.state.id, this);
         const instructionData = await apiUtils.getAnalyzedInstructions(this.state.id, this);
-
+        
         if(recipeData != null && instructionData != null)
         { 
             this.setState({ isLoading: false });
