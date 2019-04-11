@@ -76,7 +76,6 @@ export default class HomeScreen extends React.Component {
 
             id: 479101,
             title: '',
-            instructions: '',
             servings: 0,
             readyInMinutes: '',
 
@@ -86,6 +85,8 @@ export default class HomeScreen extends React.Component {
             image: '',
 
             extendedIngredients: [],
+            instructionSteps: [],
+
             nutritionalTags: {'vegetarian': false,
                               'vegan': false,
                               'glutenFree': false,
@@ -143,12 +144,14 @@ export default class HomeScreen extends React.Component {
         }); 
         this.setState({fontLoaded: true});
 
-        const data = await apiUtils.getRecipeInfoFromId(this.state.id, this);
-        
-        if(data != null)
-        {
+        const recipeData = await apiUtils.getRecipeInfoFromId(this.state.id, this);
+        const instructionData = await apiUtils.getAnalyzedInstructions(this.state.id, this);
+
+        if(recipeData != null && instructionData != null)
+        { 
             this.setState({ isLoading: false });
         }
+
     };
 
     componentWillUnmount () {
@@ -173,6 +176,8 @@ export default class HomeScreen extends React.Component {
         if (this.state.isLoading) {
             return <LoadingScreen />;
         }
+        console.log(this.state.instructionSteps);
+        console.log(this.state.id);
 
         return ( 
             <View> 
@@ -253,8 +258,8 @@ export default class HomeScreen extends React.Component {
                         <View style ={styles.sectionContainer}>
                             < Text style={styles.sectionTitle}> Instructions </Text>
                             {
-                                instructionsList.map( (item, i) =>  
-                                ( <ListItem key={i} title={item.instruction} leftIcon={<Badge value={i+1} 
+                                this.state.instructionSteps.map( (item, i) =>  
+                                ( <ListItem key={i} title={item.step} leftIcon={<Badge value={i+1} 
                                     containerStyle={styles.numberContainer} badgeStyle={styles.numberBadge} textStyle={styles.instructionNumber} /> } 
                                             /> ))
                             }
@@ -533,7 +538,6 @@ const styles = StyleSheet.create({
     },
 
     ingredientText: {
-        width: '80%',
         fontSize: 14,
         marginLeft: 20,
         marginBottom: -15,

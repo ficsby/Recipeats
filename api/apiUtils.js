@@ -62,7 +62,6 @@ async function getRecipeInfoFromId(id, context){
             nutritionalTags: nutrtionTags 
         });
     }
-
     return new Promise((resolve) =>
         setTimeout(
         () => { resolve('result') },
@@ -71,6 +70,38 @@ async function getRecipeInfoFromId(id, context){
     );
 }
 
+/* <Christine Tran> April 10, 2019
+        API Request call to 'Get analyzed instructions' to break the recipe instructions into a list of steps
+*/
+async function getAnalyzedInstructions(id, context){
+    // Returns a promise which then gets the result from the request call
+    const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/324695/analyzedInstructions?stepBreakdown=true`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+        },
+    });
+
+    const json = await response.json();
+
+    console.log(json);
+    
+    // Check if component is mounted before changing state, this check is to prevent memory leaks
+    if(context._ismounted)
+    {
+        context.setState({
+            instructionSteps : json[0].steps 
+        });
+    }
+
+    return new Promise((resolve) =>
+        setTimeout(
+        () => { resolve('result') },
+        5000
+        )
+    );
+}
 /* <Francis Buendia> March 15, 2019
         API Request call to 'Get Random Food Trivia' to get food trivia info
 */
