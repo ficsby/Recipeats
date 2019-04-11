@@ -15,7 +15,19 @@ import fontelloConfig from './../config/icon-font.json';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
 const { width: WIDTH } = Dimensions.get('window');
-
+var globalIntolerances = {
+    dairy: false,
+    egg : false,
+    gluten : false,
+    peanut : false,
+    sesame : false,
+    seafood : false,
+    shellfish : false,
+    soy : false,
+    sulfite : false,
+    treenut : false,
+    wheat : false
+};
 export default class SearchScreen extends React.Component {
 
     constructor(props) {
@@ -28,19 +40,21 @@ export default class SearchScreen extends React.Component {
             recipeId: '',
             selectedCuisine: '',
             selectedDiet: '',
-
             // intolerances 
-            dairy: false,
-            egg : false,
-            gluten : false,
-            peanut : false,
-            sesame : false,
-            seafood : false,
-            shellfish : false,
-            soy : false,
-            sulfite : false,
-            treenut : false,
-            wheat : false
+            intolerances: {
+                'dairy': false,
+                'egg' : false,
+                'gluten' : false,
+                'peanut' : false,
+                'sesame' : false,
+                'seafood' : false,
+                'shellfish' : false,
+                'soy' : false,
+                'sulfite' : false,
+                'treenut' : false,
+                'wheat' : false
+            }
+
         };
     }
 
@@ -71,9 +85,19 @@ export default class SearchScreen extends React.Component {
         this._ismounted = false; // after component is unmounted reste boolean
     }
 
-    toggleDairy () {
-        this.setState({dairy: !this.state.dairy})
+    toggleIntolerance(type){
+        temp = this.state.intolerances;
+
+        for(key in temp){
+            if(key == type){
+                temp[key] = !temp[key];
+                break;
+            }
+        }
+
+        this.setState({intolerances: temp});
     }
+
     render() {
 
         const { query } = this.state;
@@ -181,58 +205,58 @@ export default class SearchScreen extends React.Component {
                     <Text>Intolerances</Text>
                     <CheckBox
                         title='Dairy'
-                        checked={this.state.dairy}
-                        onPress={() => this.setState({dairy: !this.state.dairy})}
+                        checked={this.state.intolerances['dairy']}
+                        onPress={() => this.toggleIntolerance('dairy')}
                     />
                     <CheckBox
                         title='Egg'
-                        checked={this.state.egg}
-                        onPress={() => this.setState({egg: !this.state.egg})}
+                        checked={this.state.intolerances['egg']}
+                        onPress={() => this.toggleIntolerance('egg')}
                     />
                     <CheckBox
                         title='Gluten'
-                        checked={this.state.gluten}
-                        onPress={() => this.setState({gluten: !this.state.gluten})}
+                        checked={this.state.intolerances['gluten']}
+                        onPress={() => this.toggleIntolerance('gluten')}
                     />
                     <CheckBox
                         title='Peanut'
-                        checked={this.state.peanut}
-                        onPress={() => this.setState({peanut: !this.state.peanut})}
+                        checked={this.state.intolerances['peanut']}
+                        onPress={() => this.toggleIntolerance('peanut')}
                     />
                     <CheckBox
                         title='Sesame'
-                        checked={this.state.sesame}
-                        onPress={() => this.setState({sesame: !this.state.sesame})}
+                        checked={this.state.intolerances['sesame']}
+                        onPress={() => this.toggleIntolerance('sesame')}
                     />
                     <CheckBox
                         title='Seafood'
-                        checked={this.state.seafood}
-                        onPress={() => this.setState({seafood: !this.state.seafood})}
+                        checked={this.state.intolerances['seafood']}
+                        onPress={() => this.toggleIntolerance('seafood')}
                     />
                     <CheckBox
                         title='Shellfish'
-                        checked={this.state.shellfish}
-                        onPress={() => this.setState({shellfish: !this.state.shellfish})}
+                        checked={this.state.intolerances['shellfish']}
+                        onPress={() => this.toggleIntolerance('shellfish')}
                     />
                     <CheckBox
                         title='Soy'
-                        checked={this.state.soy}
-                        onPress={() => this.setState({soy: !this.state.soy})}
+                        checked={this.state.intolerances['soy']}
+                        onPress={() => this.toggleIntolerance('soy')}
                     />
                     <CheckBox
                         title='Sulfite'
-                        checked={this.state.sulfite}
-                        onPress={() => this.setState({sulfite: !this.state.sulfite})}
+                        checked={this.state.intolerances['sulfite']}
+                        onPress={() => this.toggleIntolerance('sulfite')}
                     />
                     <CheckBox
                         title='Treenut'
-                        checked={this.state.treenut}
-                        onPress={() => this.setState({treenut: !this.state.treenut})}
+                        checked={this.state.intolerances['treenut']}
+                        onPress={() => this.toggleIntolerance('treenut')}
                     />
                     <CheckBox
                         title='Wheat'
-                        checked={this.state.wheat}
-                        onPress={() => this.setState({wheat: !this.state.wheat})}
+                        checked={this.state.intolerances['wheat']}
+                        onPress={() => this.toggleIntolerance('wheat')}
                     />
 
                     <Text>Food you want to exclude</Text>
