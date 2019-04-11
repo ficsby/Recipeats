@@ -309,8 +309,11 @@ export default class HomeScreen extends React.Component {
                         <View style ={styles.sectionContainer}>
                             <Text style={styles.sectionTitle}> Ingredients </Text> 
                             {
-                                ingredientsList.map( (item, i) =>  
-                                ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
+                                // ingredientsList.map( (item, i) =>  
+                                // ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
+                                //             titleStyle={styles.ingredientText} rightTitleStyle={styles.quantityText} /> ))
+                                this.state.extendedIngredients.map( (item, i) =>  
+                                ( <ListItem key={i} title={item.name} rightTitle={item.amount + " " + item.unit + "(s)"} 
                                             titleStyle={styles.ingredientText} rightTitleStyle={styles.quantityText} /> ))
                             }
                             <TouchableOpacity style={styles.compareButton}><Text style={styles.compareText}>Compare To Food Stock</Text></TouchableOpacity>
@@ -601,7 +604,7 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: 10,
         marginBottom: 5,
-        marginLeft: 20,
+        marginLeft: 25,
         fontSize: 20,
         fontWeight: '600',
         color: 'rgba(0,0,0,1)',
