@@ -27,11 +27,8 @@ const NewsItem = ({ news, index, type }) => {
     } 
     else if (type==2) // Type 2: Popular tab (Articles are listed here)
     {
-        // newsContent = <Text>hi 2</Text>;
-        // NewsContent is set as an image (NOT WORKING)
-        console.log(news.image);
+        // NewsContent is set as an image
         newsContent = <Image source={{uri:news.image}} style={styles.articleImage}/>; 
-
     }
     else if (type==3) // Type 3: Videos tab
     {
@@ -91,7 +88,7 @@ const styles = StyleSheet.create({
     newsTitle: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#000',
+        color: 'rgba(94, 89, 89, 1)',
         // fontFamily: 'georgia'
     },
 
