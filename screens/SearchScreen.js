@@ -204,56 +204,67 @@ export default class SearchScreen extends React.Component {
                     // ] */}
                     <Text>Intolerances</Text>
                     <CheckBox
+                        containerStyle = {styles.checkboxR1}
                         title='Dairy'
                         checked={this.state.intolerances['dairy']}
                         onPress={() => this.toggleIntolerance('dairy')}
                     />
                     <CheckBox
+                        containerStyle = {styles.checkboxR1}
                         title='Egg'
                         checked={this.state.intolerances['egg']}
                         onPress={() => this.toggleIntolerance('egg')}
                     />
                     <CheckBox
+                        containerStyle = {styles.checkboxR1}
                         title='Gluten'
                         checked={this.state.intolerances['gluten']}
                         onPress={() => this.toggleIntolerance('gluten')}
                     />
                     <CheckBox
+                        containerStyle = {styles.checkboxR2}
                         title='Peanut'
                         checked={this.state.intolerances['peanut']}
                         onPress={() => this.toggleIntolerance('peanut')}
                     />
                     <CheckBox
+                        containerStyle = {styles.checkboxR2}
                         title='Sesame'
                         checked={this.state.intolerances['sesame']}
                         onPress={() => this.toggleIntolerance('sesame')}
                     />
                     <CheckBox
+                        containerStyle = {styles.checkboxR2}
                         title='Seafood'
                         checked={this.state.intolerances['seafood']}
                         onPress={() => this.toggleIntolerance('seafood')}
                     />
                     <CheckBox
+                        containerStyle = {styles.checkboxR3}
                         title='Shellfish'
                         checked={this.state.intolerances['shellfish']}
                         onPress={() => this.toggleIntolerance('shellfish')}
                     />
                     <CheckBox
+                        containerStyle = {styles.checkboxR3}
                         title='Soy'
                         checked={this.state.intolerances['soy']}
                         onPress={() => this.toggleIntolerance('soy')}
                     />
                     <CheckBox
+                        containerStyle = {styles.checkboxR3}
                         title='Sulfite'
                         checked={this.state.intolerances['sulfite']}
                         onPress={() => this.toggleIntolerance('sulfite')}
                     />
                     <CheckBox
+                        containerStyle = {styles.checkboxR4}
                         title='Treenut'
                         checked={this.state.intolerances['treenut']}
                         onPress={() => this.toggleIntolerance('treenut')}
                     />
                     <CheckBox
+                        containerStyle = {styles.checkboxR4}
                         title='Wheat'
                         checked={this.state.intolerances['wheat']}
                         onPress={() => this.toggleIntolerance('wheat')}
@@ -341,5 +352,29 @@ const styles = StyleSheet.create({
 
     itemText: {
         width: '100%',
+    },
+
+    checkboxR1: {
+        width: wPercentage('33.2%'),
+        flex: 1,
+        flexDirection: 'row',
+    },
+
+    checkboxR2: {
+        width: wPercentage('33.2%'),
+        flex: 1,
+        flexDirection: 'row',
+    },
+
+    checkboxR3: {
+        width: wPercentage('33.2%'),
+        flex: 1,
+        flexDirection: 'row',
+    },
+
+    checkboxR4: {
+        width: wPercentage('33.2%'),
+        flex: 1,
+        flexDirection: 'row',
     },
 });
