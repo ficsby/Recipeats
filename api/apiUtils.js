@@ -116,10 +116,9 @@ async function getIngredientInfoFromId(id, context) {
     );
 
     const json = await response.json();
-
+    
     // Check if component is mounted before changing state, this check is to prevent memory leaks
     if (context._ismounted) {
-        console.log("context is mounted");
         nutritionTags = {}
         for (key in json) {
             if (key in context.state) {

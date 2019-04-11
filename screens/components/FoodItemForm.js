@@ -35,6 +35,14 @@ export default class FoodItemForm extends React.Component {
     };
   }
 
+  async componentDidMount() {
+    this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
+  };
+
+  componentWillUnmount () {
+    this._ismounted = false; // after component is unmounted reste boolean
+  };
+
   /**
    * Calls the Spoonacular API to autocomplete search for an ingredient
    * @param {string} text
