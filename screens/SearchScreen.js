@@ -203,61 +203,93 @@ export default class SearchScreen extends React.Component {
                     //     'dairy', 'egg', 'gluten', 'peanut', 'sesame', 'seafood', 'shellfish', 'soy', 'sulfite', 'tree nut', 'wheat'
                     // ] */}
                     <Text>Intolerances</Text>
-                    <CheckBox
-                        title='Dairy'
-                        checked={this.state.intolerances['dairy']}
-                        onPress={() => this.toggleIntolerance('dairy')}
-                    />
-                    <CheckBox
-                        title='Egg'
-                        checked={this.state.intolerances['egg']}
-                        onPress={() => this.toggleIntolerance('egg')}
-                    />
-                    <CheckBox
-                        title='Gluten'
-                        checked={this.state.intolerances['gluten']}
-                        onPress={() => this.toggleIntolerance('gluten')}
-                    />
-                    <CheckBox
-                        title='Peanut'
-                        checked={this.state.intolerances['peanut']}
-                        onPress={() => this.toggleIntolerance('peanut')}
-                    />
-                    <CheckBox
-                        title='Sesame'
-                        checked={this.state.intolerances['sesame']}
-                        onPress={() => this.toggleIntolerance('sesame')}
-                    />
-                    <CheckBox
-                        title='Seafood'
-                        checked={this.state.intolerances['seafood']}
-                        onPress={() => this.toggleIntolerance('seafood')}
-                    />
-                    <CheckBox
-                        title='Shellfish'
-                        checked={this.state.intolerances['shellfish']}
-                        onPress={() => this.toggleIntolerance('shellfish')}
-                    />
-                    <CheckBox
-                        title='Soy'
-                        checked={this.state.intolerances['soy']}
-                        onPress={() => this.toggleIntolerance('soy')}
-                    />
-                    <CheckBox
-                        title='Sulfite'
-                        checked={this.state.intolerances['sulfite']}
-                        onPress={() => this.toggleIntolerance('sulfite')}
-                    />
-                    <CheckBox
-                        title='Treenut'
-                        checked={this.state.intolerances['treenut']}
-                        onPress={() => this.toggleIntolerance('treenut')}
-                    />
-                    <CheckBox
-                        title='Wheat'
-                        checked={this.state.intolerances['wheat']}
-                        onPress={() => this.toggleIntolerance('wheat')}
-                    />
+                    <View style={styles.row}>
+                        <View style={styles.col}>
+                            <CheckBox
+                                title='Dairy'
+                                style={styles.intoleranceBox}
+                                checked={this.state.intolerances['dairy']}
+                                onPress={() => this.toggleIntolerance('dairy')}
+                            />
+                            <CheckBox
+                                title='Egg'
+                                style={styles.intoleranceBox}
+                                checked={this.state.intolerances['egg']}
+                                onPress={() => this.toggleIntolerance('egg')}
+                            />
+                            <CheckBox
+                                title='Gluten'
+                                style={styles.intoleranceBox}
+                                checked={this.state.intolerances['gluten']}
+                                onPress={() => this.toggleIntolerance('gluten')}
+                            />
+                            <CheckBox
+                                title='Peanut'
+                                style={styles.intoleranceBox}
+                                checked={this.state.intolerances['peanut']}
+                                onPress={() => this.toggleIntolerance('peanut')}
+                            />
+                        </View>
+
+                        <View style={styles.col}>
+                            <CheckBox
+                                title='Sesame'
+                                style={styles.intoleranceBox}
+                                checked={this.state.intolerances['sesame']}
+                                onPress={() => this.toggleIntolerance('sesame')}
+                            />
+                            <CheckBox
+                                title='Seafood'
+                                style={styles.intoleranceBox}
+                                checked={this.state.intolerances['seafood']}
+                                onPress={() => this.toggleIntolerance('seafood')}
+                            />
+                            <CheckBox
+                                title='Shellfish'
+                                style={styles.intoleranceBox}
+                                checked={this.state.intolerances['shellfish']}
+                                onPress={() => this.toggleIntolerance('shellfish')}
+                            />
+                            <CheckBox
+                                title='Soy'
+                                style={styles.intoleranceBox}
+                                checked={this.state.intolerances['soy']}
+                                onPress={() => this.toggleIntolerance('soy')}
+                            />
+                        </View>
+
+                        <View style={styles.col}>
+                            <CheckBox
+                                title='Sulfite'
+                                style={styles.intoleranceBox}
+                                checked={this.state.intolerances['sulfite']}
+                                onPress={() => this.toggleIntolerance('sulfite')}
+                            />
+                            <CheckBox
+                                title='Treenut'
+                                style={styles.intoleranceBox}
+                                checked={this.state.intolerances['treenut']}
+                                onPress={() => this.toggleIntolerance('treenut')}
+                            />
+                            <CheckBox
+                                title='Wheat'
+                                style={styles.intoleranceBox}
+                                checked={this.state.intolerances['wheat']}
+                                onPress={() => this.toggleIntolerance('wheat')}
+                            />
+                            {/* <CheckBox
+                                title='Wheat'
+                                checked={this.state.intolerances['wheat']}
+                                onPress={() => this.toggleIntolerance('wheat')}
+                            /> */}
+                    </View>
+                </View>
+                   
+                  
+
+
+                  
+                  
 
                     <Text>Food you want to exclude</Text>
             </ScrollView>
@@ -273,6 +305,12 @@ const styles = StyleSheet.create({
     row: {
         flex: 1,
         flexDirection: 'row',
+        width: '100%',
+    },
+
+    col: {
+        flex: 1,
+        flexDirection: 'column',
         width: '100%',
     },
 
@@ -341,5 +379,9 @@ const styles = StyleSheet.create({
 
     itemText: {
         width: '100%',
+    },
+
+    intoleranceBox: {
+        wPercentage: '30%',
     },
 });
