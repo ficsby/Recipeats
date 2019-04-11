@@ -5,21 +5,27 @@ import Autocomplete from 'react-native-autocomplete-input';
 import { SearchBar } from 'react-native-elements';
 import { Font, AppLoading } from 'expo';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
+import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view-forked'
+import LoadingScreen from './LoadingScreen';
 
 //import * as firebase from 'firebase';
 
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from './../config/icon-font.json';
+import NavigationService from '../navigation/NavigationService.js';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
 const { width: WIDTH } = Dimensions.get('window');
-var globalStyles = require('../styles/globalStyles.js');
-const fetch = require('node-fetch');
+var globalStyles = require('./../styles/GlobalStyles.js');
 
 // Fetch News Components
+const fetch = require('node-fetch');
+
 import Button from './components/Button';
 import NewsItem from './components/NewsItem';
+import apiUtils from '../api/apiUtils.js';
+const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 
 export default class HomeScreen extends React.Component {
 
@@ -27,62 +33,12 @@ export default class HomeScreen extends React.Component {
         super(props);
         this.state = {
             query: '',
+            isLoading: true,
             recipes: [],
-            news_items: 
-            [
-                {
-                    pretext: '',
-                    title: 'Brain Foods to Make You Smarter',
-                    summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ex ea commodo consequat.',
-                    image: require('./../assets/images/newsimage1.jpg'),
-                },
-                {
-                    pretext: '',
-                    title: 'Eat Healthy to Live Healthy',
-                    summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ex ea commodo consequat.',
-                    image: require('./../assets/images/newsimage2.jpg')
-                },
-                {
-                    pretext: '',
-                    title: 'Best Kitchenware for Measuring Food',
-                    summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ex ea commodo consequat.',
-                    image: require('./../assets/images/newsimage3.jpg')
-                },
-            ],
+            video_items: [],
+            foodTrivia: '',
         };
     };
-
-    /* <Francis Buendia> March 15, 2019
-        API Request call to 'Autocomplete recipe search' recipes by name 
-    */
-   getRecipeSearchResultsByName = () => {
-    currentThis = this;   // Need to keep a reference of the current 'this' because the 'this' context changes in the callback of the promise
-
-    // Returns a promise which then gets the result from the request call
-    const fetchRecipeByNamePromise = fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/autocomplete?number=10&query=chicken`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "X-RapidAPI-Key" : "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2"     // API key registered for Spoonacular API
-        },
-    });
-
-    const fetchRecipeByNameResponse = fetchRecipeByNamePromise.then(function(response) { return response.json(); })
-    // Check if component is mounted before changing state, this check is to prevent memory leaks
-    if(this._ismounted)
-    {
-        fetchRecipeByNameResponse.then(function(json){
-            currentThis.setState({recipes: json});
-        })
-    }
-}
-
-    findRecipe = (query) => {
-        if( query === '') { return []; }
-        const { recipes } = this.state;
-        const regex = new RegExp(`${query.trim()}`, 'i');
-        return recipes.filter(recipe => recipe.title.search(regex) >= 0);
-    }
 
     async componentDidMount() {
         this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
@@ -90,12 +46,18 @@ export default class HomeScreen extends React.Component {
           'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
         }); 
         this.setState({fontLoaded: true});
+        apiUtils.getRandomFoodTrivia(this);
+
+        const foodVids = await apiUtils.getRandomFoodVideos(this);
+        if(foodVids != null)
+        {
+            this.setState({ isLoading: false });
+        }
     };
 
     componentWillUnmount () {
         this._ismounted = false; // after component is unmounted reste boolean
      };
-
 
     onAccountIconPress = () => {
         var navActions = StackActions.reset({
@@ -110,84 +72,45 @@ export default class HomeScreen extends React.Component {
         this.props.navigation.dispatch(navActions);
     };
 
-    newsItemPress(txt) {
-        console.log(txt);
-    };
-
-    renderNews() {
-        return this.state.news_items.map((news, index) => {
+    renderVideos() {
+        return this.state.video_items.map((news, index) => {
             return <NewsItem key={index} index={index} news={news} />
         });
     };
-    
+
     render() {
-
-        const { query } = this.state;
-        const recipes = this.findRecipe(query);
-        const comp = (a,b) => a.toLowerCase().trim() == b.toLowerCase().trim();
-        this.getRecipeSearchResultsByName();
-
+        if (this.state.isLoading) {
+            return <LoadingScreen />;
+        };
+        console.log(this.video_items);
         return (
             <View style={styles.pageContainer}>
-                {/* Top panel of page. Contains the menu and user account buttons. 
-                    Does not actually contain the Autocomplete Search Bar, but is visually underneath it  */}
-                <View style={styles.topContainer}>
-                    <View style={styles.row}>
-                        {/* Side bar navigation icon */}
-                        <TouchableOpacity onPress = { () => DrawerActions.openDrawer()}>
-                            <Icon name='menu' size={25} color='rgba(175,76,99,1)' backgroundColor='red' height={200} style={{marginLeft: 18}} />
-                        </TouchableOpacity>
+                <ScrollableTabView  renderTabBar={() => ( <ScrollableTabBar  style={styles.scrollStyle} tabStyle={styles.tabStyle} /> )}
+                tabBarTextStyle={styles.tabBarTextStyle}
+                tabBarInactiveTextColor={'black'}
+                tabBarActiveTextColor={'red'}
+                tabBarUnderlineStyle={styles.underlineStyle}
+                initialPage={1}
+                >
 
-                        {/* User account icon  */}
-                        <TouchableOpacity onPress ={this.onAccountIconPress} >
-                            <Icon name='user' size={25} color='rgba(175,76,99,1)' style={{marginLeft: (WIDTH - 85)}} />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-                {/* Search Bar, capable of autocomplete */}
-                <Autocomplete
-                    containerStyle={styles.searchContainer}  
-                    inputContainerStyle={styles.searchInputContainer}
-                    data={recipes.length === 1 && comp(query, recipes[0].title) ? [] : recipes}
-                    defaultValue = { query }
-                    autoCorrect={false}
-                    placeholder= "Search recipes, ingredients..."
-                    onChangeText={text => this.setState({ query: text })}
-                    renderItem={({ id, title }) => 
-                    (
-                        // Search Results List
-                        <TouchableOpacity style={styles.searchResultsContainer} onPress={() => this.setState({ query: title })}>
-                            <Text style={styles.searchResult}>
-                                {title}
-                            </Text>
-                        </TouchableOpacity>
-                    )}                       
-                />
-                
-                <ScrollView style={styles.newsContainer}>
-
-                    <View style={styles.foodTipContainer}>
+                <View key={'1'} tabLabel={'   Trivia'} style={styles.tabContentSyle}>
+                    <View style={styles.foodTriviaContainer}>
 
                         <View style={styles.row}>
-                            <Icon name='lightbulb' size={30} color='rgba(0,0,0,1)' height={200} style={{marginRight: 10}} />
-                            <Text style={styles.foodTipHeader}> Food Tip of the Day </Text>
+                            <Icon name='lightbulb' size={30} color='rgba(0,0,0,1)' height={200} style={{marginLeft: 15}} />
+                            <Text style={styles.foodTriviaHeader}> Food Trivia of the Day </Text>
                         </View>
                         
-                        <Text style= {styles.foodTip}> 
-                            Use ice cube trays to freeze small portions of pesto, broth, applesauce and pizza sauce. 
-                            Transfer the cubes to a Ziplock bag or other freezer-proof container and it will be easy 
-                            to pull out exactly how much you need.
-                        </Text>
+                        <Text style= {styles.foodTrivia}>  {this.state.foodTrivia}  </Text>
                     </View>
-
-                    {/* <Text style={{fontSize:100, color: 'black'}}> Hi 2</Text> */}
-                    { this.renderNews() }
-                </ScrollView>
-                
-            </View>
-
-        )
+                </View>
+                <View key={'2'} tabLabel={'Popular'} style={styles.tabContentSyle}/>
+                <View key={'3'} tabLabel={'Videos'} style={styles.tabContentSyle}>   
+                    <ScrollView>{this.renderVideos()}</ScrollView>
+                </View>
+                </ScrollableTabView>            
+        </View>
+        );
     }
 }
 
@@ -280,30 +203,62 @@ const styles = StyleSheet.create({
     */
 
     /*------------------------------------------------------------------------
-        Newsfeed Section
+        Tabs Styles
     ------------------------------------------------------------------------*/
-    foodTipContainer: {
-        backgroundColor: 'rgba(255, 232, 229, 0.4)',
-        borderColor: 'rgba(229, 195, 204, 1)',
-        borderWidth: 2,
-        paddingTop: 15,
-        paddingBottom: 30,
-        paddingLeft: 20,
-        paddingRight: 20,
-        margin: 20,
+    tabStyle: {
     },
 
-    foodTipHeader: {
+    tabContentSyle: {
+        flex: 1,
+        backgroundColor: 'rgb(247, 247, 247)',
+    },
+
+    scrollStyle: {
+        backgroundColor: 'white',
+        // justifyContent: 'center',
+    },
+
+    tabBarTextStyle: {
+        width: 50,
+        fontSize: 14,
+        fontWeight: 'normal',
+    },
+
+    underlineStyle: { 
+        height: 3,
+        backgroundColor: 'red',
+        borderRadius: 3,
+        width: 30,
+    },
+
+    /*------------------------------------------------------------------------
+        Newsfeed Section
+    ------------------------------------------------------------------------*/
+    foodTriviaContainer: {
+        backgroundColor: 'white',
+        paddingRight: 30,
+        paddingLeft: 30,
+        paddingTop: 20,
+        paddingBottom: 30,
+        marginTop: 13,
+        marginBottom: 13,
+    },
+
+    foodTriviaHeader: {
         width: '100%',
         fontSize: 25,
         fontWeight: '500',
-        marginBottom: 10,
+        marginBottom: 15,
+        marginLeft: 10,
+        marginRight: 40,
+
     },
 
-    foodTip: {
+    foodTrivia: {
         fontSize: 15,
     },
 
+   
     // header: {
     //     flexDirection: 'row',
     //     backgroundColor: '#FFF',
@@ -328,7 +283,7 @@ const styles = StyleSheet.create({
     // },
 
     newsContainer: {
-        backgroundColor: 'rgba(255,255,255,1)',
+        backgroundColor: 'rgba(226, 226, 226, 0.5)',
         alignContent: 'center',
         width: '100%',
     },
