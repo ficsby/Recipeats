@@ -74,6 +74,10 @@ async function getRecipeInfoFromId(id, context){
 /* <Francis Buendia> March 15, 2019
         API Request call to 'Get Random Food Trivia' to get food trivia info
 */
+/**
+ * Random food trivia
+ * @param {reference} context 
+ */
 async function getRandomFoodTrivia(context){
     // Returns a promise which then gets the result from the request call
     const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/trivia/random`, {
@@ -94,25 +98,46 @@ async function getRandomFoodTrivia(context){
 
 
 /* <Christine Tran> March 28, 2019
-        API Request call to 'Get Random Recipes' to get random recipe suggestions
+        API Request call to 'Search Site Content" in order to get food articles
 */
-// async function getRandomRecipe(context){
-//     // Returns a promise which then gets the result from the request call
-//     const response = await fetch(``, {C
-//         method: "GET",
-//         headers: {
-//             "Content-Type": "application/json",
-//             "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
-//         },
-//     });
+async function getRandomFoodArticles(context){
+    // searchKeys = ['what', 'why', 'when', 'how', 'best', 'most', 'healthy', 'food', 'avoid',  'bread', 'cheese', 'protein', 'fruit', 'dessert', 'snack', 'candy', 'dinner', 'restaurant', 'easy', 'breakfast', 'kitchen', 'where'];
+    searchKeys = ['what'];
+    // Returns a promise which then gets the result from the request call
+    const foodArticles = [];
 
-//     const json = await response.json();
-//     // Check if component is mounted before changing state, this check is to prevent memory leaks
-//     if(context._ismounted)
-//     {
-//         context.setState({randomRecipeId: json.});
-//     }
-// }
+    for (idx=0; idx < searchKeys.length; ++idx)
+    {
+        const response = await fetch('https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/site/search?query='+ searchKeys[idx], {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+            },
+        });
+        const json = await response.json();
+
+        for (jdx=0; jdx < json.Articles.length; ++jdx)
+        {
+            foodArticles.push({ 'title':  json.Articles[jdx].name,
+                                'image':  json.Articles[jdx].image,
+                                'link':  json.Articles[jdx].link  })
+        }  
+    }
+
+     // Check if component is mounted before changing state, this check is to prevent memory leaks
+     if(context._ismounted)
+     {
+        context.setState({ article_items: foodArticles });
+     }
+
+    return new Promise((resolve) =>
+        setTimeout(
+        () => { resolve('result') },
+        5000
+        )
+    );
+}
 
 /* <Christine Tran> March 28, 2019
     API Request call to 'Get Random Food Video' to get food videos
@@ -206,4 +231,5 @@ export default {
     getRecipeInfoFromId,
     getRandomFoodTrivia,
     getRandomFoodVideos,
+    getRandomFoodArticles
 }

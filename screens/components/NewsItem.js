@@ -1,5 +1,5 @@
 import React, { Component } from 'react'; 
-import { StyleSheet, Text, View, WebView} from 'react-native';
+import { StyleSheet, Text, View, WebView, Linking, Image } from 'react-native';
 import YouTube from 'react-native-youtube';
 
 // Fetch the necessary Components
@@ -17,9 +17,31 @@ function onPress(news) {
     alert(news.title);
 };
 
-const NewsItem = ({ news, index }) => {
+const NewsItem = ({ news, index, type }) => {
     let number = (index + 1).toString();
- 
+    let newsContent;
+
+    if (type==1) // Type 1:  Trivia tab
+    {
+        newsContent = <Text>hi 1</Text>;
+    } 
+    else if (type==2) // Type 2: Popular tab (Articles are listed here)
+    {
+        // newsContent = <Text>hi 2</Text>;
+        // NewsContent is set as an image (NOT WORKING)
+        console.log(news.image);
+        newsContent = <Image source={{uri:news.image}} style={styles.articleImage}/>; 
+
+    }
+    else if (type==3) // Type 3: Videos tab
+    {
+        newsContent =  <WebView style= { {flex : 1} }
+                        mediaPlaybackRequiresUserAction = {false}
+                        domStorageEnabled={true}
+                        source={{ uri: "https://www.youtube.com/embed/" + news.videoId }}
+                        style={styles.video}
+                        />;
+    }
     return (
         // <Button key={index} noDefaultStyles={true} style = {{ flex: 1 }} >
             <View style={styles.newsItem}>
@@ -30,16 +52,10 @@ const NewsItem = ({ news, index }) => {
                         {/* <Text>{news.summary}</Text> */}
                     </View>
                 </View>
-                {/* <View style={styles.newsImageContainer}> */}
-                    {/* <Image source={news.image} style={styles.newsImage} /> */}
-                {/* </View> */}
-                <WebView
-                style= { {flex : 1} }
-                mediaPlaybackRequiresUserAction = {false}
-                domStorageEnabled={true}
-                source={{ uri: "https://www.youtube.com/embed/" + news.videoId }}
-                style={styles.newsImage}
-                />
+                {/* if type==1,  newContent renders food trivia  (not done yet) 
+                    if type==2,  newsContent renders food articles  (in progress) 
+                    if type==3,  newsContent renders food videos  (finished)      */}
+                {newsContent} 
             </View>
         // </Button>
     );
@@ -79,13 +95,18 @@ const styles = StyleSheet.create({
         // fontFamily: 'georgia'
     },
 
-    newsImageContainer: {
+    articleImageContainer: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
-    
-    newsImage: {
+
+    articleImage: {
+        width: 400,
+        height: 200,
+    },
+
+    video: {
         width: 400,
         height: 200
     }
