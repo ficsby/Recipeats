@@ -18,7 +18,7 @@ var globalStyles = require('./../styles/GlobalStyles.js');
 export default class SearchHeaderNav extends React.Component {
     
     state = {
-        visible: false,
+        visible: NavigationService.getModalVisibility(),
         modalVisible: false,
         query: '',
         recipes: [],
@@ -45,11 +45,13 @@ export default class SearchHeaderNav extends React.Component {
     };
 
     onModalOpen = () => {
+        NavigationService.setModalVisibility(true);
         this.setState({modalVisible: true, searchBarSensitivity:false});
     }
 
     onModalClose = () => {
         Alert.alert("Closed Modal");
+        NavigationService.setModalVisibility(false);
         this.setState({modalVisible: false, searchBarSensitivity:true});
     }
 
