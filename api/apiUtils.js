@@ -128,7 +128,7 @@ async function getIngredientInfoFromId(id, context) {
             }
             else {
                 nutritionTags[key] = json[key];
-                console.log(key + ": " + json[key]);
+                //console.log(key + ": " + json[key]);
             }
         }
 

@@ -55,12 +55,9 @@ export default class FoodItemForm extends React.Component {
 
   render() {
     if (this.state.id != null) {
-      console.log(this.state.id);
+      //console.log(this.state.id);
       ApiUtils.getIngredientInfoFromId(this.state.id, this);
 
-      if (Object.keys(this.state.nutritionalTags).length != 0) {
-        console.log(this.state.nutritionalTags);
-      }
     }
 
     return (
@@ -85,7 +82,7 @@ export default class FoodItemForm extends React.Component {
                 style={styles.itemTextContainer}
                 onPress={() => {
                   this.setState({ query: name, name: name, id: id });
-                  this.state.parent.setState({itemName: name});
+                  this.state.parent.setState({itemName: name, itemId: id});
                 }}
               >
                 <Text style={styles.itemText}>{name}</Text>

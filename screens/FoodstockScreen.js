@@ -190,6 +190,30 @@ export default class FoodstockScreen extends React.Component {
     // inventoryList.forEach(item =>
     //     modifyFoodStock(firebase.auth().currentUser.uid, item.name, item.quantity));
 
+    foodList = [];
+
+    // Returns a promise of the user's value
+    retrieveData = () => {
+      ref = getFoodList(firebase.auth().currentUser.uid);
+      return ref.once("value");
+    };
+
+    // Snapshot is the depiction of the user's current data
+    retrieveData().then(snapshot => {
+      if (this._ismounted) {
+        foodListSnapshot = snapshot.val();
+
+        for (var key in foodListSnapshot) {
+          if (foodListSnapshot.hasOwnProperty(key)) {
+            foodList.push({ name: key, quantity: foodListSnapshot[key] });
+          }
+        }
+        this.setState({
+          externalFoodList: foodList
+        });
+      }
+    });
+
     return (
       <KeyboardShift>
         {() => (
