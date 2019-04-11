@@ -29,6 +29,7 @@ export default class FoodItemForm extends React.Component {
       metric: this.props.metric,
       name: this.props.name,
       nutritionalTags: {},
+      parent: this.props.parent,
       price: this.props.price,
       quantity: this.props.quantity,
       query: ""
@@ -37,11 +38,11 @@ export default class FoodItemForm extends React.Component {
 
   async componentDidMount() {
     this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
-  };
+  }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this._ismounted = false; // after component is unmounted reste boolean
-  };
+  }
 
   /**
    * Calls the Spoonacular API to autocomplete search for an ingredient
@@ -60,9 +61,8 @@ export default class FoodItemForm extends React.Component {
       if (Object.keys(this.state.nutritionalTags).length != 0) {
         console.log(this.state.nutritionalTags);
       }
-
     }
-    
+
     return (
       <View style={Styles.sectionContainer}>
         <View style={Styles.dataRow}>
@@ -83,9 +83,10 @@ export default class FoodItemForm extends React.Component {
             renderItem={({ id, name }) => (
               <TouchableOpacity
                 style={styles.itemTextContainer}
-                onPress={() =>
-                  this.setState({ query: name, name: name, id: id })
-                }
+                onPress={() => {
+                  this.setState({ query: name, name: name, id: id });
+                  this.state.parent.setState({itemName: name});
+                }}
               >
                 <Text style={styles.itemText}>{name}</Text>
               </TouchableOpacity>
@@ -102,7 +103,7 @@ export default class FoodItemForm extends React.Component {
           />
         </View> */}
 
-        {/* <View style={Styles.dataRow}>
+        <View style={Styles.dataRow}>
           <Text style={Styles.inputLabel}>Price</Text>
           <TextInput
             style={Styles.inputData}
@@ -116,9 +117,10 @@ export default class FoodItemForm extends React.Component {
           <TextInput
             style={Styles.inputData}
             value={this.state.quantity}
-            onChangeText={itemQuantity =>
-              this.setState({ quantity: itemQuantity })
-            }
+            onChangeText={itemQuantity => {
+              this.setState({ quantity: itemQuantity });
+              this.state.parent.setState({itemQuantity: itemQuantity});
+            }}
           />
         </View>
 
@@ -158,24 +160,24 @@ export default class FoodItemForm extends React.Component {
           <Picker
             style={Styles.choiceRow}
             selectedValue={this.state.metric}
-            onValueChange={(itemValue, itemIndex) =>
-              this.setState({ metric: itemValue })
-            }
+            onValueChange={(itemValue, itemIndex) => {
+              this.setState({ metric: itemValue });
+              this.state.parent.setState({itemUnit: itemValue});
+            }}
             mode={"dropdown"}
           >
             <Picker.Item
               style={styles.picker}
-              label="Countable"
-              value="Countable"
+              label="milliliters"
+              value="milliliter"
             />
-            <Picker.Item
-              style={styles.picker}
-              label="Liquids"
-              value="millimeters"
+            <Picker.Item 
+              style={styles.picker} 
+              label="grams" 
+              value="gram" 
             />
-            <Picker.Item style={styles.picker} label="Solids" value="grams" />
           </Picker>
-        </View> */}
+        </View>
       </View>
     );
   }

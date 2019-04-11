@@ -81,8 +81,10 @@ export default class FoodstockScreen extends React.Component {
       externalFoodList: [],
       editable: false,
       ingredients: [],
+      itemId: null,
+      itemUnit: "",
       itemName: "",
-      itemQuantity: ""
+      itemQuantity: null
     };
     this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
     this.toggleEditable = this.toggleEditable.bind(this);
@@ -138,10 +140,14 @@ export default class FoodstockScreen extends React.Component {
     //this.writeUserData(user.uid);
     modifyFoodStock(
       firebase.auth().currentUser.uid,
+      this.state.itemId,
       this.state.itemName,
-      this.state.itemQuantity
+      this.state.itemQuantity,
+      "gram"
+      //this.state.itemUnit
     );
-    Alert.alert("Your changes has been updated..");
+    // Alert.alert("Your changes has been updated..");
+    this.setState({ addModalVisible: !this.state.addModalVisible });
   };
 
   onDeletePress = () => {
@@ -201,11 +207,12 @@ export default class FoodstockScreen extends React.Component {
                 id={null}
                 metric=""
                 name=""
+                parent={this}
                 price={null}
                 quantity={null}
               />
-              <TouchableHighlight onPress={this.toggleAddModalVisible}>
-                <Text>Hide Modal</Text>
+              <TouchableHighlight onPress={this.onSaveChangesPress}>
+                <Text>Save new food item</Text>
               </TouchableHighlight>
             </Modal>
 
