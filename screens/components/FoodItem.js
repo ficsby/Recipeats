@@ -33,8 +33,9 @@ export default class FoodItem extends React.Component {
 
     this.state = {
       itemModalVisible: false,
-      name: props.name,
-      quantity: props.quantity
+      name: this.props.name,
+      parent: this.props.parent,
+      quantity: this.props.quantity
       //purchaseDate: props.purchaseDate,
     };
 
@@ -55,8 +56,8 @@ export default class FoodItem extends React.Component {
   }
 
   onPressDelete() {
-    //alert(this.state.name + " delete button was pressed.");
-    //removeFromFoodStock(firebase.auth().currentUser.uid, this.state.name);
+    const parent = this.state.parent;
+
     Alert.alert(
       "Warning",
       "Are you sure you want to delete " +
@@ -70,11 +71,20 @@ export default class FoodItem extends React.Component {
         },
         {
           text: "Yes",
-          onPress: () =>
+          onPress: () => {
             removeFromFoodStock(
               firebase.auth().currentUser.uid,
               this.state.name
-            )
+            );
+
+            //update the parent's foodlist to keep it synced with firebase
+            console.log(parent.state.externalFoodList);
+            parent.setState({
+              externalFoodList: parent.state.externalFoodList.filter(
+                foodItem => foodItem.name != this.state.name
+              )
+            });
+          }
         }
       ],
       { cancelable: false }

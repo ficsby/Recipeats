@@ -38,16 +38,21 @@ export const getFoodList = (foodListID) => {
  */
 export const modifyFoodStock = (userId, foodItemID, foodItemName, quantity, metric) => {
     //console.log(foodItemID + ": " + quantity);
-    firebase.database().ref('foodlist/' + userId + '/' + foodItemID).update({
-        // [foodItemID]: quantity,
-        name: foodItemName,
-        amount: quantity,
-        unit: metric
+    firebase.database().ref('foodlist/' + userId).update({
+        [foodItemID]: quantity,
+        // name: foodItemName,
+        // amount: quantity,
+        // unit: metric
     });
 }
 
-export const removeFromFoodStock = (userId, foodItemID) => {
-    firebase.database().ref('foodlist/' + userId + '/' + foodItemID).remove();
+/**
+ * Function to remove a food item from a user's food inventory in the database
+ * @param {string} userId - user id of the foodstock to delete from
+ * @param {int} foodItemId - id of the food item to be removed
+ */
+export const removeFromFoodStock = (userId, foodItemId) => {
+    firebase.database().ref('foodlist/' + userId + '/' + foodItemId).remove();
 }
 
 

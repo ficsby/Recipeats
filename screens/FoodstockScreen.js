@@ -143,11 +143,19 @@ export default class FoodstockScreen extends React.Component {
       this.state.itemId,
       this.state.itemName,
       this.state.itemQuantity,
-      "gram"
-      //this.state.itemUnit
+      this.state.itemUnit
     );
-    // Alert.alert("Your changes has been updated..");
-    this.setState({ addModalVisible: !this.state.addModalVisible });
+
+    // create a newFoodList with the new item to replace the externalFoodList
+    newFoodList = []
+    newFoodList = this.state.externalFoodList;
+    newFoodList.push({ name: this.state.itemName, quantity: this.state.itemQuantity });
+    console.log(newFoodList);
+    this.setState({ 
+      addModalVisible: !this.state.addModalVisible,
+      externalFoodList: newFoodList
+    });
+
   };
 
   onDeletePress = () => {
@@ -185,34 +193,6 @@ export default class FoodstockScreen extends React.Component {
         </View>
       </TouchableOpacity>
     );
-
-    //Push data to firebase
-    // inventoryList.forEach(item =>
-    //     modifyFoodStock(firebase.auth().currentUser.uid, item.name, item.quantity));
-
-    foodList = [];
-
-    // Returns a promise of the user's value
-    retrieveData = () => {
-      ref = getFoodList(firebase.auth().currentUser.uid);
-      return ref.once("value");
-    };
-
-    // Snapshot is the depiction of the user's current data
-    retrieveData().then(snapshot => {
-      if (this._ismounted) {
-        foodListSnapshot = snapshot.val();
-
-        for (var key in foodListSnapshot) {
-          if (foodListSnapshot.hasOwnProperty(key)) {
-            foodList.push({ name: key, quantity: foodListSnapshot[key] });
-          }
-        }
-        this.setState({
-          externalFoodList: foodList
-        });
-      }
-    });
 
     return (
       <KeyboardShift>
@@ -263,24 +243,22 @@ export default class FoodstockScreen extends React.Component {
                       style={Styles.head}
                       textStyle={Styles.text}
                     />
-                    {state.externalFoodList &&
-                      state.externalFoodList.map((rowData, index) => (
-                        // <TableWrapper key={index} style={Styles.row}>
-                        //   {
-                        <FoodItem
-                          index={index}
-                          name={rowData.name}
-                          quantity={rowData.quantity}
-                        />
-
-                        //   }
-                        // </TableWrapper>
-                      ))}
+                    { state.externalFoodList &&
+                      state.externalFoodList.map(rowData => {
+                        return (
+                          <FoodItem
+                            key={rowData.name}
+                            name={rowData.name}
+                            parent={this}
+                            quantity={rowData.quantity}
+                          />
+                        )
+                      })
+                    }
                   </Table>
                 </View>
               }
-
-              <FoodItem index={5} name="temp" quantity={0} />
+              
               <ListItem
                 Component={TouchableScale}
                 friction={90}
