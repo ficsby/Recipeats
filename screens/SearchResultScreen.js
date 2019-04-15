@@ -59,7 +59,7 @@ export default class SearchResultScreen extends React.Component {
         'dancing-script': require('./../assets/fonts/DancingScript-Regular.otf'),
         }); 
         this.setState({fontLoaded: true});
-        this.getRecipesByName()
+        await this.getRecipesByName();
         // this.setState({searchResults:})
     }
 
@@ -72,7 +72,7 @@ export default class SearchResultScreen extends React.Component {
         // console.log("Food Intolerances Result from Search Screen: " + NavigationService.getTopLevelNavigator().state.params.foodIntolerances);
         return (
             <ScrollView styles={styles.searchScreenContainer}>
-                
+                <Text>In search result screen</Text>
             </ScrollView>
         )
     }
