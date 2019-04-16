@@ -3,6 +3,7 @@ import { StyleSheet, Image, ImageBackground, View, ScrollView, Text, TextInput, 
 import { StackActions } from 'react-navigation';
 import Autocomplete from 'react-native-autocomplete-input';
 import { ListItem, Badge } from 'react-native-elements';
+// import Bar from 'react-native-bar-collapsible';
 import { Font, AppLoading } from 'expo';
 // import NavigationService from '../navigation/NavigationService.js';
 
@@ -19,7 +20,6 @@ import apiUtils from '../api/apiUtils.js';
 const { width: WIDTH } = Dimensions.get('window');
 var globalStyles = require('../styles/GlobalStyles.js');
 const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
-
 const ingredientsList = [   // FOR TESTING PURPOSES
     {
         name: 'Rice',

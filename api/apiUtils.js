@@ -28,6 +28,32 @@ async function getAutoCompleteRecipesByName(text, context){
     
 }
 
+/**
+ * API request call to 'Autocomplete ingredients search' ingredients by name
+ * @param {*} text - text to autocomplete
+ * @param {*} context - Reference to the object that the function is called in
+ */
+async function getAutoCompleteIngredientsByName(text, context) {
+    try {
+        // Returns a promise which then gets the result from the request call
+        const response = await fetch(
+          `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/ingredients/autocomplete?number=10&metaInformation=true&query=${text}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "X-RapidAPI-Key": API_KEY // API key registered for Spoonacular API
+            }
+          }
+        );
+
+        const json = await response.json();
+        context.setState({ ingredients: json });
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 /* <Francis Buendia> March 15, 2019
         API Request call to 'Get Recipe Info from Id' to get the recipe information
 */
@@ -73,6 +99,7 @@ async function getRecipeInfoFromId(id, context){
     );
 }
 
+<<<<<<< HEAD
 async function searchRecipeByName(name, cuisine, diet, intolerances, context){
     console.log('in search recipe');
     // let url = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=${cuisine}&diet=${diet}&excludeIngredients=''&intolerances=${intolerances}&number=10&offset=0&type=main+course&query=${name}`;
@@ -89,6 +116,54 @@ async function searchRecipeByName(name, cuisine, diet, intolerances, context){
     // console.log(response);
     // const json = await response.json();
     // console.log(json);
+=======
+/**
+ * API request call to "Get food information" to get information about a specific food (ingredient)
+ * @param {int} id - API ID of the food
+ * @param {reference} context - Reference to the object that the function is called in
+ */
+async function getIngredientInfoFromId(id, context) {
+    // Returns a promise which then gets the result from the request call
+    const response = await fetch(
+      `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/ingredients/${id}/information?amount=100&unit=gram`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "X-RapidAPI-Key": API_KEY // API key registered for Spoonacular API
+        }
+      }
+    );
+
+    const json = await response.json();
+    
+    // Check if component is mounted before changing state, this check is to prevent memory leaks
+    if (context._ismounted) {
+        nutritionTags = {}
+        for (key in json) {
+            if (key in context.state) {
+                context.setState({
+                    [key]: json[key]
+                });
+            }
+            else {
+                nutritionTags[key] = json[key];
+                console.log(key + ": " + json[key]);
+            }
+        }
+
+        context.setState({
+            nutritionalTags: nutritionTags
+        });
+    }
+
+    return new Promise((resolve) =>
+        setTimeout(
+            () => { resolve('result') },
+            5000
+        )
+    );
+>>>>>>> foodstock
 }
 
 /* <Francis Buendia> March 15, 2019
@@ -245,9 +320,15 @@ async function getRandomFoodVideos(context){
 
 export default {
     getAutoCompleteRecipesByName,
+    getAutoCompleteIngredientsByName,
     getRecipeInfoFromId,
+<<<<<<< HEAD
     getRandomFoodTrivia,
     getRandomFoodVideos,
     getRandomFoodArticles,
     searchRecipeByName
+=======
+    getIngredientInfoFromId,
+    getRandomFoodTrivia
+>>>>>>> foodstock
 }
