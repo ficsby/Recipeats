@@ -28,7 +28,48 @@ export default class SearchScreen extends React.Component {
             checkBoxModalVisible: false,
             visible: false,
             query: '',
-            recipes: [],
+            recipes: [
+                {
+                    "title":"pei wei asian diner thai chicken lettuce wraps",
+                    "id":253419
+                },
+                {
+                    "title":"camille's chicken caesar salad includes 2 oz. caesar dressing",
+                    "id":380722
+                },
+                {
+                    "title":"fried rice, chicken",
+                    "id":392199
+                },
+                {
+                    "title":"ryan's grill buffet bakery chicken strips",
+                    "id":371488
+                },
+                {
+                    "title":"cheeburger cheeburger fried chicken finger sandwich (1 sandwich) with peanut butter",
+                    "id":325711
+                },
+                {
+                    "title":"california pizza kitchen the original bbq chicken chopped, half with avocado",
+                    "id":322150
+                },
+                {
+                    "title":"de dutch pannekoek house plain jane burger, chicken",
+                    "id":370301
+                },
+                {
+                    "title":"bbq chicken pizza",
+                    "id":338375
+                },
+                {
+                    "title":"max & erma's chicken breast patty",
+                    "id":386395
+                },
+                {
+                    "title":"smothered chicken dinner (1 serving)",
+                    "id":329010
+                }],
+                
             recipeTitle: '',
             recipeId: '',
             selectedCuisine: '',
@@ -150,7 +191,7 @@ export default class SearchScreen extends React.Component {
                         defaultValue = { query }
                         autoCorrect={false}
                         placeholder= "    Search recipes, ingredients..."
-                        onChangeText={text => this.getAutoCompleteRecipesByName(text)}
+                        onChangeText={text => this.setState({query:text})}
                         onFocus = {this.onModalVisibleChange}
                         renderItem={({ id, title }) => (
                             <TouchableOpacity style={styles.itemTextContainer} onPress={() => this.setState({ query: title })}>
@@ -161,11 +202,6 @@ export default class SearchScreen extends React.Component {
                         )}                       
                     />
 
-                    {/* const cuisines = [
-                        'african', 'chinese', 'japanese', 'korean', 'vietnamese', 'thai', 'indian',
-                        'british', 'irish', 'french', 'italian', 'mexican', 'spanish', 'middle eastern', 'jewish', 'american', 'cajun',
-                        'southern', 'greek', 'german', 'nordic', 'eastern european', 'caribbean', 'latin american'
-                    ] */}
                     <Text style={styles.filters}>Filter by Cuisine</Text>
                     <Picker style={styles.choiceRow}
                                 selectedValue={this.state.selectedCuisine}
@@ -196,11 +232,6 @@ export default class SearchScreen extends React.Component {
                             <Picker.Item style={styles.picker} label='Latin American' value='latin american' />
                     </Picker>
 
-                    
-                    {/* // const diet = [
-                    //     'pescetarian', 'lacto vegetarian', 'ovo vegetarian', 'vegan', 'vegetarian'
-                    // ] */}
-
                     <Text style={styles.filters}>Filter by Diet</Text>
                     <Picker style={styles.choiceRow}
                                 selectedValue={this.state.selectedDiet}
@@ -214,10 +245,6 @@ export default class SearchScreen extends React.Component {
                             <Picker.Item style={styles.picker} label='Vegetarian' value='vegetarian' />
                     </Picker>
 
-                    {/* // const intolerances = [
-                    //     'dairy', 'egg', 'gluten', 'peanut', 'sesame', 'seafood', 'shellfish', 'soy', 'sulfite', 'tree nut', 'wheat'
-                    // ] */}
-                    {/* <TouchableOpacity onPress ={() => this.setState({checkBoxModalVisible:true})}> */}
                     <Text style={styles.filters}>Filter by Food Intolerances</Text>
                     {/* </TouchableOpacity> */}
 

@@ -9,8 +9,11 @@
   "dependencies": {
     "boostrap": "^2.0.0",
     "bootstrap": "^4.0.0-alpha.6",
+    "csv": "^5.1.1",
+    "csv-parser": "^2.2.0",
     "expo": "^32.0.0",
     "fetch": "^1.1.0",
+    "file-system": "^2.2.2",
     "firebase": "^5.8.2",
     "node-fetch": "^2.3.0",
     "react": "^16.8.3",

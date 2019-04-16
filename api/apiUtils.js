@@ -8,6 +8,7 @@ const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 async function getAutoCompleteRecipesByName(text, context){
 
     try{
+        
         // Returns a promise which then gets the result from the request call
         const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/autocomplete?number=10&query=${text}`, {
             method: "GET",
