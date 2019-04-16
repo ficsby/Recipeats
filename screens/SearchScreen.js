@@ -153,13 +153,16 @@ export default class SearchScreen extends React.Component {
         foodIntolerances = foodIntolerances.substring(0, foodIntolerances.length-2);
         NavigationService.navigate('SearchResults', {name: query, cuisine: cuisine, diet: diet, foodIntolerances: foodIntolerances});
     }
-
+    goBack(){
+        NavigationService.setSearchSensitivity(true);
+        NavigationService.goBack();
+    }
     render() {
 
         const { query } = this.state;
         const recipes = this.findRecipe(query);
         const comp = (a,b) => a.toLowerCase().trim() == b.toLowerCase().trim();
-        // console.log(this.state);
+        
         return (
             <ScrollView styles={styles.searchScreenContainer}>
                 <View style={styles.topContainer}>
@@ -169,7 +172,6 @@ export default class SearchScreen extends React.Component {
                             {/* Side bar navigation icon */}
                             <TouchableOpacity onPress = { () => NavigationService.goBack()}>
                                 <Icon name='back' size={25} color='rgba(175,76,99,1)' backgroundColor='red' height={200}
-
                                     style={{marginLeft: 18}} />
                             </TouchableOpacity>
 
@@ -335,8 +337,6 @@ export default class SearchScreen extends React.Component {
                         {/* </Modal> */}
                     {/* </View> */}
                     
-                    
-                    {/* <Text>Food you want to exclude</Text> */}
             </ScrollView>
         )
     }

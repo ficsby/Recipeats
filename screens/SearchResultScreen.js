@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, ScrollView, Text, TextInput, Button, Image,  Dimensions, TouchableOpacity, Alert, SafeAreaView, Picker, BackHandler  } from 'react-native';
+import { ListItem } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import Autocomplete from 'react-native-autocomplete-input';
 import { CheckBox } from 'react-native-elements'
@@ -14,6 +15,7 @@ import NavigationService from '../navigation/NavigationService.js';
 
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from './../config/icon-font.json';
+import SearchHeaderNav from '../navigation/SearchHeaderNav';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
 const deviceWidth = Dimensions.get("window").width;
@@ -31,27 +33,59 @@ export default class SearchResultScreen extends React.Component {
             recipes: [],
             recipeTitle: '',
             recipeId: '',
-            searchResults: []
+            baseUri: 'https://spoonacular.com/recipeImages/',
+            searchResults: [
+                {
+                    "id":485365,
+                    "title":"Chicken Spinoccoli – Breaded Stuffed Chicken Breast With Spinach, Broccoli and Cheese",
+                    "readyInMinutes":65,
+                    "servings":4,
+                    "image":"chicken-spinoccoli-breaded-stuffed-chicken-breast-with-spinach-broccoli-and-cheese-485365.jpg",
+                },
+
+                {
+                    "id":541272,
+                    "title":"Chicken Nanban | Fried Chicken with Soy Vinegar Dressing",
+                    "readyInMinutes":45,
+                    "servings":2,
+                    "image":"Chicken-Nanban---Fried-Chicken-with-Soy-Vinegar-Dressing-541272.jpg"
+                },
+
+                {
+                    "id":762877,
+                    "title":"Jerk Chicken (Grilled Spicy Marinated Chicken)",
+                    "readyInMinutes":45,
+                    "servings":10,
+                    "image":"jerk-chicken-grilled-spicy-marinated-chicken-762877.jpeg",
+                },
+
+                {
+                    "id":844117,
+                    "title":"Chicken Karaage (Japanese Deep Fried Chicken)",
+                    "readyInMinutes":20,
+                    "servings":2,
+                    "image":"chicken-karaage-japanese-deep-fried-chicken-844117.jpg",    
+                },
+
+                {
+                    "id":17655,
+                    "title":"Chicken Buns",
+                    "readyInMinutes":45,
+                    "servings":2,
+                    "image":"chicken_buns-17655.jpg"
+                },
+
+                {
+                    "id":107878,
+                    "title":"Garlic Chicken",
+                    "readyInMinutes":45,
+                    "servings":4,
+                    "image":"garlic-chicken-2-107878.png"
+                }
+            ]
         };
     }
 
-    /* <Francis Buendia> March 15, 2019
-        API Request call to 'Autocomplete recipe search' recipes by name 
-    */
-    async getRecipesByName(){
-        const name = NavigationService.getTopLevelNavigator().state.params.name;
-        const cuisine = NavigationService.getTopLevelNavigator().state.params.cuisine;
-        const diet = NavigationService.getTopLevelNavigator().state.params.diet;
-        const intolerances = NavigationService.getTopLevelNavigator().state.params.foodIntolerances;
-        await ApiUtils.searchRecipeByName(name, cuisine, diet, intolerances, this);
-    }
-
-    findRecipe = (query) => {
-        if( query === '') { return []; }
-        const { recipes } = this.state;
-        const regex = new RegExp(`${query.trim()}`, 'i');
-        return recipes.filter(recipe => recipe.title.search(regex) >= 0);
-    }
 
     async componentDidMount() {
         this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
@@ -59,7 +93,6 @@ export default class SearchResultScreen extends React.Component {
         'dancing-script': require('./../assets/fonts/DancingScript-Regular.otf'),
         }); 
         this.setState({fontLoaded: true});
-        await this.getRecipesByName();
         // this.setState({searchResults:})
     }
 
@@ -71,9 +104,33 @@ export default class SearchResultScreen extends React.Component {
         // console.log("Query Result from Search Screen: " + NavigationService.getTopLevelNavigator().state.params.queryResult);
         // console.log("Food Intolerances Result from Search Screen: " + NavigationService.getTopLevelNavigator().state.params.foodIntolerances);
         return (
-            <ScrollView styles={styles.searchScreenContainer}>
-                <Text>In search result screen</Text>
-            </ScrollView>
+            <View>
+                <SearchHeaderNav/>
+                
+                <ScrollView styles={styles.searchScreenContainer}>
+                    {
+                        this.state.searchResults.map( (item, i) =>  
+                        ( 
+                            <TouchableOpacity key={i}>
+                                <View>
+                                    <ListItem title={item.title} subtitle={"Serving size: " + item.servings +"\nReady in: " + item.readyInMinutes + " minutes"} 
+                                            titleStyle={styles.ingredientText} subtitleStyle={styles.quantityText} 
+                                            rightAvatar={{ size:'xlarge', rounded: false, source: { uri:this.state.baseUri+item.image } }}/>
+                                </View> 
+                            </TouchableOpacity>
+                        ))
+                        // this.state.extendedIngredients.map( (item, i) =>  
+                        // ( <ListItem key={i} title={item.name} rightTitle={item.amount} 
+                        //             titleStyle={styles.ingredientText} rightTitleStyle={styles.quantityText} /> ))
+                            
+                        }
+                    {/* return this.state.article_items.map((articles, index) => {
+                        return <NewsItem key={index} news={articles} index={index} type={2} />
+                    }); */}
+                </ScrollView>
+                {/* <View style={{paddingBottom: hPercentage('%')}}/> */}
+
+            </View>
         )
     }
 }
@@ -192,5 +249,10 @@ const styles = StyleSheet.create({
         top: '25%',
         width: wPercentage('90%'),
         height: hPercentage('40%'),
-    }
+    },
+    articleImageContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });

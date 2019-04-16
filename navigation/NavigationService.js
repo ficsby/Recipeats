@@ -3,6 +3,7 @@ import { NavigationActions } from 'react-navigation';
 let _navigator;
 let _homeNavigator;
 let _modalVisibility = false;
+let _searchSensitivity = true;
 
 function setTopLevelNavigator(navigatorRef) {
   _navigator = navigatorRef;
@@ -61,5 +62,5 @@ export default {
     closeDrawer,
     setModalVisibility,
     getModalVisibility,
-    _modalVisibility
+    _modalVisibility,
 }
