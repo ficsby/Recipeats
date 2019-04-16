@@ -9,6 +9,7 @@ var shuffle = require('shuffle-array');
 async function getAutoCompleteRecipesByName(text, context){
 
     try{
+        
         // Returns a promise which then gets the result from the request call
         const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/autocomplete?number=10&query=${text}`, {
             method: "GET",
@@ -70,6 +71,24 @@ async function getRecipeInfoFromId(id, context){
         5000
         )
     );
+}
+
+async function searchRecipeByName(name, cuisine, diet, intolerances, context){
+    console.log('in search recipe');
+    // let url = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=${cuisine}&diet=${diet}&excludeIngredients=''&intolerances=${intolerances}&number=10&offset=0&type=main+course&query=${name}`;
+    // console.log(url);
+    // //https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=thai&diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&offset=0&type=main+course&query=burger
+    // //"https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=thai&diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&offset=0&type=main+course&query=burger"
+    // const response = await fetch(url, {
+    //     method: "GET",
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //         "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+    //     },
+    // });
+    // console.log(response);
+    // const json = await response.json();
+    // console.log(json);
 }
 
 /* <Francis Buendia> March 15, 2019
@@ -229,5 +248,6 @@ export default {
     getRecipeInfoFromId,
     getRandomFoodTrivia,
     getRandomFoodVideos,
-    getRandomFoodArticles
+    getRandomFoodArticles,
+    searchRecipeByName
 }
