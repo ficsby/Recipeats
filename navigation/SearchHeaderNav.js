@@ -1,13 +1,10 @@
 import React from 'react';
-import { Platform, View, StyleSheet, TouchableOpacity, Dimensions, Text } from 'react-native';
-import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createBottomTabNavigator, createAppContainer , DrawerItems } from 'react-navigation';
-import { StackActions, DrawerActions } from 'react-navigation';
+import {SafeAreaView, View, StyleSheet, TouchableOpacity, Dimensions, Text, Modal, Alert} from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
-import SearchHeader from 'react-native-search-header';
+import { Font } from 'expo';
 import NavigationService from './NavigationService';
+import SearchScreen from './../screens/SearchScreen';
 import ApiUtils from './../api/apiUtils';
-
-const fetch = require('node-fetch');
 
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
@@ -16,30 +13,19 @@ import fontelloConfig from './../config/icon-font.json';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
 const { width: WIDTH } = Dimensions.get('window');
-var globalStyles = require('../styles/GlobalStyles.js');
+var globalStyles = require('./../styles/GlobalStyles.js');
 
 export default class SearchHeaderNav extends React.Component {
+    
     state = {
+        visible: NavigationService.getModalVisibility(),
+        modalVisible: false,
         query: '',
         recipes: [],
         recipeTitle: '',
         recipeId: '',
+        searchBarSensitivity: true,
     };
-
-    /* <Francis Buendia> March 15, 2019
-        API Request call to 'Autocomplete recipe search' recipes by name 
-    */
-    async getAutoCompleteRecipesByName(text){
-        this.setState({query: text});
-        await ApiUtils.getAutoCompleteRecipesByName(text, this);
-    }
-
-    findRecipe = (query) => {
-        if( query === '') { return []; }
-        const { recipes } = this.state;
-        const regex = new RegExp(`${query.trim()}`, 'i');
-        return recipes.filter(recipe => recipe.title.search(regex) >= 0);
-    }
 
     async componentDidMount() {
         this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
@@ -58,23 +44,29 @@ export default class SearchHeaderNav extends React.Component {
         NavigationService.navigate('EditAccount');
     };
 
-    render() {
+    onModalOpen = () => {
+        NavigationService.setModalVisibility(true);
+        NavigationService.navigate('SearchScreen');
+    }
 
-        const { query } = this.state;
-        const recipes = this.findRecipe(query);
-        const comp = (a,b) => a.toLowerCase().trim() == b.toLowerCase().trim();
-        
+    onModalClose = () => {
+        Alert.alert("Closed Modal");
+        this.setState({modalVisible: false, searchBarSensitivity:true});
+    }
+
+    render() {
         return (
-            <View>
+            <SafeAreaView style = {globalStyles.droidSafeArea}>
                 <View style={styles.topContainer}>
 
                     <View style={styles.row}>
 
                         {/* Side bar navigation icon */}
                         <TouchableOpacity onPress = { () => NavigationService.openDrawer()}>
-                            <Icon name='menu' size={25} color='rgba(175,76,99,1)' backgroundColor='red' height={200}
 
+                            <Icon name='menu' size={25} color='rgba(175,76,99,1)' backgroundColor='red' height={200}
                                 style={{marginLeft: 18}} />
+
                         </TouchableOpacity>
 
                         {/* User account icon  */}
@@ -88,24 +80,23 @@ export default class SearchHeaderNav extends React.Component {
                 </View>
 
                 <Autocomplete
+                    editable = {this.state.searchBarSensitivity}
                     containerStyle={styles.searchContainer}  
                     inputContainerStyle={styles.searchInputContainer}
-                    data={recipes.length === 1 && comp(query, recipes[0].title) ? [] : recipes}
-                    defaultValue = { query }
-                    autoCorrect={false}
                     placeholder= "    Search recipes, ingredients..."
-                    onChangeText={text => this.getAutoCompleteRecipesByName(text)}
-                    
-                    renderItem={({ id, title }) => (
-                        <TouchableOpacity style={styles.itemTextContainer} onPress={() => this.setState({ query: title })}>
-                            <Text style={styles.itemText}>
-                                {title}
-                            </Text>
-                        </TouchableOpacity>
-                    )}                       
+                    onFocus = {this.onModalOpen}    
                 />
+                
+                {/* <Modal
+                    animationType ="fade"
+                    transparent = {false}
+                    visible = {this.state.modalVisible}
+                    onRequestClose= {this.onModalClose}>
+                
+                    <SearchScreen/>
+                </Modal> */}
 
-            </View>
+            </SafeAreaView>
         )
     }
 }

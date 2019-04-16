@@ -1,10 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Text, TextInput, TouchableOpacity, Picker, Button, Alert, Dimensions } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, TextInput, TouchableOpacity, Alert, Dimensions } from 'react-native';
 import { StackActions } from 'react-navigation';
 import * as firebase from 'firebase';
 
-import logo from './../../assets/images/logo_transparent.png';
-import { stringify } from 'qs';
+import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 
 import KeyboardShift from './../../styles/KeyboardShift.js';
 
@@ -12,8 +11,6 @@ import KeyboardShift from './../../styles/KeyboardShift.js';
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from './../../config/icon-font.json';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
-
-const { width: WIDTH } = Dimensions.get('window');
 
 export default class EditAccountScreen extends React.Component {
     constructor(props) {

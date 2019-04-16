@@ -237,7 +237,6 @@ export default class HomeScreen extends React.Component {
 
                         <View style ={styles.sectionContainer}>
                             < Text style={styles.sectionTitle}> Ingredients </Text>
-
                             {
                                 ingredientsList.map( (item, i) =>  
                                 ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
