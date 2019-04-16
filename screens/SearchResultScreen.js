@@ -86,7 +86,6 @@ export default class SearchResultScreen extends React.Component {
         };
     }
 
-
     async componentDidMount() {
         this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
         await Font.loadAsync({
