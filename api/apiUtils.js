@@ -99,7 +99,6 @@ async function getRecipeInfoFromId(id, context){
     );
 }
 
-<<<<<<< HEAD
 async function searchRecipeByName(name, cuisine, diet, intolerances, context){
     console.log('in search recipe');
     // let url = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=${cuisine}&diet=${diet}&excludeIngredients=''&intolerances=${intolerances}&number=10&offset=0&type=main+course&query=${name}`;
@@ -116,7 +115,8 @@ async function searchRecipeByName(name, cuisine, diet, intolerances, context){
     // console.log(response);
     // const json = await response.json();
     // console.log(json);
-=======
+}
+
 /**
  * API request call to "Get food information" to get information about a specific food (ingredient)
  * @param {int} id - API ID of the food
@@ -163,7 +163,6 @@ async function getIngredientInfoFromId(id, context) {
             5000
         )
     );
->>>>>>> foodstock
 }
 
 /* <Francis Buendia> March 15, 2019
@@ -322,13 +321,9 @@ export default {
     getAutoCompleteRecipesByName,
     getAutoCompleteIngredientsByName,
     getRecipeInfoFromId,
-<<<<<<< HEAD
     getRandomFoodTrivia,
     getRandomFoodVideos,
     getRandomFoodArticles,
-    searchRecipeByName
-=======
+    searchRecipeByName,
     getIngredientInfoFromId,
-    getRandomFoodTrivia
->>>>>>> foodstock
 }

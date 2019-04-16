@@ -6,11 +6,11 @@ import {
 
 export const Styles = StyleSheet.create({
 
-    droidSafeArea: {
-        flex: 1,
-        backgroundColor: 'white',
-        marginTop: Platform.OS === 'android' ? StatusBar.currentHeight: 0
-    },
+    // droidSafeArea: {
+    //     flex: 1,
+    //     backgroundColor: 'white',
+    //     marginTop: Platform.OS === 'android' ? StatusBar.currentHeight: 0
+    // },
 
   /*------------------------------------------------------------------------
       General Styles
