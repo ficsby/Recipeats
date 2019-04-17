@@ -7,7 +7,7 @@ var shuffle = require('shuffle-array');
         API Request call to 'Autocomplete recipe search' recipes by name 
 */
 async function getAutoCompleteRecipesByName(text, context){
-
+    console.log("api call going out #1");
     try{
         
         // Returns a promise which then gets the result from the request call
@@ -34,6 +34,7 @@ async function getAutoCompleteRecipesByName(text, context){
  * @param {*} context - Reference to the object that the function is called in
  */
 async function getAutoCompleteIngredientsByName(text, context) {
+    console.log("api call going out #2");
     try {
         // Returns a promise which then gets the result from the request call
         const response = await fetch(
@@ -58,6 +59,7 @@ async function getAutoCompleteIngredientsByName(text, context) {
         API Request call to 'Get Recipe Info from Id' to get the recipe information
 */
 async function getRecipeInfoFromId(id, context){
+    console.log("api call going out #3");
     // Returns a promise which then gets the result from the request call
     const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information`, {
         method: "GET",
@@ -100,6 +102,7 @@ async function getRecipeInfoFromId(id, context){
 }
 
 async function searchRecipeByName(name, cuisine, diet, intolerances, context){
+    console.log("api call going out #4");
     console.log('in search recipe');
     // let url = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=${cuisine}&diet=${diet}&excludeIngredients=''&intolerances=${intolerances}&number=10&offset=0&type=main+course&query=${name}`;
     // console.log(url);
@@ -123,6 +126,7 @@ async function searchRecipeByName(name, cuisine, diet, intolerances, context){
  * @param {reference} context - Reference to the object that the function is called in
  */
 async function getIngredientInfoFromId(id, context) {
+    console.log("api call going out #5");
     // Returns a promise which then gets the result from the request call
     const response = await fetch(
       `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/ingredients/${id}/information?amount=100&unit=gram`,
@@ -173,6 +177,7 @@ async function getIngredientInfoFromId(id, context) {
  * @param {reference} context 
  */
 async function getRandomFoodTrivia(context){
+    console.log("api call going out #6");
     // Returns a promise which then gets the result from the request call
     const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/trivia/random`, {
         method: "GET",
@@ -197,6 +202,7 @@ async function getRandomFoodTrivia(context){
         API Request call to 'Search Site Content" in order to get food articles
 */
 async function getRandomFoodArticles(context){
+    console.log("api call going out #7");
     searchKeys = ['restaurant', 'easy', 'breakfast', 'kitchen', 'where', 'food', 'avoid', 'why', 'best', 'healthy', 'when', 'how', 'bread', 'cheese', 'protein', 'fruit', 'dessert', 'snack', 'candy', 'dinner'];
     shuffle(searchKeys);
     console.log(searchKeys);
@@ -239,6 +245,7 @@ async function getRandomFoodArticles(context){
     API Request call to 'Get Random Food Video' to get food videos
 */
 async function getRandomFoodVideos(context){
+    console.log("api call going out #8");
     // Returns a promise which then gets the result from the request call
     // randomCuisine = cusines[(Math.random() * cuisines.length) | 0];
     // cuisineUrl = 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/videos/search?cuisine=' + randomCuisine + '&minLength=0&maxLength=999&offset=0&number=10';
