@@ -25,7 +25,7 @@ const fetch = require('node-fetch');
 
 import Button from './components/Button';
 import NewsItem from './components/NewsItem';
-// import apiUtils from '../api/apiUtils.js';
+import apiUtils from '../api/apiUtils.js';
 const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 
 export default class HomeScreen extends React.Component {
@@ -39,7 +39,7 @@ export default class HomeScreen extends React.Component {
             recipes: [],
             article_items: [],
             video_items: [],
-            food_trivia: '',
+            foodTrivia: '',
         };
     };
 
@@ -56,14 +56,15 @@ export default class HomeScreen extends React.Component {
         }); 
         this.setState({fontLoaded: true});
 
-        // const foodTrivia = await apiUtils.getRandomFoodTrivia(this);
-        // const foodArticles = await apiUtils.getRandomFoodArticles(this);
-        // const foodVids = await apiUtils.getRandomFoodVideos(this);
+        apiUtils.getRandomFoodTrivia(this);
+
+        const foodArticles = await apiUtils.getRandomFoodArticles(this);
+        const foodVids = await apiUtils.getRandomFoodVideos(this);
         
-        // if((foodTrivia != null) && (foodVids != null) && (foodArticles != null))
-        // {
-        //     this.setState({ isLoading: false });
-        // }
+        if(foodVids != null && foodArticles != null)
+        {
+            this.setState({ isLoading: false });
+        }
     };
 
     componentWillUnmount () {
@@ -83,6 +84,12 @@ export default class HomeScreen extends React.Component {
         // this.props.navigation.dispatch(navActions);
         this.setState({visible: true});
     };
+
+    // renderTrivia() {
+    //     return this.state.trivia_items.map((triv, index) => {
+    //         return <NewsItem key={index} news={triv} index={index} type={1} />
+    //     });
+    // };
 
     /**
      *  Renders food articles, in which each article_item is mapped as a NewsItem. 
@@ -117,22 +124,24 @@ export default class HomeScreen extends React.Component {
                 tabBarInactiveTextColor={'black'}
                 tabBarActiveTextColor={'red'}
                 tabBarUnderlineStyle={styles.underlineStyle}
-                initialPage={0}
+                initialPage={1}
                 >
 
-                <View key={'1'} tabLabel={'Popular'} style={styles.tabContentSyle}>
-                    <ScrollView>
-                        <View style={styles.foodTriviaContainer}>
-                            <View style={styles.row}>
-                                <Icon name='lightbulb' size={30} color='rgba(0,0,0,1)' height={200} style={{marginLeft: 15}} />
-                                <Text style={styles.foodTriviaHeader}> Food Trivia of the Day </Text>
-                            </View>
-                            <Text style= {styles.foodTrivia}>  {this.state.food_trivia}  </Text>
+                <View key={'1'} tabLabel={'   Trivia'} style={styles.tabContentSyle}>
+                    <ScrollView><Text>hi</Text></ScrollView>
+                    {/* <View style={styles.foodTriviaContainer}>
+                        <View style={styles.row}>
+                            <Icon name='lightbulb' size={30} color='rgba(0,0,0,1)' height={200} style={{marginLeft: 15}} />
+                            <Text style={styles.foodTriviaHeader}> Food Trivia of the Day </Text>
                         </View>
-                        {this.renderArticles()}
-                    </ScrollView>
+                        
+                        <Text style= {styles.foodTrivia}>  {this.state.foodTrivia}  </Text>
+                    </View> */}
                 </View>
-                <View key={'2'} tabLabel={'Videos'} style={styles.tabContentSyle}>   
+                <View key={'2'} tabLabel={'Popular'} style={styles.tabContentSyle}>
+                    <ScrollView>{this.renderArticles()}</ScrollView>
+                </View>
+                <View key={'3'} tabLabel={'Videos'} style={styles.tabContentSyle}>   
                     <ScrollView>{this.renderVideos()}</ScrollView>
                 </View>
                 </ScrollableTabView>            
@@ -221,7 +230,6 @@ const styles = StyleSheet.create({
         fontSize: 45,
         color: 'rgba(181, 83, 102, 1)', // Medium Pink
     },
-
     logo: {
         width: 90,
         height: 90,

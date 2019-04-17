@@ -1,6 +1,16 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Platform, StatusBar} from 'react-native';
+// import { Platform } from 'expo-core';
+import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
+
 
 export const Styles = StyleSheet.create({
+
+    droidSafeArea: {
+        flex: 1,
+        backgroundColor: 'white',
+        marginTop: Platform.OS === 'android' ? StatusBar.currentHeight: 0
+    },
+
   /*------------------------------------------------------------------------
       General Styles
   ------------------------------------------------------------------------*/
