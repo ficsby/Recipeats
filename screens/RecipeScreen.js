@@ -14,78 +14,104 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 const fetch = require('node-fetch');
 
 import LoadingScreen from './LoadingScreen';
-import apiUtils from '../api/apiUtils.js';
+// import apiUtils from '../api/apiUtils.js';
 
 const { width: WIDTH } = Dimensions.get('window');
 var globalStyles = require('../styles/GlobalStyles.js');
 const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 
-const ingredientsList = [   // FOR TESTING PURPOSES
-    {
-        name: 'Rice',
-        quantity: '4 cups'
-    },
-    {
-        name: 'Peas',
-        quantity: '1 cup, canned'
-    },
-    {
-        name: 'Carrots',
-        quantity: '1 cup, diced'
-    },
-    {
-        name: 'Corn',
-        quantity: '4 cups, canned'
-    },
-    {
-        name: 'Garlic',
-        quantity: '3 Tbsp, minced'
-    },
-    {
-        name: 'Vegetable Oil',
-        quantity: '2 Tbsp'
-    },
-  ];
-
-  const instructionsList = [   // FOR TESTING PURPOSES
-    {
-        instruction: "In a saucepan, combine rice and water. Bring to a boil. Reduce heat, cover, and simmer for 20 minutes."
-    },
-    {
-        instruction: "In a small saucepan, boil carrots in water about 3 to 5 minutes. Drop peas into boiling water, and drain."
-    },
-    {
-        instruction: "Heat wok over high heat. Pour in oil, then stir in carrots and peas; cook about 30 seconds."
-    },
-    {
-        instruction: "Enjoy! (: "
-    },
-  ];
-
-export default class HomeScreen extends React.Component {
+export default class RecipeScreen extends React.Component {
     
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: true,
-
+            // isLoading: true,
+            editable: false,
             query: '',
             recipes: [],
             bookmarked: false,
             liked: false,
 
-            id: 479101,
-            title: '',
-            instructions: '',
-            servings: 0,
-            readyInMinutes: '',
+            id: 556177,
+            title: 'Ramen Noodle Coleslaw blahbalsdfadfsdfsdfasdfasdfasdf',
+            servings: '4 servings',
+            readyInMinutes: '60 mins',
+
+            calories: 155,
+            protein: 3,
+            carbs: 8,
+            fats: 16,
 
             sourceUrl: '',
             creditText: '',
             sourceName: '',
-            image: '',
+            imageURL: './../assets/images/ramen-noodle-coleslaw.jpg',
 
-            extendedIngredients: [],
+            extendedIngredients: [   // FOR TESTING PURPOSES
+                {
+                    name: 'Almonds',
+                    amount: '1/4 cups'
+                },
+                {
+                    name: 'Beef flavor ramen noodle soup mix',
+                    amount: '1 package'
+                },
+                {
+                    name: 'Shredded coleslaw mix',
+                    amount: '1 bag'
+                },
+                {
+                    name: 'Green onions',
+                    amount: '5 stalks'
+                },
+                {
+                    name: 'Olive oil',
+                    amount: '2 Tbsp'
+                },
+                {
+                    name: 'Pepper',
+                    amount: '1/2 tsp'
+                },
+                {
+                    name: 'Salt',
+                    amount: '1/2 tsp'
+                },
+                {
+                    name: 'Sugar',
+                    amount: '3 Tbsp'
+                },
+                {
+                    name: 'Sesame seeds',
+                    amount: '3 Tbsp'
+                },
+                {
+                    name: 'Vinegar',
+                    amount: '3 Tbsp'
+                },
+                
+            ],
+
+            instructions:[   // FOR TESTING PURPOSES
+                {
+                    instruction: 'Toast the sesame seeds, about 350 degrees in the oven for about 10-15 minutes. Keep an eye on them to make sure they do not burn.'
+                },
+                {
+                    instruction: 'Mix together the following to make the dressing: olive oil, vinegar, sugar, salt, pepper, green onions, chicken flavor packet from the ramen noodle package.'
+                },
+                {
+                    instruction: 'Crush the ramen noodles until there are no large chunks (small chunks are OK).'
+                },
+                {
+                    instruction: 'Combine the shredded cabbage and ramen noodles in a large bowl.'
+                },
+                {
+                    instruction: 'Pour the dressing on the cabbage/noodle mixture and toss to coat.'
+                },
+                {
+                    instruction: 'Top with the toasted sesame seeds and almonds.'
+                },
+              ],
+
             nutritionalTags: {'vegetarian': false,
                               'vegan': false,
                               'glutenFree': false,
@@ -100,6 +126,8 @@ export default class HomeScreen extends React.Component {
                               'whole30': false,
                              },
         };
+        this.toggleEditable = this.toggleEditable.bind(this);
+        this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
         this.toggleBookmark = this.toggleBookmark.bind(this);
         this.toggleHeart = this.toggleHeart.bind(this);
     };
@@ -143,12 +171,11 @@ export default class HomeScreen extends React.Component {
         }); 
         this.setState({fontLoaded: true});
 
-        const data = await apiUtils.getRecipeInfoFromId(this.state.id, this);
-        
-        if(data != null)
-        {
-            this.setState({ isLoading: false });
-        }
+        // var data = apiUtils.getRecipeInfoFromId(this.state.id, this);
+        // if(data != null)
+        // {
+        //     this.setState({ isLoading: false });
+        // }        
     };
 
     componentWillUnmount () {
@@ -168,11 +195,24 @@ export default class HomeScreen extends React.Component {
         this.props.navigation.dispatch(navActions);
     };
 
+    toggleEditable() {
+        this.setState({
+            editable: !this.state.editable
+        });
+
+        this.state.editable?  Alert.alert("Not editable now") : Alert.alert("Values should be editable now.");
+    };
+    
+    onSaveChangesPress() {
+        toggleEditable();
+        Alert.alert("Saved Changes");
+    }
+
     render() {
            
-        if (this.state.isLoading) {
-            return <LoadingScreen />;
-        }
+        // if (this.state.isLoading) {
+        //     return <LoadingScreen />;
+        // }
 
         return ( 
             <View> 
@@ -183,7 +223,7 @@ export default class HomeScreen extends React.Component {
                 <ScrollView style={styles.recipeContainer}> 
 
                     {/* <ImageBackground source={require('./../assets/images/test_photo.jpg')} /> */}
-                    <ImageBackground source={{ uri: this.state.image}} style={styles.image}>
+                    <ImageBackground source={require('./../assets/images/ramen-noodle-coleslaw.jpg')} style={styles.image}>
                         <View style={styles.overlayButtonsContainer}> 
                             <TouchableOpacity onPress={this.toggleHeart} >
                                 {this.renderIcon("heart") }
@@ -203,34 +243,54 @@ export default class HomeScreen extends React.Component {
 
                         <View style={styles.titleContainer}>
                             <View style={styles.row}>
+
                                 <Text style={styles.title}> 
                                     {this.state.title}  
                                 </Text>
+                                {
+                                    !(this.state.editable)? 
+                                    <TouchableOpacity>
+                                        <Text style={styles.editButton} onPress ={this.toggleEditable}>Edit</Text>
+                                    </TouchableOpacity> : null
+                                }
                             </View>
 
                             <View style={styles.statsContainer}>
                                 <Icon style={styles.statsIcon} name='clock' size={13} color='rgba(0,0,0, 0.5)' />
-                                <Text style={styles.stats}> {this.state.readyInMinutes} mins </Text>
+                                <TextInput style={styles.stats} 
+                                    value ={this.state.readyInMinutes}  onChangeText={(readyInMinutes) => this.setState({readyInMinutes})}
+                                    editable={this.state.editable}/>
+
                                 <Icon style={styles.statsIcon} name='adult' size={13} color='rgba(0,0,0, 0.5)' />
-                                <Text style={styles.stats}> {this.state.servings} servings </Text>
+                                <TextInput style={styles.stats} 
+                                    value ={this.state.servings}  onChangeText={(servings) => this.setState({servings})}
+                                    editable={this.state.editable}/>
                             </View>
                         </View>
 
                         <View style ={styles.macrosContainer}>
                             <View style ={styles.macrosColumn}> 
-                                <Text style ={styles.macrosData}>  1000  </Text>
+                                <TextInput style ={styles.macrosData}
+                                    value={this.state.calories+''}  onChangeText={(calories) => this.setState({calories})}
+                                    editable={this.state.editable}/>
                                 <Text style ={styles.macrosLabel}>  CALORIES </Text>
                             </View>
                             <View style ={styles.macrosColumn}> 
-                                <Text style ={styles.macrosData}>  200g </Text>
+                                <TextInput style ={styles.macrosData}
+                                    value={this.state.protein+''}  onChangeText={(protein) => this.setState({protein})}
+                                    editable={this.state.editable}/>                                
                                 <Text style ={styles.macrosLabel}>  PROTEIN </Text>
                             </View>
                             <View style ={styles.macrosColumn}>
-                                <Text style ={styles.macrosData}> 25g </Text>
+                                <TextInput style ={styles.macrosData}
+                                    value={this.state.carbs+''}  onChangeText={(carbs) => this.setState({carbs})}
+                                    editable={this.state.editable}/>   
                                 <Text style ={styles.macrosLabel}>  CARBS </Text>
                             </View>
                             <View style={styles.macrosColumn}>
-                                <Text style ={styles.macrosData}>  10g </Text>
+                                <TextInput style ={styles.macrosData}
+                                    value={this.state.fats+''}  onChangeText={(fats) => this.setState({fats})}
+                                    editable={this.state.editable}/>
                                 <Text style ={styles.macrosLabel}> FATS </Text>
                             </View>
                         </View>
@@ -238,12 +298,12 @@ export default class HomeScreen extends React.Component {
                         <View style ={styles.sectionContainer}>
                             < Text style={styles.sectionTitle}> Ingredients </Text>
                             {
-                                ingredientsList.map( (item, i) =>  
-                                ( <ListItem key={i} title={item.name} rightTitle={item.quantity} 
-                                            titleStyle={styles.ingredientText} rightTitleStyle={styles.quantityText} /> ))
-                                // this.state.extendedIngredients.map( (item, i) =>  
+                                // ingredientsList.map( (item, i) =>  
                                 // ( <ListItem key={i} title={item.name} rightTitle={item.amount} 
-                                //             titleStyle={styles.ingredientText} rightTitleStyle={styles.quantityText} /> ))
+                                //             titleStyle={styles.ingredientText} rightTitleStyle={styles.amountText} /> ))
+                                this.state.extendedIngredients.map( (item, i) =>  
+                                ( <ListItem key={i} title={item.name} rightTitle={item.amount} 
+                                            titleStyle={styles.ingredientText} rightTitleStyle={styles.amountText} /> ))
                                     
                             }
                             <TouchableOpacity  onPress={this.compareFoodLists} style={{alignItems: 'flex-end', marginRight: 15, paddingTop: 20}}>
@@ -256,17 +316,21 @@ export default class HomeScreen extends React.Component {
                         <View style ={styles.sectionContainer}>
                             < Text style={styles.sectionTitle}> Instructions </Text>
                             {
-                                instructionsList.map( (item, i) =>  
+                                this.state.instructions.map( (item, i) =>  
                                 ( <ListItem key={i} title={item.instruction} leftIcon={<Badge value={i+1} 
                                     containerStyle={styles.numberContainer} badgeStyle={styles.numberBadge} textStyle={styles.instructionNumber} /> } 
-                                            /> ))
+                                /> ))
                             }
                         </View>
-
-                        {/* Padding at the bottom as a buffer */}
-                        <View style={{paddingBottom: 130}} />
                     </View>
 
+                    <View style={styles.whitespaceBuffer} />
+                    {
+                        this.state.editable?            
+                        <TouchableOpacity style={styles.saveButton} onPress ={this.onSaveChangesPress}> 
+                            <Text style={styles.saveChanges}>Save Changes</Text>
+                        </TouchableOpacity> : null
+                    }
 
                 </ScrollView>                            
             </View>
@@ -311,7 +375,34 @@ const styles = StyleSheet.create({
     contents: {
         marginTop: 5,
         marginBottom: 15,
-        backgroundColor: 'rgba(0, 0, 0, 0.05)',
+    },
+
+        
+    editButton: {
+        paddingTop: 12,
+        paddingLeft: 15,
+        paddingRight: 20,
+        textDecorationLine: 'underline',
+        fontSize: 15
+        // color: 'black',
+    },
+    
+    saveButton: {
+        marginTop: 50,
+        marginBottom: 50,
+        marginLeft: 30,
+        marginRight: 30,
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: 'rgba(204, 102, 102, 0.9)',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    saveChanges: {
+        color: 'rgba(255,255,255,1)',
+        fontSize: 16,
+        fontweight: '600',
     },
 
 /*------------------------------------------------------------------------
@@ -408,6 +499,7 @@ const styles = StyleSheet.create({
     },
 
     title: {
+        width: '70%',
         marginTop: 10,
         marginLeft: 25,
         marginRight: 25,
@@ -525,7 +617,7 @@ const styles = StyleSheet.create({
         marginBottom: -15,
     },
 
-    quantityText: {
+    amountText: {
         width: '100%',
         fontStyle: 'italic',
         marginRight: 20,
@@ -570,7 +662,6 @@ const styles = StyleSheet.create({
     /*------------------------------------------------------------------------
         Bottom Menu Section
     ------------------------------------------------------------------------*/
-    
     menubarRow: {
         flex: 1,
         flexDirection: 'row',

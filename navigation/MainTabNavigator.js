@@ -39,7 +39,7 @@ const HomeTabNavigator = createBottomTabNavigator({
     },
 
     Recipes: {
-        screen: BookmarksScreen,
+        screen: RecipeScreen,
         navigationOptions: {
             tabBarIcon: ({}) => (
                 <Icon name='recipe-book' size={32} color='rgba(175,76,99,1)' />

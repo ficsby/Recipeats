@@ -24,7 +24,7 @@ const fetch = require('node-fetch');
 
 import Button from './components/Button';
 import NewsItem from './components/NewsItem';
-import apiUtils from '../api/apiUtils.js';
+// import apiUtils from '../api/apiUtils.js';
 const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 
 export default class HomeScreen extends React.Component {
@@ -48,14 +48,14 @@ export default class HomeScreen extends React.Component {
         }); 
         this.setState({fontLoaded: true});
 
-        const foodTrivia = await apiUtils.getRandomFoodTrivia(this);
-        const foodArticles = await apiUtils.getRandomFoodArticles(this);
-        const foodVids = await apiUtils.getRandomFoodVideos(this);
+        // const foodTrivia = await apiUtils.getRandomFoodTrivia(this);
+        // const foodArticles = await apiUtils.getRandomFoodArticles(this);
+        // const foodVids = await apiUtils.getRandomFoodVideos(this);
         
-        if((foodTrivia != null) && (foodVids != null) && (foodArticles != null))
-        {
-            this.setState({ isLoading: false });
-        }
+        // if((foodTrivia != null) && (foodVids != null) && (foodArticles != null))
+        // {
+        //     this.setState({ isLoading: false });
+        // }
     };
 
     componentWillUnmount () {
@@ -107,7 +107,7 @@ export default class HomeScreen extends React.Component {
                 tabBarInactiveTextColor={'black'}
                 tabBarActiveTextColor={'red'}
                 tabBarUnderlineStyle={styles.underlineStyle}
-                initialPage={1}
+                initialPage={0}
                 >
 
                 <View key={'1'} tabLabel={'Popular'} style={styles.tabContentSyle}>
