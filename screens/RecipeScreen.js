@@ -143,7 +143,7 @@ export default class HomeScreen extends React.Component {
         }); 
         this.setState({fontLoaded: true});
 
-        const data = await apiUtils.getRecipeInfoFromId(this.state.id, this);
+        // const data = await apiUtils.getRecipeInfoFromId(this.state.id, this);
         
         if(data != null)
         {

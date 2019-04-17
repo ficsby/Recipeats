@@ -56,15 +56,15 @@ export default class HomeScreen extends React.Component {
         }); 
         this.setState({fontLoaded: true});
 
-        apiUtils.getRandomFoodTrivia(this);
+        // apiUtils.getRandomFoodTrivia(this);
 
-        const foodArticles = await apiUtils.getRandomFoodArticles(this);
-        const foodVids = await apiUtils.getRandomFoodVideos(this);
+        // const foodArticles = await apiUtils.getRandomFoodArticles(this);
+        // const foodVids = await apiUtils.getRandomFoodVideos(this);
         
-        if(foodVids != null && foodArticles != null)
-        {
-            this.setState({ isLoading: false });
-        }
+        // if(foodVids != null && foodArticles != null)
+        // {
+        //     this.setState({ isLoading: false });
+        // }
     };
 
     componentWillUnmount () {

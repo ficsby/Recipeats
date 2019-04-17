@@ -97,10 +97,10 @@ export default class SearchScreen extends React.Component {
     /* <Francis Buendia> March 15, 2019
         API Request call to 'Autocomplete recipe search' recipes by name 
     */
-    async getAutoCompleteRecipesByName(text){
-        this.setState({query: text});
-        await ApiUtils.getAutoCompleteRecipesByName(text, this);
-    }
+    // async getAutoCompleteRecipesByName(text){
+    //     this.setState({query: text});
+    //     await ApiUtils.getAutoCompleteRecipesByName(text, this);
+    // }
 
     findRecipe = (query) => {
         if( query === '') { return []; }

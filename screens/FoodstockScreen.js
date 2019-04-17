@@ -236,27 +236,27 @@ export default class FoodstockScreen extends React.Component {
                     ))} */}
 
               {
-                <View style={Styles.container}>
-                  <Table borderStyle={{ borderColor: "transparent" }}>
-                    <Row
-                      data={state.tableHead}
-                      style={Styles.head}
-                      textStyle={Styles.text}
-                    />
-                    { state.externalFoodList &&
-                      state.externalFoodList.map(rowData => {
-                        return (
-                          <FoodItem
-                            key={rowData.name}
-                            name={rowData.name}
-                            parent={this}
-                            quantity={rowData.quantity}
-                          />
-                        )
-                      })
-                    }
-                  </Table>
-                </View>
+                // <View style={Styles.container}>
+                //   <Table borderStyle={{ borderColor: "transparent" }}>
+                //     <Row
+                //       data={state.tableHead}
+                //       style={Styles.head}
+                //       textStyle={Styles.text}
+                //     />
+                //     { state.externalFoodList &&
+                //       state.externalFoodList.map(rowData => {
+                //         return (
+                //           <FoodItem
+                //             key={rowData.name}
+                //             name={rowData.name}
+                //             parent={this}
+                //             quantity={rowData.quantity}
+                //           />
+                //         )
+                //       })
+                //     }
+                //   </Table>
+                // </View>
               }
               
               <ListItem

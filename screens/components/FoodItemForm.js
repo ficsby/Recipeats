@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import Autocomplete from "react-native-autocomplete-input";
+import AutocompleteData from './../../data/AutocompleteData';
 
 import { Styles } from "./../../styles/GlobalStyles";
 import { modifyFoodStock, logPurchaseDate } from "../../utils/FoodListUtils";
@@ -25,7 +26,7 @@ export default class FoodItemForm extends React.Component {
     this.state = {
       datePurchased: this.props.datePurchased,
       id: this.props.id,
-      ingredients: [],
+      ingredients: AutocompleteData.ingredientSuggestions,
       metric: this.props.metric,
       name: this.props.name,
       nutritionalTags: {},
@@ -38,6 +39,24 @@ export default class FoodItemForm extends React.Component {
 
   async componentDidMount() {
     this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
+    console.log(this.state.ingredients);
+    // Returns a promise of the user's value
+    // retrieveData = () => {
+    //   var ref = firebase.database().ref('ingredients/ingredients');
+    //   return ref.once('value');
+    // }
+
+    // // // Snapshot is the depiction of the user's current data
+    // retrieveData().then( (snapshot) => {
+    //   if(this._ismounted)
+    //   {
+    //     console.log("Ingredients: \n");
+    //     console.log(snapshot.val());
+    //       // this.setState( {
+    //       //   ingredients: snapshot.val()
+    //       // })
+    //   }
+    // })
   }
 
   componentWillUnmount() {
@@ -48,15 +67,20 @@ export default class FoodItemForm extends React.Component {
    * Calls the Spoonacular API to autocomplete search for an ingredient
    * @param {string} text
    */
-  async getAutoCompleteIngredientsByName(text) {
-    this.setState({ query: text });
-    await ApiUtils.getAutoCompleteIngredientsByName(text, this);
+  // async getAutoCompleteIngredientsByName(text) {
+  //   this.setState({ query: text });
+  //   await ApiUtils.getAutoCompleteIngredientsByName(text, this);
+  // }
+
+  getRecipeInfo(){
+    
+    ApiUtils.getIngredientInfoFromId(this.state.id, this);
   }
 
   render() {
     if (this.state.id != null) {
       //console.log(this.state.id);
-      ApiUtils.getIngredientInfoFromId(this.state.id, this);
+      // ApiUtils.getIngredientInfoFromId(this.state.id, this);
 
     }
 
@@ -64,7 +88,8 @@ export default class FoodItemForm extends React.Component {
       <View style={Styles.sectionContainer}>
         <View style={Styles.dataRow}>
           <Text style={Styles.inputLabel}>Ingredient Name</Text>
-          <Autocomplete
+
+          {/* <Autocomplete
             containerStyle={styles.searchContainer}
             inputContainerStyle={styles.searchInputContainer}
             data={
@@ -73,6 +98,7 @@ export default class FoodItemForm extends React.Component {
                 ? []
                 : this.state.ingredients
             }
+
             defaultValue={this.state.query}
             autoCorrect={false}
             placeholder="    Search ingredients..."
@@ -88,7 +114,7 @@ export default class FoodItemForm extends React.Component {
                 <Text style={styles.itemText}>{name}</Text>
               </TouchableOpacity>
             )}
-          />
+          /> */}
         </View>
 
         {/* <View style={Styles.dataRow}>
