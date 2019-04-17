@@ -86,22 +86,7 @@ export default class FoodstockScreen extends React.Component {
       itemName: "",
       itemQuantity: null
     };
-    this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
-    this.toggleEditable = this.toggleEditable.bind(this);
-    this.onDeletePress = this.onDeletePress.bind(this);
     this.toggleAddModalVisible = this.toggleAddModalVisible.bind(this);
-  }
-
-  //  Toggles whether the information is editable by the user.
-  //  User is only able to edit after clicking on the edit button
-  toggleEditable() {
-    this.setState({
-      editable: !this.state.editable
-    });
-
-    this.state.editable
-      ? Alert.alert("Not editable now")
-      : Alert.alert("Values should be editable now.");
   }
 
   componentDidMount() {
@@ -121,55 +106,20 @@ export default class FoodstockScreen extends React.Component {
 
         for (var key in foodListSnapshot) {
           if (foodListSnapshot.hasOwnProperty(key)) {
-            foodList.push({ name: key, quantity: foodListSnapshot[key] });
+            foodList.push(foodListSnapshot[key]);
           }
         }
         this.setState({
           externalFoodList: foodList
         });
+
+        console.log(foodList);
       }
     });
   }
 
   componentWillUnmount() {
     this._ismounted = false; // After components is unmounted reset boolean
-  }
-
-  onSaveChangesPress = () => {
-    //var user = firebase.auth().currentUser;
-    //this.writeUserData(user.uid);
-    modifyFoodStock(
-      firebase.auth().currentUser.uid,
-      this.state.itemId,
-      this.state.itemName,
-      this.state.itemQuantity,
-      this.state.itemUnit
-    );
-
-    // create a newFoodList with the new item to replace the externalFoodList
-    newFoodList = []
-    newFoodList = this.state.externalFoodList;
-    newFoodList.push({ name: this.state.itemName, quantity: this.state.itemQuantity });
-    console.log(newFoodList);
-    this.setState({ 
-      addModalVisible: !this.state.addModalVisible,
-      externalFoodList: newFoodList
-    });
-
-  };
-
-  onDeletePress = () => {
-    removeFromFoodStock(firebase.auth().currentUser.uid, "Carrots");
-  };
-
-  /**
-   * Handler method for adding a new food item
-   */
-  onAddItemPress() {
-    //prompt user for a food item and quantity
-    console.log("Add item button was pressed.");
-    //push user entered data to firebase
-    //addToFoodStock(firebase.auth().currentUser.uid, newItemName, newItemQuantity);
   }
 
   /**
@@ -209,15 +159,12 @@ export default class FoodstockScreen extends React.Component {
               <FoodItemForm
                 datePurchased={new Date()}
                 id={null}
-                metric=""
                 name=""
                 parent={this}
                 price={null}
                 quantity={null}
+                unit=""
               />
-              <TouchableHighlight onPress={this.onSaveChangesPress}>
-                <Text>Save new food item</Text>
-              </TouchableHighlight>
             </Modal>
 
             <View style={Styles.sectionContainer}>
@@ -258,7 +205,7 @@ export default class FoodstockScreen extends React.Component {
                 //   </Table>
                 // </View>
               }
-              
+
               <ListItem
                 Component={TouchableScale}
                 friction={90}

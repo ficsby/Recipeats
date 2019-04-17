@@ -33,10 +33,12 @@ export default class FoodItem extends React.Component {
 
     this.state = {
       itemModalVisible: false,
+      id: this.props.id,
       name: this.props.name,
       parent: this.props.parent,
-      quantity: this.props.quantity
-      //purchaseDate: props.purchaseDate,
+      //datePurchased: this.props.datePurchased,
+      quantity: this.props.quantity,
+      unit: this.props.unit
     };
 
     this.toggleItemModalVisible = this.toggleItemModalVisible.bind(this);
@@ -74,7 +76,7 @@ export default class FoodItem extends React.Component {
           onPress: () => {
             removeFromFoodStock(
               firebase.auth().currentUser.uid,
-              this.state.name
+              this.state.id
             );
 
             //update the parent's foodlist to keep it synced with firebase
@@ -104,10 +106,12 @@ export default class FoodItem extends React.Component {
         >
           <FoodItemForm
             datePurchased={new Date()}
-            metric=""
+            id={this.state.id}
             name={this.state.name}
+            parent={this}
             price={null}
             quantity={this.state.quantity}
+            unit=""
           />
           <TouchableHighlight onPress={this.toggleItemModalVisible}>
             <Text>Hide Modal</Text>
