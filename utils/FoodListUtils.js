@@ -35,14 +35,15 @@ export const getFoodList = (foodListID) => {
  * @param {*} userId - User's user ID
  * @param {*} foodItemID - ID of the food item being added to the food stock
  * @param {*} quantity - The quantity of food item being added to food stock
+ * @param {*} unit - The unit of measurement for the food item
  */
-export const modifyFoodStock = (userId, foodItemID, foodItemName, quantity, metric) => {
+export const modifyFoodStock = (userId, foodItemID, foodItemName, quantity, unit) => {
     //console.log(foodItemID + ": " + quantity);
-    firebase.database().ref('foodlist/' + userId).update({
-        [foodItemID]: quantity,
-        // name: foodItemName,
-        // amount: quantity,
-        // unit: metric
+    firebase.database().ref('foodlist/' + userId + '/' + foodItemID).update({
+        id: foodItemID,
+        name: foodItemName,
+        amount: quantity,
+        unit: unit
     });
 }
 

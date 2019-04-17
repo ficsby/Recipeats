@@ -6,6 +6,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  TouchableHighlight,
   View
 } from "react-native";
 import DatePicker from "react-native-datepicker";
@@ -26,14 +27,16 @@ export default class FoodItemForm extends React.Component {
       datePurchased: this.props.datePurchased,
       id: this.props.id,
       ingredients: [],
-      metric: this.props.metric,
       name: this.props.name,
       nutritionalTags: {},
       parent: this.props.parent,
-      price: this.props.price,
+      // price: this.props.price,
       quantity: this.props.quantity,
-      query: ""
+      query: "",
+      unit: this.props.unit
     };
+
+    this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
   }
 
   async componentDidMount() {
@@ -44,25 +47,51 @@ export default class FoodItemForm extends React.Component {
     this._ismounted = false; // after component is unmounted reste boolean
   }
 
+  onSaveChangesPress = () => {
+    const parent = this.state.parent;
+
+    console.log(this.state.id + " " + this.state.name + " " + this.state.quantity + " " + this.state.unit);
+    modifyFoodStock(
+      firebase.auth().currentUser.uid,
+      this.state.id,
+      this.state.name,
+      this.state.quantity,
+      this.state.unit
+    );
+
+    // create a newFoodList with the new item to replace the externalFoodList
+    newFoodList = []
+    newFoodList = parent.state.externalFoodList;
+    newFoodList.push({ 
+      id: this.state.id,
+      name: this.state.name, 
+      quantity: this.state.quantity 
+    });
+    newFoodList.sort((a, b) =>
+      a.itemName > b.itemName ? 1 : 
+      b.itemName > a.itemName ? -1 : 
+      0
+    );
+
+    parent.setState({ 
+      addModalVisible: !parent.state.addModalVisible,
+      externalFoodList: newFoodList
+    });
+  };
+
   /**
    * Calls the Spoonacular API to autocomplete search for an ingredient
    * @param {string} text
    */
   async getAutoCompleteIngredientsByName(text) {
     this.setState({ query: text });
-    await ApiUtils.getAutoCompleteIngredientsByName(text, this);
+    //await ApiUtils.getAutoCompleteIngredientsByName(text, this);
   }
 
   render() {
-    if (this.state.id != null) {
-      //console.log(this.state.id);
-      ApiUtils.getIngredientInfoFromId(this.state.id, this);
-
-    }
-
     return (
       <View style={Styles.sectionContainer}>
-        <View style={Styles.dataRow}>
+        {/* <View style={styles.searchBar}>
           <Text style={Styles.inputLabel}>Ingredient Name</Text>
           <Autocomplete
             containerStyle={styles.searchContainer}
@@ -89,25 +118,34 @@ export default class FoodItemForm extends React.Component {
               </TouchableOpacity>
             )}
           />
+        </View> */}
+
+        <View style={Styles.dataRow}>
+          <Text style={Styles.inputLabel}>Ingredient ID</Text>
+          <TextInput
+            style={Styles.inputData}
+            value={this.state.id}
+            onChangeText={itemId => this.setState({ id: itemId })}
+          />
         </View>
 
-        {/* <View style={Styles.dataRow}>
+        <View style={Styles.dataRow}>
           <Text style={Styles.inputLabel}>Ingredient Name</Text>
           <TextInput
             style={Styles.inputData}
             value={this.state.name}
             onChangeText={itemName => this.setState({ name: itemName })}
           />
-        </View> */}
+        </View>
 
-        <View style={Styles.dataRow}>
+        {/* <View style={Styles.dataRow}>
           <Text style={Styles.inputLabel}>Price</Text>
           <TextInput
             style={Styles.inputData}
             value={this.state.price}
             onChangeText={itemPrice => this.setState({ price: itemPrice })}
           />
-        </View>
+        </View> */}
 
         <View style={Styles.dataRow}>
           <Text style={Styles.inputLabel}>Quantity</Text>
@@ -116,7 +154,7 @@ export default class FoodItemForm extends React.Component {
             value={this.state.quantity}
             onChangeText={itemQuantity => {
               this.setState({ quantity: itemQuantity });
-              this.state.parent.setState({itemQuantity: itemQuantity});
+              this.state.parent.setState({ itemQuantity: itemQuantity });
             }}
           />
         </View>
@@ -159,7 +197,7 @@ export default class FoodItemForm extends React.Component {
             selectedValue={this.state.metric}
             onValueChange={(itemValue, itemIndex) => {
               this.setState({ metric: itemValue });
-              this.state.parent.setState({itemUnit: itemValue});
+              this.state.parent.setState({ itemUnit: itemValue });
             }}
             mode={"dropdown"}
           >
@@ -168,13 +206,13 @@ export default class FoodItemForm extends React.Component {
               label="milliliters"
               value="milliliter"
             />
-            <Picker.Item 
-              style={styles.picker} 
-              label="grams" 
-              value="gram" 
-            />
+            <Picker.Item style={styles.picker} label="grams" value="gram" />
           </Picker>
         </View>
+
+        <TouchableHighlight onPress={this.onSaveChangesPress}>
+          <Text>Save new food item</Text>
+        </TouchableHighlight>
       </View>
     );
   }
@@ -188,6 +226,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     width: "100%"
+  },
+
+  /*------------------------------------------------------------------------
+        Search Bar
+    ------------------------------------------------------------------------*/
+  searchBar: {
+    flex: 1,
+    paddingBottom: 20,
   },
 
   /*------------------------------------------------------------------------
