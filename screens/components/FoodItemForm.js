@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import Autocomplete from "react-native-autocomplete-input";
-import AutocompleteData from './../../data/AutocompleteData';
+import AutocompleteData from "./../../data/AutocompleteData";
 
 import { Styles } from "./../../styles/GlobalStyles";
 import { modifyFoodStock, logPurchaseDate } from "../../utils/FoodListUtils";
@@ -83,7 +83,15 @@ export default class FoodItemForm extends React.Component {
   onSaveChangesPress = () => {
     const parent = this.state.parent;
 
-    console.log(this.state.id + " " + this.state.name + " " + this.state.quantity + " " + this.state.unit);
+    console.log(
+      this.state.id +
+        " " +
+        this.state.name +
+        " " +
+        this.state.quantity +
+        " " +
+        this.state.unit
+    );
     modifyFoodStock(
       firebase.auth().currentUser.uid,
       this.state.id,
@@ -93,7 +101,7 @@ export default class FoodItemForm extends React.Component {
     );
 
     // create a newFoodList with the new item to replace the externalFoodList
-    newFoodList = []
+    newFoodList = [];
     newFoodList = parent.state.externalFoodList;
     newFoodList.push({
       id: this.state.id,
@@ -101,9 +109,7 @@ export default class FoodItemForm extends React.Component {
       quantity: this.state.quantity
     });
     newFoodList.sort((a, b) =>
-      a.itemName > b.itemName ? 1 :
-        b.itemName > a.itemName ? -1 :
-          0
+      a.itemName > b.itemName ? 1 : b.itemName > a.itemName ? -1 : 0
     );
 
     parent.setState({
@@ -268,8 +274,8 @@ const styles = StyleSheet.create({
         Search Bar
     ------------------------------------------------------------------------*/
   searchBar: {
-    // flex: 1,
-    paddingBottom: 20,
+    flex: 1,
+    paddingBottom: 20
   },
 
   dataRow:{

@@ -56,9 +56,9 @@ export default class HomeScreen extends React.Component {
         }); 
         this.setState({fontLoaded: true});
 
-        const foodTrivia = await apiUtils.getRandomFoodTrivia(this);
-        const foodArticles = await apiUtils.getRandomFoodArticles(this);
-        const foodVids = await apiUtils.getRandomFoodVideos(this);
+        // const foodTrivia = await apiUtils.getRandomFoodTrivia(this);
+        // const foodArticles = await apiUtils.getRandomFoodArticles(this);
+        // const foodVids = await apiUtils.getRandomFoodVideos(this);
         
         if((foodTrivia != null) && (foodVids != null) && (foodArticles != null))
         {
