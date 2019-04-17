@@ -18,7 +18,7 @@ var globalStyles = require('./../styles/GlobalStyles.js');
 export default class SearchHeaderNav extends React.Component {
     
     state = {
-        visible: false,
+        visible: NavigationService.getModalVisibility(),
         modalVisible: false,
         query: '',
         recipes: [],
@@ -45,7 +45,8 @@ export default class SearchHeaderNav extends React.Component {
     };
 
     onModalOpen = () => {
-        this.setState({modalVisible: true, searchBarSensitivity:false});
+        NavigationService.setModalVisibility(true);
+        NavigationService.navigate('SearchScreen');
     }
 
     onModalClose = () => {
@@ -86,14 +87,14 @@ export default class SearchHeaderNav extends React.Component {
                     onFocus = {this.onModalOpen}    
                 />
                 
-                <Modal
+                {/* <Modal
                     animationType ="fade"
                     transparent = {false}
                     visible = {this.state.modalVisible}
                     onRequestClose= {this.onModalClose}>
                 
                     <SearchScreen/>
-                </Modal>
+                </Modal> */}
 
             </SafeAreaView>
         )

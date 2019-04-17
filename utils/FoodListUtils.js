@@ -1,3 +1,4 @@
+import { firebaseApp } from "./../App";
 import FoodList from "../data/FoodList";
 import * as firebase from "firebase";
 import { value } from "react-native-extended-stylesheet";
@@ -24,11 +25,40 @@ export const findMissingFoodItems = (secondList) => {
  * @param {*} foodListID 
  */
 export const getFoodList = (foodListID) => {
-    var newList = new FoodList();
-    newList.list = firebase.database().ref().child("foodlist").child(foodListID);
-    newList.owner = foodListID;
-    return newList;
+    ref = firebase.database().ref('foodlist/' + foodListID);
+    //return ref.once("value", (snapshot) => console.log(snapshot.val()) );
+    return ref;
 };
+
+/**
+ * Function to add a new food item to a user's food inventory in the database
+ * @param {*} userId - User's user ID
+ * @param {*} foodItemID - ID of the food item being added to the food stock
+ * @param {*} quantity - The quantity of food item being added to food stock
+ */
+export const modifyFoodStock = (userId, foodItemID, quantity) => {
+    //console.log(foodItemID + ": " + quantity);
+    firebase.database().ref('foodlist/' + userId).update({
+        [foodItemID]: quantity
+    });
+}
+
+export const removeFromFoodStock = (userId, foodItemID) => {
+    firebase.database().ref('foodlist/' + userId + '/' + foodItemID).remove();
+}
+
+
+/**
+ * Function to log the date a food item was purchased to the database
+ * @param {*} userId 
+ * @param {*} foodItemID 
+ * @param {*} date 
+ */
+export const logPurchaseDate = (userId, foodItemID, date) => {
+    firebase.database().ref('purchaseDates/' + userId).set({
+        [foodItemID]: date
+    });
+}
 
 /**
  * 

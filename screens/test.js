@@ -1,29 +1,23 @@
-var unirest = require('unirest');
-const fetch = require("node-fetch");
-//var fetch = require('fetch');
-// unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/autocomplete?number=10&query=chicken")
-//         .header("X-RapidAPI-Key", "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2")
-//         .end(function (result) {
-//         console.log(result.body[0].title);
-// });
+var firebase = require('firebase');
+var app = firebase.initializeApp({
+                                  apiKey: "AIzaSyDCW_405Lp7aIGkbu20VB_MXyyxSIYunsA",
+                                  authDomain: "recipeats-70bcc.firebaseapp.com",
+                                  databaseURL: "https://recipeats-70bcc.firebaseio.com",
+                                  projectId: "recipeats-70bcc",
+                                  storageBucket: "recipeats-70bcc.appspot.com",
+                                  messagingSenderId: "814134605353"
+                                });
+var csv = require('csv-parser'); 
+const fs = require('file-system');
 
-// fetch("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/autocomplete?number=10&query=chicken", {
-//     method: "GET",
-//     headers: {
-//         "Content-Type": "application/json",
-//         "X-RapidAPI-Key" : "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2"
-//     },
-// }).then(function(response) {
-//     response.json().then(function(json){
-//         console.log(json);
-//     });
-// });
+var MyData = [];
 
-unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/products/search?offset=0&number=10&maxCalories=5000&minProtein=0&maxProtein=100&minFat=0&maxFat=100&minCarbs=0&maxCarbs=100&minCalories=0&query=snickers")
-.header("X-RapidAPI-Key", "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2")
-.end(function (result) {
-  console.log(result.status, result.headers, result.body);
-});
-
-//console.log(test);
-
+fs.createReadStream('C:\\Users\\franc\\OneDrive\\Desktop\\Recipeats\\data\\ingredients.csv')
+  .pipe(csv({ separator: ';' }))
+  .on('data', (data) => MyData.push(data))
+  .on('end', () => {
+    var user = firebase.auth().currentUser;
+    firebase.database().ref('ingredients/').set({
+        ingredients : MyData
+    });
+  });
