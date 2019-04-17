@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import Autocomplete from "react-native-autocomplete-input";
-import AutocompleteData from './../../data/AutocompleteData';
+import AutocompleteData from "./../../data/AutocompleteData";
 
 import { Styles } from "./../../styles/GlobalStyles";
 import { modifyFoodStock, logPurchaseDate } from "../../utils/FoodListUtils";
@@ -70,7 +70,15 @@ export default class FoodItemForm extends React.Component {
   onSaveChangesPress = () => {
     const parent = this.state.parent;
 
-    console.log(this.state.id + " " + this.state.name + " " + this.state.quantity + " " + this.state.unit);
+    console.log(
+      this.state.id +
+        " " +
+        this.state.name +
+        " " +
+        this.state.quantity +
+        " " +
+        this.state.unit
+    );
     modifyFoodStock(
       firebase.auth().currentUser.uid,
       this.state.id,
@@ -80,20 +88,18 @@ export default class FoodItemForm extends React.Component {
     );
 
     // create a newFoodList with the new item to replace the externalFoodList
-    newFoodList = []
+    newFoodList = [];
     newFoodList = parent.state.externalFoodList;
-    newFoodList.push({ 
+    newFoodList.push({
       id: this.state.id,
-      name: this.state.name, 
-      quantity: this.state.quantity 
+      name: this.state.name,
+      quantity: this.state.quantity
     });
     newFoodList.sort((a, b) =>
-      a.itemName > b.itemName ? 1 : 
-      b.itemName > a.itemName ? -1 : 
-      0
+      a.itemName > b.itemName ? 1 : b.itemName > a.itemName ? -1 : 0
     );
 
-    parent.setState({ 
+    parent.setState({
       addModalVisible: !parent.state.addModalVisible,
       externalFoodList: newFoodList
     });
@@ -108,18 +114,11 @@ export default class FoodItemForm extends React.Component {
   //   await ApiUtils.getAutoCompleteIngredientsByName(text, this);
   // }
 
-  getRecipeInfo(){
-    
+  getRecipeInfo() {
     ApiUtils.getIngredientInfoFromId(this.state.id, this);
   }
 
   render() {
-    if (this.state.id != null) {
-      //console.log(this.state.id);
-      // ApiUtils.getIngredientInfoFromId(this.state.id, this);
-
-    }
-
     return (
       <View style={Styles.sectionContainer}>
         {/* <View style={styles.searchBar}>
@@ -257,7 +256,7 @@ const styles = StyleSheet.create({
     ------------------------------------------------------------------------*/
   searchBar: {
     flex: 1,
-    paddingBottom: 20,
+    paddingBottom: 20
   },
 
   /*------------------------------------------------------------------------

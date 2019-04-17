@@ -169,42 +169,26 @@ export default class FoodstockScreen extends React.Component {
 
             <View style={Styles.sectionContainer}>
               <Text style={Styles.sectionTitle}> Inventory </Text>
-
-              {/* {//Fetch and display data from firebase
-                  this.state.externalFoodList &&
-                    this.state.externalFoodList.map((item, i) => (
-                      <ListItem
-                        key={i}
-                        title={item.name}
-                        rightTitle={item.quantity}
-                        titleStyle={Styles.inventoryText}
-                        rightTitleStyle={Styles.quantityText}
-                      />
-                    ))} */}
-
-              {
-                // <View style={Styles.container}>
-                //   <Table borderStyle={{ borderColor: "transparent" }}>
-                //     <Row
-                //       data={state.tableHead}
-                //       style={Styles.head}
-                //       textStyle={Styles.text}
-                //     />
-                //     { state.externalFoodList &&
-                //       state.externalFoodList.map(rowData => {
-                //         return (
-                //           <FoodItem
-                //             key={rowData.name}
-                //             name={rowData.name}
-                //             parent={this}
-                //             quantity={rowData.quantity}
-                //           />
-                //         )
-                //       })
-                //     }
-                //   </Table>
-                // </View>
-              }
+              <View style={Styles.container}>
+                <Table borderStyle={{ borderColor: "transparent" }}>
+                  <Row
+                    data={state.tableHead}
+                    style={Styles.head}
+                    textStyle={Styles.text}
+                  />
+                  {state.externalFoodList &&
+                    state.externalFoodList.map(rowData => {
+                      return (
+                        <FoodItem
+                          key={rowData.name}
+                          name={rowData.name}
+                          parent={this}
+                          quantity={rowData.quantity}
+                        />
+                      );
+                    })}
+                </Table>
+              </View>
 
               <ListItem
                 Component={TouchableScale}
