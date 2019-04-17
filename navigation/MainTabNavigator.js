@@ -21,6 +21,8 @@ import BookmarksScreen from './../screens/BookmarksScreen';
 import FoodstockScreen from './../screens/FoodstockScreen';
 import MacrosScreen from './../screens/MacrosScreen';
 import SearchScreen from './../screens/SearchScreen';
+import SearchResults from './../screens/SearchResultScreen';
+import SearchHeaderNav from './SearchHeaderNav';
 import NavigationService from './NavigationService';
 import Sidebar from './SideBar';
 
@@ -109,6 +111,7 @@ const HomeTab = createStackNavigator({
             header: null
         }
     },
+
     EditAccount: {
         screen: EditAccountScreen,
         navigationOptions: {
@@ -116,7 +119,22 @@ const HomeTab = createStackNavigator({
         }
     },
 
+    SearchScreen: {
+        screen: SearchScreen,
+        navigationOptions:{
+            header:null,
+        }
+    }, 
+
+    SearchResults: {
+        screen: SearchResults,
+        navigationOptions:{
+            header:null,
+        }
+    }
+
 },{
+    header: null,
     defaultNavigationOptions:({navigation}) => {
         NavigationService.setTopLevelNavigator(navigation);
     },

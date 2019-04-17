@@ -5,6 +5,8 @@ import * as firebase from 'firebase';
 
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 
+import KeyboardShift from './../../styles/KeyboardShift.js';
+
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from './../../config/icon-font.json';
@@ -27,8 +29,6 @@ export default class EditAccountScreen extends React.Component {
         this.setState({
             editable: !this.state.editable
         });
-
-        this.state.editable?  Alert.alert("Not editable now") : Alert.alert("Values should be editable now.");
     }
 
     onSaveChangesPress = () => {

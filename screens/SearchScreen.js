@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput, Button, Image,  Dimensions, TouchableOpacity, Alert, SafeAreaView, Picker } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, TextInput, Button, Image,  Dimensions, TouchableOpacity, Alert, SafeAreaView, Picker, BackHandler  } from 'react-native';
+import Modal from 'react-native-modal';
 import Autocomplete from 'react-native-autocomplete-input';
 import { CheckBox } from 'react-native-elements'
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
@@ -9,11 +10,14 @@ import ApiUtils from './../api/apiUtils';
 var globalStyles = require('./../styles/GlobalStyles.js');
 
 import * as firebase from 'firebase';
+import NavigationService from '../navigation/NavigationService.js';
 
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from './../config/icon-font.json';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
+const deviceWidth = Dimensions.get("window").width;
+const deviceHeight = Dimensions.get('window').height;
 const { width: WIDTH } = Dimensions.get('window');
 
 export default class SearchScreen extends React.Component {
@@ -21,24 +25,72 @@ export default class SearchScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            checkBoxModalVisible: false,
             visible: false,
             query: '',
-            recipes: [],
+            recipes: [
+                {
+                    "title":"pei wei asian diner thai chicken lettuce wraps",
+                    "id":253419
+                },
+                {
+                    "title":"camille's chicken caesar salad includes 2 oz. caesar dressing",
+                    "id":380722
+                },
+                {
+                    "title":"fried rice, chicken",
+                    "id":392199
+                },
+                {
+                    "title":"ryan's grill buffet bakery chicken strips",
+                    "id":371488
+                },
+                {
+                    "title":"cheeburger cheeburger fried chicken finger sandwich (1 sandwich) with peanut butter",
+                    "id":325711
+                },
+                {
+                    "title":"california pizza kitchen the original bbq chicken chopped, half with avocado",
+                    "id":322150
+                },
+                {
+                    "title":"de dutch pannekoek house plain jane burger, chicken",
+                    "id":370301
+                },
+                {
+                    "title":"bbq chicken pizza",
+                    "id":338375
+                },
+                {
+                    "title":"max & erma's chicken breast patty",
+                    "id":386395
+                },
+                {
+                    "title":"smothered chicken dinner (1 serving)",
+                    "id":329010
+                }],
+                
             recipeTitle: '',
             recipeId: '',
             selectedCuisine: '',
             selectedDiet: '',
-            dairy: false,
-            egg : false,
-            gluten : false,
-            peanut : false,
-            sesame : false,
-            seafood : false,
-            shellfish : false,
-            soy : false,
-            sulfite : false,
-            treenut : false,
-            wheat : false
+            // intolerances 
+            intolerances: {
+                'dairy': false,
+                'egg' : false,
+                'gluten' : false,
+                'peanut' : false,
+                'sesame' : false,
+                'seafood' : false,
+                'shellfish' : false,
+                'soy' : false,
+                'sulfite' : false,
+                'treenut' : false,
+                'wheat' : false
+            },
+
+            searchQuery: {}
+
         };
     }
 
@@ -60,7 +112,7 @@ export default class SearchScreen extends React.Component {
     async componentDidMount() {
         this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
         await Font.loadAsync({
-        'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
+        'dancing-script': require('./../assets/fonts/DancingScript-Regular.otf'),
         }); 
         this.setState({fontLoaded: true});
     }
@@ -69,31 +121,63 @@ export default class SearchScreen extends React.Component {
         this._ismounted = false; // after component is unmounted reste boolean
     }
 
-    toggleDairy () {
-        this.setState({dairy: !this.state.dairy})
+    toggleIntolerance(type){
+        temp = this.state.intolerances;
+
+        for(key in temp){
+            if(key == type){
+                temp[key] = !temp[key];
+                break;
+            }
+        }
+
+        this.setState({intolerances: temp});
+    }
+
+    toggleVisibility(){
+        NavigationService.setModalVisibility(false);
+    }
+
+    createSearchQueryInfo() {
+        const query = this.state.query;
+        const cuisine = this.state.selectedCuisine;
+        const diet = this.state.selectedDiet;
+        let foodIntolerances = '';
+        for(intolerance in this.state.intolerances)
+        {
+            if(this.state.intolerances[intolerance]) {
+                foodIntolerances += intolerance + '%2C+';
+            }
+        }
+        
+        foodIntolerances = foodIntolerances.substring(0, foodIntolerances.length-2);
+        NavigationService.navigate('SearchResults', {name: query, cuisine: cuisine, diet: diet, foodIntolerances: foodIntolerances});
+    }
+    goBack(){
+        NavigationService.setSearchSensitivity(true);
+        NavigationService.goBack();
     }
     render() {
 
         const { query } = this.state;
         const recipes = this.findRecipe(query);
         const comp = (a,b) => a.toLowerCase().trim() == b.toLowerCase().trim();
-
+        
         return (
-            <View styles={globalStyles.droidSafeArea}>
+            <ScrollView styles={styles.searchScreenContainer}>
                 <View style={styles.topContainer}>
 
                         <View style={styles.row}>
 
                             {/* Side bar navigation icon */}
-                            <TouchableOpacity onPress = { () => NavigationService.openDrawer()}>
-                                <Icon name='menu' size={25} color='rgba(175,76,99,1)' backgroundColor='red' height={200}
-
+                            <TouchableOpacity onPress = { () => NavigationService.goBack()}>
+                                <Icon name='back' size={25} color='rgba(175,76,99,1)' backgroundColor='red' height={200}
                                     style={{marginLeft: 18}} />
                             </TouchableOpacity>
 
                             {/* User account icon  */}
-                            <TouchableOpacity onPress ={this.onAccountIconPress} >
-                                <Icon name='filter' size={25} color='rgba(175,76,99,1)'
+                            <TouchableOpacity onPress ={() => this.createSearchQueryInfo()} >
+                                <Icon name='right' size={25} color='rgba(175,76,99,1)'
                                     style={{marginLeft: (WIDTH - 85)}} />
                             </TouchableOpacity>
 
@@ -109,7 +193,7 @@ export default class SearchScreen extends React.Component {
                         defaultValue = { query }
                         autoCorrect={false}
                         placeholder= "    Search recipes, ingredients..."
-                        onChangeText={text => this.getAutoCompleteRecipesByName(text)}
+                        onChangeText={text => this.setState({query:text})}
                         onFocus = {this.onModalVisibleChange}
                         renderItem={({ id, title }) => (
                             <TouchableOpacity style={styles.itemTextContainer} onPress={() => this.setState({ query: title })}>
@@ -120,12 +204,7 @@ export default class SearchScreen extends React.Component {
                         )}                       
                     />
 
-                    {/* const cuisines = [
-                        'african', 'chinese', 'japanese', 'korean', 'vietnamese', 'thai', 'indian',
-                        'british', 'irish', 'french', 'italian', 'mexican', 'spanish', 'middle eastern', 'jewish', 'american', 'cajun',
-                        'southern', 'greek', 'german', 'nordic', 'eastern european', 'caribbean', 'latin american'
-                    ] */}
-                    <Text>Cuisine</Text>
+                    <Text style={styles.filters}>Filter by Cuisine</Text>
                     <Picker style={styles.choiceRow}
                                 selectedValue={this.state.selectedCuisine}
                                 onValueChange={ (itemValue, itemIndex) => this.setState({selectedCuisine : itemValue }) }
@@ -155,12 +234,7 @@ export default class SearchScreen extends React.Component {
                             <Picker.Item style={styles.picker} label='Latin American' value='latin american' />
                     </Picker>
 
-                    
-                    {/* // const diet = [
-                    //     'pescetarian', 'lacto vegetarian', 'ovo vegetarian', 'vegan', 'vegetarian'
-                    // ] */}
-
-                    <Text>Diet</Text>
+                    <Text style={styles.filters}>Filter by Diet</Text>
                     <Picker style={styles.choiceRow}
                                 selectedValue={this.state.selectedDiet}
                                 onValueChange={ (itemValue, itemIndex) => this.setState({selectedDiet : itemValue }) }
@@ -173,27 +247,97 @@ export default class SearchScreen extends React.Component {
                             <Picker.Item style={styles.picker} label='Vegetarian' value='vegetarian' />
                     </Picker>
 
-                    {/* // const intolerances = [
-                    //     'dairy', 'egg', 'gluten', 'peanut', 'sesame', 'seafood', 'shellfish', 'soy', 'sulfite', 'tree nut', 'wheat'
-                    // ] */}
-                    <Text>Intolerances</Text>
-                    <CheckBox
-                        title='Dairy'
-                        checked={this.state.dairy}
-                        onPress={() => this.setState({dairy: !this.state.dairy})}
-                    />
-                    {/* <Picker style={styles.choiceRow}
-                                selectedValue={this.state.selectedIntolerances}
-                                onValueChange={ (itemValue, itemIndex) => this.setState({selectedIntolerances : itemValue }) }
-                                mode = {'dropdown'}>
-                            <Picker.Item style={styles.picker} label='None' value='' />
-                            <Picker.Item style={styles.picker} label='Dairy' value='dairy' />
-                            <Picker.Item style={styles.picker} label='Egg' value='egg' />
-                            <Picker.Item style={styles.picker} label='Gluten' value='gluten' />
-                            <Picker.Item style={styles.picker} label='Vegan' value='vegan' />
-                            <Picker.Item style={styles.picker} label='Vegetarian' value='vegetarian' />
-                    </Picker> */}
-            </View>
+                    <Text style={styles.filters}>Filter by Food Intolerances</Text>
+                    {/* </TouchableOpacity> */}
+
+                    {/* <View style={styles.checkBoxModalContainer}> */}
+                        {/* <Modal
+                            style={styles.checkBoxModal} 
+                            isVisible={this.state.checkBoxModalVisible}
+                            deviceWidth={deviceWidth}
+                            deviceHeight={deviceHeight} 
+                            onBackButtonPress={() => this.setState({checkBoxModalVisible:false})}
+                            > */}
+                            <View style={styles.row}>
+                                <View style={styles.col}>
+                                    <CheckBox
+                                        title='Dairy'
+                                        style={styles.intoleranceBox}
+                                        checked={this.state.intolerances['dairy']}
+                                        onPress={() => this.toggleIntolerance('dairy')}
+                                    />
+                                    <CheckBox
+                                        title='Egg'
+                                        style={styles.intoleranceBox}
+                                        checked={this.state.intolerances['egg']}
+                                        onPress={() => this.toggleIntolerance('egg')}
+                                    />
+                                    <CheckBox
+                                        title='Gluten'
+                                        style={styles.intoleranceBox}
+                                        checked={this.state.intolerances['gluten']}
+                                        onPress={() => this.toggleIntolerance('gluten')}
+                                    />
+                                    <CheckBox
+                                        title='Peanut'
+                                        style={styles.intoleranceBox}
+                                        checked={this.state.intolerances['peanut']}
+                                        onPress={() => this.toggleIntolerance('peanut')}
+                                    />
+                                </View>
+
+                                <View style={styles.col}>
+                                    <CheckBox
+                                        title='Sesame'
+                                        style={styles.intoleranceBox}
+                                        checked={this.state.intolerances['sesame']}
+                                        onPress={() => this.toggleIntolerance('sesame')}
+                                    />
+                                    <CheckBox
+                                        title='Seafood'
+                                        style={styles.intoleranceBox}
+                                        checked={this.state.intolerances['seafood']}
+                                        onPress={() => this.toggleIntolerance('seafood')}
+                                    />
+                                    <CheckBox
+                                        title='Shellfish'
+                                        style={styles.intoleranceBox}
+                                        checked={this.state.intolerances['shellfish']}
+                                        onPress={() => this.toggleIntolerance('shellfish')}
+                                    />
+                                    <CheckBox
+                                        title='Soy'
+                                        style={styles.intoleranceBox}
+                                        checked={this.state.intolerances['soy']}
+                                        onPress={() => this.toggleIntolerance('soy')}
+                                    />
+                                </View>
+
+                                <View style={styles.col}>
+                                    <CheckBox
+                                        title='Sulfite'
+                                        style={styles.intoleranceBox}
+                                        checked={this.state.intolerances['sulfite']}
+                                        onPress={() => this.toggleIntolerance('sulfite')}
+                                    />
+                                    <CheckBox
+                                        title='Treenut'
+                                        style={styles.intoleranceBox}
+                                        checked={this.state.intolerances['treenut']}
+                                        onPress={() => this.toggleIntolerance('treenut')}
+                                    />
+                                    <CheckBox
+                                        title='Wheat'
+                                        style={styles.intoleranceBox}
+                                        checked={this.state.intolerances['wheat']}
+                                        onPress={() => this.toggleIntolerance('wheat')}
+                                    />
+                                </View>
+                            </View>
+                        {/* </Modal> */}
+                    {/* </View> */}
+                    
+            </ScrollView>
         )
     }
 }
@@ -203,10 +347,25 @@ const styles = StyleSheet.create({
     /*------------------------------------------------------------------------
         General Styles
     ------------------------------------------------------------------------*/
+    searchScreenContainer: {
+        fontFamily:'dancing-script'
+    },  
+
     row: {
         flex: 1,
         flexDirection: 'row',
         width: '100%',
+    },
+
+    col: {
+        flex: 1,
+        flexDirection: 'column',
+        width: '100%',
+    },
+
+    filters: {
+        fontSize: 25,
+        color: 'rgba(175,76,99,1)',
     },
 
     /*------------------------------------------------------------------------
@@ -275,4 +434,27 @@ const styles = StyleSheet.create({
     itemText: {
         width: '100%',
     },
+
+    intoleranceBox: {
+        width: wPercentage('30%'),
+    },
+
+    droidSafeArea: {
+        // flex: 1,
+        // justifyContent: 'center',
+        // alignItems: 'center',
+    },
+
+    checkBoxModalContainer: {
+        backgroundColor: 'white',
+        width: wPercentage('90%'),
+        height: hPercentage('50%'),
+    },
+
+    checkBoxModal:{
+        position: 'absolute',
+        top: '25%',
+        width: wPercentage('90%'),
+        height: hPercentage('40%'),
+    }
 });

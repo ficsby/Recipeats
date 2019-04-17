@@ -2,6 +2,8 @@ import { NavigationActions } from 'react-navigation';
 
 let _navigator;
 let _homeNavigator;
+let _modalVisibility = false;
+let _searchSensitivity = true;
 
 function setTopLevelNavigator(navigatorRef) {
   _navigator = navigatorRef;
@@ -11,6 +13,14 @@ function getTopLevelNavigator(navigatorRef) {
     return _navigator;
 }
 
+function setModalVisibility(vis) {
+  _modalVisibility = vis;
+}
+
+function getModalVisibility(){
+  return _modalVisibility;
+}
+
 function navigate(routeName, params) {
   _navigator.dispatch(
     NavigationActions.navigate({
@@ -18,6 +28,10 @@ function navigate(routeName, params) {
       params,
     })
   );
+}
+
+function goBack(){
+  _navigator.goBack(null);
 }
 
 function openDrawer(){
@@ -40,9 +54,13 @@ function reset(routes){
 }
 
 export default {
-    navigate, 
+    navigate,
+    goBack, 
     setTopLevelNavigator,
     getTopLevelNavigator,
     openDrawer,
     closeDrawer,
+    setModalVisibility,
+    getModalVisibility,
+    _modalVisibility,
 }
