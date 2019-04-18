@@ -7,7 +7,9 @@ import {
   TextInput,
   TouchableOpacity,
   TouchableHighlight,
-  View
+  View,
+  ScrollView,
+  Dimensions,
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import Autocomplete from "react-native-autocomplete-input";
@@ -17,6 +19,14 @@ import { Styles } from "./../../styles/GlobalStyles";
 import { modifyFoodStock, logPurchaseDate } from "../../utils/FoodListUtils";
 import ApiUtils from "../../api/apiUtils";
 import LoadingScreen from './../LoadingScreen';
+
+import {
+  widthPercentageToDP as wPercentage,
+  heightPercentageToDP as hPercentage
+} from "react-native-responsive-screen";
+
+
+const { width: WIDTH } = Dimensions.get("window");
 
 
 /**
@@ -148,14 +158,16 @@ export default class FoodItemForm extends React.Component {
 		const comp = (a, b) => a.toLowerCase().trim() == b.toLowerCase().trim();
 
 		return (
-		<View style={Styles.sectionContainer}>
+      <ScrollView>
+		{/* <View style={Styles.sectionContainer}> */}
 			{/* <View style={styles.searchBar}> */}
 				{/* <Text style={Styles.inputLabel}>Ingredient Name</Text> */}
 
-			{/* //</View> */}
+      {/* //</View> */}
+      <Text style={styles.pageTitle}>Add Food Item</Text>
 
 			<View style={styles.dataRow}>
-				<Text style={Styles.inputLabel}>Ingredient Name</Text>
+      <Text style={styles.inputLabel}></Text>
 				<Autocomplete
 					containerStyle={styles.searchContainer}
 					inputContainerStyle={styles.searchInputContainer}
@@ -180,26 +192,29 @@ export default class FoodItemForm extends React.Component {
 				/>
 			</View>
 
-			<View style={styles.dataRow}>
-				<Text style={Styles.inputLabel}>Price</Text>
-				<TextInput
-					style={Styles.inputData}
-					value={this.state.price}
-					onChangeText={itemPrice => this.setState({ price: itemPrice })}
-				/>
-			</View>
+      <Text style={styles.inputLabel}>Price</Text>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                value={this.state.price}
+                onChangeText={itemPrice => {
+                  this.setState({ price: itemPrice });
+                }}
+              />
+            </View>
 
-			<View style={styles.dataRow}>
-				<Text style={Styles.inputLabel}>Quantity</Text>
-				<TextInput
-					style={Styles.inputData}
-					value={this.state.quantity}
-					onChangeText={itemQuantity => {
-					this.setState({ quantity: itemQuantity });
-					this.state.parent.setState({ itemQuantity: itemQuantity });
-					}}
-				/>
-			</View>
+      <Text style={styles.inputLabel}>Quantity</Text>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                value={this.state.quantity}
+                onChangeText={itemQuantity => {
+                  this.setState({ quantity: itemQuantity });
+                  this.state.parent.setState({ itemQuantity: itemQuantity});
+                }}
+              />
+            </View>
+
 
 			<Text style={styles.inputLabel}>Date Purchased</Text>
 
@@ -232,7 +247,7 @@ export default class FoodItemForm extends React.Component {
 				/>
 			</View>
 
-			<Text style={Styles.inputLabel}>Ingredient Metric</Text>
+			<Text style={styles.inputLabel}>Ingredient Metric</Text>
 			<View style={Styles.choiceContainer}>
 				<Picker
 					style={Styles.choiceRow}
@@ -252,10 +267,13 @@ export default class FoodItemForm extends React.Component {
 				</Picker>
 			</View>
 
-			<TouchableHighlight onPress={this.onSaveChangesPress}>
-			<Text>Save new food item</Text>
+      <View style={styles.separationLine} />
+
+			<TouchableHighlight style={styles.saveButton} onPress={this.onSaveChangesPress}>
+			<Text style={styles.saveChanges}>Save new food item</Text>
 			</TouchableHighlight>
-		</View>
+		{/* </View> */}
+    </ScrollView>
 		);
 	}
 }
@@ -270,17 +288,90 @@ const styles = StyleSheet.create({
 //     width: "100%"
 //   },
 
+//My changes
+pageTitle: {
+  height: 50,
+  width: '50%',
+  fontSize: 22,
+  fontWeight: '600',
+  color: 'rgba(100, 92, 92, 0.8)', // Dark grey
+},
+
+saveButton: {
+  marginTop: 50,
+  marginBottom: 50,
+  marginLeft: 30,
+  marginRight: 30,
+  paddingTop: 10,
+  paddingBottom: 10,
+  backgroundColor: 'rgba(204, 102, 102, 0.9)',
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+
+saveChanges: {
+  color: 'rgba(255,255,255,1)',
+  fontSize: 16,
+  fontWeight: '600',
+},
+
+dataRow: {
+  flex: 1,
+  flexDirection: "row",
+  marginLeft: 30,
+},
+
+inputLabel: {
+  width: 160,
+  paddingTop: 10,
+  fontSize: 15,
+  color: 'rgba(100, 92, 92, 1)',
+  fontWeight: '500',
+  marginLeft: 30,
+},
+
+inputContainer: {
+  marginTop: hPercentage("2%"),
+  marginLeft: 40,
+  marginRight: 40,
+  height: 40,
+  fontSize: 15,
+  justifyContent: "center", // Used to set Text Component Vertically Center
+  alignItems: "center", // Used to set Text Component Horizontally Center
+  backgroundColor: "rgba(244, 238, 238, 0.5)" // Sandy
+},
+
+input: {
+  width: WIDTH - 130,
+  height: 40,
+  fontSize: 15,
+  marginLeft: -25
+  //borderBottomColor: 'rgba(181, 83, 102, 1)', // Medium Pink
+  //borderBottomWidth: 2,
+},
+
+inputHeading: {
+  paddingTop: 30,
+  paddingLeft: 30,
+  marginBottom: 5,
+  fontSize: 18,
+  fontWeight: '600',
+  color: 'rgba(163, 143, 143, 1)',
+},
+
+//
+
   /*------------------------------------------------------------------------
         Search Bar
     ------------------------------------------------------------------------*/
   searchBar: {
-    flex: 1,
-    paddingBottom: 20
+    // flex: 1,
+    marginTop: 20
   },
 
-  dataRow:{
-	marginBottom: 100,
-  },	
+  // dataRow:{
+	// marginBottom: 100,
+  // },	
 
   /*------------------------------------------------------------------------
        Top Section
