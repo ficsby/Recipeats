@@ -7,7 +7,8 @@ import {
   TextInput,
   TouchableOpacity,
   TouchableHighlight,
-  View
+  View,
+  ScrollView
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import Autocomplete from "react-native-autocomplete-input";
@@ -18,7 +19,15 @@ import { modifyFoodStock, logPurchaseDate } from "../../utils/FoodListUtils";
 import ApiUtils from "../../api/apiUtils";
 import LoadingScreen from './../LoadingScreen';
 
+import {
+	widthPercentageToDP as wPercentage,
+	heightPercentageToDP as hPercentage
+  } from "react-native-responsive-screen";
 
+/* Custom Icons */
+import { createIconSetFromFontello } from 'react-native-vector-icons';
+import fontelloConfig from './../../config/icon-font.json';
+const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 /**
  * Form containing all of a food item's information
  */
@@ -93,11 +102,11 @@ export default class FoodItemForm extends React.Component {
         this.state.unit
     );
     modifyFoodStock(
-      firebase.auth().currentUser.uid,
-      this.state.id,
-      this.state.name,
-      this.state.quantity,
-      this.state.unit
+		firebase.auth().currentUser.uid,
+		this.state.id,
+		this.state.name,
+		this.state.quantity,
+		this.state.unit
     );
 
     // create a newFoodList with the new item to replace the externalFoodList
@@ -148,114 +157,137 @@ export default class FoodItemForm extends React.Component {
 		const comp = (a, b) => a.toLowerCase().trim() == b.toLowerCase().trim();
 
 		return (
-		<View style={Styles.sectionContainer}>
-			{/* <View style={styles.searchBar}> */}
-				{/* <Text style={Styles.inputLabel}>Ingredient Name</Text> */}
-
-			{/* //</View> */}
-
-			<View style={styles.dataRow}>
-				<Text style={Styles.inputLabel}>Ingredient Name</Text>
-				<Autocomplete
-					containerStyle={styles.searchContainer}
-					inputContainerStyle={styles.searchInputContainer}
-					data={
-					ingredients.length === 1 &&
-						comp(query, ingredients[0].ingredientName)
-						? []
-						: ingredients
-					}
-					defaultValue={query}
-					autoCorrect={false}
-					placeholder="    Search ingredients..."
-					onChangeText={text => this.setState({ query: text })}
-					renderItem={({ ingredientName, ingredientId }) => (
-						<TouchableOpacity
-							style={styles.itemTextContainer}
-							onPress={() => { this.setState({ query: ingredientName, name: ingredientName, id: ingredientId }); }}
-						>
-						<Text style={styles.itemText}>{ingredientName}</Text>
-						</TouchableOpacity>
-					)}
-				/>
+		<ScrollView showsVerticalScrollIndicator={false}>
+			{/* Title bar */}
+			<View style={styles.titleRow}>
+				<TouchableOpacity onPress={this.onGoBack}>
+					<Icon name='left' size={30} color='rgba(100, 92, 92, 0.8)'
+							style={{marginLeft:wPercentage('5%')}}/>
+				</TouchableOpacity>
+				<Text style={styles.addFoodItemTitle}>Add Food Item</Text>
 			</View>
 
-			<View style={styles.dataRow}>
-				<Text style={Styles.inputLabel}>Price</Text>
-				<TextInput
-					style={Styles.inputData}
-					value={this.state.price}
-					onChangeText={itemPrice => this.setState({ price: itemPrice })}
-				/>
-			</View>
+			{/* Beginning of content section */}
+			<View style={Styles.screenContainer} >
 
-			<View style={styles.dataRow}>
-				<Text style={Styles.inputLabel}>Quantity</Text>
-				<TextInput
-					style={Styles.inputData}
-					value={this.state.quantity}
-					onChangeText={itemQuantity => {
-					this.setState({ quantity: itemQuantity });
-					this.state.parent.setState({ itemQuantity: itemQuantity });
-					}}
-				/>
-			</View>
+				<View style={styles.dataRow}>
+					<Text style={styles.inputLabel}>Search Ingredient by Name</Text>
 
-			<Text style={styles.inputLabel}>Date Purchased</Text>
-
-			<View style={Styles.selectDate}>
-				<DatePicker
-					style={{ width: 330 }}
-					date={this.state.datePurchased}
-					mode="date"
-					placeholder="Select date"
-					format="YYYY-MM-DD"
-					minDate="1900-01-01"
-					maxDate={new Date()}
-					confirmBtnText="Confirm"
-					cancelBtnText="Cancel"
-					customStyles={{
-					dateIcon: {
-						position: "absolute",
-						left: 0,
-						top: 4,
-						marginLeft: 0
-					},
-					dateInput: {
-						marginLeft: 45,
-						marginRight: 40
-					}
-					}}
-					onDateChange={date => {
-					this.setState({ datePurchased: date });
-					}}
-				/>
-			</View>
-
-			<Text style={Styles.inputLabel}>Ingredient Metric</Text>
-			<View style={Styles.choiceContainer}>
-				<Picker
-					style={Styles.choiceRow}
-					selectedValue={this.state.metric}
-					onValueChange={(itemValue, itemIndex) => {
-					this.setState({ metric: itemValue });
-					this.state.parent.setState({ itemUnit: itemValue });
-					}}
-					mode={"dropdown"}
-				>
-					<Picker.Item
-						style={styles.picker}
-						label="milliliters"
-						value="milliliter"
+					<Autocomplete
+						containerStyle={styles.searchContainer}
+						inputContainerStyle={styles.searchInputContainer}
+						data={
+						ingredients.length === 1 &&
+							comp(query, ingredients[0].ingredientName)
+							? []
+							: ingredients
+						}
+						defaultValue={query}
+						autoCorrect={false}
+						placeholder="    Search ingredients..."
+						onChangeText={text => this.setState({ query: text })}
+						renderItem={({ ingredientName, ingredientId }) => (
+							<TouchableOpacity
+								style={styles.itemTextContainer}
+								onPress={() => { this.setState({ query: ingredientName, name: ingredientName, id: ingredientId }); }}
+							>
+							<Text style={styles.itemText}>{ingredientName}</Text>
+							</TouchableOpacity>
+						)}
 					/>
-					<Picker.Item style={styles.picker} label="grams" value="gram" />
-				</Picker>
-			</View>
 
-			<TouchableHighlight onPress={this.onSaveChangesPress}>
-			<Text>Save new food item</Text>
-			</TouchableHighlight>
-		</View>
+				</View>
+
+				<View style={styles.dataRow}>
+					<Text style={styles.inputLabel}>Ingredient Name</Text>
+					<TextInput
+						style={Styles.inputData}
+						value={this.state.name}
+						onChangeText={itemName => this.setState({ name: itemName })}
+					/>
+				</View>
+
+				<View style={styles.dataRow}>
+					<Text style={styles.inputLabel}>Price</Text>
+					<TextInput
+						style={Styles.inputData}
+						value={this.state.price}
+						onChangeText={itemPrice => this.setState({ price: itemPrice })}
+					/>
+				</View>
+
+				<View style={styles.dataRow}>
+					<Text style={styles.inputLabel}>Quantity</Text>
+					<TextInput
+						style={Styles.inputData}
+						value={this.state.quantity}
+						onChangeText={itemQuantity => {
+						this.setState({ quantity: itemQuantity });
+						this.state.parent.setState({ itemQuantity: itemQuantity });
+						}}
+					/>
+				</View>
+
+				<Text style={styles.inputLabel}>Date Purchased</Text>
+
+				<View style={Styles.selectDate}>
+					<DatePicker
+						style={{ width: 330 }}
+						date={this.state.datePurchased}
+						mode="date"
+						placeholder="Select date"
+						format="YYYY-MM-DD"
+						minDate="1900-01-01"
+						maxDate={new Date()}
+						confirmBtnText="Confirm"
+						cancelBtnText="Cancel"
+						customStyles={{
+						dateIcon: {
+							position: "absolute",
+							left: 0,
+							top: 4,
+							marginLeft: 0
+						},
+						dateInput: {
+							marginLeft: 45,
+							marginRight: 40
+						}
+						}}
+						onDateChange={date => {
+						this.setState({ datePurchased: date });
+						}}
+					/>
+				</View>
+
+				<Text style={styles.inputLabel}>Ingredient Metric</Text>
+				<View style={Styles.choiceContainer}>
+					<Picker
+						style={Styles.choiceRow}
+						selectedValue={this.state.metric}
+						onValueChange={(itemValue, itemIndex) => {
+						this.setState({ metric: itemValue });
+						this.state.parent.setState({ itemUnit: itemValue });
+						}}
+						mode={"dropdown"}
+					>
+						<Picker.Item
+							style={styles.picker}
+							label="milliliters"
+							value="milliliter"
+						/>
+						<Picker.Item style={styles.picker} label="grams" value="gram" />
+					</Picker>
+				</View>
+
+				<TouchableOpacity style={styles.saveButton} onPress={this.onSaveChangesPress}>
+					<Text style={styles.saveText}>Save new food item</Text>
+				</TouchableOpacity>
+
+				<TouchableOpacity style={styles.cancelButton} onPress={() => { this.state.parent.setState({ addModalVisible: !this.state.parent.state.addModalVisible});}}>
+					<Text style={styles.cancelText}>Cancel</Text>
+				</TouchableOpacity>
+			</View>
+		</ScrollView>
 		);
 	}
 }
@@ -264,11 +296,62 @@ const styles = StyleSheet.create({
   /*------------------------------------------------------------------------
         General Styles
     ------------------------------------------------------------------------*/
-//   row: {
-//     flex: 1,
-//     flexDirection: "row",
-//     width: "100%"
-//   },
+	sectionContainer: {
+		marginHorizontal: wPercentage('3%'),
+		marginVertical: hPercentage('3%')
+	},
+
+	titleRow: {
+		flex: 1,
+		flexDirection: "row",
+		width: wPercentage('100%'),
+		height: hPercentage('9%'),
+		backgroundColor: 'rgba(249, 248, 248, 1)',
+		borderBottomColor: 'rgba(141, 130, 130, 1)',
+		borderBottomWidth: 2,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+
+	addFoodItemTitle: {
+		flex: 3,
+        fontSize: 22,
+        fontWeight: '600',
+        color: 'rgba(100, 92, 92, 0.8)', // Dark grey
+		width: wPercentage('100%'),
+		marginRight: wPercentage('10%'),
+		textAlign: 'center'
+	},
+
+	saveButton: {
+		marginVertical:hPercentage('3%'),
+	},
+
+	saveText: {
+		fontSize: 16, 
+		textAlign:'center',
+        fontWeight: '600',
+	},
+
+	cancelButton: {
+		height: hPercentage('5%'),
+		backgroundColor: 'rgba(175,76,99,1)',
+		color: 'rgba(249, 248, 248, 1)',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+
+	cancelText:{
+		fontSize: 30, 
+		color:'rgba(249, 248, 248, 1)', 
+		textAlign:'center', 
+		width: wPercentage('100%')
+	},
+
+	inputLabel: {
+		fontSize: 25,
+        color: 'rgba(175,76,99,1)',
+	},
 
   /*------------------------------------------------------------------------
         Search Bar
@@ -279,7 +362,7 @@ const styles = StyleSheet.create({
   },
 
   dataRow:{
-	marginBottom: 100,
+	marginBottom: hPercentage('5%'),
   },	
 
   /*------------------------------------------------------------------------
@@ -318,12 +401,12 @@ const styles = StyleSheet.create({
 
   searchContainer: {
     alignSelf: "center",
-    width: "74%",
-    marginTop: 10,
+    width: wPercentage('95%'),
+    marginTop: 3,
     // flex: 1,
     // top: 17,
     // zIndex: 1,
-    position: "absolute"
+    // position: "absolute"
   },
 
   searchInputContainer: {

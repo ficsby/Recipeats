@@ -30,7 +30,6 @@ import Sidebar from './SideBar';
 Home Page Navigations
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
-
 // Bottom tab navigator
 const Tabs = createBottomTabNavigator({
     Home: {
@@ -87,15 +86,6 @@ const Tabs = createBottomTabNavigator({
     },
 })
 
-const SearchStack = createStackNavigator({
-    Search: {
-        screen: SearchScreen,
-        navigationOptions: {
-            header: null
-        }
-    },
-})
-
 // Stack navigator for home screen, use stack navigator to transition to screens linked from the home screen
 const HomeTab = createStackNavigator({
     Home: {
@@ -139,46 +129,6 @@ const HomeTab = createStackNavigator({
         NavigationService.setTopLevelNavigator(navigation);
     },
 })
-
-const CustomDrawerComponent = (props) => (
-    <ScrollView>
-        <View style={{justifyContent: 'center', alignItems:'center'}}>
-            <Image source= {defAccIcon} style={{flex:1, width: wPercentage('30%'), height: hPercentage('30%'), resizeMode: 'center'}}/>
-        </View>
-        <View style={styles.container}>
-            <TouchableOpacity
-                onPress={() => navToTab('Home', 'Home', props)}
-                style={styles.uglyDrawerItem}>
-                <Text>Home</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                onPress={() => navToTab('Home', 'Recipes', props)}
-                style={styles.uglyDrawerItem}>
-                <Text>Bookmarks</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                onPress={() => navToTab('Home', 'Budget', props)}
-                style={styles.uglyDrawerItem}>
-                <Text>Budget</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                onPress={() => navToTab('Home', 'FoodStock', props)}
-                style={styles.uglyDrawerItem}>
-                <Text>Foodstock</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                onPress={() => navToTab('Home', 'FoodDiary', props)}
-                style={styles.uglyDrawerItem}>
-                <Text>FoodDiary</Text>
-            </TouchableOpacity>
-        </View>
-    </ScrollView>
-    
-)
 
 // Side bar navigation works on all screens other than login, signup and forgot password screen
 const AppDrawerNavigator = createDrawerNavigator({
