@@ -8,27 +8,28 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   View,
-  ScrollView,
-  Dimensions,
+  ScrollView
 } from "react-native";
+
+import { Divider } from "react-native-elements";
 import DatePicker from "react-native-datepicker";
 import Autocomplete from "react-native-autocomplete-input";
 import AutocompleteData from "./../../data/AutocompleteData";
-
+import { Table, Row, Rows } from "react-native-table-component";
 import { Styles } from "./../../styles/GlobalStyles";
 import { modifyFoodStock, logPurchaseDate } from "../../utils/FoodListUtils";
 import ApiUtils from "../../api/apiUtils";
-import LoadingScreen from './../LoadingScreen';
+import LoadingScreen from "./../LoadingScreen";
 
 import {
   widthPercentageToDP as wPercentage,
   heightPercentageToDP as hPercentage
 } from "react-native-responsive-screen";
 
-
-const { width: WIDTH } = Dimensions.get("window");
-
-
+/* Custom Icons */
+import { createIconSetFromFontello } from "react-native-vector-icons";
+import fontelloConfig from "./../../config/icon-font.json";
+const Icon = createIconSetFromFontello(fontelloConfig, "fontello");
 /**
  * Form containing all of a food item's information
  */
@@ -44,14 +45,17 @@ export default class FoodItemForm extends React.Component {
       name: this.props.name,
       nutritionalTags: {},
       parent: this.props.parent,
-      // price: this.props.price,
+      price: this.props.price,
       quantity: this.props.quantity,
       query: "",
       unit: this.props.unit,
       isLoading: true,
+      tableHead: ["Head", "Head2", "Head3", "Head4"],
+      tableData: []
     };
 
     this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
+    this.getIngredientInfo = this.getIngredientInfo.bind(this);
   }
 
   async componentDidMount() {
@@ -92,16 +96,6 @@ export default class FoodItemForm extends React.Component {
 
   onSaveChangesPress = () => {
     const parent = this.state.parent;
-
-    console.log(
-      this.state.id +
-        " " +
-        this.state.name +
-        " " +
-        this.state.quantity +
-        " " +
-        this.state.unit
-    );
     modifyFoodStock(
       firebase.auth().currentUser.uid,
       this.state.id,
@@ -128,300 +122,313 @@ export default class FoodItemForm extends React.Component {
     });
   };
 
-	/**
-	 * Calls the Spoonacular API to autocomplete search for an ingredient
-	 * @param {string} text
-	 */
-	// async getAutoCompleteIngredientsByName(text) {
-	//   this.setState({ query: text });
-	//   await ApiUtils.getAutoCompleteIngredientsByName(text, this);
-	// }
+  /**
+   * Calls the Spoonacular API to autocomplete search for an ingredient
+   * @param {string} text
+   */
+  // async getAutoCompleteIngredientsByName(text) {
+  //   this.setState({ query: text });
+  //   await ApiUtils.getAutoCompleteIngredientsByName(text, this);
+  // }
 
-	// getRecipeInfo() {
-	// 	ApiUtils.getIngredientInfoFromId(this.state.id, this);
-	// }
-	  
-	/**
-	 * Filters out ingredient suggestions to the top 5 suggested results
-	 * @param {string} query
-	 */
-	findIngredient = (query) => {
-		if (query === '') { return []; }
-		const { ingredients } = this.state;
-		const regex = new RegExp(`${query.trim()}`, 'i');
-		return ingredients.filter(ingredient => ingredient.ingredientName.search(regex) >= 0).slice(0, 5);
-	}
+  async getIngredientInfo(ingrName, ingrId, quantity) {
+    console.log(ingrName);
+    console.log(ingrId);
+    var data = await ApiUtils.getIngredientInfoFromId(ingrId, quantity, this);
+    if (data != null && this.state.nutritionalTags != null) {
+      console.log(this.state.nutritionalTags);
+    }
+  }
 
-	render() {
-		const { query } = this.state;
-		const ingredients = this.findIngredient(query);
-		const comp = (a, b) => a.toLowerCase().trim() == b.toLowerCase().trim();
+  /**
+   * Filters out ingredient suggestions to the top 5 suggested results
+   * @param {string} query
+   */
+  findIngredient = query => {
+    if (query === "") {
+      return [];
+    }
+    const { ingredients } = this.state;
+    const regex = new RegExp(`${query.trim()}`, "i");
+    return ingredients
+      .filter(ingredient => ingredient.ingredientName.search(regex) >= 0)
+      .slice(0, 5);
+  };
 
-		return (
-      <ScrollView>
-		{/* <View style={Styles.sectionContainer}> */}
-			{/* <View style={styles.searchBar}> */}
-				{/* <Text style={Styles.inputLabel}>Ingredient Name</Text> */}
+  render() {
+    const { query } = this.state;
+    const ingredients = this.findIngredient(query);
+    const comp = (a, b) => a.toLowerCase().trim() == b.toLowerCase().trim();
 
-      {/* //</View> */}
-      <Text style={styles.pageTitle}>Add Food Item</Text>
+    return (
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {/* Title bar */}
+        <View style={styles.titleRow}>
+          <TouchableOpacity onPress={this.onGoBack}>
+            <Icon
+              name="left"
+              size={30}
+              color="rgba(100, 92, 92, 0.8)"
+              onPress={() => {
+                this.state.parent.setState({
+                  addModalVisible: !this.state.parent.state.addModalVisible
+                });
+              }}
+              style={{ marginLeft: wPercentage("5%") }}
+            />
+          </TouchableOpacity>
+          <Text style={styles.addFoodItemTitle}>Add Food Item</Text>
+        </View>
 
-			<View style={styles.dataRow}>
-      <Text style={styles.inputLabel}></Text>
-				<Autocomplete
-					containerStyle={styles.searchContainer}
-					inputContainerStyle={styles.searchInputContainer}
-					data={
-					ingredients.length === 1 &&
-						comp(query, ingredients[0].ingredientName)
-						? []
-						: ingredients
-					}
-					defaultValue={query}
-					autoCorrect={false}
-					placeholder="    Search ingredients..."
-					onChangeText={text => this.setState({ query: text })}
-					renderItem={({ ingredientName, ingredientId }) => (
-						<TouchableOpacity
-							style={styles.itemTextContainer}
-							onPress={() => { this.setState({ query: ingredientName, name: ingredientName, id: ingredientId }); }}
-						>
-						<Text style={styles.itemText}>{ingredientName}</Text>
-						</TouchableOpacity>
-					)}
-				/>
-			</View>
+        {/* Beginning of content section */}
+        <View style={Styles.screenContainer}>
+          <View style={styles.dataRow}>
+            <Text style={styles.inputLabel}>Search Ingredient by Name</Text>
 
-      <Text style={styles.inputLabel}>Price</Text>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                value={this.state.price}
-                onChangeText={itemPrice => {
-                  this.setState({ price: itemPrice });
+            <Autocomplete
+              containerStyle={styles.searchContainer}
+              inputContainerStyle={styles.searchInputContainer}
+              data={
+                ingredients.length === 1 &&
+                comp(query, ingredients[0].ingredientName)
+                  ? []
+                  : ingredients
+              }
+              defaultValue={query}
+              autoCorrect={false}
+              placeholder="    Search ingredients..."
+              onChangeText={text => this.setState({ query: text })}
+              renderItem={({ ingredientName, ingredientId }) => (
+                <TouchableOpacity
+                  style={styles.itemTextContainer}
+                  onPress={() =>
+                    this.getIngredientInfo(ingredientName, ingredientId, 1)
+                  }
+                >
+                  <Text style={styles.itemText}>{ingredientName}</Text>
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+
+          <Divider />
+          <View style={styles.dataRow}>
+            <Text style={styles.inputLabel}>Ingredient Name</Text>
+            <TextInput
+              style={styles.inputData}
+              value={this.state.name}
+              onChangeText={itemName => this.setState({ name: itemName })}
+            />
+          </View>
+
+          <Divider />
+          <View style={styles.dataRow}>
+            <Text style={styles.inputLabel}>Price</Text>
+            <TextInput
+              style={styles.inputData}
+              value={this.state.price}
+              onChangeText={itemPrice => this.setState({ price: itemPrice })}
+            />
+          </View>
+
+          <Divider />
+          <View style={styles.dataRow}>
+            <Text style={styles.inputLabel}>Quantity</Text>
+            <TextInput
+              style={styles.inputData}
+              value={this.state.quantity}
+              onChangeText={itemQuantity => {
+                this.setState({ quantity: itemQuantity });
+                this.state.parent.setState({ itemQuantity: itemQuantity });
+              }}
+            />
+          </View>
+
+          <Divider />
+          <View style={styles.dataRow}>
+            <Text style={styles.inputLabel}>Date Purchased</Text>
+
+            <View style={Styles.selectDate}>
+              <DatePicker
+                style={{ width: 330 }}
+                date={this.state.datePurchased}
+                mode="date"
+                placeholder="Select date"
+                format="YYYY-MM-DD"
+                minDate="1900-01-01"
+                maxDate={new Date()}
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  dateIcon: {
+                    position: "absolute",
+                    left: 0,
+                    top: 4,
+                    marginLeft: 0
+                  },
+                  dateInput: {
+                    marginLeft: 45,
+                    marginRight: 40
+                  }
+                }}
+                onDateChange={date => {
+                  this.setState({ datePurchased: date });
                 }}
               />
             </View>
+          </View>
 
-      <Text style={styles.inputLabel}>Quantity</Text>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                value={this.state.quantity}
-                onChangeText={itemQuantity => {
-                  this.setState({ quantity: itemQuantity });
-                  this.state.parent.setState({ itemQuantity: itemQuantity});
+          <Divider />
+          <View styles={styles.dataRow}>
+            <Text style={styles.inputLabel}>Ingredient Metric</Text>
+            <View style={Styles.choiceContainer}>
+              <Picker
+                style={Styles.choiceRow}
+                selectedValue={this.state.metric}
+                onValueChange={(itemValue, itemIndex) => {
+                  this.setState({ metric: itemValue });
+                  this.state.parent.setState({ itemUnit: itemValue });
                 }}
-              />
+                mode={"dropdown"}
+              >
+                <Picker.Item
+                  style={styles.picker}
+                  label="milliliters"
+                  value="milliliter"
+                />
+                <Picker.Item style={styles.picker} label="grams" value="gram" />
+              </Picker>
             </View>
+          </View>
 
+          <Divider />
+          <View styles={styles.dataRow}>
+            <Text style={styles.inputLabel}>Nutritional Information</Text>
+            <Table borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
+              <Row
+                data={this.state.tableHead}
+                style={styles.head}
+                textStyle={styles.text}
+              />
+              <Rows data={this.state.tableData} textStyle={styles.text} />
+            </Table>
+          </View>
 
-			<Text style={styles.inputLabel}>Date Purchased</Text>
+          <TouchableOpacity
+            style={styles.saveButton}
+            onPress={this.onSaveChangesPress}
+          >
+            <Text style={styles.saveText}>Save new food item</Text>
+          </TouchableOpacity>
 
-			<View style={Styles.selectDate}>
-				<DatePicker
-					style={{ width: 330 }}
-					date={this.state.datePurchased}
-					mode="date"
-					placeholder="Select date"
-					format="YYYY-MM-DD"
-					minDate="1900-01-01"
-					maxDate={new Date()}
-					confirmBtnText="Confirm"
-					cancelBtnText="Cancel"
-					customStyles={{
-					dateIcon: {
-						position: "absolute",
-						left: 0,
-						top: 4,
-						marginLeft: 0
-					},
-					dateInput: {
-						marginLeft: 45,
-						marginRight: 40
-					}
-					}}
-					onDateChange={date => {
-					this.setState({ datePurchased: date });
-					}}
-				/>
-			</View>
-
-			<Text style={styles.inputLabel}>Ingredient Metric</Text>
-			<View style={Styles.choiceContainer}>
-				<Picker
-					style={Styles.choiceRow}
-					selectedValue={this.state.metric}
-					onValueChange={(itemValue, itemIndex) => {
-					this.setState({ metric: itemValue });
-					this.state.parent.setState({ itemUnit: itemValue });
-					}}
-					mode={"dropdown"}
-				>
-					<Picker.Item
-						style={styles.picker}
-						label="milliliters"
-						value="milliliter"
-					/>
-					<Picker.Item style={styles.picker} label="grams" value="gram" />
-				</Picker>
-			</View>
-
-      <View style={styles.separationLine} />
-
-			<TouchableHighlight style={styles.saveButton} onPress={this.onSaveChangesPress}>
-			<Text style={styles.saveChanges}>Save new food item</Text>
-			</TouchableHighlight>
-		{/* </View> */}
-    </ScrollView>
-		);
-	}
+          <TouchableOpacity
+            style={styles.cancelButton}
+            onPress={() => {
+              this.state.parent.setState({
+                addModalVisible: !this.state.parent.state.addModalVisible
+              });
+            }}
+          >
+            <Text style={styles.cancelText}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   /*------------------------------------------------------------------------
-        General Styles
-    ------------------------------------------------------------------------*/
-//   row: {
-//     flex: 1,
-//     flexDirection: "row",
-//     width: "100%"
-//   },
+		  General Styles
+	  ------------------------------------------------------------------------*/
+  sectionContainer: {
+    marginHorizontal: wPercentage("3%"),
+    marginVertical: hPercentage("3%")
+  },
 
-//My changes
-pageTitle: {
-  height: 50,
-  width: '50%',
-  fontSize: 22,
-  fontWeight: '600',
-  color: 'rgba(100, 92, 92, 0.8)', // Dark grey
-},
+  titleRow: {
+    flex: 1,
+    flexDirection: "row",
+    width: wPercentage("100%"),
+    height: hPercentage("9%"),
+    backgroundColor: "rgba(249, 248, 248, 1)",
+    borderBottomColor: "rgba(141, 130, 130, 1)",
+    borderBottomWidth: 2,
+    justifyContent: "center",
+    alignItems: "center"
+  },
 
-saveButton: {
-  marginTop: 50,
-  marginBottom: 50,
-  marginLeft: 30,
-  marginRight: 30,
-  paddingTop: 10,
-  paddingBottom: 10,
-  backgroundColor: 'rgba(204, 102, 102, 0.9)',
-  alignItems: 'center',
-  justifyContent: 'center',
-},
+  addFoodItemTitle: {
+    flex: 3,
+    fontSize: 22,
+    fontWeight: "600",
+    color: "rgba(100, 92, 92, 0.8)", // Dark grey
+    width: wPercentage("100%"),
+    marginRight: wPercentage("10%"),
+    textAlign: "center"
+  },
 
-saveChanges: {
-  color: 'rgba(255,255,255,1)',
-  fontSize: 16,
-  fontWeight: '600',
-},
+  saveButton: {
+    marginVertical: hPercentage("3%")
+  },
 
-dataRow: {
-  flex: 1,
-  flexDirection: "row",
-  marginLeft: 30,
-},
+  saveText: {
+    fontSize: 16,
+    textAlign: "center",
+    fontWeight: "600"
+  },
 
-inputLabel: {
-  width: 160,
-  paddingTop: 10,
-  fontSize: 15,
-  color: 'rgba(100, 92, 92, 1)',
-  fontWeight: '500',
-  marginLeft: 30,
-},
+  cancelButton: {
+    height: hPercentage("5%"),
+    backgroundColor: "rgba(175,76,99,1)",
+    color: "rgba(249, 248, 248, 1)",
+    justifyContent: "center",
+    alignItems: "center"
+  },
 
-inputContainer: {
-  marginTop: hPercentage("2%"),
-  marginLeft: 40,
-  marginRight: 40,
-  height: 40,
-  fontSize: 15,
-  justifyContent: "center", // Used to set Text Component Vertically Center
-  alignItems: "center", // Used to set Text Component Horizontally Center
-  backgroundColor: "rgba(244, 238, 238, 0.5)" // Sandy
-},
+  cancelText: {
+    fontSize: 30,
+    color: "rgba(249, 248, 248, 1)",
+    textAlign: "center",
+    width: wPercentage("100%")
+  },
 
-input: {
-  width: WIDTH - 130,
-  height: 40,
-  fontSize: 15,
-  marginLeft: -25
-  //borderBottomColor: 'rgba(181, 83, 102, 1)', // Medium Pink
-  //borderBottomWidth: 2,
-},
+  inputLabel: {
+    fontSize: 25,
+    color: "rgba(175,76,99,1)"
+  },
 
-inputHeading: {
-  paddingTop: 30,
-  paddingLeft: 30,
-  marginBottom: 5,
-  fontSize: 18,
-  fontWeight: '600',
-  color: 'rgba(163, 143, 143, 1)',
-},
-
-//
+  inputData: {
+    fontSize: 13,
+    borderRadius: 4,
+    borderWidth: 0.5,
+    height: hPercentage("5%")
+  },
 
   /*------------------------------------------------------------------------
-        Search Bar
-    ------------------------------------------------------------------------*/
+		  Search Bar
+	  ------------------------------------------------------------------------*/
   searchBar: {
-    // flex: 1,
-    marginTop: 20
+    flex: 1,
+    paddingBottom: 20
   },
 
-  // dataRow:{
-	// marginBottom: 100,
-  // },	
-
-  /*------------------------------------------------------------------------
-       Top Section
-    ------------------------------------------------------------------------*/
-  topContainer: {
-    width: "100%",
-    height: 80,
-    paddingTop: 30,
-    paddingBottom: 10,
-    backgroundColor: "rgba(244, 238, 238, 0.5)",
-    borderBottomColor: "rgba(225, 218, 218, 0.7)",
-    borderBottomWidth: 2.1
+  dataRow: {
+    marginBottom: hPercentage("5%")
   },
-
-  /*------------------------------------------------------------------------
-        Newsfeed Section
-    ------------------------------------------------------------------------*/
-  newsfeedContainer: {
-    height: "81.2%",
-    backgroundColor: "rgba(215, 215, 215, 0.2)"
-  },
-
-  /*------------------------------------------------------------------------
-        Bottom Menu Section
-    ------------------------------------------------------------------------*/
-  menuBar: {
-    width: "20%",
-    height: 100,
-    backgroundColor: "rgba(225, 218, 218, 0.7)"
-  },
-
-  /*------------------------------------------------------------------------
-       Autocomplete Section
-   ------------------------------------------------------------------------*/
 
   searchContainer: {
     alignSelf: "center",
-    width: "74%",
-    marginTop: 10,
-    // flex: 1,
-    // top: 17,
-    // zIndex: 1,
-    position: "absolute"
+    width: wPercentage("95%"),
+    marginTop: 3
   },
 
   searchInputContainer: {
     alignSelf: "center",
     width: "94%",
     paddingLeft: 10,
-    backgroundColor: "rgba(255,255,255,1)"
+    backgroundColor: "rgba(255,255,255,1)",
+    borderRadius: 4
     // marginTop: -5,
   },
 

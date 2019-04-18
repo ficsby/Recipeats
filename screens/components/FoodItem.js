@@ -36,7 +36,7 @@ export default class FoodItem extends React.Component {
       id: this.props.id,
       name: this.props.name,
       parent: this.props.parent,
-      //datePurchased: this.props.datePurchased,
+      datePurchased: this.props.datePurchased,
       quantity: this.props.quantity,
       unit: this.props.unit
     };
@@ -75,12 +75,13 @@ export default class FoodItem extends React.Component {
           text: "Yes",
           onPress: () => {
             removeFromFoodStock(
-              firebase.auth().currentUser.uid,
+			  firebase.auth().currentUser.uid,
+			  this.state.name,
               this.state.id
             );
 
             //update the parent's foodlist to keep it synced with firebase
-            console.log(parent.state.externalFoodList);
+            // console.log(parent.state.externalFoodList);
             parent.setState({
               externalFoodList: parent.state.externalFoodList.filter(
                 foodItem => foodItem.name != this.state.name
@@ -105,7 +106,7 @@ export default class FoodItem extends React.Component {
           }}
         >
           <FoodItemForm
-            datePurchased={new Date()}
+            datePurchased={this.state.datePurchased}
             id={this.state.id}
             name={this.state.name}
             parent={this}
