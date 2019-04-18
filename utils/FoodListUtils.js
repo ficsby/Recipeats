@@ -24,8 +24,8 @@ export const findMissingFoodItems = (secondList) => {
  * 
  * @param {*} foodListID 
  */
-export const getFoodList = (foodListID) => {
-    ref = firebase.database().ref('foodlist/' + foodListID);
+export const getFoodList = (userId) => {
+    ref = firebase.database().ref('users/' + userId + '/foodlist/');
     //return ref.once("value", (snapshot) => console.log(snapshot.val()) );
     return ref;
 };
@@ -39,7 +39,7 @@ export const getFoodList = (foodListID) => {
  */
 export const modifyFoodStock = (userId, foodItemID, foodItemName, quantity, unit) => {
     //console.log(foodItemID + ": " + quantity);
-    firebase.database().ref('foodlist/' + userId + '/' + foodItemID).update({
+    firebase.database().ref('users/' + userId + '/foodlist/' + foodItemName + '_' + foodItemID).update({
         id: foodItemID,
         name: foodItemName,
         amount: quantity,
@@ -52,8 +52,9 @@ export const modifyFoodStock = (userId, foodItemID, foodItemName, quantity, unit
  * @param {string} userId - user id of the foodstock to delete from
  * @param {int} foodItemId - id of the food item to be removed
  */
-export const removeFromFoodStock = (userId, foodItemId) => {
-    firebase.database().ref('foodlist/' + userId + '/' + foodItemId).remove();
+export const removeFromFoodStock = (userId, foodItemName, foodItemID) => {
+	console.log('users/' + userId + '/foodlist/' + foodItemName + '_' + foodItemID);
+    firebase.database().ref('users/' + userId + '/foodlist/' + foodItemName + '_' + foodItemID).remove();
 }
 
 

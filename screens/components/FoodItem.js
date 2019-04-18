@@ -75,7 +75,8 @@ export default class FoodItem extends React.Component {
           text: "Yes",
           onPress: () => {
             removeFromFoodStock(
-              firebase.auth().currentUser.uid,
+			  firebase.auth().currentUser.uid,
+			  this.state.name,
               this.state.id
             );
 

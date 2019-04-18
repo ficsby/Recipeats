@@ -181,7 +181,8 @@ export default class FoodstockScreen extends React.Component {
                       return (
                         <FoodItem
                           key={rowData.name}
-                          name={rowData.name}
+						  name={rowData.name}
+						  id ={rowData.id}
                           parent={this}
                           quantity={rowData.quantity}
                         />

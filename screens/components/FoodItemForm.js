@@ -43,7 +43,7 @@ export default class FoodItemForm extends React.Component {
       name: this.props.name,
       nutritionalTags: {},
       parent: this.props.parent,
-      // price: this.props.price,
+      price: this.props.price,
       quantity: this.props.quantity,
       query: "",
       unit: this.props.unit,
@@ -91,16 +91,6 @@ export default class FoodItemForm extends React.Component {
 
   onSaveChangesPress = () => {
     const parent = this.state.parent;
-
-    console.log(
-      this.state.id +
-        " " +
-        this.state.name +
-        " " +
-        this.state.quantity +
-        " " +
-        this.state.unit
-    );
     modifyFoodStock(
 		firebase.auth().currentUser.uid,
 		this.state.id,
@@ -136,9 +126,15 @@ export default class FoodItemForm extends React.Component {
 	//   await ApiUtils.getAutoCompleteIngredientsByName(text, this);
 	// }
 
-	// getRecipeInfo() {
-	// 	ApiUtils.getIngredientInfoFromId(this.state.id, this);
-	// }
+	getRecipeInfo(ingrName, ingrId) {
+		ApiUtils.getIngredientInfoFromId(this.state.id, this);
+		this.setState({ 
+			query: ingrName, 
+			name: ingrName, 
+			id: ingrId,
+
+		})
+	}
 	  
 	/**
 	 * Filters out ingredient suggestions to the top 5 suggested results
