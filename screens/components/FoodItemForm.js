@@ -292,6 +292,7 @@ export default class FoodItemForm extends React.Component {
 					
 					<Divider />
 					<View styles={styles.dataRow}>
+						<Text style={styles.inputLabel}>Nutritional Information</Text>
 						<Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
 						<Row data={this.state.tableHead} style={styles.head} textStyle={styles.text}/>
 						<Rows data={this.state.tableData} textStyle={styles.text}/>
