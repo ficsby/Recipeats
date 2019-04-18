@@ -257,6 +257,24 @@
       "src": "fontawesome"
     },
     {
+      "uid": "9dd9e835aebe1060ba7190ad2b2ed951",
+      "css": "search",
+      "code": 59416,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "ec21fe3492bb04d9e29103c319556ed8",
+      "css": "search-1",
+      "code": 62733,
+      "src": "mfglabs"
+    },
+    {
+      "uid": "c6344a6ed148da12354cc90705287696",
+      "css": "search-2",
+      "code": 59417,
+      "src": "iconic"
+    },
+    {
       "uid": "059ee84db3ec1875f05b6b29e53c8cd1",
       "css": "chef",
       "code": 59392,

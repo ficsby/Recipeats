@@ -54,51 +54,83 @@ const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 //     }
 // }
 
-/* <Francis Buendia> March 15, 2019
-        API Request call to 'Get Recipe Info from Id' to get the recipe information
-*/
-async function getRecipeInfoFromId(id, context){
-    console.log("api call going out #3");
-    // Returns a promise which then gets the result from the request call
-    const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
-        },
-    });
+// /* <Francis Buendia> March 15, 2019
+//         API Request call to 'Get Recipe Info from Id' to get the recipe information
+// */
+// async function getRecipeInfoFromId(id, context){
+//     // Returns a promise which then gets the result from the request call
+//     const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information`, {
+//         method: "GET",
+//         headers: {
+//             "Content-Type": "application/json",
+//             "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+//         },
+//     });
 
-    const json = await response.json();
+//     const json = await response.json();
     
-    // Check if component is mounted before changing state, this check is to prevent memory leaks
-    if(context._ismounted)
-    {
-        nutrtionTags = {}
-        for(key in json)
-        {   
-            if(key in context.state){
-                context.setState({
-                    [key]: json[key]
-                });
-            }
-            else if(key in context.state.nutritionalTags)
-            {
-                nutrtionTags[key] = json[key];
-            }
-        }
+//     // Check if component is mounted before changing state, this check is to prevent memory leaks
+//     if(context._ismounted)
+//     {
+//         nutrtionTags = {}
+//         for(key in json)
+//         {   
+//             if(key in context.state){
+//                 context.setState({
+//                     [key]: json[key]
+//                 });
+//             }
+//             else if(key in context.state.nutritionalTags)
+//             {
+//                 nutrtionTags[key] = json[key];
+//             }
+//         }
 
-        context.setState({
-            nutritionalTags: nutrtionTags 
-        });
-    }
+//         context.setState({
+//             nutritionalTags: nutrtionTags 
+//         });
+//     }
+//     return new Promise((resolve) =>
+//         setTimeout(
+//         () => { resolve('result') },
+//         5000
+//         )
+//     );
+// }
 
-    return new Promise((resolve) =>
-        setTimeout(
-        () => { resolve('result') },
-        5000
-        )
-    );
-}
+// /* <Christine Tran> April 10, 2019
+//         API Request call to 'Get analyzed instructions' to break the recipe instructions into a list of steps
+// */
+// async function getAnalyzedInstructions(id, context){
+//     // Returns a promise which then gets the result from the request call
+//     const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/324695/analyzedInstructions?stepBreakdown=true`, {
+//         method: "GET",
+//         headers: {
+//             "Content-Type": "application/json",
+//             "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+//         },
+//     });
+
+//     const json = await response.json();
+
+//     console.log(json);
+
+//     // Check if component is mounted before changing state, this check is to prevent memory leaks
+//     if(context._ismounted)
+//     {
+//         context.setState({
+//             instructionSteps : json[0].steps 
+//         });
+//     }
+
+//     return new Promise((resolve) =>
+//         setTimeout(
+//         () => { resolve('result') },
+//         5000
+//         )
+//     );
+// }
+
 
 // async function searchRecipeByName(name, cuisine, diet, intolerances, context){
 //     console.log('in search recipe');

@@ -42,7 +42,7 @@ const Tabs = createBottomTabNavigator({
     },
 
     Recipes: {
-        screen: BookmarksScreen,
+        screen: RecipeScreen,
         navigationOptions: {
             tabBarIcon: ({tintColor}) => (
                 <Icon name='recipe-book' size={32} color={tintColor} />
