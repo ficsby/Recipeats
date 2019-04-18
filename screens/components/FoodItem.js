@@ -36,7 +36,7 @@ export default class FoodItem extends React.Component {
       id: this.props.id,
       name: this.props.name,
       parent: this.props.parent,
-      //datePurchased: this.props.datePurchased,
+      datePurchased: this.props.datePurchased,
       quantity: this.props.quantity,
       unit: this.props.unit
     };
@@ -106,7 +106,7 @@ export default class FoodItem extends React.Component {
           }}
         >
           <FoodItemForm
-            datePurchased={new Date()}
+            datePurchased={this.state.datePurchased}
             id={this.state.id}
             name={this.state.name}
             parent={this}
