@@ -81,7 +81,7 @@ export default class FoodItem extends React.Component {
             );
 
             //update the parent's foodlist to keep it synced with firebase
-            console.log(parent.state.externalFoodList);
+            // console.log(parent.state.externalFoodList);
             parent.setState({
               externalFoodList: parent.state.externalFoodList.filter(
                 foodItem => foodItem.name != this.state.name

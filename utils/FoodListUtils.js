@@ -53,7 +53,6 @@ export const modifyFoodStock = (userId, foodItemID, foodItemName, quantity, unit
  * @param {int} foodItemId - id of the food item to be removed
  */
 export const removeFromFoodStock = (userId, foodItemName, foodItemID) => {
-	console.log('users/' + userId + '/foodlist/' + foodItemName + '_' + foodItemID);
     firebase.database().ref('users/' + userId + '/foodlist/' + foodItemName + '_' + foodItemID).remove();
 }
 

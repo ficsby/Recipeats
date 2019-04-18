@@ -113,7 +113,7 @@ export default class FoodstockScreen extends React.Component {
           externalFoodList: foodList
         });
 
-        console.log(foodList);
+        // console.log(foodList);
       }
     });
   }

@@ -1,5 +1,5 @@
-// const fetch = require('node-fetch');
-// const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
+const fetch = require('node-fetch');
+const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 // var shuffle = require('shuffle-array');
 
 
@@ -118,53 +118,70 @@ async function getRecipeInfoFromId(id, context){
 //     // console.log(json);
 // }
 
-// /**
-//  * API request call to "Get food information" to get information about a specific food (ingredient)
-//  * @param {int} id - API ID of the food
-//  * @param {reference} context - Reference to the object that the function is called in
-//  */
-// async function getIngredientInfoFromId(id, context) {
-//     // Returns a promise which then gets the result from the request call
-//     const response = await fetch(
-//       `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/ingredients/${id}/information?amount=100&unit=gram`,
-//       {
-//         method: "GET",
-//         headers: {
-//           "Content-Type": "application/json",
-//           "X-RapidAPI-Key": API_KEY // API key registered for Spoonacular API
-//         }
-//       }
-//     );
+/**
+ * API request call to "Get food information" to get information about a specific food (ingredient)
+ * @param {int} id - API ID of the food
+ * @param {reference} context - Reference to the object that the function is called in
+ */
+async function getIngredientInfoFromId(id, amnt, context) {
+    // Returns a promise which then gets the result from the request call
+    const response = await fetch(
+      `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/ingredients/${id}/information?amount=${amnt}&unit=gram`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "X-RapidAPI-Key": API_KEY // API key registered for Spoonacular API
+        }
+      }
+    );
 
-//     const json = await response.json();
+    const json = await response.json();
     
-//     // Check if component is mounted before changing state, this check is to prevent memory leaks
-//     if (context._ismounted) {
-//         nutritionTags = {}
-//         for (key in json) {
-//             if (key in context.state) {
-//                 context.setState({
-//                     [key]: json[key]
-//                 });
-//             }
-//             else {
-//                 nutritionTags[key] = json[key];
-//                 //console.log(key + ": " + json[key]);
-//             }
-//         }
+    // Check if component is mounted before changing state, this check is to prevent memory leaks
+    if (context._ismounted) {
+        nutritionTags = {}
+        for (key in json) {
+			
+            if (key in context.state) {
+                context.setState({
+                    [key]: json[key]
+                });
+            }
+            else {
+				if(key == 'nutrition')
+				{
+					nutrients = json[key]['nutrients'];
+					caloricBreakdown = json[key]['caloricBreakdown'];
+					
+					var tableData = [];
+					for(nutridx in nutrients){
+						nutrData = nutrients[nutridx];
+						console.log(nutrients[nutridx]);
+						tableData.push([nutrData['title'], nutrData['amount'], nutrData['unit'], nutrData['percentOfDailyNeeds']]);
+					}
+					
+					console.log(tableData);
+					context.setState({
+						tableData: tableData
+					});
+				}
+				
+            }
+        }
 
-//         context.setState({
-//             nutritionalTags: nutritionTags
-//         });
-//     }
+        context.setState({
+            nutritionalTags: nutritionTags
+        });
+    }
 
-//     return new Promise((resolve) =>
-//         setTimeout(
-//             () => { resolve('result') },
-//             5000
-//         )
-//     );
-// }
+    return new Promise((resolve) =>
+        setTimeout(
+            () => { resolve('result') },
+            5000
+        )
+    );
+}
 
 // /* <Francis Buendia> March 15, 2019
 //         API Request call to 'Get Random Food Trivia' to get food trivia info
@@ -318,13 +335,13 @@ async function getRecipeInfoFromId(id, context){
 //     return new Promise((resolve) => setTimeout( () => { resolve('result') }, 5000 ) );
 // }
 
-// export default {
-//     getAutoCompleteRecipesByName,
-//     getAutoCompleteIngredientsByName,
-//     getRecipeInfoFromId,
-//     getRandomFoodTrivia,
-//     getRandomFoodVideos,
-//     getRandomFoodArticles,
-//     searchRecipeByName,
-//     getIngredientInfoFromId,
-// }
+export default {
+    // getAutoCompleteRecipesByName,
+    // getAutoCompleteIngredientsByName,
+    // getRecipeInfoFromId,
+    // getRandomFoodTrivia,
+    // getRandomFoodVideos,
+    // getRandomFoodArticles,
+    // searchRecipeByName,
+    getIngredientInfoFromId,
+}
