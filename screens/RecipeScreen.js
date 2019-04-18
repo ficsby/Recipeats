@@ -1,9 +1,11 @@
 import React from 'react';
-import { StyleSheet, Image, ImageBackground, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { FlatList, StyleSheet, Image, ImageBackground, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { StackActions } from 'react-navigation';
 import Autocomplete from 'react-native-autocomplete-input';
-import { ListItem, Badge } from 'react-native-elements';
+import { ListItem, Badge, Divider} from 'react-native-elements';
 import { Font, AppLoading } from 'expo';
+import FlatListItem from './components/FlatListItem';
+
 // import NavigationService from '../navigation/NavigationService.js';
 
 /* Custom Icons */
@@ -27,6 +29,35 @@ export default class RecipeScreen extends React.Component {
         this.state = {
             // isLoading: true,
             editable: false,
+
+            // swipeSettings: 
+            // {
+            //     autoClose: true,
+            //     onClose: (secId, rowId, direction) => {
+            //             if(this.state.activeRowKey != null)
+            //             {
+            //                 this.setState({activeRowKey: null});
+            //             }
+            //     },
+            //     onOpen: (secId, rowId, direction) => {
+            //         if(this.state.activeRowKey != null)
+            //         {
+            //             this.setState({activeRowKey: this.props.item.key});
+            //         }
+            //     },
+            //     right: 
+            //     [
+            //         {
+            //             onPress: () => { this.state.extendedIngredients.splice(this.props.index, 1) }, 
+            //             text: 'Delete',
+            //             type: 'delete',
+            //         }
+            //     ],
+            //     rowId: this.props.index,
+            //     sectionId: 1,
+               
+            // }, 
+            
             query: '',
             recipes: [],
             bookmarked: false,
@@ -91,6 +122,8 @@ export default class RecipeScreen extends React.Component {
                 
             ],
 
+            deletedRowKey: null,
+
             instructions:[   // FOR TESTING PURPOSES
                 {
                     instruction: 'Toast the sesame seeds, about 350 degrees in the oven for about 10-15 minutes. Keep an eye on them to make sure they do not burn.'
@@ -147,8 +180,6 @@ export default class RecipeScreen extends React.Component {
         {
             bookmarkStatus = this.state.bookmarked? "bookmark" : "bookmark-empty";
             return (
-                // <Icon name={bookmarkStatus} size={28} color='rgba(175,76,99,1)'
-                //       style={{paddingTop: 6, paddingLeft: 13}} />
                   <Icon name={bookmarkStatus} size={28} color='rgba(255,255,255,1)' style={styles.overlayButtons} />
             );
         }
@@ -157,8 +188,6 @@ export default class RecipeScreen extends React.Component {
         {
             heartStatus = this.state.liked? "heart" : "heart-empty";
             return (
-                // <Icon name={heartStatus} size={28} color='rgba(175,76,99,1)'
-                //       style={{paddingTop: 6}} />
                 <Icon name={heartStatus} size={28} color='rgba(255,255,255,1)' style={styles.overlayButtons} />
             );
         }
@@ -213,6 +242,7 @@ export default class RecipeScreen extends React.Component {
         // if (this.state.isLoading) {
         //     return <LoadingScreen />;
         // }
+      
 
         return ( 
             <View> 
@@ -243,10 +273,11 @@ export default class RecipeScreen extends React.Component {
 
                         <View style={styles.titleContainer}>
                             <View style={styles.row}>
+                                <TextInput multiline style={styles.title} 
+                                    value ={this.state.title}  onChangeText={(title) => this.setState({title})}
+                                    editable={this.state.editable}/>
 
-                                <Text style={styles.title}> 
-                                    {this.state.title}  
-                                </Text>
+                                {/* <Text style={styles.title}>{this.state.title}</Text> */}
                                 {
                                     !(this.state.editable)? 
                                     <TouchableOpacity>
@@ -296,16 +327,23 @@ export default class RecipeScreen extends React.Component {
                         </View>
 
                         <View style ={styles.sectionContainer}>
-                            < Text style={styles.sectionTitle}> Ingredients </Text>
+                            <Text style={styles.sectionTitle}>Ingredients</Text>
                             {
                                 // ingredientsList.map( (item, i) =>  
                                 // ( <ListItem key={i} title={item.name} rightTitle={item.amount} 
                                 //             titleStyle={styles.ingredientText} rightTitleStyle={styles.amountText} /> ))
-                                this.state.extendedIngredients.map( (item, i) =>  
-                                ( <ListItem key={i} title={item.name} rightTitle={item.amount} 
-                                            titleStyle={styles.ingredientText} rightTitleStyle={styles.amountText} /> ))
-                                    
-                            }
+                                <FlatList data={this.state.extendedIngredients}
+                                          keyExtractor={(item, index) => index.toString()}
+                                          renderItem={({item, index}) => 
+
+                                        //   this.state.extendedIngredients.map( (item, i) =>  
+                                            <FlatListItem parentFlatList={this} flatListData={this.state.extendedIngredients}
+                                                id={index} title={item.name} rightTitle={item.amount} 
+                                                titleStyle={styles.ingredientText} rightTitleStyle={styles.amountText}/>
+                                        }
+                                        
+                                />
+                            }           
                             <TouchableOpacity style={styles.compareButton}><Text style={styles.compareText}>Compare To Food Stock</Text></TouchableOpacity>
                         </View>
 
@@ -346,6 +384,10 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         width: '100%',
+    },
+
+    divider: {
+        backgroundColor: 'blue' 
     },
 
     collapsibleBar: {
@@ -497,6 +539,7 @@ const styles = StyleSheet.create({
 
     title: {
         width: '70%',
+        maxHeight: 80,
         marginTop: 10,
         marginLeft: 25,
         marginRight: 25,
