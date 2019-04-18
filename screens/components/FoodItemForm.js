@@ -163,8 +163,11 @@ export default class FoodItemForm extends React.Component {
 				{/* Title bar */}
 				<View style={styles.titleRow}>
 					<TouchableOpacity onPress={this.onGoBack}>
+					
 						<Icon name='left' size={30} color='rgba(100, 92, 92, 0.8)'
+							onPress = {() => { this.state.parent.setState({ addModalVisible: !this.state.parent.state.addModalVisible }); }} 
 							style={{ marginLeft: wPercentage('5%') }} />
+
 					</TouchableOpacity>
 					<Text style={styles.addFoodItemTitle}>Add Food Item</Text>
 				</View>
@@ -271,6 +274,7 @@ export default class FoodItemForm extends React.Component {
 					<View styles={styles.dataRow}>
 						<Text style={styles.inputLabel}>Ingredient Metric</Text>
 						<View style={Styles.choiceContainer}>
+
 							<Picker
 								style={Styles.choiceRow}
 								selectedValue={this.state.metric}
@@ -278,6 +282,7 @@ export default class FoodItemForm extends React.Component {
 									this.setState({ metric: itemValue });
 									this.state.parent.setState({ itemUnit: itemValue });
 								}}
+
 								mode={"dropdown"}
 							>
 								<Picker.Item
