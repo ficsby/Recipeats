@@ -162,7 +162,8 @@ export default class FoodItemForm extends React.Component {
 
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Title bar */}
+		{/* Title header
+		--------------------------------------------------------------------------------------------------------- */}
         <View style={styles.titleRow}>
           <TouchableOpacity onPress={this.onGoBack}>
             <Icon
@@ -180,8 +181,12 @@ export default class FoodItemForm extends React.Component {
           <Text style={styles.addFoodItemTitle}>Add Food Item</Text>
         </View>
 
-        {/* Beginning of content section */}
+		{/* Beginning of content section 
+		--------------------------------------------------------------------------------------------------------- */}
         <View style={Styles.screenContainer}>
+
+		  {/* Search Ingredient Section 
+			--------------------------------------------------------------------------------------------------------- */}
           <View style={styles.dataRow}>
             <Text style={styles.inputLabel}>Search Ingredient by Name</Text>
 
@@ -210,7 +215,9 @@ export default class FoodItemForm extends React.Component {
               )}
             />
           </View>
-
+		  
+		  {/* Ingredient Name section 
+			--------------------------------------------------------------------------------------------------------- */}
           <Divider />
           <View style={styles.dataRow}>
             <Text style={styles.inputLabel}>Ingredient Name</Text>
@@ -220,7 +227,9 @@ export default class FoodItemForm extends React.Component {
               onChangeText={itemName => this.setState({ name: itemName })}
             />
           </View>
-
+		  
+		  {/* Price Section 
+			--------------------------------------------------------------------------------------------------------- */}
           <Divider />
           <View style={styles.dataRow}>
             <Text style={styles.inputLabel}>Price</Text>
@@ -230,7 +239,9 @@ export default class FoodItemForm extends React.Component {
               onChangeText={itemPrice => this.setState({ price: itemPrice })}
             />
           </View>
-
+		  
+		  {/* Quantity Section 
+			--------------------------------------------------------------------------------------------------------- */}
           <Divider />
           <View style={styles.dataRow}>
             <Text style={styles.inputLabel}>Quantity</Text>
@@ -243,8 +254,7 @@ export default class FoodItemForm extends React.Component {
                   this.state.parent.setState({ itemQuantity: itemQuantity });
                 }}
               />
-
-              {/* <Text style={styles.inputLabel}>Metric</Text> */}
+			  {/* Food measurements */}
               <View style={styles.choiceContainer}>
                 <Picker
                   style={styles.metricPicker}
@@ -253,7 +263,6 @@ export default class FoodItemForm extends React.Component {
                     this.setState({ metric: itemValue });
                     this.state.parent.setState({ itemUnit: itemValue });
                   }}
-                //   mode={"dropdown"}
                 >
                   <Picker.Item
                     style={styles.picker}
@@ -312,7 +321,9 @@ export default class FoodItemForm extends React.Component {
               </View>
             </View>
           </View>
-
+		  
+		  {/* Date purchased Section 
+			--------------------------------------------------------------------------------------------------------- */}
           <Divider />
           <View style={styles.dataRow}>
             <Text style={styles.inputLabel}>Date Purchased</Text>
@@ -346,7 +357,9 @@ export default class FoodItemForm extends React.Component {
               />
             </View>
           </View>
-
+		  
+		  {/* Nutritional information Section 
+			--------------------------------------------------------------------------------------------------------- */}
           <Divider />
           <View styles={styles.dataRow}>
             <Text style={styles.inputLabel}>Nutritional Information</Text>
@@ -386,12 +399,35 @@ export default class FoodItemForm extends React.Component {
 const styles = StyleSheet.create({
   /*------------------------------------------------------------------------
 		  General Styles
-	  ------------------------------------------------------------------------*/
+	------------------------------------------------------------------------*/
   sectionContainer: {
     marginHorizontal: wPercentage("3%"),
     marginVertical: hPercentage("3%")
   },
 
+  inputLabel: {
+    fontSize: 25,
+    color: "rgba(175,76,99,1)"
+  },
+
+  inputData: {
+    fontSize: 13,
+    borderRadius: 4,
+    borderWidth: 0.5,
+    height: hPercentage("5%")
+  },
+
+  dataRow: {
+    marginBottom: hPercentage("5%")
+  },
+
+  itemText: {
+    width: "100%"
+  },
+
+  /*------------------------------------------------------------------------
+		  Title header Styles
+	------------------------------------------------------------------------*/
   titleRow: {
     flex: 1,
     flexDirection: "row",
@@ -414,75 +450,9 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
 
-  metricsRow: {
-    flex: 1,
-    flexDirection: "row",
-    width: wPercentage("100%")
-  },
-
-  saveButton: {
-    marginVertical: hPercentage("3%")
-  },
-
-  saveText: {
-    fontSize: 16,
-    textAlign: "center",
-    fontWeight: "600"
-  },
-
-  selectDate: {
-    // marginRight: 40,
-    // paddingLeft: 40,
-    fontSize: 15,
-    color: "rgba(91, 88, 88, 0.9)"
-  },
-
-  cancelButton: {
-    height: hPercentage("5%"),
-    backgroundColor: "rgba(175,76,99,1)",
-    color: "rgba(249, 248, 248, 1)",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-
-  cancelText: {
-    fontSize: 30,
-    color: "rgba(249, 248, 248, 1)",
-    textAlign: "center",
-    width: wPercentage("100%")
-  },
-
-  inputLabel: {
-    fontSize: 25,
-    color: "rgba(175,76,99,1)"
-  },
-
-  inputData: {
-    fontSize: 13,
-    borderRadius: 4,
-    borderWidth: 0.5,
-    height: hPercentage("5%")
-  },
-
-  quantityInput: {
-    fontSize: 13,
-    borderRadius: 4,
-    borderWidth: 0.5,
-    height: hPercentage("5%"),
-    width: wPercentage("60%")
-  },
-
   /*------------------------------------------------------------------------
-		  Search Bar
-	  ------------------------------------------------------------------------*/
-  searchBar: {
-    flex: 1,
-    paddingBottom: 20
-  },
-
-  dataRow: {
-    marginBottom: hPercentage("5%")
-  },
+		  Search Bar styles
+  ------------------------------------------------------------------------*/
 
   searchContainer: {
     alignSelf: "center",
@@ -500,7 +470,7 @@ const styles = StyleSheet.create({
   },
 
   searchInput: {
-    width: "100%",
+    width: wPercentage("100%"),
     fontSize: 15,
     paddingLeft: 10
   },
@@ -510,17 +480,69 @@ const styles = StyleSheet.create({
     marginLeft: 10
   },
 
-  itemText: {
-    width: "100%"
+  /*------------------------------------------------------------------------
+		  Quantity/Metric picker Styles
+	------------------------------------------------------------------------*/
+  metricsRow: {
+    flex: 1,
+    flexDirection: "row",
+    width: wPercentage("100%")
   },
 
-  choiceContainer: {
-    backgroundColor: "rgba(244, 238, 238, 0.7)",
-    marginLeft: wPercentage("2%")
+  quantityInput: {
+    fontSize: 13,
+    borderRadius: 4,
+    borderWidth: 0.5,
+    height: hPercentage("5%"),
+    width: wPercentage("60%")
   },
-  
-  metricPicker: {
-	height: hPercentage('5%'),
-    width: wPercentage("25%")
-  }
+
+  /*------------------------------------------------------------------------
+		  Date Styles
+	------------------------------------------------------------------------*/
+	selectDate: {
+		// marginRight: 40,
+		// paddingLeft: 40,
+		fontSize: 15,
+		color: "rgba(91, 88, 88, 0.9)"
+	},
+
+	choiceContainer: {
+		backgroundColor: "rgba(244, 238, 238, 0.7)",
+		marginLeft: wPercentage("2%")
+	},
+	
+	metricPicker: {
+		height: hPercentage('5%'),
+		width: wPercentage("25%")
+	},
+
+  /*------------------------------------------------------------------------
+		  Save Button Styles
+	------------------------------------------------------------------------*/
+  saveButton: {
+    marginVertical: hPercentage("3%")
+  },
+
+  saveText: {
+    fontSize: 16,
+    textAlign: "center",
+    fontWeight: "600"
+  },
+
+  cancelButton: {
+    height: hPercentage("5%"),
+    backgroundColor: "rgba(175,76,99,1)",
+    color: "rgba(249, 248, 248, 1)",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+
+  cancelText: {
+    fontSize: 30,
+    color: "rgba(249, 248, 248, 1)",
+    textAlign: "center",
+    width: wPercentage("100%")
+  },
+
 });
