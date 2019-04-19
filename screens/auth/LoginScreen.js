@@ -9,6 +9,7 @@ import logo from './../../assets/images/logo_transparent.png';
 import { Styles } from './../../styles/GlobalStyles';
 
 import KeyboardShift from './../../styles/KeyboardShift.js';
+import AutocompleteData from './../../data/AutocompleteData';
 
 const { width: WIDTH } = Dimensions.get('window')
 
@@ -18,6 +19,7 @@ export default class LoginScreen extends React.Component {
         this.state = { 
             email: "",
             password: "",
+            ingredientSuggestions: [],
             fontLoaded: false,
         };
     }
@@ -26,6 +28,19 @@ export default class LoginScreen extends React.Component {
     onLoginPress = () => {
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
         .then( () => {
+            retrieveData = () => {
+                var ref = firebase.database().ref('ingredients/ingredients');
+                return ref.once('value');
+              }
+          
+              // // Snapshot is the depiction of the user's current data
+              retrieveData().then( (snapshot) => {
+                this.setState( {
+                    ingredientSuggestions: snapshot.val()
+                })
+              })
+              
+            AutocompleteData.ingredientSuggestions = this.state.ingredientSuggestions;
             this.props.navigation.navigate('Home');
         }, (error) => {
             Alert.alert(error.message);

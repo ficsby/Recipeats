@@ -16,8 +16,23 @@ fs.createReadStream('C:\\Users\\franc\\OneDrive\\Desktop\\Recipeats\\data\\ingre
   .pipe(csv({ separator: ';' }))
   .on('data', (data) => MyData.push(data))
   .on('end', () => {
-    var user = firebase.auth().currentUser;
-    firebase.database().ref('ingredients/').set({
-        ingredients : MyData
-    });
-  });
+    var i = 0;
+    while(i < MyData.length)
+    {
+      fs.appendFile('Output.txt', '{ingredientName: \"' +  MyData[i].ingredientName + '\", ingredientId: ' + MyData[i].ingredientId + '},\r\n' , function (err) {
+        if (err) {
+          throw err;
+        }
+      })
+      i++;
+    }
+    
+    // fs.writeFile('Output.txt', MyData.toString(), (err) => { 
+    //   // In case of a error throw err. 
+    //   if (err) throw err; 
+  }); 
+    // var user = firebase.auth().currentUser;
+    // firebase.database().ref('ingredients/').set({
+    //     ingredients : MyData
+    // });
+  // });

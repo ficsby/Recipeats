@@ -73,34 +73,21 @@ const inventoryList = [
 ];
 
 export default class FoodstockScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      addModalVisible: false,
-      tableHead: ["Name", "Quantity", ""],
-      externalFoodList: [],
-      editable: false,
-      ingredients: [],
-      itemName: "",
-      itemQuantity: ""
-    };
-    this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
-    this.toggleEditable = this.toggleEditable.bind(this);
-    this.onDeletePress = this.onDeletePress.bind(this);
-    this.toggleAddModalVisible = this.toggleAddModalVisible.bind(this);
-  }
-
-  //  Toggles whether the information is editable by the user.
-  //  User is only able to edit after clicking on the edit button
-  toggleEditable() {
-    this.setState({
-      editable: !this.state.editable
-    });
-
-    this.state.editable
-      ? Alert.alert("Not editable now")
-      : Alert.alert("Values should be editable now.");
-  }
+	constructor(props) {
+		super(props);
+		this.state = {
+			addModalVisible: false,
+			tableHead: ["Name", "Quantity", ""],
+			externalFoodList: [],
+			editable: false,
+			ingredients: [],
+			itemId: null,
+			itemUnit: "",
+			itemName: "",
+			itemQuantity: null
+		};
+		this.toggleAddModalVisible = this.toggleAddModalVisible.bind(this);
+	}
 
   componentDidMount() {
     this._ismounted = true;
@@ -119,43 +106,20 @@ export default class FoodstockScreen extends React.Component {
 
         for (var key in foodListSnapshot) {
           if (foodListSnapshot.hasOwnProperty(key)) {
-            foodList.push({ name: key, quantity: foodListSnapshot[key] });
+            foodList.push(foodListSnapshot[key]);
           }
         }
         this.setState({
           externalFoodList: foodList
         });
+
+        // console.log(foodList);
       }
     });
   }
 
   componentWillUnmount() {
     this._ismounted = false; // After components is unmounted reset boolean
-  }
-
-  onSaveChangesPress = () => {
-    //var user = firebase.auth().currentUser;
-    //this.writeUserData(user.uid);
-    modifyFoodStock(
-      firebase.auth().currentUser.uid,
-      this.state.itemName,
-      this.state.itemQuantity
-    );
-    Alert.alert("Your changes has been updated..");
-  };
-
-  onDeletePress = () => {
-    removeFromFoodStock(firebase.auth().currentUser.uid, "Carrots");
-  };
-
-  /**
-   * Handler method for adding a new food item
-   */
-  onAddItemPress() {
-    //prompt user for a food item and quantity
-    console.log("Add item button was pressed.");
-    //push user entered data to firebase
-    //addToFoodStock(firebase.auth().currentUser.uid, newItemName, newItemQuantity);
   }
 
   /**
@@ -180,10 +144,6 @@ export default class FoodstockScreen extends React.Component {
       </TouchableOpacity>
     );
 
-    //Push data to firebase
-    // inventoryList.forEach(item =>
-    //     modifyFoodStock(firebase.auth().currentUser.uid, item.name, item.quantity));
-
     return (
       <KeyboardShift>
         {() => (
@@ -199,57 +159,38 @@ export default class FoodstockScreen extends React.Component {
               <FoodItemForm
                 datePurchased={new Date()}
                 id={null}
-                metric=""
                 name=""
+                parent={this}
                 price={null}
                 quantity={null}
+                unit=""
               />
-              <TouchableHighlight onPress={this.toggleAddModalVisible}>
-                <Text>Hide Modal</Text>
-              </TouchableHighlight>
             </Modal>
 
             <View style={Styles.sectionContainer}>
               <Text style={Styles.sectionTitle}> Inventory </Text>
-
-              {/* {//Fetch and display data from firebase
-                  this.state.externalFoodList &&
-                    this.state.externalFoodList.map((item, i) => (
-                      <ListItem
-                        key={i}
-                        title={item.name}
-                        rightTitle={item.quantity}
-                        titleStyle={Styles.inventoryText}
-                        rightTitleStyle={Styles.quantityText}
-                      />
-                    ))} */}
-
-              {
-                <View style={Styles.container}>
-                  <Table borderStyle={{ borderColor: "transparent" }}>
-                    <Row
-                      data={state.tableHead}
-                      style={Styles.head}
-                      textStyle={Styles.text}
-                    />
-                    {state.externalFoodList &&
-                      state.externalFoodList.map((rowData, index) => (
-                        // <TableWrapper key={index} style={Styles.row}>
-                        //   {
+              <View style={Styles.container}>
+                <Table borderStyle={{ borderColor: "transparent" }}>
+                  <Row
+                    data={state.tableHead}
+                    style={Styles.head}
+                    textStyle={Styles.text}
+                  />
+                  {state.externalFoodList &&
+                    state.externalFoodList.map(rowData => {
+                      return (
                         <FoodItem
-                          index={index}
-                          name={rowData.name}
+                          key={rowData.name}
+						  name={rowData.name}
+						  id ={rowData.id}
+                          parent={this}
                           quantity={rowData.quantity}
                         />
+                      );
+                    })}
+                </Table>
+              </View>
 
-                        //   }
-                        // </TableWrapper>
-                      ))}
-                  </Table>
-                </View>
-              }
-
-              <FoodItem index={5} name="temp" quantity={0} />
               <ListItem
                 Component={TouchableScale}
                 friction={90}

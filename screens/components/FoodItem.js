@@ -33,9 +33,12 @@ export default class FoodItem extends React.Component {
 
     this.state = {
       itemModalVisible: false,
-      name: props.name,
-      quantity: props.quantity
-      //purchaseDate: props.purchaseDate,
+      id: this.props.id,
+      name: this.props.name,
+      parent: this.props.parent,
+      datePurchased: this.props.datePurchased,
+      quantity: this.props.quantity,
+      unit: this.props.unit
     };
 
     this.toggleItemModalVisible = this.toggleItemModalVisible.bind(this);
@@ -55,8 +58,8 @@ export default class FoodItem extends React.Component {
   }
 
   onPressDelete() {
-    //alert(this.state.name + " delete button was pressed.");
-    //removeFromFoodStock(firebase.auth().currentUser.uid, this.state.name);
+    const parent = this.state.parent;
+
     Alert.alert(
       "Warning",
       "Are you sure you want to delete " +
@@ -70,11 +73,21 @@ export default class FoodItem extends React.Component {
         },
         {
           text: "Yes",
-          onPress: () =>
+          onPress: () => {
             removeFromFoodStock(
-              firebase.auth().currentUser.uid,
-              this.state.name
-            )
+			  firebase.auth().currentUser.uid,
+			  this.state.name,
+              this.state.id
+            );
+
+            //update the parent's foodlist to keep it synced with firebase
+            // console.log(parent.state.externalFoodList);
+            parent.setState({
+              externalFoodList: parent.state.externalFoodList.filter(
+                foodItem => foodItem.name != this.state.name
+              )
+            });
+          }
         }
       ],
       { cancelable: false }
@@ -93,11 +106,13 @@ export default class FoodItem extends React.Component {
           }}
         >
           <FoodItemForm
-            datePurchased={new Date()}
-            metric=""
+            datePurchased={this.state.datePurchased}
+            id={this.state.id}
             name={this.state.name}
+            parent={this}
             price={null}
             quantity={this.state.quantity}
+            unit=""
           />
           <TouchableHighlight onPress={this.toggleItemModalVisible}>
             <Text>Hide Modal</Text>

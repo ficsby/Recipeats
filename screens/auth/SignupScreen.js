@@ -19,6 +19,8 @@ import logo from "./../../assets/images/logo_transparent.png";
 import { stringify } from "qs";
 
 import KeyboardShift from "./../../styles/KeyboardShift.js";
+import AutocompleteData from './../../data/AutocompleteData';
+
 import {
   widthPercentageToDP as wPercentage,
   heightPercentageToDP as hPercentage
@@ -40,7 +42,8 @@ export default class SignupScreen extends React.Component {
       activityLevel: "Sedentary",
       birthDate: "",
       selectedHeightMetric: "in",
-      selectedGender: "Male"
+      selectedGender: "Male",
+      ingredientSuggestions: []
     };
   }
 
@@ -83,6 +86,18 @@ export default class SignupScreen extends React.Component {
           var user = firebase.auth().currentUser;
           this.writeUserData(user.uid);
           user.sendEmailVerification();
+          retrieveData = () => {
+            var ref = firebase.database().ref('ingredients/ingredients');
+            return ref.once('value');
+          }
+      
+          // // Snapshot is the depiction of the user's current data
+          retrieveData().then( (snapshot) => {
+            this.setState( {
+                ingredientSuggestions: snapshot.val()
+            })
+          })
+          AutocompleteData.ingredientSuggestions = ingredientSuggestions;
           this.props.navigation.navigate("Home");
           // do nothing, success of creating will move onto the main page
         },
