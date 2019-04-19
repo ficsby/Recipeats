@@ -234,14 +234,83 @@ export default class FoodItemForm extends React.Component {
           <Divider />
           <View style={styles.dataRow}>
             <Text style={styles.inputLabel}>Quantity</Text>
-            <TextInput
-              style={styles.inputData}
-              value={this.state.quantity}
-              onChangeText={itemQuantity => {
-                this.setState({ quantity: itemQuantity });
-                this.state.parent.setState({ itemQuantity: itemQuantity });
-              }}
-            />
+            <View style={styles.metricsRow}>
+              <TextInput
+                style={styles.quantityInput}
+                value={this.state.quantity}
+                onChangeText={itemQuantity => {
+                  this.setState({ quantity: itemQuantity });
+                  this.state.parent.setState({ itemQuantity: itemQuantity });
+                }}
+              />
+
+              {/* <Text style={styles.inputLabel}>Metric</Text> */}
+              <View style={styles.choiceContainer}>
+                <Picker
+                  style={styles.metricPicker}
+                  selectedValue={this.state.metric}
+                  onValueChange={(itemValue, itemIndex) => {
+                    this.setState({ metric: itemValue });
+                    this.state.parent.setState({ itemUnit: itemValue });
+                  }}
+                //   mode={"dropdown"}
+                >
+                  <Picker.Item
+                    style={styles.picker}
+                    label="unit"
+                    value="units"
+                  />
+                  <Picker.Item
+                    style={styles.picker}
+                    label="mL (milliliters)"
+                    value="milliliters"
+                  />
+                  <Picker.Item style={styles.picker} label="L (liters)" value="liters" />
+                  <Picker.Item style={styles.picker} label="g (grams)" value="grams" />
+                  <Picker.Item
+                    style={styles.picker}
+                    label="mg (milligrams)"
+                    value="milligrams"
+                  />
+                  <Picker.Item
+                    style={styles.picker}
+                    label="kg (kilograms)"
+                    value="kilograms"
+                  />
+                  <Picker.Item
+                    style={styles.picker}
+                    label="tsp (teaspoons)"
+                    value="teaspoons"
+                  />
+                  <Picker.Item
+                    style={styles.picker}
+                    label="tbsp (tablespoons)"
+                    value="tablespoons"
+                  />
+                  <Picker.Item
+                    style={styles.picker}
+                    label="oz (ounces)"
+                    value="ounces"
+                  />
+                  <Picker.Item
+                    style={styles.picker}
+                    label="lb (pounds)"
+                    value="pounds"
+                  />
+                  <Picker.Item style={styles.picker} label="pt (pints)" value="pints" />
+                  <Picker.Item
+                    style={styles.picker}
+                    label="qt (quarts)"
+                    value="quarts"
+                  />
+                  <Picker.Item
+                    style={styles.picker}
+                    label="gal (gallons)"
+                    value="gallons"
+                  />
+                </Picker>
+              </View>
+            </View>
           </View>
 
           <Divider />
@@ -275,29 +344,6 @@ export default class FoodItemForm extends React.Component {
                   this.setState({ datePurchased: date });
                 }}
               />
-            </View>
-          </View>
-
-          <Divider />
-          <View styles={styles.dataRow}>
-            <Text style={styles.inputLabel}>Ingredient Metric</Text>
-            <View style={Styles.choiceContainer}>
-              <Picker
-                style={Styles.choiceRow}
-                selectedValue={this.state.metric}
-                onValueChange={(itemValue, itemIndex) => {
-                  this.setState({ metric: itemValue });
-                  this.state.parent.setState({ itemUnit: itemValue });
-                }}
-                mode={"dropdown"}
-              >
-                <Picker.Item
-                  style={styles.picker}
-                  label="milliliters"
-                  value="milliliter"
-                />
-                <Picker.Item style={styles.picker} label="grams" value="gram" />
-              </Picker>
             </View>
           </View>
 
@@ -368,6 +414,12 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
 
+  metricsRow: {
+    flex: 1,
+    flexDirection: "row",
+    width: wPercentage("100%")
+  },
+
   saveButton: {
     marginVertical: hPercentage("3%")
   },
@@ -376,6 +428,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     fontWeight: "600"
+  },
+
+  selectDate: {
+    // marginRight: 40,
+    // paddingLeft: 40,
+    fontSize: 15,
+    color: "rgba(91, 88, 88, 0.9)"
   },
 
   cancelButton: {
@@ -403,6 +462,14 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 0.5,
     height: hPercentage("5%")
+  },
+
+  quantityInput: {
+    fontSize: 13,
+    borderRadius: 4,
+    borderWidth: 0.5,
+    height: hPercentage("5%"),
+    width: wPercentage("60%")
   },
 
   /*------------------------------------------------------------------------
@@ -445,5 +512,15 @@ const styles = StyleSheet.create({
 
   itemText: {
     width: "100%"
+  },
+
+  choiceContainer: {
+    backgroundColor: "rgba(244, 238, 238, 0.7)",
+    marginLeft: wPercentage("2%")
+  },
+  
+  metricPicker: {
+	height: hPercentage('5%'),
+    width: wPercentage("25%")
   }
 });
