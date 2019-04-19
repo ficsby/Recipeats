@@ -6,6 +6,7 @@ import { ListItem, Badge, Divider} from 'react-native-elements';
 // import DialogInput from 'react-native-dialog-input';
 import FlatListItem from './components/FlatListItem';
 import AddItemModal from './components/AddItemModal';
+import AddFoodItemModal from "./components/AddFoodItemModal";
 
 import { Font, AppLoading } from 'expo';
 
@@ -356,7 +357,21 @@ export default class RecipeScreen extends React.Component {
                             </View>
                         </View>
 
-                        {/* Shows the add ingredient modal if isIngredientModalVisible is true (i.e when the user clicks '+' icon to add an ingredient */}
+						{/* Shows the add ingredient modal if isIngredientModalVisible is true (i.e when the user clicks '+' icon to add an ingredient */}
+						
+						<AddFoodItemModal
+							isModalVisible={this.state.isIngredientModalVisible}
+							title={"Add Ingredient to Recipe"}
+							showPriceInput = {false}
+							showDatePicker = {false}
+							datePurchased={new Date()}
+							id={null}
+							name=""
+							parent={this}
+							price={null}
+							quantity={null}
+							unit=""
+						/>
                         {/* <AddItemModal isModalVisible={this.state.isIngredientModalVisible}
                             title={"Add Ingredient"}
                             message1={"Name:"} message2={"Quantity:"}

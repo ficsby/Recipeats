@@ -22,6 +22,7 @@ import {
 import * as firebase from "firebase";
 import { Alert } from "react-native";
 import FoodItemForm from './FoodItemForm';
+import AddFoodItemModal from "./AddFoodItemModal";
 
 function onPress(food) {
   alert(food.name + " was pressed.");
@@ -97,7 +98,20 @@ export default class FoodItem extends React.Component {
   render() {
     return (
       <View>
-        <Modal
+		  <AddFoodItemModal
+			  	isModalVisible={this.state.itemModalVisible}
+				title={"Edit Ingredient"}
+				showPriceInput = {true}
+				showDatePicker = {true}
+                datePurchased={new Date()}
+                id={null}
+                name=""
+                parent={this}
+                price={null}
+                quantity={null}
+                unit=""
+              />
+        {/* <Modal
           animationType="slide"
           transparent={false}
           visible={this.state.itemModalVisible}
@@ -117,7 +131,7 @@ export default class FoodItem extends React.Component {
           <TouchableHighlight onPress={this.toggleItemModalVisible}>
             <Text>Hide Modal</Text>
           </TouchableHighlight>
-        </Modal>
+        </Modal> */}
 
         <Button
           key={this.props.index}

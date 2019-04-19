@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  Modal,
+//   Modal,
   ScrollView,
   Text,
   TextInput,
@@ -14,6 +14,7 @@ import { Font, AppLoading } from "expo";
 import { ListItem } from "react-native-elements";
 import KeyboardShift from "../styles/KeyboardShift.js";
 import TouchableScale from "react-native-touchable-scale";
+
 import {
   Table,
   TableWrapper,
@@ -34,6 +35,7 @@ import {
 import FoodItem from "./components/FoodItem";
 import Button from "./components/Button";
 import FoodItemForm from "./components/FoodItemForm";
+import AddFoodItemModal from "./components/AddFoodItemModal";
 import ApiUtils from "./../api/apiUtils";
 
 // import Bar from 'react-native-bar-collapsible';
@@ -148,16 +150,11 @@ export default class FoodstockScreen extends React.Component {
       <KeyboardShift>
         {() => (
           <ScrollView>
-            <Modal
-              animationType="slide"
-              transparent={false}
-              visible={this.state.addModalVisible}
-              onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
-              }}
-            >
-              <FoodItemForm
-			  	screenTitle = "Add Food Item to Foodlist"
+			  <AddFoodItemModal
+				isModalVisible={this.state.addModalVisible}
+				title={"Add Ingredient to Food Stock"}
+				showPriceInput = {true}
+				showDatePicker = {true}
                 datePurchased={new Date()}
                 id={null}
                 name=""
@@ -166,7 +163,16 @@ export default class FoodstockScreen extends React.Component {
                 quantity={null}
                 unit=""
               />
-            </Modal>
+            {/* <Modal
+              animationType="slide"
+              transparent={false}
+              visible={this.state.addModalVisible}
+              onRequestClose={() => {
+                Alert.alert("Modal has been closed.");
+              }}
+            >
+              
+            </Modal> */}
 
             <View style={Styles.sectionContainer}>
               <Text style={Styles.sectionTitle}> Inventory </Text>
