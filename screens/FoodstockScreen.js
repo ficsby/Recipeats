@@ -157,6 +157,7 @@ export default class FoodstockScreen extends React.Component {
               }}
             >
               <FoodItemForm
+			  	screenTitle = "Add Food Item to Foodlist"
                 datePurchased={new Date()}
                 id={null}
                 name=""

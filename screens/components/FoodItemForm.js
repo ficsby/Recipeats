@@ -38,6 +38,7 @@ export default class FoodItemForm extends React.Component {
     super(props);
 
     this.state = {
+	  screenTitle: this.props.screenTitle,
       datePurchased: this.props.datePurchased,
       id: this.props.id,
       ingredients: AutocompleteData.ingredientSuggestions,
@@ -50,7 +51,7 @@ export default class FoodItemForm extends React.Component {
       query: "",
       unit: this.props.unit,
       isLoading: true,
-      tableHead: ["Head", "Head2", "Head3", "Head4"],
+      tableHead: ["Title", "Amount", "Unit", "Percentage of Daily Needs"],
       tableData: []
     };
 
@@ -178,7 +179,8 @@ export default class FoodItemForm extends React.Component {
               style={{ marginLeft: wPercentage("5%") }}
             />
           </TouchableOpacity>
-          <Text style={styles.addFoodItemTitle}>Add Food Item</Text>
+		  <Text style={styles.addFoodItemTitle}>{this.state.screenTitle
+		}</Text>
         </View>
 
 		{/* Beginning of content section 
