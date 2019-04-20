@@ -88,7 +88,6 @@ export default class FoodItem extends React.Component {
             );
 
             //update the parent's foodlist to keep it synced with firebase
-            // console.log(parent.state.externalFoodList);
             parent.setState({
               externalFoodList: parent.state.externalFoodList.filter(
                 foodItem => foodItem.name != this.state.name
@@ -104,6 +103,7 @@ export default class FoodItem extends React.Component {
   render() {
     return (
       <View>
+
 		  <AddFoodItemModal
 			  	isModalVisible={this.state.itemModalVisible}
 				title={"Edit Ingredient"}
@@ -118,27 +118,6 @@ export default class FoodItem extends React.Component {
 				unit={this.state.unit}
 				tableData = {this.state.tableData}
             />
-        {/* <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.itemModalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-          }}
-        >
-          <FoodItemForm
-            datePurchased={this.state.datePurchased}
-            id={this.state.id}
-            name={this.state.name}
-            parent={this}
-            price={null}
-            quantity={this.state.quantity}
-            unit=""
-          />
-          <TouchableHighlight onPress={this.toggleIngrModalVisibility}>
-            <Text>Hide Modal</Text>
-          </TouchableHighlight>
-        </Modal> */}
 
         <Button
           key={this.props.index}
@@ -156,9 +135,7 @@ export default class FoodItem extends React.Component {
               <Text>Delete</Text>
             </Button>
           </View>
-          {/* <View style={styles.foodItemContainer}>
-                    <Text style={styles.foodQuantity}>{this.state.quantity}</Text>
-                </View> */}
+
         </Button>
       </View>
     );

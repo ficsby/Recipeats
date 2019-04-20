@@ -262,7 +262,6 @@ class AddFoodItemModal extends React.Component {
         }}
       >
         <View style={[styles.container, { ...modalStyleProps }]}>
-          {/* <TouchableOpacity style={styles.container} activeOpacity={1} onPress={() => { this.props.closeDialog(); this.setState({ inputModal: '',opening: true })}} > */}
           <ScrollView
             contentContainerStyle={[
               styles.modal_container,
@@ -270,6 +269,11 @@ class AddFoodItemModal extends React.Component {
             ]}
           >
             <View style={styles.modal_body}>
+				<Text style={styles.title_modal}>{title}</Text>
+
+				{/* 
+					You can reuse the header to put the title and the close icon on the same row, so leave this commented for now
+				*/}
               {/* Title header
 				--------------------------------------------------------------------------------------------------------- */}
               {/* <View style={styles.titleRow}>
@@ -289,12 +293,14 @@ class AddFoodItemModal extends React.Component {
               <Text style={styles.addFoodItemTitle}>
                 {this.state.screenTitle}
               </Text>
-            </View> */}
-              <Text style={styles.title_modal}>{title}</Text>
+			</View> */}
+			
               {/* Beginning of content section 
 				--------------------------------------------------------------------------------------------------------- */}
               <View style={Styles.screenContainer}>
-                {/* Search Ingredient Section 
+
+				{/* Search Ingredient Section 
+					User can search for a particular ingredient within the database which would return additional information based on some given info
 				--------------------------------------------------------------------------------------------------------- */}
                 <View style={styles.dataRow}>
                   <Text style={styles.inputLabel}>
@@ -315,6 +321,7 @@ class AddFoodItemModal extends React.Component {
                     placeholder="    Search ingredients..."
                     onChangeText={text => this.setState({ query: text })}
                     renderItem={({ ingredientName, ingredientId }) => (
+						// This is the suggestion list the autocomplete compiles while user types in the search bar
                       <TouchableOpacity
                         style={styles.itemTextContainer}
                         onPress={() =>
@@ -350,6 +357,7 @@ class AddFoodItemModal extends React.Component {
 				--------------------------------------------------------------------------------------------------------- */}
                 <View style={styles.dataRow}>
                   <Text style={styles.inputLabel}>Quantity</Text>
+
                   <View style={styles.metricsRow}>
                     <TextInput
                       style={styles.quantityInput}
@@ -361,6 +369,7 @@ class AddFoodItemModal extends React.Component {
                         });
                       }}
                     />
+					
                     {/* Food measurements */}
                     <View style={styles.choiceContainer}>
                       <Picker
@@ -437,8 +446,9 @@ class AddFoodItemModal extends React.Component {
                           value="gallons"
                         />
                       </Picker>
-                    </View>
-                  </View>
+
+                    </View> {/* End of food measurement unit picker */}
+                  </View> {/* End of quantity input picker */}
                 </View>
 
                 {/* Date purchased Section 
@@ -467,7 +477,8 @@ class AddFoodItemModal extends React.Component {
                 >
                   <Text style={styles.saveText}>Save new food item</Text>
                 </TouchableOpacity>
-
+				
+				{/* This is for testing purposes only, this will be replaced with a small x icon placed on the modal */}
                 <TouchableOpacity
                   onPress={() => this.state.parent.toggleIngrModalVisibility()}
                 >
@@ -476,7 +487,6 @@ class AddFoodItemModal extends React.Component {
               </View>
             </View>
           </ScrollView>
-          {/* </TouchableOpacity> */}
         </View>
       </Modal>
     );

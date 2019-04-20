@@ -121,8 +121,6 @@ export default class FoodstockScreen extends React.Component {
         this.setState({
           externalFoodList: foodList
         });
-
-        // console.log(this.state.externalFoodList);
       }
     });
   }
@@ -144,19 +142,24 @@ export default class FoodstockScreen extends React.Component {
   }
 
   render() {
-    const state = this.state;
-    const element = (data, index) => (
-      <TouchableOpacity onPress={() => this._alertIndex(index)}>
-        <View style={Styles.btn}>
-          <Text style={Styles.btnText}>button</Text>
-        </View>
-      </TouchableOpacity>
-    );
+	const state = this.state;
+	/**
+	 * Not sure if this code is ever used or needed for something, will ask later
+	 */
+    // const element = (data, index) => (
+    //   <TouchableOpacity onPress={() => this._alertIndex(index)}>
+    //     <View style={Styles.btn}>
+    //       <Text style={Styles.btnText}>button</Text>
+    //     </View>
+    //   </TouchableOpacity>
+    // );
 
     return (
       <KeyboardShift>
         {() => (
           <ScrollView>
+
+			  {/* Launches food item modal to add a food item to user's food stock */}
 			  <AddFoodItemModal
 				isModalVisible={this.state.addModalVisible}
 				title={"Add Ingredient to Food Stock"}
@@ -170,16 +173,6 @@ export default class FoodstockScreen extends React.Component {
                 quantity={null}
                 unit=""
               />
-            {/* <Modal
-              animationType="slide"
-              transparent={false}
-              visible={this.state.addModalVisible}
-              onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
-              }}
-            >
-              
-            </Modal> */}
 
             <View style={Styles.sectionContainer}>
               <Text style={Styles.sectionTitle}> Inventory </Text>
@@ -193,6 +186,8 @@ export default class FoodstockScreen extends React.Component {
                   {state.externalFoodList &&
                     state.externalFoodList.map(rowData => {
                       return (
+
+						// Launches food item dialogue that displays the information for each food item, user can also edit values here
                         <FoodItem
                           key={rowData.name}
 						  name={rowData.name}
@@ -204,6 +199,7 @@ export default class FoodstockScreen extends React.Component {
 						  tableData={rowData.tableData}
 						  foodInfoModalVisible = {this.state.isFoodInfoModalVisible}
                         />
+						
                       );
                     })}
                 </Table>
