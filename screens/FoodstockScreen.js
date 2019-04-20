@@ -73,21 +73,21 @@ const inventoryList = [
 ];
 
 export default class FoodstockScreen extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			addModalVisible: false,
-			tableHead: ["Name", "Quantity", ""],
-			externalFoodList: [],
-			editable: false,
-			ingredients: [],
-			itemId: null,
-			itemUnit: "",
-			itemName: "",
-			itemQuantity: null
-		};
-		this.toggleAddModalVisible = this.toggleAddModalVisible.bind(this);
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      addModalVisible: false,
+      tableHead: ["Name", "Quantity", ""],
+      externalFoodList: [],
+      editable: false,
+      ingredients: [],
+      itemId: null,
+      itemUnit: "",
+      itemName: "",
+      itemQuantity: null
+    };
+    this.toggleAddModalVisible = this.toggleAddModalVisible.bind(this);
+  }
 
   componentDidMount() {
     this._ismounted = true;
@@ -181,8 +181,8 @@ export default class FoodstockScreen extends React.Component {
                       return (
                         <FoodItem
                           key={rowData.name}
-						  name={rowData.name}
-						  id ={rowData.id}
+                          name={rowData.name}
+                          id={rowData.id}
                           parent={this}
                           quantity={rowData.quantity}
                         />
