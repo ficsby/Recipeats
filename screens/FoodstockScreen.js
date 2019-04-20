@@ -79,16 +79,23 @@ export default class FoodstockScreen extends React.Component {
 		super(props);
 		this.state = {
 			addModalVisible: false,
+			isFoodInfoModalVisible: false,
 			tableHead: ["Name", "Quantity", ""],
 			externalFoodList: [],
 			editable: false,
 			ingredients: [],
-			itemId: null,
-			itemUnit: "",
+
+			// ingredient info
 			itemName: "",
-			itemQuantity: null
+			itemId: null,
+			itemQuantity: null,
+			itemUnit: "",
+			itemPrice: null,
+			itemDate: "",
+			itemNutrientData: null,
+
 		};
-		this.toggleAddModalVisible = this.toggleAddModalVisible.bind(this);
+		this.toggleIngrModalVisibility = this.toggleIngrModalVisibility.bind(this);
 	}
 
   componentDidMount() {
@@ -115,7 +122,7 @@ export default class FoodstockScreen extends React.Component {
           externalFoodList: foodList
         });
 
-        // console.log(foodList);
+        // console.log(this.state.externalFoodList);
       }
     });
   }
@@ -128,7 +135,7 @@ export default class FoodstockScreen extends React.Component {
    * Function to set whether the add item modal is visible or not
    * @param {*} visible - boolean value to set
    */
-  toggleAddModalVisible() {
+  toggleIngrModalVisibility() {
     this.setState({ addModalVisible: !this.state.addModalVisible });
   }
 
@@ -189,9 +196,13 @@ export default class FoodstockScreen extends React.Component {
                         <FoodItem
                           key={rowData.name}
 						  name={rowData.name}
+						  price={rowData.price}
+						  datePurchased={rowData.datePurchased}
+						  quantity={rowData.quantity}
 						  id ={rowData.id}
                           parent={this}
-                          quantity={rowData.quantity}
+						  tableData={rowData.tableData}
+						  foodInfoModalVisible = {this.state.isFoodInfoModalVisible}
                         />
                       );
                     })}
@@ -210,7 +221,7 @@ export default class FoodstockScreen extends React.Component {
                 }}
                 title="+ Add a new food item"
                 titleStyle={{ color: "white", fontWeight: "bold" }}
-                onPress={this.toggleAddModalVisible}
+                onPress={this.toggleIngrModalVisibility}
               />
             </View>
           </ScrollView>

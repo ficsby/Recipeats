@@ -35,27 +35,33 @@ export default class FoodItem extends React.Component {
     this.state = {
       itemModalVisible: false,
       id: this.props.id,
-      name: this.props.name,
+	  name: this.props.name,
+	  price: this.props.price,
       parent: this.props.parent,
       datePurchased: this.props.datePurchased,
       quantity: this.props.quantity,
-      unit: this.props.unit
+	  unit: this.props.unit,
+	  tableData: this.props.tableData
     };
 
-    this.toggleItemModalVisible = this.toggleItemModalVisible.bind(this);
+    this.toggleIngrModalVisibility = this.toggleIngrModalVisibility.bind(this);
   }
 
+  async componentDidMount() {
+    this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
+	console.log(this.state.tableData);
+  }
   /**
    * Function to set whether the add item modal is visible or not
    * @param {*} visible - boolean value to set
    */
-  toggleItemModalVisible() {
+  toggleIngrModalVisibility() {
     this.setState({ itemModalVisible: !this.state.itemModalVisible });
   }
 
   onPressItem() {
     //alert(this.state.name + " was pressed.");
-    this.toggleItemModalVisible;
+    this.toggleIngrModalVisibility;
   }
 
   onPressDelete() {
@@ -103,14 +109,15 @@ export default class FoodItem extends React.Component {
 				title={"Edit Ingredient"}
 				showPriceInput = {true}
 				showDatePicker = {true}
-                datePurchased={new Date()}
-                id={null}
-                name=""
+                datePurchased={this.state.datePurchased}
+                id={this.state.id}
+                name= {this.state.name}
                 parent={this}
-                price={null}
-                quantity={null}
-                unit=""
-              />
+                price={this.state.price}
+                quantity={this.state.quantity}
+				unit={this.state.unit}
+				tableData = {this.state.tableData}
+            />
         {/* <Modal
           animationType="slide"
           transparent={false}
@@ -128,7 +135,7 @@ export default class FoodItem extends React.Component {
             quantity={this.state.quantity}
             unit=""
           />
-          <TouchableHighlight onPress={this.toggleItemModalVisible}>
+          <TouchableHighlight onPress={this.toggleIngrModalVisibility}>
             <Text>Hide Modal</Text>
           </TouchableHighlight>
         </Modal> */}
@@ -136,7 +143,7 @@ export default class FoodItem extends React.Component {
         <Button
           key={this.props.index}
           noDefaultStyles={true}
-          onPress={this.toggleItemModalVisible}
+          onPress={() => this.toggleIngrModalVisibility()}
         >
           <View style={styles.foodItemContainer}>
             <Text style={styles.foodName}>{this.state.name}</Text>

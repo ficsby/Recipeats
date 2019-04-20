@@ -36,27 +36,28 @@ class AddFoodItemModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+
+	  parent: this.props.parent,
+	  isLoading: true,
       inputModal: "",
       opening: true,
-      title: "",
-
-      // Customized data
-      showPriceInput: this.props.showPriceInput,
-      showDatePicker: this.props.showDatePicker,
-      datePurchased: this.props.datePurchased,
-      id: this.props.id,
+      title: this.props.title,
+	  
+	  id: this.props.id,
+	  // Autocomplete search bar data
+	  query: "",
       ingredients: AutocompleteData.ingredientSuggestions,
-      metric: this.props.metric,
-      name: this.props.name,
+	  name: "",
+
       nutritionalTags: {},
-      parent: this.props.parent,
-      price: this.props.price,
-      quantity: this.props.quantity,
-      query: "",
-      unit: this.props.unit,
-      isLoading: true,
+      price: "",
+      quantity: null,
+	  unit: null,
+	  datePurchased: null,
+	  
+	  // data for nutrition info table
       tableHead: ["Title", "Amount", "Unit", "% of Daily Needs"],
-      tableData: []
+      tableData: [],
     };
 
     this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
@@ -100,31 +101,47 @@ class AddFoodItemModal extends React.Component {
   }
 
   onSaveChangesPress = () => {
-    const parent = this.state.parent;
-    modifyFoodStock(
-      firebase.auth().currentUser.uid,
-      this.state.id,
-      this.state.name,
-      this.state.quantity,
-      this.state.unit
-    );
+	  if(this.state.title == 'Add Ingredient to Recipe')
+	  {
 
-    // create a newFoodList with the new item to replace the externalFoodList
-    newFoodList = [];
-    newFoodList = parent.state.externalFoodList;
-    newFoodList.push({
-      id: this.state.id,
-      name: this.state.name,
-      quantity: this.state.quantity
-    });
-    newFoodList.sort((a, b) =>
-      a.itemName > b.itemName ? 1 : b.itemName > a.itemName ? -1 : 0
-    );
+	  }
+	  else if(this.state.title == 'Add Ingredient to Food Stock')
+	  {
+		const parent = this.state.parent;
+		modifyFoodStock(
+		firebase.auth().currentUser.uid,
+		this.state.name,
+		this.state.id,
+		this.state.price,
+		this.state.quantity,
+		this.state.unit,
+		this.state.datePurchased,
+		this.state.tableData);
+		// create a newFoodList with the new item to replace the externalFoodList
+		newFoodList = [];
+		newFoodList = parent.state.externalFoodList;
+		newFoodList.push({
+		  name: this.state.name,
+		  id: this.state.id,
+		  price: this.state.price,
+		  quantity: this.state.quantity,
+		  unit: this.state.unit,
+		  datePurchased: this.state.datePurchased,
+		  nutritionData: this.state.tableData
+		});
+		newFoodList.sort((a, b) =>
+		  a.itemName > b.itemName ? 1 : b.itemName > a.itemName ? -1 : 0
+		);
+	
+		parent.setState({
+		  addModalVisible: !parent.state.addModalVisible,
+		  externalFoodList: newFoodList
+		});
+	  }
+	  else
+	  {
 
-    parent.setState({
-      addModalVisible: !parent.state.addModalVisible,
-      externalFoodList: newFoodList
-    });
+	  }
   };
 
   /**
@@ -137,12 +154,8 @@ class AddFoodItemModal extends React.Component {
   // }
 
   async getIngredientInfo(ingrName, ingrId, quantity) {
-    console.log(ingrName);
-    console.log(ingrId);
+
     var data = await ApiUtils.getIngredientInfoFromId(ingrId, quantity, this);
-    if (data != null && this.state.nutritionalTags != null) {
-      console.log(this.state.nutritionalTags);
-    }
   }
 
   /**
@@ -216,6 +229,7 @@ class AddFoodItemModal extends React.Component {
       );
     }
   }
+
   render() {
     const { query } = this.state;
     const ingredients = this.findIngredient(query);
@@ -289,7 +303,7 @@ class AddFoodItemModal extends React.Component {
 
                   <Autocomplete
                     // containerStyle={styles.searchContainer}
-                    inputContainerStyle={styles.input_container}
+                    inputContainerStyle={styles.searchInputContainer}
                     data={
                       ingredients.length === 1 &&
                       comp(query, ingredients[0].ingredientName)
@@ -351,9 +365,9 @@ class AddFoodItemModal extends React.Component {
                     <View style={styles.choiceContainer}>
                       <Picker
                         style={styles.metricPicker}
-                        selectedValue={this.state.metric}
+                        selectedValue={this.state.unit}
                         onValueChange={(itemValue, itemIndex) => {
-                          this.setState({ metric: itemValue });
+                          this.setState({ unit: itemValue });
                           this.state.parent.setState({ itemUnit: itemValue });
                         }}
                       >
@@ -432,7 +446,7 @@ class AddFoodItemModal extends React.Component {
                 {this.showDatePicker()}
 
                 {/* Nutritional information Section 
-			--------------------------------------------------------------------------------------------------------- */}
+				--------------------------------------------------------------------------------------------------------- */}
                 <View styles={styles.dataRow}>
                   <Text style={styles.inputLabel}>Nutritional Information</Text>
                   <Table
@@ -455,11 +469,7 @@ class AddFoodItemModal extends React.Component {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  onPress={() => {
-                    this.state.parent.setState({
-                      addModalVisible: !this.state.parent.state.addModalVisible
-                    });
-                  }}
+                  onPress={() => this.state.parent.toggleIngrModalVisibility()}
                 >
                   <Text style={styles.cancelText}>Cancel</Text>
                 </TouchableOpacity>
@@ -477,7 +487,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
-    // flexDirection: 'column',
+    flexDirection: 'column',
     justifyContent: "center",
     alignItems: "center",
     ...Platform.select({

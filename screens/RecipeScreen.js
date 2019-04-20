@@ -268,6 +268,12 @@ export default class RecipeScreen extends React.Component {
         Alert.alert("Your changes have been saved.");
     }
 
+	toggleIngrModalVisibility() {
+		this.setState({
+			isIngredientModalVisible : !this.state.isIngredientModalVisible
+		})
+	}
+
     render() {
            
         // if (this.state.isLoading) {
