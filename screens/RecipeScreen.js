@@ -1,12 +1,15 @@
 import React from 'react';
-import { FlatList, StyleSheet, Image, ImageBackground, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { FlatList, StyleSheet, Image, ImageBackground, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert, Modal } from 'react-native';
 import { StackActions } from 'react-navigation';
 import Autocomplete from 'react-native-autocomplete-input';
 import { ListItem, Badge, Divider} from 'react-native-elements';
 import { Font, AppLoading } from 'expo';
 import FlatListItem from './components/FlatListItem';
+import * as firebase from "firebase";
 
 // import NavigationService from '../navigation/NavigationService.js';
+import ComparisonModal from './components/ComparisonModal';
+import {getFoodList} from './../utils/FoodListUtils';
 
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
@@ -62,6 +65,7 @@ export default class RecipeScreen extends React.Component {
             recipes: [],
             bookmarked: false,
             liked: false,
+            comparisonModalVisible: false,
 
             id: 556177,
             title: 'Ramen Noodle Coleslaw blahbalsdfadfsdfsdfasdfasdfasdf',
@@ -80,42 +84,52 @@ export default class RecipeScreen extends React.Component {
 
             extendedIngredients: [   // FOR TESTING PURPOSES
                 {
+                    id: 12061,
                     name: 'Almonds',
                     amount: '1/4 cups'
                 },
                 {
+                    id: 6583,
                     name: 'Beef flavor ramen noodle soup mix',
                     amount: '1 package'
                 },
                 {
+                    id: 10011109,
                     name: 'Shredded coleslaw mix',
                     amount: '1 bag'
                 },
                 {
+                    id: 11291,
                     name: 'Green onions',
                     amount: '5 stalks'
                 },
                 {
+                    id: 4053,
                     name: 'Olive oil',
                     amount: '2 Tbsp'
                 },
                 {
+                    id: 1002030,
                     name: 'Pepper',
                     amount: '1/2 tsp'
                 },
                 {
+                    id: 2047,
                     name: 'Salt',
                     amount: '1/2 tsp'
                 },
                 {
+                    id: 19335,
                     name: 'Sugar',
                     amount: '3 Tbsp'
                 },
                 {
+                    id: 12023,
                     name: 'Sesame seeds',
                     amount: '3 Tbsp'
                 },
                 {
+                    id: 2053,
                     name: 'Vinegar',
                     amount: '3 Tbsp'
                 },
@@ -159,6 +173,7 @@ export default class RecipeScreen extends React.Component {
                               'whole30': false,
                              },
         };
+        this.toggleComparisonModal = this.toggleComparisonModal.bind(this);
         this.toggleEditable = this.toggleEditable.bind(this);
         this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
         this.toggleBookmark = this.toggleBookmark.bind(this);
@@ -169,10 +184,38 @@ export default class RecipeScreen extends React.Component {
         this.setState({  bookmarked: !this.state.bookmarked  });
     };
 
+    toggleComparisonModal() {
+        this.setState({comparisonModalVisible: !this.state.comparisonModalVisible});
+    }
+
     // Toggles the like state when the "Heart" icon is tapped
     toggleHeart() {
         this.setState({  liked: !this.state.liked });
     };
+
+    getFoodStock() {
+      foodList = [];
+
+      // Returns a promise of the user's value
+      retrieveData = () => {
+        ref = getFoodList(firebase.auth().currentUser.uid);
+        return ref.once("value");
+      };
+  
+      // Snapshot is the depiction of the user's current data
+      retrieveData().then(snapshot => {
+        foodListSnapshot = snapshot.val();
+  
+        for (var key in foodListSnapshot) {
+          if (foodListSnapshot.hasOwnProperty(key)) {
+            foodList.push(foodListSnapshot[key]);
+          }
+        }
+        
+      });
+
+      return foodList;
+    }
 
     // Renders the icon according to its current state
     renderIcon(iconType) {
@@ -200,20 +243,11 @@ export default class RecipeScreen extends React.Component {
         }); 
         this.setState({fontLoaded: true});
 
-<<<<<<< HEAD
-        // const data = await apiUtils.getRecipeInfoFromId(this.state.id, this);
-        
-        if(data != null)
-        {
-            this.setState({ isLoading: false });
-        }
-=======
         // var data = apiUtils.getRecipeInfoFromId(this.state.id, this);
         // if(data != null)
         // {
         //     this.setState({ isLoading: false });
         // }        
->>>>>>> editrecipe-screen
     };
 
     componentWillUnmount () {
@@ -260,6 +294,21 @@ export default class RecipeScreen extends React.Component {
                 ------------------------------------------------------------------------------------*/}
                 
                 <ScrollView style={styles.recipeContainer}> 
+                    {/* Comparison Modal */}
+                    <Modal
+                      animationType="slide"
+                      transparent={false}
+                      visible={this.state.comparisonModalVisible}
+                      onRequestClose={() => {
+                      Alert.alert("Modal has been closed.");
+                      }}
+                    >
+                      <ComparisonModal
+                        parent={this}
+                        foodstock={this.getFoodStock()}
+                        recipeIngredients={this.state.extendedIngredients}
+                      />
+                    </Modal>
 
                     {/* <ImageBackground source={require('./../assets/images/test_photo.jpg')} /> */}
                     <ImageBackground source={require('./../assets/images/ramen-noodle-coleslaw.jpg')} style={styles.image}>
@@ -353,13 +402,18 @@ export default class RecipeScreen extends React.Component {
                                         
                                 />
                             }           
-                            <TouchableOpacity style={styles.compareButton}><Text style={styles.compareText}>Compare To Food Stock</Text></TouchableOpacity>
+                            <TouchableOpacity 
+                                style={styles.compareButton} 
+                                onPress={this.toggleComparisonModal}
+                            >
+                                <Text style={styles.compareText}>Compare To Food Stock</Text>
+                            </TouchableOpacity>
                         </View>
 
                         {/* contentContainerStyle={styles.numberContainer} rightContentContainerStyle={styles.instructionStepContainer} />  */}
 
                         <View style ={styles.sectionContainer}>
-                            < Text style={styles.sectionTitle}> Instructions </Text>
+                            <Text style={styles.sectionTitle}> Instructions </Text>
                             {
                                 this.state.instructions.map( (item, i) =>  
                                 ( <ListItem key={i} title={item.instruction} leftIcon={<Badge value={i+1} 
@@ -452,7 +506,7 @@ const styles = StyleSheet.create({
     saveChanges: {
         color: 'rgba(255,255,255,1)',
         fontSize: 16,
-        fontweight: '600',
+        fontWeight: '600',
     },
 
 /*------------------------------------------------------------------------
