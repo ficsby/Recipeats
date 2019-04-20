@@ -16,21 +16,21 @@ import KeyboardShift from "../styles/KeyboardShift.js";
 import TouchableScale from "react-native-touchable-scale";
 
 import {
-  Table,
-  TableWrapper,
-  Row,
-  Rows,
-  Col,
-  Cols,
-  Cell
+	Table,
+	TableWrapper,
+	Row,
+	Rows,
+	Col,
+	Cols,
+	Cell
 } from "react-native-table-component";
 
 import { Styles } from "../styles/GlobalStyles";
 import {
-  modifyFoodStock,
-  logPurchaseDate,
-  getFoodList,
-  removeFromFoodStock
+	modifyFoodStock,
+	logPurchaseDate,
+	getFoodList,
+	removeFromFoodStock
 } from "../utils/FoodListUtils";
 import FoodItem from "./components/FoodItem";
 import Button from "./components/Button";
@@ -56,31 +56,31 @@ import {
 
 
 const inventoryList = [
-  // FOR TESTING PURPOSES
-  {
-    name: "Rice",
-    quantity: "5"
-  },
-  {
-    name: "Peas",
-    quantity: "1"
-  },
-  {
-    name: "Carrots",
-    quantity: "1"
-  },
-  {
-    name: "Corn",
-    quantity: "4"
-  },
-  {
-    name: "Garlic",
-    quantity: "3"
-  },
-  {
-    name: "Vegetable Oil",
-    quantity: "2"
-  }
+	// FOR TESTING PURPOSES
+	{
+		name: "Rice",
+		quantity: "5"
+	},
+	{
+		name: "Peas",
+		quantity: "1"
+	},
+	{
+		name: "Carrots",
+		quantity: "1"
+	},
+	{
+		name: "Corn",
+		quantity: "4"
+	},
+	{
+		name: "Garlic",
+		quantity: "3"
+	},
+	{
+		name: "Vegetable Oil",
+		quantity: "2"
+	}
 ];
 
 export default class FoodstockScreen extends React.Component {
