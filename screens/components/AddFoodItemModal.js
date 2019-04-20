@@ -47,17 +47,17 @@ class AddFoodItemModal extends React.Component {
 	  // Autocomplete search bar data
 	  query: "",
       ingredients: AutocompleteData.ingredientSuggestions,
-	  name: "",
+	  name: this.props.name,
 
       nutritionalTags: {},
-      price: "",
-      quantity: null,
-	  unit: null,
-	  datePurchased: null,
+      price: this.props.price,
+      quantity: this.props.quantity,
+	  unit: this.props.unit,
+	  datePurchased: this.props.datePurchased,
 	  
 	  // data for nutrition info table
       tableHead: ["Title", "Amount", "Unit", "% of Daily Needs"],
-      tableData: [],
+      tableData: this.props.tableData,
     };
 
     this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
