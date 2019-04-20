@@ -24,10 +24,6 @@ import { Alert } from "react-native";
 import FoodItemForm from './FoodItemForm';
 import AddFoodItemModal from "./AddFoodItemModal";
 
-function onPress(food) {
-	alert(food.name + " was pressed.");
-}
-
 export default class FoodItem extends React.Component {
 	constructor(props) {
 		super(props);

@@ -357,7 +357,6 @@ class AddFoodItemModal extends React.Component {
 				--------------------------------------------------------------------------------------------------------- */}
                 <View style={styles.dataRow}>
                   <Text style={styles.inputLabel}>Quantity</Text>
-
                   <View style={styles.metricsRow}>
                     <TextInput
                       style={styles.quantityInput}
@@ -446,9 +445,8 @@ class AddFoodItemModal extends React.Component {
                           value="gallons"
                         />
                       </Picker>
-
-                    </View> {/* End of food measurement unit picker */}
-                  </View> {/* End of quantity input picker */}
+                    </View> 
+                  </View>
                 </View>
 
                 {/* Date purchased Section 
@@ -477,8 +475,7 @@ class AddFoodItemModal extends React.Component {
                 >
                   <Text style={styles.saveText}>Save new food item</Text>
                 </TouchableOpacity>
-				
-				{/* This is for testing purposes only, this will be replaced with a small x icon placed on the modal */}
+
                 <TouchableOpacity
                   onPress={() => this.state.parent.toggleIngrModalVisibility()}
                 >
