@@ -200,20 +200,17 @@ export default class RecipeScreen extends React.Component {
         }); 
         this.setState({fontLoaded: true});
 
-<<<<<<< HEAD
         // const data = await apiUtils.getRecipeInfoFromId(this.state.id, this);
         
         if(data != null)
         {
             this.setState({ isLoading: false });
         }
-=======
         // var data = apiUtils.getRecipeInfoFromId(this.state.id, this);
         // if(data != null)
         // {
         //     this.setState({ isLoading: false });
         // }        
->>>>>>> editrecipe-screen
     };
 
     componentWillUnmount () {
@@ -452,7 +449,7 @@ const styles = StyleSheet.create({
     saveChanges: {
         color: 'rgba(255,255,255,1)',
         fontSize: 16,
-        fontweight: '600',
+        fontWeight: '600',
     },
 
 /*------------------------------------------------------------------------
