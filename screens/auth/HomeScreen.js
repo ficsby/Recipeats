@@ -112,41 +112,47 @@ export default class HomeScreen extends React.Component {
     };
 
     render() {
-        if (this.state.isLoading) {
-            return <LoadingScreen />;
-        };
-        
-        return (
-            <View style={styles.pageContainer}>
-                <SearchHeaderNav/>
-                <ScrollableTabView  renderTabBar={() => ( <ScrollableTabBar  style={styles.scrollStyle} tabStyle={styles.tabStyle} /> )}
-                tabBarTextStyle={styles.tabBarTextStyle}
-                tabBarInactiveTextColor={'black'}
-                tabBarActiveTextColor={'red'}
-                tabBarUnderlineStyle={styles.underlineStyle}
-                initialPage={1}
-                >
 
-                <View key={'1'} tabLabel={'   Trivia'} style={styles.tabContentSyle}>
-                    <ScrollView><Text>hi</Text></ScrollView>
-                    {/* <View style={styles.foodTriviaContainer}>
-                        <View style={styles.row}>
-                            <Icon name='lightbulb' size={30} color='rgba(0,0,0,1)' height={200} style={{marginLeft: 15}} />
-                            <Text style={styles.foodTriviaHeader}> Food Trivia of the Day </Text>
-                        </View>
+		return (
+			<View>
+				<Text>Home screen</Text>
+			</View>
+		)
+        // if (this.state.isLoading) {
+        //     return <LoadingScreen />;
+        // };
+        
+        // return (
+        //     <View style={styles.pageContainer}>
+        //         <SearchHeaderNav/>
+        //         <ScrollableTabView  renderTabBar={() => ( <ScrollableTabBar  style={styles.scrollStyle} tabStyle={styles.tabStyle} /> )}
+        //         tabBarTextStyle={styles.tabBarTextStyle}
+        //         tabBarInactiveTextColor={'black'}
+        //         tabBarActiveTextColor={'red'}
+        //         tabBarUnderlineStyle={styles.underlineStyle}
+        //         initialPage={1}
+        //         >
+
+        //         <View key={'1'} tabLabel={'   Trivia'} style={styles.tabContentSyle}>
+        //             <ScrollView><Text>hi</Text></ScrollView>
+        //             {/* <View style={styles.foodTriviaContainer}>
+        //                 <View style={styles.row}>
+        //                     <Icon name='lightbulb' size={30} color='rgba(0,0,0,1)' height={200} style={{marginLeft: 15}} />
+        //                     <Text style={styles.foodTriviaHeader}> Food Trivia of the Day </Text>
+        //                 </View>
                         
-                        <Text style= {styles.foodTrivia}>  {this.state.foodTrivia}  </Text>
-                    </View> */}
-                </View>
-                <View key={'2'} tabLabel={'Popular'} style={styles.tabContentSyle}>
-                    <ScrollView>{this.renderArticles()}</ScrollView>
-                </View>
-                <View key={'3'} tabLabel={'Videos'} style={styles.tabContentSyle}>   
-                    <ScrollView>{this.renderVideos()}</ScrollView>
-                </View>
-                </ScrollableTabView>            
-        </View>
-        );
+        //                 <Text style= {styles.foodTrivia}>  {this.state.foodTrivia}  </Text>
+        //             </View> */}
+        //         </View>
+        //         <View key={'2'} tabLabel={'Popular'} style={styles.tabContentSyle}>
+        //             <ScrollView>{this.renderArticles()}</ScrollView>
+        //         </View>
+        //         <View key={'3'} tabLabel={'Videos'} style={styles.tabContentSyle}>   
+        //             <ScrollView>{this.renderVideos()}</ScrollView>
+        //         </View>
+        //         </ScrollableTabView>            
+        // </View>
+        // );
     }
 }
 
