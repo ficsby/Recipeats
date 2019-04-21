@@ -377,9 +377,9 @@ export default class RecipeScreen extends React.Component {
 
                     <View style={styles.contents}>
 
-                        <View style={styles.titleContainer}>
+                        <View style={styles.recipeTitleContainer}>
                             <View style={styles.row}>
-                                <TextInput multiline style={styles.title} 
+                                <TextInput multiline style={styles.recipeTitle} 
                                     value ={this.state.title}  onChangeText={(title) => this.setState({title})}
                                     editable={this.state.editable}/>
 
@@ -679,13 +679,13 @@ const styles = StyleSheet.create({
         height: 300,
     },
 
-    titleContainer: {
+    recipeTitleContainer: {
         marginTop: -5,
         paddingTop: 5,
         backgroundColor: 'rgba(255,255,255,1)',
     },
 
-    title: {
+    recipeTitle: {
         width: '70%',
         maxHeight: 80,
         marginTop: 10,
