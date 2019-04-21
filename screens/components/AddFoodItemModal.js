@@ -52,7 +52,7 @@ class AddFoodItemModal extends React.Component {
 
       nutritionalTags: {},
       price: this.props.price,
-      quantity: this.props.quantity,
+      amount: this.props.amount,
       unit: this.props.unit,
       datePurchased: this.props.datePurchased,
 
@@ -108,7 +108,7 @@ class AddFoodItemModal extends React.Component {
       {
         id: 8234235234234,      //TEMPORARY FOR NOW
         name: this.state.name,
-        quantity: this.state.quantity,
+        amount: this.state.amount,
         unit: this.state.unit
       }
     );
@@ -126,7 +126,7 @@ class AddFoodItemModal extends React.Component {
       //   this.state.name,
       //   this.state.id,
       //   this.state.price,
-      //   this.state.quantity,
+      //   this.state.amount,
       //   this.state.unit,
       //   this.state.datePurchased,
       //   this.state.tableData);
@@ -137,7 +137,7 @@ class AddFoodItemModal extends React.Component {
       //   name: this.state.name,
       //   id: this.state.id,
       //   price: this.state.price,
-      //   quantity: this.state.quantity,
+      //   amount: this.state.amount,
       //   unit: this.state.unit,
       //   datePurchased: this.state.datePurchased,
       //   nutritionData: this.state.tableData
@@ -157,7 +157,7 @@ class AddFoodItemModal extends React.Component {
         this.state.name,
         this.state.id,
         this.state.price,
-        this.state.quantity,
+        this.state.amount,
         this.state.unit,
         this.state.datePurchased,
         this.state.tableData);
@@ -168,7 +168,7 @@ class AddFoodItemModal extends React.Component {
         name: this.state.name,
         id: this.state.id,
         price: this.state.price,
-        quantity: this.state.quantity,
+        amount: this.state.amount,
         unit: this.state.unit,
         datePurchased: this.state.datePurchased,
         nutritionData: this.state.tableData
