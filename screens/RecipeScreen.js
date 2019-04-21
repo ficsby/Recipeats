@@ -389,12 +389,12 @@ export default class RecipeScreen extends React.Component {
                             <View style={styles.statsContainer}>
                                 <Icon style={styles.statsIcon} name='clock' size={13} color='rgba(0,0,0, 0.5)' />
                                 <TextInput style={styles.stats} 
-                                    value ={this.state.readyInMinutes}  onChangeText={(readyInMinutes) => this.setState({readyInMinutes})}
+                                    value ={this.state.readyInMinutes.toString()}  onChangeText={(readyInMinutes) => this.setState({readyInMinutes})}
                                     editable={this.state.editable}/>
 
                                 <Icon style={styles.statsIcon} name='adult' size={13} color='rgba(0,0,0, 0.5)' />
                                 <TextInput style={styles.stats} 
-                                    value ={this.state.servings}  onChangeText={(servings) => this.setState({servings})}
+                                    value ={this.state.servings.toString()}  onChangeText={(servings) => this.setState({servings})}
                                     editable={this.state.editable}/>
                             </View>
                         </View>
