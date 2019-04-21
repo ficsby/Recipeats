@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
 	},
 
 	inputBox_container: {
-		textAlignVertical: "top",
+		textAlignVertical: "top", // need to set this for android devices if multiline for text input is true
 		textAlign: "left",
 		fontSize: 16,
 		color: "rgba(0,0,0,0.54)",
