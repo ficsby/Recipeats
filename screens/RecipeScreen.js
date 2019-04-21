@@ -7,6 +7,7 @@ import { ListItem, Badge, Divider} from 'react-native-elements';
 import FlatListItem from './components/FlatListItem';
 import AddItemModal from './components/AddItemModal';
 import AddFoodItemModal from "./components/AddFoodItemModal";
+import * as firebase from 'firebase';
 
 import { Font, AppLoading } from 'expo';
 
