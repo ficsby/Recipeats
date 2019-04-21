@@ -198,11 +198,12 @@ export default class FoodstockScreen extends React.Component {
 						// Launches food item dialogue that displays the information for each food item, user can also edit values here
                         <FoodItem
                           key={rowData.name}
-                          name={rowData.name}
+						  name={rowData.name}
+						  id={rowData.id}
                           price={rowData.price}
                           datePurchased={rowData.datePurchased}
-                          quantity={rowData.quantity}
-                          id={rowData.id}
+						  quantity={rowData.quantity}
+						  unit = {rowData.unit}
                           parent={this}
                           tableData={rowData.tableData}
                           foodInfoModalVisible={this.state.isFoodInfoModalVisible}
