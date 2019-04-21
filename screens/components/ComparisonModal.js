@@ -48,7 +48,7 @@ export default class ComparisonModal extends React.Component {
       tableData: []
     };
 
-    this.getIngredientInfo = this.getIngredientInfo.bind(this);
+    // this.getIngredientInfo = this.getIngredientInfo.bind(this);
   }
 
   async componentDidMount() {
@@ -68,14 +68,14 @@ export default class ComparisonModal extends React.Component {
   //   await ApiUtils.getAutoCompleteIngredientsByName(text, this);
   // }
 
-  async getIngredientInfo(ingrName, ingrId, quantity) {
-    console.log(ingrName);
-    console.log(ingrId);
-    var data = await ApiUtils.getIngredientInfoFromId(ingrId, quantity, this);
-    if (data != null && this.state.nutritionalTags != null) {
-      console.log(this.state.nutritionalTags);
-    }
-  }
+//   async getIngredientInfo(ingrName, ingrId, quantity) {
+//     console.log(ingrName);
+//     console.log(ingrId);
+//     var data = await ApiUtils.getIngredientInfoFromId(ingrId, quantity, this);
+//     if (data != null && this.state.nutritionalTags != null) {
+//       console.log(this.state.nutritionalTags);
+//     }
+//   }
 
   render() {
     return (

@@ -195,8 +195,7 @@ export default class FoodstockScreen extends React.Component {
                   {state.externalFoodList &&
                     state.externalFoodList.map(rowData => {
                       return (
-
-                        // Launches food item dialogue that displays the information for each food item, user can also edit values here
+						// Launches food item dialogue that displays the information for each food item, user can also edit values here
                         <FoodItem
                           key={rowData.name}
                           name={rowData.name}

@@ -61,7 +61,7 @@ export default class FoodItem extends React.Component {
 
 	renderFoodItem() {
 		return (	
-			<TouchableOpacity>
+			<TouchableOpacity onPress = {() => this.toggleIngrModalVisibility()}>
 				<ListItem key={this.props.rowId} title={this.state.name} rightTitle={this.state.quantity + "  " + this.state.unit} />
 				<Divider />
 			</TouchableOpacity>
