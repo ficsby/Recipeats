@@ -44,6 +44,7 @@ class AddFoodItemModal extends React.Component {
       title: this.props.title,
 	  
 	  id: this.props.id,
+	  
 	  // Autocomplete search bar data
 	  query: "",
       ingredients: AutocompleteData.ingredientSuggestions,
