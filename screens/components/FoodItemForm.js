@@ -6,7 +6,6 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  TouchableHighlight,
   View,
   ScrollView
 } from "react-native";
@@ -38,6 +37,7 @@ export default class FoodItemForm extends React.Component {
     super(props);
 
     this.state = {
+	  screenTitle: this.props.screenTitle,
       datePurchased: this.props.datePurchased,
       id: this.props.id,
       ingredients: AutocompleteData.ingredientSuggestions,
@@ -50,7 +50,7 @@ export default class FoodItemForm extends React.Component {
       query: "",
       unit: this.props.unit,
       isLoading: true,
-      tableHead: ["Head", "Head2", "Head3", "Head4"],
+      tableHead: ["Title", "Amount", "Unit", "Percentage of Daily Needs"],
       tableData: []
     };
 
@@ -162,7 +162,8 @@ export default class FoodItemForm extends React.Component {
 
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Title bar */}
+		{/* Title header
+		--------------------------------------------------------------------------------------------------------- */}
         <View style={styles.titleRow}>
           <TouchableOpacity onPress={this.onGoBack}>
             <Icon
@@ -177,11 +178,16 @@ export default class FoodItemForm extends React.Component {
               style={{ marginLeft: wPercentage("5%") }}
             />
           </TouchableOpacity>
-          <Text style={styles.addFoodItemTitle}>Add Food Item</Text>
+		  <Text style={styles.addFoodItemTitle}>{this.state.screenTitle
+		}</Text>
         </View>
 
-        {/* Beginning of content section */}
+		{/* Beginning of content section 
+		--------------------------------------------------------------------------------------------------------- */}
         <View style={Styles.screenContainer}>
+
+		  {/* Search Ingredient Section 
+			--------------------------------------------------------------------------------------------------------- */}
           <View style={styles.dataRow}>
             <Text style={styles.inputLabel}>Search Ingredient by Name</Text>
 
@@ -210,7 +216,9 @@ export default class FoodItemForm extends React.Component {
               )}
             />
           </View>
-
+		  
+		  {/* Ingredient Name section 
+			--------------------------------------------------------------------------------------------------------- */}
           <Divider />
           <View style={styles.dataRow}>
             <Text style={styles.inputLabel}>Ingredient Name</Text>
@@ -220,7 +228,9 @@ export default class FoodItemForm extends React.Component {
               onChangeText={itemName => this.setState({ name: itemName })}
             />
           </View>
-
+		  
+		  {/* Price Section 
+			--------------------------------------------------------------------------------------------------------- */}
           <Divider />
           <View style={styles.dataRow}>
             <Text style={styles.inputLabel}>Price</Text>
@@ -230,20 +240,91 @@ export default class FoodItemForm extends React.Component {
               onChangeText={itemPrice => this.setState({ price: itemPrice })}
             />
           </View>
-
+		  
+		  {/* Quantity Section 
+			--------------------------------------------------------------------------------------------------------- */}
           <Divider />
           <View style={styles.dataRow}>
             <Text style={styles.inputLabel}>Quantity</Text>
-            <TextInput
-              style={styles.inputData}
-              value={this.state.quantity}
-              onChangeText={itemQuantity => {
-                this.setState({ quantity: itemQuantity });
-                this.state.parent.setState({ itemQuantity: itemQuantity });
-              }}
-            />
+            <View style={styles.metricsRow}>
+              <TextInput
+                style={styles.quantityInput}
+                value={this.state.quantity}
+                onChangeText={itemQuantity => {
+                  this.setState({ quantity: itemQuantity });
+                  this.state.parent.setState({ itemQuantity: itemQuantity });
+                }}
+              />
+			  {/* Food measurements */}
+              <View style={styles.choiceContainer}>
+                <Picker
+                  style={styles.metricPicker}
+                  selectedValue={this.state.metric}
+                  onValueChange={(itemValue, itemIndex) => {
+                    this.setState({ metric: itemValue });
+                    this.state.parent.setState({ itemUnit: itemValue });
+                  }}
+                >
+                  <Picker.Item
+                    style={styles.picker}
+                    label="unit"
+                    value="units"
+                  />
+                  <Picker.Item
+                    style={styles.picker}
+                    label="mL (milliliters)"
+                    value="milliliters"
+                  />
+                  <Picker.Item style={styles.picker} label="L (liters)" value="liters" />
+                  <Picker.Item style={styles.picker} label="g (grams)" value="grams" />
+                  <Picker.Item
+                    style={styles.picker}
+                    label="mg (milligrams)"
+                    value="milligrams"
+                  />
+                  <Picker.Item
+                    style={styles.picker}
+                    label="kg (kilograms)"
+                    value="kilograms"
+                  />
+                  <Picker.Item
+                    style={styles.picker}
+                    label="tsp (teaspoons)"
+                    value="teaspoons"
+                  />
+                  <Picker.Item
+                    style={styles.picker}
+                    label="tbsp (tablespoons)"
+                    value="tablespoons"
+                  />
+                  <Picker.Item
+                    style={styles.picker}
+                    label="oz (ounces)"
+                    value="ounces"
+                  />
+                  <Picker.Item
+                    style={styles.picker}
+                    label="lb (pounds)"
+                    value="pounds"
+                  />
+                  <Picker.Item style={styles.picker} label="pt (pints)" value="pints" />
+                  <Picker.Item
+                    style={styles.picker}
+                    label="qt (quarts)"
+                    value="quarts"
+                  />
+                  <Picker.Item
+                    style={styles.picker}
+                    label="gal (gallons)"
+                    value="gallons"
+                  />
+                </Picker>
+              </View>
+            </View>
           </View>
-
+		  
+		  {/* Date purchased Section 
+			--------------------------------------------------------------------------------------------------------- */}
           <Divider />
           <View style={styles.dataRow}>
             <Text style={styles.inputLabel}>Date Purchased</Text>
@@ -277,30 +358,9 @@ export default class FoodItemForm extends React.Component {
               />
             </View>
           </View>
-
-          <Divider />
-          <View styles={styles.dataRow}>
-            <Text style={styles.inputLabel}>Ingredient Metric</Text>
-            <View style={Styles.choiceContainer}>
-              <Picker
-                style={Styles.choiceRow}
-                selectedValue={this.state.metric}
-                onValueChange={(itemValue, itemIndex) => {
-                  this.setState({ metric: itemValue });
-                  this.state.parent.setState({ itemUnit: itemValue });
-                }}
-                mode={"dropdown"}
-              >
-                <Picker.Item
-                  style={styles.picker}
-                  label="milliliters"
-                  value="milliliter"
-                />
-                <Picker.Item style={styles.picker} label="grams" value="gram" />
-              </Picker>
-            </View>
-          </View>
-
+		  
+		  {/* Nutritional information Section 
+			--------------------------------------------------------------------------------------------------------- */}
           <Divider />
           <View styles={styles.dataRow}>
             <Text style={styles.inputLabel}>Nutritional Information</Text>
@@ -340,12 +400,35 @@ export default class FoodItemForm extends React.Component {
 const styles = StyleSheet.create({
   /*------------------------------------------------------------------------
 		  General Styles
-	  ------------------------------------------------------------------------*/
+	------------------------------------------------------------------------*/
   sectionContainer: {
     marginHorizontal: wPercentage("3%"),
     marginVertical: hPercentage("3%")
   },
 
+  inputLabel: {
+    fontSize: 25,
+    color: "rgba(175,76,99,1)"
+  },
+
+  inputData: {
+    fontSize: 13,
+    borderRadius: 4,
+    borderWidth: 0.5,
+    height: hPercentage("5%")
+  },
+
+  dataRow: {
+    marginBottom: hPercentage("5%")
+  },
+
+  itemText: {
+    width: "100%"
+  },
+
+  /*------------------------------------------------------------------------
+		  Title header Styles
+	------------------------------------------------------------------------*/
   titleRow: {
     flex: 1,
     flexDirection: "row",
@@ -368,6 +451,76 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
 
+  /*------------------------------------------------------------------------
+		  Search Bar styles
+  ------------------------------------------------------------------------*/
+
+  searchContainer: {
+    alignSelf: "center",
+    width: wPercentage("95%"),
+    marginTop: 3
+  },
+
+  searchInputContainer: {
+    alignSelf: "center",
+    width: "94%",
+    paddingLeft: 10,
+    backgroundColor: "rgba(255,255,255,1)",
+    borderRadius: 4
+    // marginTop: -5,
+  },
+
+  searchInput: {
+    width: wPercentage("100%"),
+    fontSize: 15,
+    paddingLeft: 10
+  },
+
+  itemTextContainer: {
+    width: "100%",
+    marginLeft: 10
+  },
+
+  /*------------------------------------------------------------------------
+		  Quantity/Metric picker Styles
+	------------------------------------------------------------------------*/
+  metricsRow: {
+    flex: 1,
+    flexDirection: "row",
+    width: wPercentage("100%")
+  },
+
+  quantityInput: {
+    fontSize: 13,
+    borderRadius: 4,
+    borderWidth: 0.5,
+    height: hPercentage("5%"),
+    width: wPercentage("60%")
+  },
+
+  /*------------------------------------------------------------------------
+		  Date Styles
+	------------------------------------------------------------------------*/
+	selectDate: {
+		// marginRight: 40,
+		// paddingLeft: 40,
+		fontSize: 15,
+		color: "rgba(91, 88, 88, 0.9)"
+	},
+
+	choiceContainer: {
+		backgroundColor: "rgba(244, 238, 238, 0.7)",
+		marginLeft: wPercentage("2%")
+	},
+	
+	metricPicker: {
+		height: hPercentage('5%'),
+		width: wPercentage("25%")
+	},
+
+  /*------------------------------------------------------------------------
+		  Save Button Styles
+	------------------------------------------------------------------------*/
   saveButton: {
     marginVertical: hPercentage("3%")
   },
@@ -393,57 +546,4 @@ const styles = StyleSheet.create({
     width: wPercentage("100%")
   },
 
-  inputLabel: {
-    fontSize: 25,
-    color: "rgba(175,76,99,1)"
-  },
-
-  inputData: {
-    fontSize: 13,
-    borderRadius: 4,
-    borderWidth: 0.5,
-    height: hPercentage("5%")
-  },
-
-  /*------------------------------------------------------------------------
-		  Search Bar
-	  ------------------------------------------------------------------------*/
-  searchBar: {
-    flex: 1,
-    paddingBottom: 20
-  },
-
-  dataRow: {
-    marginBottom: hPercentage("5%")
-  },
-
-  searchContainer: {
-    alignSelf: "center",
-    width: wPercentage("95%"),
-    marginTop: 3
-  },
-
-  searchInputContainer: {
-    alignSelf: "center",
-    width: "94%",
-    paddingLeft: 10,
-    backgroundColor: "rgba(255,255,255,1)",
-    borderRadius: 4
-    // marginTop: -5,
-  },
-
-  searchInput: {
-    width: "100%",
-    fontSize: 15,
-    paddingLeft: 10
-  },
-
-  itemTextContainer: {
-    width: "100%",
-    marginLeft: 10
-  },
-
-  itemText: {
-    width: "100%"
-  }
 });
