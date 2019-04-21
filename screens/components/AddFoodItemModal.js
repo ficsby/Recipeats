@@ -304,6 +304,7 @@ class AddFoodItemModal extends React.Component {
           this.parent.setState({ addModalVisible: false });
         }}
       >
+	  
         <View style={[styles.container, { ...modalStyleProps }]}>
           <ScrollView
             contentContainerStyle={[
@@ -548,7 +549,8 @@ const styles = StyleSheet.create({
   },
   modal_container: {
     marginLeft: 30,
-    marginRight: 30,
+	marginRight: 30,
+	marginTop: hPercentage('15%'),
     ...Platform.select({
       ios: {
         backgroundColor: "#E3E6E7",
