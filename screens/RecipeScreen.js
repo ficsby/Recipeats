@@ -11,6 +11,8 @@ import AddFoodItemModal from "./components/AddFoodItemModal";
 import { Font, AppLoading } from 'expo';
 
 // import NavigationService from '../navigation/NavigationService.js';
+import ComparisonModal from './components/ComparisonModal';
+import {getFoodList} from './../utils/FoodListUtils';
 
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
@@ -38,6 +40,7 @@ export default class RecipeScreen extends React.Component {
             recipes: [],
             bookmarked: false,
             liked: false,
+            comparisonModalVisible: false,
 
             id: 556177,
             title: 'Ramen Noodle Coleslaw blahbalsdfadfsdfsdfasdfasdfasdf',
@@ -59,42 +62,52 @@ export default class RecipeScreen extends React.Component {
 
             extendedIngredients: [   // FOR TESTING PURPOSES
                 {
+                    id: 12061,
                     name: 'Almonds',
                     amount: '1/4 cups'
                 },
                 {
+                    id: 6583,
                     name: 'Beef flavor ramen noodle soup mix',
                     amount: '1 package'
                 },
                 {
+                    id: 10011109,
                     name: 'Shredded coleslaw mix',
                     amount: '1 bag'
                 },
                 {
+                    id: 11291,
                     name: 'Green onions',
                     amount: '5 stalks'
                 },
                 {
+                    id: 4053,
                     name: 'Olive oil',
                     amount: '2 Tbsp'
                 },
                 {
+                    id: 1002030,
                     name: 'Pepper',
                     amount: '1/2 tsp'
                 },
                 {
+                    id: 2047,
                     name: 'Salt',
                     amount: '1/2 tsp'
                 },
                 {
+                    id: 19335,
                     name: 'Sugar',
                     amount: '3 Tbsp'
                 },
                 {
+                    id: 12023,
                     name: 'Sesame seeds',
                     amount: '3 Tbsp'
                 },
                 {
+                    id: 2053,
                     name: 'Vinegar',
                     amount: '3 Tbsp'
                 },
@@ -138,6 +151,7 @@ export default class RecipeScreen extends React.Component {
                               'whole30': false,
                              },
         };
+        this.toggleComparisonModal = this.toggleComparisonModal.bind(this);
         this.toggleEditable = this.toggleEditable.bind(this);
         this.onPressAddIngredient = this.onPressAddIngredient.bind(this);
         this.onPressAddInstruction= this.onPressAddInstruction.bind(this);
@@ -152,10 +166,38 @@ export default class RecipeScreen extends React.Component {
         this.setState({  bookmarked: !this.state.bookmarked  });
     };
 
+    toggleComparisonModal() {
+        this.setState({comparisonModalVisible: !this.state.comparisonModalVisible});
+    }
+
     // Toggles the like state when the "Heart" icon is tapped
     toggleHeart() {
         this.setState({  liked: !this.state.liked });
     };
+
+    getFoodStock() {
+      foodList = [];
+
+      // Returns a promise of the user's value
+      retrieveData = () => {
+        ref = getFoodList(firebase.auth().currentUser.uid);
+        return ref.once("value");
+      };
+  
+      // Snapshot is the depiction of the user's current data
+      retrieveData().then(snapshot => {
+        foodListSnapshot = snapshot.val();
+  
+        for (var key in foodListSnapshot) {
+          if (foodListSnapshot.hasOwnProperty(key)) {
+            foodList.push(foodListSnapshot[key]);
+          }
+        }
+        
+      });
+
+      return foodList;
+    }
 
     // Renders the icon according to its current state
     renderIcon(iconType) {
@@ -288,6 +330,21 @@ export default class RecipeScreen extends React.Component {
                 ------------------------------------------------------------------------------------*/}
                 
                 <ScrollView style={styles.recipeContainer}> 
+                    {/* Comparison Modal */}
+                    <Modal
+                      animationType="slide"
+                      transparent={false}
+                      visible={this.state.comparisonModalVisible}
+                      onRequestClose={() => {
+                      Alert.alert("Modal has been closed.");
+                      }}
+                    >
+                      <ComparisonModal
+                        parent={this}
+                        foodstock={this.getFoodStock()}
+                        recipeIngredients={this.state.extendedIngredients}
+                      />
+                    </Modal>
 
                     {/* <ImageBackground source={require('./../assets/images/test_photo.jpg')} /> */}
                     <ImageBackground source={require('./../assets/images/ramen-noodle-coleslaw.jpg')} style={styles.image}>
@@ -408,7 +465,12 @@ export default class RecipeScreen extends React.Component {
                             {
                                 this.renderIngredientsList()
                             }           
-                            <TouchableOpacity style={styles.compareButton}><Text style={styles.compareText}>Compare To Food Stock</Text></TouchableOpacity>
+                            <TouchableOpacity 
+                                style={styles.compareButton} 
+                                onPress={this.toggleComparisonModal}
+                            >
+                                <Text style={styles.compareText}>Compare To Food Stock</Text>
+                            </TouchableOpacity>
                         </View>
 
                         {/* contentContainerStyle={styles.numberContainer} rightContentContainerStyle={styles.instructionStepContainer} />  */}
