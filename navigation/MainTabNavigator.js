@@ -94,13 +94,6 @@ const HomeTab = createStackNavigator({
             header: null,
         }
     },
-    
-    Loading: {
-        screen: LoadingScreen,
-        navigationOptions: {
-            header: null
-        }
-    },
 
     EditAccount: {
         screen: EditAccountScreen,

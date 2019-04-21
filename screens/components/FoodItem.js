@@ -40,7 +40,7 @@ export default class FoodItem extends React.Component {
 			price: this.props.price,
 			parent: this.props.parent,
 			datePurchased: this.props.datePurchased,
-			quantity: this.props.quantity,
+			amount: this.props.amount,
 			unit: this.props.unit,
 			tableData: this.props.tableData
 		};
@@ -62,7 +62,7 @@ export default class FoodItem extends React.Component {
 	renderFoodItem() {
 		return (	
 			<TouchableOpacity onPress = {() => this.toggleIngrModalVisibility()}>
-				<ListItem key={this.props.rowId} title={this.state.name} rightTitle={this.state.quantity + "  " + this.state.unit} />
+				<ListItem key={this.props.rowId} title={this.state.name} rightTitle={this.state.amount + "  " + this.state.unit} />
 				<Divider />
 			</TouchableOpacity>
 		);
@@ -148,7 +148,7 @@ export default class FoodItem extends React.Component {
 					name={this.state.name}
 					parent={this}
 					price={this.state.price}
-					quantity={this.state.quantity}
+					amount={this.state.amount}
 					unit={this.state.unit}
 					tableData={this.state.tableData}
 				/>

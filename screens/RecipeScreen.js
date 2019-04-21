@@ -24,7 +24,7 @@ const fetch = require('node-fetch');
 
 import LoadingScreen from './LoadingScreen';
 import DialogInput from 'react-native-dialog-input';
-// import apiUtils from '../api/apiUtils.js';
+import apiUtils from '../api/apiUtils.js';
 
 const { width: WIDTH } = Dimensions.get('window');
 var globalStyles = require('../styles/GlobalStyles.js');
@@ -35,7 +35,7 @@ export default class RecipeScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            // isLoading: true,
+            isLoading: true,
             editable: false,
             query: '',
             recipes: [],
@@ -60,60 +60,60 @@ export default class RecipeScreen extends React.Component {
 
             isIngredientModalVisible: false,
             isInstructionModalVisible: false,
-
-            extendedIngredients: [   // FOR TESTING PURPOSES
-                {
-                    id: 12061,
-                    name: 'Almonds',
-                    amount: '1/4 cups'
-                },
-                {
-                    id: 6583,
-                    name: 'Beef flavor ramen noodle soup mix',
-                    amount: '1 package'
-                },
-                {
-                    id: 10011109,
-                    name: 'Shredded coleslaw mix',
-                    amount: '1 bag'
-                },
-                {
-                    id: 11291,
-                    name: 'Green onions',
-                    amount: '5 stalks'
-                },
-                {
-                    id: 4053,
-                    name: 'Olive oil',
-                    amount: '2 Tbsp'
-                },
-                {
-                    id: 1002030,
-                    name: 'Pepper',
-                    amount: '1/2 tsp'
-                },
-                {
-                    id: 2047,
-                    name: 'Salt',
-                    amount: '1/2 tsp'
-                },
-                {
-                    id: 19335,
-                    name: 'Sugar',
-                    amount: '3 Tbsp'
-                },
-                {
-                    id: 12023,
-                    name: 'Sesame seeds',
-                    amount: '3 Tbsp'
-                },
-                {
-                    id: 2053,
-                    name: 'Vinegar',
-                    amount: '3 Tbsp'
-                },
+			extendedIngredients: [],
+            // extendedIngredients: [   // FOR TESTING PURPOSES
+            //     {
+            //         id: 12061,
+            //         name: 'Almonds',
+            //         amount: '1/4 cups'
+            //     },
+            //     {
+            //         id: 6583,
+            //         name: 'Beef flavor ramen noodle soup mix',
+            //         amount: '1 package'
+            //     },
+            //     {
+            //         id: 10011109,
+            //         name: 'Shredded coleslaw mix',
+            //         amount: '1 bag'
+            //     },
+            //     {
+            //         id: 11291,
+            //         name: 'Green onions',
+            //         amount: '5 stalks'
+            //     },
+            //     {
+            //         id: 4053,
+            //         name: 'Olive oil',
+            //         amount: '2 Tbsp'
+            //     },
+            //     {
+            //         id: 1002030,
+            //         name: 'Pepper',
+            //         amount: '1/2 tsp'
+            //     },
+            //     {
+            //         id: 2047,
+            //         name: 'Salt',
+            //         amount: '1/2 tsp'
+            //     },
+            //     {
+            //         id: 19335,
+            //         name: 'Sugar',
+            //         amount: '3 Tbsp'
+            //     },
+            //     {
+            //         id: 12023,
+            //         name: 'Sesame seeds',
+            //         amount: '3 Tbsp'
+            //     },
+            //     {
+            //         id: 2053,
+            //         name: 'Vinegar',
+            //         amount: '3 Tbsp'
+            //     },
                 
-            ],
+            // ],
 
             deletedRowKey: null,
 
@@ -229,6 +229,7 @@ export default class RecipeScreen extends React.Component {
 
     renderIngredientsList(){
         return (
+			
             (this.state.editable)?
             <FlatList data={this.state.extendedIngredients}
             keyExtractor={(item, index) => index.toString()}
@@ -261,7 +262,7 @@ export default class RecipeScreen extends React.Component {
             this.state.instructions.map( (item, index) =>  
             ( 
                 <View>
-                    <ListItem key={index} title={item.instruction} leftIcon={<Badge value={index+1} containerStyle={styles.numberContainer} badgeStyle={styles.numberBadge} textStyle={styles.instructionNumber} /> } /> 
+                    <ListItem key={index} title={item.step} leftIcon={<Badge value={index+1} containerStyle={styles.numberContainer} badgeStyle={styles.numberBadge} textStyle={styles.instructionNumber} /> } /> 
                     <Divider />
                 </View>
             ))
@@ -275,11 +276,13 @@ export default class RecipeScreen extends React.Component {
         }); 
         this.setState({fontLoaded: true});
 
-        // var data = apiUtils.getRecipeInfoFromId(this.state.id, this);
-        // if(data != null)
-        // {
-        //     this.setState({ isLoading: false });
-        // }        
+		var recipeData = await apiUtils.getRecipeInfoFromId(this.state.id, this);
+		var instructionData = await apiUtils.getAnalyzedInstructions(this.state.id, this);
+        if(recipeData != null && instructionData != null)
+        {
+            this.setState({ isLoading: false });
+		}        
+		// console.log(this.state.instructions);
     };
 
     componentWillUnmount () {
@@ -319,9 +322,9 @@ export default class RecipeScreen extends React.Component {
 
     render() {
            
-        // if (this.state.isLoading) {
-        //     return <LoadingScreen />;
-        // }
+        if (this.state.isLoading) {
+            return <LoadingScreen />;
+        }
       
 
         return ( 

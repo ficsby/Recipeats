@@ -9,7 +9,7 @@ import {
   View,
   ScrollView
 } from "react-native";
-
+import * as firebase from "firebase";
 import { Divider } from "react-native-elements";
 import DatePicker from "react-native-datepicker";
 import Autocomplete from "react-native-autocomplete-input";
@@ -18,7 +18,8 @@ import { Table, Row, Rows } from "react-native-table-component";
 import { Styles } from "../../styles/GlobalStyles";
 import {
   findMissingFoodItems,
-  modifyFoodStock
+  modifyFoodStock,
+  getFoodList
 } from "../../utils/FoodListUtils";
 import ApiUtils from "../../api/apiUtils";
 import LoadingScreen from "../LoadingScreen";
@@ -32,6 +33,7 @@ import {
 import { createIconSetFromFontello } from "react-native-vector-icons";
 import fontelloConfig from "./../../config/icon-font.json";
 const Icon = createIconSetFromFontello(fontelloConfig, "fontello");
+
 /**
  * Form containing all of a food item's information
  */
@@ -42,21 +44,61 @@ export default class ComparisonModal extends React.Component {
     this.state = {
       parent: this.props.parent,
       foodstock: this.props.foodstock,
-      recipeIngredients: this.props.recipeIngredients,
+	  recipeIngredients: this.props.recipeIngredients,
       isLoading: true,
-      tableHead: ["Head", "Head2", "Head3", "Head4"],
+      tableHead: ["Name", "Required", "Your Stock", "Amount After"],
       tableData: []
     };
 
     // this.getIngredientInfo = this.getIngredientInfo.bind(this);
   }
 
-  async componentDidMount() {
-    this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
+componentDidMount() {
+	this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
+	// console.log(this.state.recipeIngredients);
+	// Snapshot is the depiction of the user's current data
+	foodList = [];
+
+	retrieveData = () => {
+		ref = getFoodList(firebase.auth().currentUser.uid);
+		return ref.once("value");
+	};
+    retrieveData().then(snapshot => {
+		if (this._ismounted) {
+		  foodListSnapshot = snapshot.val();
+  
+		  for (var key in foodListSnapshot) {
+			if (foodListSnapshot.hasOwnProperty(key)) {
+				console.log(foodListSnapshot[key]);
+			  foodList.push(foodListSnapshot[key]);
+			}
+		  }
+		  this.setState({
+			foodstock: foodList
+		  });
+		}
+	});
+
+	this.compareRecipes(this.state.foodstock);
   }
 
   componentWillUnmount() {
     this._ismounted = false; // after component is unmounted reste boolean
+  }
+
+  compareRecipes(foodstock) {
+	ingrDict = {}
+	ingrYouHave = []
+	ingrYouDontHave = []
+
+	console.log('foodstock');
+	console.log(foodstock);
+	for(idx in this.state.recipeIngredients){
+		ingr = this.state.recipeIngredients[idx];
+		ingrDict[ingr.id] = ingr;
+	}
+	// console.log('Ingredient dict');
+	// console.log(ingrDict);
   }
 
   /**
@@ -100,8 +142,32 @@ export default class ComparisonModal extends React.Component {
 
         {/* Beginning of content section */}
         <View style={Styles.screenContainer}>
-          <Divider />
+
           <View styles={styles.dataRow}>
+		  	<Text style={styles.inputLabel}>Ingredients you have</Text>
+			  <Table borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
+              <Row
+                data={this.state.tableHead}
+                style={styles.head}
+                textStyle={styles.text}
+              />
+              <Rows data={this.state.tableData} textStyle={styles.text} />
+            </Table>
+		  </View>
+
+		  <View styles={styles.dataRow}>
+		  	<Text style={styles.inputLabel}>Ingredients you don't have</Text>
+			  <Table borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
+              <Row
+                data={this.state.tableHead}
+                style={styles.head}
+                textStyle={styles.text}
+              />
+              <Rows data={this.state.tableData} textStyle={styles.text} />
+            </Table>
+		  </View>
+
+          {/* <View styles={styles.dataRow}>
             <Text style={styles.inputLabel}>Ingredients Comparison</Text>
             <Table borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
               <Row
@@ -111,9 +177,8 @@ export default class ComparisonModal extends React.Component {
               />
               <Rows data={this.state.tableData} textStyle={styles.text} />
             </Table>
-          </View>
+          </View> */}
 
-          <Divider />
           <View styles={styles.dataRow}>
             <Text style={styles.inputLabel}>Missing Ingredients</Text>
             <Text>

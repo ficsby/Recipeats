@@ -89,7 +89,7 @@ export default class FoodstockScreen extends React.Component {
     this.state = {
       addModalVisible: false,
       isFoodInfoModalVisible: false,
-      tableHead: ["Name", "Quantity", ""],
+      tableHead: ["Name", "Amount", ""],
       externalFoodList: [],
       editable: false,
       ingredients: [],
@@ -97,7 +97,7 @@ export default class FoodstockScreen extends React.Component {
       // ingredient info
       itemName: "",
       itemId: null,
-      itemQuantity: null,
+      Amount: null,
       itemUnit: "",
       itemPrice: null,
       itemDate: "",
@@ -179,7 +179,7 @@ export default class FoodstockScreen extends React.Component {
                 name=""
                 parent={this}
                 price={null}
-                quantity={null}
+                amount={null}
                 unit=""
               />
 
@@ -202,7 +202,7 @@ export default class FoodstockScreen extends React.Component {
 						  id={rowData.id}
                           price={rowData.price}
                           datePurchased={rowData.datePurchased}
-						  quantity={rowData.quantity}
+						  amount={rowData.amount}
 						  unit = {rowData.unit}
                           parent={this}
                           tableData={rowData.tableData}
