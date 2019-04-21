@@ -211,17 +211,6 @@ export const Styles = StyleSheet.create({
 /*-----------------------
 	Recipe Sections
 -------------------------*/
-		
-	sectionContainer: {
-		marginBottom: 15,
-		paddingTop: 10,
-		paddingBottom: 15,
-		backgroundColor: 'rgba(255,255,255,1)',
-		borderBottomColor: 'rgba(0,0,0,0.15)',
-		borderTopColor: 'rgba(0,0,0,0.15)',
-		borderBottomWidth: 1,
-		borderTopWidth: 1,
-	},
 
 	sectionTitle: {
 		marginTop: 10,

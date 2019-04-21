@@ -16,21 +16,21 @@ import KeyboardShift from "../styles/KeyboardShift.js";
 import TouchableScale from "react-native-touchable-scale";
 
 import {
-	Table,
-	TableWrapper,
-	Row,
-	Rows,
-	Col,
-	Cols,
-	Cell
+  Table,
+  TableWrapper,
+  Row,
+  Rows,
+  Col,
+  Cols,
+  Cell
 } from "react-native-table-component";
 
 import { Styles } from "../styles/GlobalStyles";
 import {
-	modifyFoodStock,
-	logPurchaseDate,
-	getFoodList,
-	removeFromFoodStock
+  modifyFoodStock,
+  logPurchaseDate,
+  getFoodList,
+  removeFromFoodStock
 } from "../utils/FoodListUtils";
 import FoodItem from "./components/FoodItem";
 import Button from "./components/Button";
@@ -56,31 +56,31 @@ import {
 
 
 const inventoryList = [
-	// FOR TESTING PURPOSES
-	{
-		name: "Rice",
-		quantity: "5"
-	},
-	{
-		name: "Peas",
-		quantity: "1"
-	},
-	{
-		name: "Carrots",
-		quantity: "1"
-	},
-	{
-		name: "Corn",
-		quantity: "4"
-	},
-	{
-		name: "Garlic",
-		quantity: "3"
-	},
-	{
-		name: "Vegetable Oil",
-		quantity: "2"
-	}
+  // FOR TESTING PURPOSES
+  {
+    name: "Rice",
+    quantity: "5"
+  },
+  {
+    name: "Peas",
+    quantity: "1"
+  },
+  {
+    name: "Carrots",
+    quantity: "1"
+  },
+  {
+    name: "Corn",
+    quantity: "4"
+  },
+  {
+    name: "Garlic",
+    quantity: "3"
+  },
+  {
+    name: "Vegetable Oil",
+    quantity: "2"
+  }
 ];
 
 export default class FoodstockScreen extends React.Component {
@@ -166,32 +166,31 @@ export default class FoodstockScreen extends React.Component {
     return (
       <KeyboardShift>
         {() => (
-          <ScrollView>
+          <View>
+            <ScrollView>
+              {/* Launches food item modal to add a food item to user's food stock */}
+              <AddFoodItemModal
+                isModalVisible={this.state.addModalVisible}
+                title={"Add Ingredient to Food Stock"}
+                showPriceInput={true}
+                showDatePicker={true}
+                datePurchased={new Date()}
+                id={null}
+                name=""
+                parent={this}
+                price={null}
+                quantity={null}
+                unit=""
+              />
 
-            {/* Launches food item modal to add a food item to user's food stock */}
-            <AddFoodItemModal
-              isModalVisible={this.state.addModalVisible}
-              title={"Add Ingredient to Food Stock"}
-              showPriceInput={true}
-              showDatePicker={true}
-              datePurchased={new Date()}
-              id={null}
-              name=""
-              parent={this}
-              price={null}
-              quantity={null}
-              unit=""
-            />
-
-            <View style={Styles.sectionContainer}>
-              <Text style={Styles.sectionTitle}> Inventory </Text>
-              <View style={Styles.container}>
-                {/* <Table borderStyle={{ borderColor: "transparent" }}> */}
+              <View>
+                <Text style={Styles.sectionTitle}> Inventory </Text>
+                <View style={Styles.container}>
                   <ListItem
                     title={state.tableHead[0]}
                     rightTitle={state.tableHead[1]}
-                    titleStyle={{fontWeight:'500', fontSize:15}} 
-                    rightTitleStyle={{fontWeight:'500', fontSize:15}} 
+                    titleStyle={{ fontWeight: '500', fontSize: 15 }}
+                    rightTitleStyle={{ fontWeight: '500', fontSize: 15 }}
                   />
                   {state.externalFoodList &&
                     state.externalFoodList.map(rowData => {
@@ -212,27 +211,33 @@ export default class FoodstockScreen extends React.Component {
 
                       );
                     })}
-                {/* </Table> */}
+                </View>
               </View>
-
-              <ListItem
-                Component={TouchableScale}
-                friction={90}
-                tension={100}
-                activeScale={0.95}
-                containerStyle={{backgroundColor:'rgba(204, 102, 102, 0.9)', 
-                                 marginTop: wPercentage('3.5%'), 
-                                 marginLeft: wPercentage('3.5%'), 
-                                 marginRight: wPercentage('3.5%')}}
-                title="Add a new food item"
-                rightIcon={<Icon name='plus' size={18} color='rgba(255,255,255,1)'/>}
-                titleStyle={{color:'rgba(255,255,255,1)', fontWeight:'500'}}
-                onPress={this.toggleIngrModalVisibility}
-              />
-            </View>
-          </ScrollView>
+            </ScrollView>
+            <ListItem
+              Component={TouchableScale}
+              friction={90}
+              tension={100}
+              activeScale={0.95}
+              containerStyle={{backgroundColor:'rgba(209, 201, 200, 0.2)', 
+                               paddingTop: wPercentage('3%'),
+                               paddingBottom: wPercentage('3%'), 
+                               paddingLeft: wPercentage('5%'), 
+                               paddingRight: wPercentage('5%'),
+                               borderTopColor: 'rgba(0,0,0,0.1)',
+                               borderBottomColor: 'rgba(0,0,0,0.1)',
+                               borderTopWidth: 1,
+                               borderBottomWidth: 1
+                              }}
+              title="Add Food Item"
+              rightIcon={<Icon name='plus-circled' size={30} color='rgba(63, 61, 58, 1)'/>}
+              titleStyle={{ color: 'rgba(63, 61, 58, 1)', fontWeight: '500', fontSize:17, textAlign: 'right' }}
+              onPress={this.toggleIngrModalVisibility}
+            />
+          </View>
         )}
       </KeyboardShift>
     );
+
   }
 }
