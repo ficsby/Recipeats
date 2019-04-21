@@ -257,6 +257,7 @@ const styles = StyleSheet.create({
 	},
 
 	inputBox_container: {
+		textAlignVertical: "top",
 		textAlign: "left",
 		fontSize: 16,
 		color: "rgba(0,0,0,0.54)",
