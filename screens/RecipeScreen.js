@@ -23,7 +23,7 @@ const fetch = require('node-fetch');
 import LoadingScreen from './LoadingScreen';
 import DialogInput from 'react-native-dialog-input';
 import apiUtils from '../api/apiUtils.js';
-
+import RecipeEditingScreen from './RecipeEditingScreen';
 const { width: WIDTH } = Dimensions.get('window');
 var globalStyles = require('../styles/GlobalStyles.js');
 const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
@@ -321,7 +321,11 @@ export default class RecipeScreen extends React.Component {
            
         if (this.state.isLoading) {
             return <LoadingScreen />;
-        }
+		}
+		
+		if(this.state.editable){
+			return <RecipeEditingScreen parent={this} />;
+		}
       
 
         return ( 

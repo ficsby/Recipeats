@@ -165,7 +165,7 @@ class RecipeEditingScreen extends React.Component {
             <FlatList data={this.state.tempInstructions}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({item, index}) => 
-              <FlatListItem parentFlatList={this} flatListData={this.state.tempInstructions} sectionId={2} rowId={index} title={item.instruction} 
+              <FlatListItem parentFlatList={this} flatListData={this.state.tempInstructions} sectionId={2} rowId={index} title={item.step} 
                   leftIcon={<Badge value={index+1} containerStyle={styles.numberContainer} badgeStyle={styles.numberBadge} textStyle={styles.instructionNumber} />} 
                />
             }/>
