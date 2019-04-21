@@ -222,16 +222,16 @@ export default class FoodstockScreen extends React.Component {
               containerStyle={{backgroundColor:'rgba(209, 201, 200, 0.2)', 
                                paddingTop: wPercentage('3%'),
                                paddingBottom: wPercentage('3%'), 
-                               paddingLeft: wPercentage('5%'), 
-                               paddingRight: wPercentage('5%'),
+                               paddingLeft: wPercentage('8%'), 
+                               paddingRight: wPercentage('8%'),
                                borderTopColor: 'rgba(0,0,0,0.1)',
                                borderBottomColor: 'rgba(0,0,0,0.1)',
                                borderTopWidth: 1,
                                borderBottomWidth: 1
                               }}
-              title="Add Food Item"
-              rightIcon={<Icon name='plus-circled' size={30} color='rgba(63, 61, 58, 1)'/>}
-              titleStyle={{ color: 'rgba(63, 61, 58, 1)', fontWeight: '500', fontSize:17, textAlign: 'right' }}
+              title="Add New Food Item"
+              rightIcon={<Icon name='plus' size={18} color='rgba(63, 61, 58, 0.65)'/>}
+              titleStyle={{ color: 'rgba(63, 61, 58, 0.65)', fontWeight: '500', fontSize:17, paddingRight: wPercentage('2%'), textAlign: 'right' }}
               onPress={this.toggleIngrModalVisibility}
             />
           </View>
