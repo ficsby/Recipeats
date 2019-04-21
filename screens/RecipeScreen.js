@@ -9,7 +9,7 @@ import AddItemModal from './components/AddItemModal';
 import AddFoodItemModal from "./components/AddFoodItemModal";
 
 import { Font, AppLoading } from 'expo';
-
+import * as firebase from 'firebase';
 // import NavigationService from '../navigation/NavigationService.js';
 import ComparisonModal from './components/ComparisonModal';
 import {getFoodList} from './../utils/FoodListUtils';
