@@ -5,9 +5,7 @@ import Autocomplete from 'react-native-autocomplete-input';
 import { ListItem, Badge, Divider} from 'react-native-elements';
 // import DialogInput from 'react-native-dialog-input';
 import FlatListItem from './components/FlatListItem';
-import AddItemModal from './components/AddItemModal';
 import AddFoodItemModal from "./components/AddFoodItemModal";
-import * as firebase from 'firebase';
 
 import { Font, AppLoading } from 'expo';
 import * as firebase from 'firebase';
