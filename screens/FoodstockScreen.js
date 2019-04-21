@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  Modal,
+  //   Modal,
   ScrollView,
   Text,
   TextInput,
@@ -14,6 +14,7 @@ import { Font, AppLoading } from "expo";
 import { ListItem } from "react-native-elements";
 import KeyboardShift from "../styles/KeyboardShift.js";
 import TouchableScale from "react-native-touchable-scale";
+
 import {
   Table,
   TableWrapper,
@@ -34,6 +35,7 @@ import {
 import FoodItem from "./components/FoodItem";
 import Button from "./components/Button";
 import FoodItemForm from "./components/FoodItemForm";
+import AddFoodItemModal from "./components/AddFoodItemModal";
 import ApiUtils from "./../api/apiUtils";
 
 // import Bar from 'react-native-bar-collapsible';
@@ -41,8 +43,17 @@ import ApiUtils from "./../api/apiUtils";
 import * as firebase from "firebase";
 
 /* Custom Icons */
-import { createIconSetFromFontello } from "react-native-vector-icons";
-import fontelloConfig from "./../config/icon-font.json";
+import { createIconSetFromFontello } from 'react-native-vector-icons';
+import fontelloConfig from './../config/icon-font.json';
+const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
+
+
+import {
+  widthPercentageToDP as wPercentage,
+  heightPercentageToDP as hPercentage
+} from "react-native-responsive-screen";
+
+
 
 const inventoryList = [
   // FOR TESTING PURPOSES
@@ -73,21 +84,28 @@ const inventoryList = [
 ];
 
 export default class FoodstockScreen extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			addModalVisible: false,
-			tableHead: ["Name", "Quantity", ""],
-			externalFoodList: [],
-			editable: false,
-			ingredients: [],
-			itemId: null,
-			itemUnit: "",
-			itemName: "",
-			itemQuantity: null
-		};
-		this.toggleAddModalVisible = this.toggleAddModalVisible.bind(this);
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      addModalVisible: false,
+      isFoodInfoModalVisible: false,
+      tableHead: ["Name", "Quantity", ""],
+      externalFoodList: [],
+      editable: false,
+      ingredients: [],
+
+      // ingredient info
+      itemName: "",
+      itemId: null,
+      itemQuantity: null,
+      itemUnit: "",
+      itemPrice: null,
+      itemDate: "",
+      itemNutrientData: null,
+
+    };
+    this.toggleIngrModalVisibility = this.toggleIngrModalVisibility.bind(this);
+  }
 
   componentDidMount() {
     this._ismounted = true;
@@ -112,8 +130,6 @@ export default class FoodstockScreen extends React.Component {
         this.setState({
           externalFoodList: foodList
         });
-
-        // console.log(foodList);
       }
     });
   }
@@ -126,7 +142,7 @@ export default class FoodstockScreen extends React.Component {
    * Function to set whether the add item modal is visible or not
    * @param {*} visible - boolean value to set
    */
-  toggleAddModalVisible() {
+  toggleIngrModalVisibility() {
     this.setState({ addModalVisible: !this.state.addModalVisible });
   }
 
@@ -136,27 +152,28 @@ export default class FoodstockScreen extends React.Component {
 
   render() {
     const state = this.state;
-    const element = (data, index) => (
-      <TouchableOpacity onPress={() => this._alertIndex(index)}>
-        <View style={Styles.btn}>
-          <Text style={Styles.btnText}>button</Text>
-        </View>
-      </TouchableOpacity>
-    );
+    /**
+     * Not sure if this code is ever used or needed for something, will ask later
+     */
+    // const element = (data, index) => (
+    //   <TouchableOpacity onPress={() => this._alertIndex(index)}>
+    //     <View style={Styles.btn}>
+    //       <Text style={Styles.btnText}>button</Text>
+    //     </View>
+    //   </TouchableOpacity>
+    // );
 
     return (
       <KeyboardShift>
         {() => (
-          <ScrollView>
-            <Modal
-              animationType="slide"
-              transparent={false}
-              visible={this.state.addModalVisible}
-              onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
-              }}
-            >
-              <FoodItemForm
+          <View>
+            <ScrollView>
+              {/* Launches food item modal to add a food item to user's food stock */}
+              <AddFoodItemModal
+                isModalVisible={this.state.addModalVisible}
+                title={"Add Ingredient to Food Stock"}
+                showPriceInput={true}
+                showDatePicker={true}
                 datePurchased={new Date()}
                 id={null}
                 name=""
@@ -165,50 +182,62 @@ export default class FoodstockScreen extends React.Component {
                 quantity={null}
                 unit=""
               />
-            </Modal>
 
-            <View style={Styles.sectionContainer}>
-              <Text style={Styles.sectionTitle}> Inventory </Text>
-              <View style={Styles.container}>
-                <Table borderStyle={{ borderColor: "transparent" }}>
-                  <Row
-                    data={state.tableHead}
-                    style={Styles.head}
-                    textStyle={Styles.text}
+              <View>
+                <Text style={Styles.sectionTitle}> Inventory </Text>
+                <View style={Styles.container}>
+                  <ListItem
+                    title={state.tableHead[0]}
+                    rightTitle={state.tableHead[1]}
+                    titleStyle={{ fontWeight: '500', fontSize: 15 }}
+                    rightTitleStyle={{ fontWeight: '500', fontSize: 15 }}
                   />
                   {state.externalFoodList &&
                     state.externalFoodList.map(rowData => {
                       return (
+
+                        // Launches food item dialogue that displays the information for each food item, user can also edit values here
                         <FoodItem
                           key={rowData.name}
-						  name={rowData.name}
-						  id ={rowData.id}
-                          parent={this}
+                          name={rowData.name}
+                          price={rowData.price}
+                          datePurchased={rowData.datePurchased}
                           quantity={rowData.quantity}
+                          id={rowData.id}
+                          parent={this}
+                          tableData={rowData.tableData}
+                          foodInfoModalVisible={this.state.isFoodInfoModalVisible}
                         />
+
                       );
                     })}
-                </Table>
+                </View>
               </View>
-
-              <ListItem
-                Component={TouchableScale}
-                friction={90}
-                tension={100}
-                activeScale={0.95}
-                linearGradientProps={{
-                  colors: ["#FF9800", "#F44336"],
-                  start: [1, 0],
-                  end: [0.2, 0]
-                }}
-                title="+ Add a new food item"
-                titleStyle={{ color: "white", fontWeight: "bold" }}
-                onPress={this.toggleAddModalVisible}
-              />
-            </View>
-          </ScrollView>
+            </ScrollView>
+            <ListItem
+              Component={TouchableScale}
+              friction={90}
+              tension={100}
+              activeScale={0.95}
+              containerStyle={{backgroundColor:'rgba(209, 201, 200, 0.2)', 
+                               paddingTop: wPercentage('3%'),
+                               paddingBottom: wPercentage('3%'), 
+                               paddingLeft: wPercentage('8%'), 
+                               paddingRight: wPercentage('8%'),
+                               borderTopColor: 'rgba(0,0,0,0.1)',
+                               borderBottomColor: 'rgba(0,0,0,0.1)',
+                               borderTopWidth: 1,
+                               borderBottomWidth: 1
+                              }}
+              title="Add New Food Item"
+              rightIcon={<Icon name='plus' size={18} color='rgba(63, 61, 58, 0.65)'/>}
+              titleStyle={{ color: 'rgba(63, 61, 58, 0.65)', fontWeight: '500', fontSize:17, paddingRight: wPercentage('2%'), textAlign: 'right' }}
+              onPress={this.toggleIngrModalVisibility}
+            />
+          </View>
         )}
       </KeyboardShift>
     );
+
   }
 }

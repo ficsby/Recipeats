@@ -4,30 +4,36 @@ import * as firebase from "firebase";
 import { value } from "react-native-extended-stylesheet";
 
 /**
- * 
- * @param {*} secondList 
+ * Comparison function to find missing FoodItem objects between two arrays
+ * @param {array} firstList - list of needed ingredients
+ * @param {array} secondList - list to check for missing needed ingredients
  */
-export const findMissingFoodItems = (secondList) => {
-    var myFoods = new FoodList();
-    var missing = new Map();
-
-    for (var [key, val] of secondList.list) {
-        if (!myFoods.list.has(key)) {
-            missing.set(key, val);
-        }
-    }
-
-    return missing;
+export const findMissingFoodItems = (firstList, secondList) => {
+  console.log(firstList);
+  console.log(secondList);
+  const secondListIds = secondList.map(f => f.id);
+  return firstList.filter(foodItem => !secondListIds.includes(foodItem.id));
 };
 
 /**
- * 
- * @param {*} foodListID 
+ * Function to subtract ingredient amounts in the first array from the second array and returns the resulting array.
+ * This method assumes that both lists contain the same ingredients.
+ * @param {array} firstList
+ * @param {array} secondList
  */
-export const getFoodList = (userId) => {
-    ref = firebase.database().ref('foodlist/' + userId + '/');
-    //return ref.once("value", (snapshot) => console.log(snapshot.val()) );
-    return ref;
+export const subtractFoodList = (firstList, secondList) => {
+    const subtractAmounts = secondList.map(f => f.amount);
+  firstList.map(foodItem => foodItem.amount)
+};
+
+/**
+ * Function that gets a user's food stock from firebase
+ * @param {*} userId - The user id of the user whose food stock you want
+ */
+export const getFoodList = userId => {
+  ref = firebase.database().ref("foodlist/" + userId + "/");
+  //return ref.once("value", (snapshot) => console.log(snapshot.val()) );
+  return ref;
 };
 
 /**
@@ -37,15 +43,18 @@ export const getFoodList = (userId) => {
  * @param {*} quantity - The quantity of food item being added to food stock
  * @param {*} unit - The unit of measurement for the food item
  */
-export const modifyFoodStock = (userId, foodItemID, foodItemName, quantity, unit) => {
+export const modifyFoodStock = (userId, foodItemName, foodItemID, price, quantity, unit, datePurchased, tableData) => {
     //console.log(foodItemID + ": " + quantity);
     firebase.database().ref('foodlist/' + userId + '/' + foodItemName + '_' + foodItemID).update({
         id: foodItemID,
         name: foodItemName,
-        amount: quantity,
-        unit: unit
+        quantity: quantity,
+		unit: unit,
+		price: price,
+		datePurchased: datePurchased,
+		tableData: tableData
     });
-}
+};
 
 /**
  * Function to remove a food item from a user's food inventory in the database
@@ -53,28 +62,25 @@ export const modifyFoodStock = (userId, foodItemID, foodItemName, quantity, unit
  * @param {int} foodItemId - id of the food item to be removed
  */
 export const removeFromFoodStock = (userId, foodItemName, foodItemID) => {
-    firebase.database().ref('foodlist/' + userId + '/' + foodItemName + '_' + foodItemID).remove();
-}
-
+  firebase
+    .database()
+    .ref("foodlist/" + userId + "/" + foodItemName + "_" + foodItemID)
+    .remove();
+};
 
 /**
  * Function to log the date a food item was purchased to the database
- * @param {*} userId 
- * @param {*} foodItemID 
- * @param {*} date 
+ * @param {*} userId
+ * @param {*} foodItemID
+ * @param {*} date
  */
 export const logPurchaseDate = (userId, foodItemID, date) => {
-    firebase.database().ref('purchaseDates/' + userId).set({
-        [foodItemID]: date
+  firebase
+    .database()
+    .ref("purchaseDates/" + userId)
+    .set({
+      [foodItemID]: date
     });
-}
-
-/**
- * 
- * @param {*} secondList 
- */
-export const subtractFoodList = (secondList) => {
-    var result = new FoodList();
 };
 
 /**
@@ -84,20 +90,20 @@ export const subtractFoodList = (secondList) => {
  * @param {*} foodlist  - list to be mapped
  */
 const mapFoodlist = (transform, foodlist) => {
-    result = [];
-    for (var item in foodlist) {
-        result.push(transform(item));
-    }
+  result = [];
+  for (var item in foodlist) {
+    result.push(transform(item));
+  }
 
-    return result;
-}
+  return result;
+};
 
 /**
  * Function to get the prices of fooditems in a foodlist
  * @param {*} foodlist - foodlist that you want prices from
  */
-export const getPrices = (foodlist) => {
-    return mapFoodlist(fooditem => fooditem.price, foodlist);
+export const getPrices = foodlist => {
+  return mapFoodlist(fooditem => fooditem.price, foodlist);
 };
 
 /**
@@ -107,21 +113,24 @@ export const getPrices = (foodlist) => {
  * @param {*} list - list to aggregate from
  */
 const reduce = (reducer, initial, list) => {
-    result = initial;
-    for (var item in list) {
-        result = reducer(result, item);
-    }
+  result = initial;
+  for (var item in list) {
+    result = reducer(result, item);
+  }
 
-    return result;
+  return result;
 };
 
 /**
  * Function that returns the total value of a foodlist
  * @param {*} foodlist - foodlist that you want the total price of
  */
-export const getTotalPrice = (foodlist) => {
-    return reduce(
-        (value, price) => { return value = value + price; }, 0,
-        getPrices(foodlist)
-    );
+export const getTotalPrice = foodlist => {
+  return reduce(
+    (value, price) => {
+      return (value = value + price);
+    },
+    0,
+    getPrices(foodlist)
+  );
 };

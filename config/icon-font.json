@@ -275,6 +275,24 @@
       "src": "iconic"
     },
     {
+      "uid": "c709da589c923ba3c2ad48d9fc563e93",
+      "css": "cancel-1",
+      "code": 59419,
+      "src": "entypo"
+    },
+    {
+      "uid": "06301c50d89b5d3e651bd07ebd6d7de7",
+      "css": "cancel-3",
+      "code": 59421,
+      "src": "mfglabs"
+    },
+    {
+      "uid": "2d76f2c8d13be40694ecadfea7fb83c3",
+      "css": "logout",
+      "code": 59418,
+      "src": "entypo"
+    },
+    {
       "uid": "059ee84db3ec1875f05b6b29e53c8cd1",
       "css": "chef",
       "code": 59392,
