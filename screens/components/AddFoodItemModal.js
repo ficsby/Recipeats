@@ -52,7 +52,7 @@ class AddFoodItemModal extends React.Component {
 
       nutritionalTags: {},
       price: this.props.price,
-      quantity: this.props.quantity,
+      amount: this.props.amount,
       unit: this.props.unit,
       datePurchased: this.props.datePurchased,
 
@@ -108,7 +108,7 @@ class AddFoodItemModal extends React.Component {
       {
         id: 8234235234234,      //TEMPORARY FOR NOW
         name: this.state.name,
-        quantity: this.state.quantity,
+        amount: this.state.amount,
         unit: this.state.unit
       }
     );
@@ -126,7 +126,7 @@ class AddFoodItemModal extends React.Component {
       //   this.state.name,
       //   this.state.id,
       //   this.state.price,
-      //   this.state.quantity,
+      //   this.state.amount,
       //   this.state.unit,
       //   this.state.datePurchased,
       //   this.state.tableData);
@@ -137,7 +137,7 @@ class AddFoodItemModal extends React.Component {
       //   name: this.state.name,
       //   id: this.state.id,
       //   price: this.state.price,
-      //   quantity: this.state.quantity,
+      //   amount: this.state.amount,
       //   unit: this.state.unit,
       //   datePurchased: this.state.datePurchased,
       //   nutritionData: this.state.tableData
@@ -157,7 +157,7 @@ class AddFoodItemModal extends React.Component {
         this.state.name,
         this.state.id,
         this.state.price,
-        this.state.quantity,
+        this.state.amount,
         this.state.unit,
         this.state.datePurchased,
         this.state.tableData);
@@ -168,7 +168,7 @@ class AddFoodItemModal extends React.Component {
         name: this.state.name,
         id: this.state.id,
         price: this.state.price,
-        quantity: this.state.quantity,
+        amount: this.state.amount,
         unit: this.state.unit,
         datePurchased: this.state.datePurchased,
         nutritionData: this.state.tableData
@@ -196,9 +196,9 @@ class AddFoodItemModal extends React.Component {
   //   await ApiUtils.getAutoCompleteIngredientsByName(text, this);
   // }
 
-  async getIngredientInfo(ingrName, ingrId, quantity) {
+  async getIngredientInfo(ingrName, ingrId, amount) {
 
-    var data = await ApiUtils.getIngredientInfoFromId(ingrId, quantity, this);
+    var data = await ApiUtils.getIngredientInfoFromId(ingrId, amount, this);
   }
 
   /**
@@ -396,18 +396,18 @@ class AddFoodItemModal extends React.Component {
 				--------------------------------------------------------------------------------------------------------- */}
                 {this.showPriceInput()}
 
-                {/* Quantity Section 
+                {/* Amount Section 
 				--------------------------------------------------------------------------------------------------------- */}
                 <View style={styles.dataRow}>
-                  <Text style={styles.inputLabel}>Quantity</Text>
+                  <Text style={styles.inputLabel}>Amount</Text>
                   <View style={styles.metricsRow}>
                     <TextInput
-                      style={styles.quantityInput}
-                      value={this.state.quantity}
-                      onChangeText={itemQuantity => {
-                        this.setState({ quantity: itemQuantity });
+                      style={styles.amountInput}
+                      value={this.state.amount}
+                      onChangeText={itemAmount => {
+                        this.setState({ amount: itemAmount });
                         this.state.parent.setState({
-                          itemQuantity: itemQuantity
+							itemAmount: itemAmount
                         });
                       }}
                     />
@@ -755,7 +755,7 @@ const styles = StyleSheet.create({
   },
 
   /*------------------------------------------------------------------------
-		  Quantity/Metric picker Styles
+		  Amount/Metric picker Styles
 	------------------------------------------------------------------------*/
   choiceContainer: {
     backgroundColor: "rgba(244, 238, 238, 0.7)",
@@ -772,7 +772,7 @@ const styles = StyleSheet.create({
     width: wPercentage("35%")
   },
 
-  quantityInput: {
+  amountInput: {
     textAlign: "left",
     fontSize: 16,
     color: "rgba(0,0,0,0.54)",

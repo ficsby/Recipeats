@@ -146,13 +146,13 @@ class RecipeEditingScreen extends React.Component {
             keyExtractor={(item, index) => index.toString()}
             renderItem={({item, index}) => 
               <FlatListItem parentFlatList={this} flatListData={this.state.tempIngredients} sectionId={1} rowId={index} 
-                    title={item.name} rightTitle={item.quantity + " " + item.unit} titleStyle={styles.ingredientText} rightTitleStyle={styles.quantityText}/>
+                    title={item.name} rightTitle={item.amount + " " + item.unit} titleStyle={styles.ingredientText} rightTitleStyle={styles.amountText}/>
             }/>
         //     :
         //     this.state.tempIngredients.map( (item, index) =>  
         //     ( 
         //       <View>
-        //         <ListItem key={index} title={item.name} rightTitle={item.quantity} titleStyle={styles.ingredientText} rightTitleStyle={styles.quantityText} />
+        //         <ListItem key={index} title={item.name} rightTitle={item.amount} titleStyle={styles.ingredientText} rightTitleStyle={styles.amountText} />
         //         <Divider />
         //       </View>
         //     )) 
@@ -356,12 +356,12 @@ class RecipeEditingScreen extends React.Component {
 							name=""
 							parent={this}
 							price={null}
-							quantity={null}
+							amount={null}
 							unit=""
 						/>
                         {/* <AddItemModal isModalVisible={this.state.ingredientModalVisible}
                             title={"Add Ingredient"}
-                            message1={"Name:"} message2={"Quantity:"}
+                            message1={"Name:"} message2={"Amount:"}
                             suggestion1={"Example: mushrooms"} suggestion2={"Example: 1/2 cups"}
                             submitInput={ (inputText) => {this.sendInput(inputText)} }
                             closeDialog={ () => {this.showDialog(false)}}/> */}
@@ -732,7 +732,7 @@ const styles = StyleSheet.create({
         color: 'rgba(105,105,105,1)',
     },
 
-    quantityText: {
+    amountText: {
         width: '100%',
         fontStyle: 'italic',
         marginRight: 20,

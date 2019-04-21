@@ -9,8 +9,6 @@ import { value } from "react-native-extended-stylesheet";
  * @param {array} secondList - list to check for missing needed ingredients
  */
 export const findMissingFoodItems = (firstList, secondList) => {
-  console.log(firstList);
-  console.log(secondList);
   const secondListIds = secondList.map(f => f.id);
   return firstList.filter(foodItem => !secondListIds.includes(foodItem.id));
 };
@@ -40,15 +38,15 @@ export const getFoodList = userId => {
  * Function to add a new food item to a user's food inventory in the database
  * @param {*} userId - User's user ID
  * @param {*} foodItemID - ID of the food item being added to the food stock
- * @param {*} quantity - The quantity of food item being added to food stock
+ * @param {*} amount - The amount of food item being added to food stock
  * @param {*} unit - The unit of measurement for the food item
  */
-export const modifyFoodStock = (userId, foodItemName, foodItemID, price, quantity, unit, datePurchased, tableData) => {
-    //console.log(foodItemID + ": " + quantity);
+export const modifyFoodStock = (userId, foodItemName, foodItemID, price, amount, unit, datePurchased, tableData) => {
+    
     firebase.database().ref('foodlist/' + userId + '/' + foodItemName + '_' + foodItemID).update({
         id: foodItemID,
         name: foodItemName,
-        quantity: quantity,
+        amount: amount,
 		unit: unit,
 		price: price,
 		datePurchased: datePurchased,
