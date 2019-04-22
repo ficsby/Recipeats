@@ -85,11 +85,11 @@ export default class HomeScreen extends React.Component {
         this.setState({visible: true});
     };
 
-    // renderTrivia() {
-    //     return this.state.trivia_items.map((triv, index) => {
-    //         return <NewsItem key={index} news={triv} index={index} type={1} />
-    //     });
-    // };
+    renderTrivia() {
+        return this.state.trivia_items.map((triv, index) => {
+            return <NewsItem key={index} news={triv} index={index} type={1} />
+        });
+    };
 
     /**
      *  Renders food articles, in which each article_item is mapped as a NewsItem. 
