@@ -16,6 +16,7 @@ import EditAccountScreen from './../screens/auth/EditAccountScreen';
 import HomeScreen from './../screens/HomeScreen';
 import LoadingScreen from './../screens/LoadingScreen';
 import RecipeScreen from './../screens/RecipeScreen';
+import UserRecipesScreen from './../screens/UserRecipesScreen';
 import BudgetScreen from './../screens/BudgetScreen';
 import BookmarksScreen from './../screens/BookmarksScreen';
 import FoodstockScreen from './../screens/FoodstockScreen';
@@ -42,7 +43,7 @@ const Tabs = createBottomTabNavigator({
     },
 
     Recipes: {
-        screen: RecipeScreen,
+        screen: UserRecipesScreen,
         navigationOptions: {
             tabBarIcon: ({tintColor}) => (
                 <Icon name='recipe-book' size={32} color={tintColor} />
