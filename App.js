@@ -7,6 +7,7 @@ import Firebase from './config/Firebase';
 import * as firebase from 'firebase';
 
 export default class App extends React.Component {
+  
   constructor(props) {
     super(props);
     
@@ -26,6 +27,8 @@ export default class App extends React.Component {
     this.setState({isAuthenticated: !!user});
   }
 
+
+
   render() {
     if ( (!this.state.isLoadingComplete || !this.state.isAuthenticationReady) && !this.props.skipLoadingScreen) {
       return (
@@ -39,8 +42,7 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
-          
-          {(this.state.isAuthenticated) ? <MainTabNavigator/> : <RootNavigation />}
+          {(this.state.isAuthenticated) ? <MainTabNavigator /> : <RootNavigation />}
         </View>
       );
     }

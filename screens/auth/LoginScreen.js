@@ -1,161 +1,160 @@
 import React from 'react';
 import { StyleSheet, Button, Image, View, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
-import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 import { StackActions } from 'react-navigation';
 import { Font } from 'expo';
 import * as firebase from 'firebase';
 
 import logo from './../../assets/images/logo_transparent.png';
-import { Styles } from './../../styles/GlobalStyles';
-
-import KeyboardShift from './../../styles/KeyboardShift.js';
-import AutocompleteData from './../../data/AutocompleteData';
+import { reset } from 'expo/build/AR';
 
 const { width: WIDTH } = Dimensions.get('window')
+var globalStyles = require('./../../styles/globalStyles.js');
 
 export default class LoginScreen extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = { 
             email: "",
             password: "",
-            ingredientSuggestions: [],
             fontLoaded: false,
         };
     }
 
-    // function for when user clicks the 'Login Button'
     onLoginPress = () => {
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
         .then( () => {
-            retrieveData = () => {
-                var ref = firebase.database().ref('ingredients/ingredients');
-                return ref.once('value');
-              }
-          
-              // // Snapshot is the depiction of the user's current data
-              retrieveData().then( (snapshot) => {
-                this.setState( {
-                    ingredientSuggestions: snapshot.val()
-                })
-              })
-              
-            AutocompleteData.ingredientSuggestions = this.state.ingredientSuggestions;
-            this.props.navigation.navigate('Home');
+
         }, (error) => {
             Alert.alert(error.message);
         });
     }
 
-    // function for when user clicks the 'Signup Button'
     onSignUpPress = () => {
-        this.props.navigation.navigate('Signup');
+        var navActions = StackActions.reset({
+            index: 0,
+            actions: [
+                StackActions.push({ routeName: "Signup" })
+            ]
+        });
+
+        this.props.navigation.dispatch(navActions);
     }
 
-    // function for when user clicks the 'Forgot Password Button'
     onForgotPasswordPress = () => {
-        this.props.navigation.navigate('ForgotPassword');
+        var navActions = StackActions.reset({
+            index: 0,
+            actions: [
+                StackActions.push({ routeName: "ForgotPassword" })
+            ]
+        });
+
+        this.props.navigation.dispatch(navActions);
     }
 
     /* NOTE: THIS IS FOR TESTING PURPOSES ONLY....  
              Normally you access this page through logging in with your credentials 
     */ 
     onHomePress = () => {
-        this.props.navigation.goBack();
+        var navActions = StackActions.reset({
+            index: 0,
+            actions: [
+                StackActions.push({ routeName: "Home" })
+            ]
+        });
+
+        this.props.navigation.dispatch(navActions);
     }
     
     async componentDidMount() {
-        this._isMounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
-
-        // load font first before using it
         await Font.loadAsync({
           'dancing-script': require('../../assets/fonts/DancingScript-Regular.otf'),
         }); 
-        if (this._isMounted) this.setState({fontLoaded: true})
+        this.setState({fontLoaded: true})
     }
     
-    componentWillUnmount(){
-        this._isMounted = false; // after components is unmounted reset boolean
-    }
-
     render() {
         return (
-            <View style={ Styles.background }>
+            <View style={ globalStyles.background }>
 
                 <View style={styles.logoContainer}>
                     <Image source={logo} style={styles.logo}/>
                     <Text style={styles.logoText} >Recipeats</Text>
                 </View>
 
-                <KeyboardShift>
-                {() => (
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.input}
                         placeholder={'Username'}
                         placeholderTextColor = {'rgba(0, 0, 0, 0.3)'}
                         value = {this.state.email}
-                        onChangeText = {(text) => {
-                            if (this._isMounted) this.setState( {email: text} ) 
-                        } }
+                        onChangeText = {(text) => {this.setState( {email: text} ) } }
+                        //underLineColorAndroid= 'transparent'
                     />
+                </View>
 
+                <View style={[styles.inputContainer, styles.inputContainer2]}>
                     <TextInput
                         style={styles.input}
                         placeholder={'Password'}
                         placeholderTextColor = {'rgba(0, 0, 0, 0.3)'}
                         secureTextEntry ={true}
                         value = {this.state.password}
-                        onChangeText = {(text) => { 
-                            if (this._isMounted) this.setState( {password: text} ) 
-                        } }
+                        onChangeText = {(text) => {this.setState( {password: text} ) } }
                     />
                 </View>
-                )}
-            </KeyboardShift>
 
-            <TouchableOpacity style={styles.loginButton } onPress={this.onLoginPress}>
-                <Text>Login</Text>
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.button } onPress={this.onLoginPress}>
+                    <Text>Login</Text>
+                 </TouchableOpacity>
 
-            <TouchableOpacity style={styles.signUpButton} onPress ={this.onSignUpPress}> 
-                <Text>Sign Up</Text>
-            </TouchableOpacity>
+                 <TouchableOpacity style={styles.button} onPress ={this.onSignUpPress}> 
+                    <Text>Sign Up</Text>
+                 </TouchableOpacity>
 
-            <TouchableOpacity style={styles.forgotPasswordButton} onPress ={this.onForgotPasswordPress}> 
-                <Text>Forgot Password</Text>
-            </TouchableOpacity>
-            
+                 <TouchableOpacity style={styles.button} onPress ={this.onForgotPasswordPress}> 
+                    <Text>Forgot Password</Text>
+                 </TouchableOpacity>
+
+                {/* NOTE: This is for testing purposes only */}
+                 <TouchableOpacity style={styles.button} onPress ={this.onHomepPress}> 
+                    <Text>Home Page   NOTE: This is for testing purposes only </Text>
+                 </TouchableOpacity>
             </View>
         )
+        //return <Text style={{paddingTop:20}}>LoginScreen</Text>
     }
 }
 
 const styles = StyleSheet.create({
     logoContainer: {
-        marginTop: hPercentage('5%'),
+        marginTop: 50,
         alignItems: 'center',
       },
-      
+    
     logoText: {
-        marginTop: hPercentage('0%'), 
+        marginTop: -60, 
         fontFamily: 'dancing-script',
         fontSize: 45,
         color: 'rgba(181, 83, 102, 1)', // Medium Pink
     },
 
     logo: {
-        marginTop: hPercentage('1%'),
         width: 90,
         height: 90,
+        marginBottom: 50,
 
     },
 
     inputContainer: {
-        marginTop: hPercentage('-5%'),
+        marginTop: -50,
         flex: 1,
         justifyContent: 'center', // Used to set Text Component Vertically Center
         alignItems: 'center' // Used to set Text Component Horizontally Center
+    },
+
+    inputContainer2: {
+        marginTop: -100,
     },
 
     input: {
@@ -164,28 +163,15 @@ const styles = StyleSheet.create({
         height: 40,
         fontSize: 20, 
         marginHorizontal: 35,
-        marginTop: hPercentage('5%'),
+        marginTop: 100,
         borderBottomColor: 'rgba(181, 83, 102, 1)', // Medium Pink
         borderBottomWidth: 2,
     },
 
-    loginButton: {
-        marginTop: hPercentage('40%'),
-        marginBottom: hPercentage('7%'),
+    button: {
+        marginTop: 30,
+        marginBottom: 20,
         alignItems: 'center',
         justifyContent: 'center',
     },
-
-    signUpButton: {
-        marginBottom: hPercentage('7%'),
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-
-    forgotPasswordButton: {
-        marginBottom: hPercentage('10%'),
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-
 });

@@ -1,32 +1,85 @@
+import { Notifications } from 'expo';
 import React from 'react';
-import { Platform, View, StyleSheet, TouchableOpacity, Dimensions, TextInput } from 'react-native';
-import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createBottomTabNavigator, createAppContainer , DrawerItems } from 'react-navigation';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
+import MainTabNavigator from './MainTabNavigator';
+import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
+//import { EStyleSheet } from 'react-native-extended-stylesheet';
 
-/* Custom Icons */
-import { createIconSetFromFontello } from 'react-native-vector-icons';
-import fontelloConfig from './../config/icon-font.json';
-const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
-const { width: WIDTH } = Dimensions.get('window');
+import LoginScreen from '../screens/auth/LoginScreen';
+import SignupScreen from '../screens/auth/SignupScreen';
+import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen';
+import HomeScreen from '../screens/auth/HomeScreen';
 
-//import Colors from '../constants/Colors';
-import LoginScreen from './../screens/auth/LoginScreen';
-import ForgotPasswordScreen from './../screens/auth/ForgotPasswordScreen';
-import SignupScreen from './../screens/auth/SignupScreen';
-import EditAccountScreen from './../screens/auth/EditAccountScreen';
-import HomeDrawerNavigator from './MainTabNavigator';
+const RootStackNavigator = createAppContainer(
+    createStackNavigator (
+    {        
 
-const AppSwitchNavigator = createSwitchNavigator({
-    Login: { screen: LoginScreen},
-    ForgotPassword: { screen: ForgotPasswordScreen },
-    Signup: {screen: SignupScreen },
-    Home: { screen: HomeDrawerNavigator },
-    EditAccount: {screen: EditAccountScreen},
-});
+        Home: { 
+          screen: HomeScreen, 
+          navigationOptions: {
+            header: null
+          },
+        },  
 
-const AppContainer = createAppContainer(AppSwitchNavigator);
+        Login: { 
+          screen: LoginScreen, 
+          navigationOptions: {
+            header: null
+          },
+        },
 
-export default class RootNavigation extends React.Component {
-  render(){
-      return <AppContainer />
+        Signup: { screen: SignupScreen,
+          navigationOptions: {
+            header: null
+          }, 
+        },
+
+        ForgotPassword : { screen: ForgotPasswordScreen,
+          navigationOptions: {
+            header: null
+          }, 
+        },
+
+        Main: { screen: MainTabNavigator, 
+          navigationOptions: {
+            header: null
+          }
+        },
+    },
+    {
+        navigationOptions: () => ({
+          header: null
+        }),
+    }
+    )
+);
+
+export default class RootNavigator extends React.Component {
+  /*
+  componentDidMount() {
+    this._notificationSubscription = this._registerForPushNotifications();
   }
+
+  componentWillUnmount() {
+    this._notificationSubscription && this._notificationSubscription.remove();
+  }
+  */
+  render() {
+    return <RootStackNavigator />;
+  }
+
+  _registerForPushNotifications() {
+    // Send our push token over to our backend so we can receive notifications
+    // You can comment the following line out if you want to stop receiving
+    // a notification every time you open the app. Check out the source
+    // for this function in api/registerForPushNotificationsAsync.js
+    registerForPushNotificationsAsync();
+
+    // Watch for incoming notifications
+    this._notificationSubscription = Notifications.addListener(this._handleNotification);
+  }
+
+  _handleNotification = ({ origin, data }) => {
+    console.log(`Push notification ${origin} with data: ${JSON.stringify(data)}`);
+  };
 }

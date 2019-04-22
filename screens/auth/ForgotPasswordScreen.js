@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button, Image,  Dimensions, TouchableOpacity, Alert } from 'react-native';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
+import { StackActions } from 'react-navigation';
 import * as firebase from 'firebase';
 
 export default class SignupScreen extends React.Component {
@@ -12,7 +13,6 @@ export default class SignupScreen extends React.Component {
         };
     }
 
-    // function for when user clicks the 'Reset Password Button'
     onResetPassword = () => {
         firebase.auth().sendPasswordResetEmail(this.state.email)
         .then( () => {
@@ -22,9 +22,15 @@ export default class SignupScreen extends React.Component {
         });
     }
 
-    // function for when user clicks the 'Back to Login Button'
     onBackToLogin = () => {
-        this.props.navigation.navigate('Login');
+        var navActions = StackActions.reset({
+            index: 0,
+            actions: [
+                StackActions.push({ routeName: "Login" })
+            ]
+        });
+
+        this.props.navigation.dispatch(navActions);
     }
 
     render() {
@@ -42,6 +48,7 @@ export default class SignupScreen extends React.Component {
                         placeholderTextColor={'rgba(0, 0, 0, 0.35)'}
                         value = {this.state.email}
                         onChangeText = {(text) => {this.setState( {email: text} ) } }
+                        //underLineColorAndroid= 'transparent'
                     />
                 </View>
 
@@ -59,9 +66,12 @@ export default class SignupScreen extends React.Component {
     }
 }
 
+// {width: widthPercentageToDP('53%')}
+//const styles = EStyleSheet.create({
 const styles = StyleSheet.create({
     pageTitle: {
         marginTop: hPercentage('15%'),
+        marginBottom: 20,
         marginLeft: 40,
         marginRight: 40,
         fontSize: 25,
@@ -69,7 +79,7 @@ const styles = StyleSheet.create({
     },
     
     subTitle: {
-        marginTop: hPercentage('5%'),
+        marginBottom: 15,
         marginLeft: 40,
         marginRight: 40,
         fontSize: 15,
@@ -82,7 +92,6 @@ const styles = StyleSheet.create({
     },
 
     inputContainer: {
-        marginTop: hPercentage('5%'),
         marginLeft: 40,
         marginRight: 40,
         paddingTop: 8,
@@ -93,8 +102,8 @@ const styles = StyleSheet.create({
     },
 
     resetPwButton: {
-        marginTop: hPercentage('2%'),
-        marginBottom: hPercentage('5%'),
+        marginTop: 20,
+        marginBottom: 20,
         marginLeft: 40,
         marginRight: 40,
         paddingTop: 8,
