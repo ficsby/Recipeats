@@ -181,10 +181,17 @@ export default class UserRecipesScreen extends React.Component {
      */
     renderCustomRecipes() {
         return this.state.customRecipes.map((recipe, index) => {
-            return <RecipeListItem key={index} item={recipe} index={index} type={2} />  //type 1 refers to custom recipes
+            return <RecipeListItem key={index} item={recipe} index={index} type={2} />  //bott 1 refers to custom recipes
         });
     };
   
+    renderCreateRecipeButton() {
+        return(
+            <TouchableOpacity style={styles.createRecipeButton}>
+                <Icon name='plus-circled' size={47} color='rgba(100, 92, 92, 0.8)' />
+            </TouchableOpacity>
+        );
+    };
 
     render() {
         // if (this.state.isLoading) {
@@ -216,7 +223,11 @@ export default class UserRecipesScreen extends React.Component {
                         </View>
                     </ScrollView>
                 </View>
-                </ScrollableTabView>            
+
+                </ScrollableTabView>       
+
+                {this.renderCreateRecipeButton()}
+     
         </View>
         );
     }
@@ -233,6 +244,15 @@ const styles = StyleSheet.create({
         width: '100%',
     },
 
+    
+    createRecipeButton: {
+        flex: 2,
+        alignSelf: 'flex-end',
+        position: 'absolute',
+        right: 25,
+        bottom: 25
+    },
+     
     /*------------------------------------------------------------------------
        Top Section
     ------------------------------------------------------------------------*/

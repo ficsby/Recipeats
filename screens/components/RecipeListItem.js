@@ -24,23 +24,12 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
         alert("Item Pressed");
     };
 
-    renderCreateRecipeButton() {
-        return(
-            <TouchableOpacity style={styles.createRecipeButton}>
-                <Icon name='plus-circled' size={50} color='rgba(100, 92, 92, 0.8)' />
-            </TouchableOpacity>
-        );
-    };
-
     render() {
         let number = (this.state.index + 1).toString();
         let itemContent;
-    
-        {this.renderCreateRecipeButton()}
 
         // if (this.state.type==1) // Type 1:  Trivia tab
         // {
-        //     {this.renderCreateRecipeButton()}
         // } 
         // else if (this.state.type==2) // Type 2: Popular tab (Articles are listed here)
         // {
@@ -121,15 +110,6 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50
     },
-
-    createRecipeButton: {
-        flex: 5,
-        alignSelf: 'flex-end',
-        position: 'absolute',
-        right: 100,
-        bottom: 60
-    }
-     
 });
 
 export default RecipeListItem;
