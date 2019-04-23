@@ -520,11 +520,10 @@ class AddFoodItemModal extends React.Component {
                   <Text style={styles.saveText}>Add Ingredient</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity
-                  onPress={() => this.state.parent.toggleIngrModalVisibility()}
-                >
-                  <Text style={styles.cancelText}>Cancel</Text>
-                </TouchableOpacity>
+                <TouchableOpacity style={styles.cancelButton} onPress={() => this.state.parent.toggleIngrModalVisibility()}> 
+                        <Text style={styles.cancelChanges}>Cancel</Text>
+                    </TouchableOpacity>
+
               </View>
             </View>
           </ScrollView>
@@ -550,7 +549,7 @@ const styles = StyleSheet.create({
   modal_container: {
     marginLeft: 30,
 	marginRight: 30,
-	marginTop: hPercentage('15%'),
+	marginTop: hPercentage('2%'),
     ...Platform.select({
       ios: {
         backgroundColor: "#E3E6E7",
@@ -560,7 +559,6 @@ const styles = StyleSheet.create({
       android: {
         backgroundColor: "#fff",
         elevation: 24,
-        // maxHeight: wPercentage('100%'),
         maxWidth: wPercentage("85%"),
         borderRadius: 5
       }
@@ -572,7 +570,7 @@ const styles = StyleSheet.create({
         padding: 10
       },
       android: {
-        padding: 15
+        padding: 5
       }
     })
   },
@@ -841,6 +839,25 @@ const styles = StyleSheet.create({
     // color: "rgba(249, 248, 248, 1)",
     textAlign: "center",
     width: wPercentage("100%")
-  }
+  },
+
+  cancelButton: {
+    marginBottom: 30,
+    marginLeft: 30,
+    marginRight: 30,
+    paddingTop: 10,
+    paddingBottom: 10,
+    backgroundColor: 'grey',
+    alignItems: 'center',
+    justifyContent: 'center',
+},
+
+cancelChanges: {
+    width: '100%',
+    textAlign: 'center',
+    color: 'rgba(255,255,255,1)',
+    fontSize: 16,
+    fontWeight: '600',
+},
 });
 export default AddFoodItemModal;

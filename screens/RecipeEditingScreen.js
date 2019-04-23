@@ -419,12 +419,12 @@ class RecipeEditingScreen extends React.Component {
 
                     <View style={styles.whitespaceBuffer} />
                     
-                    <TouchableOpacity style={styles.cancelButton} onPress ={this.onCancelEditChanges}> 
-                        <Text style={styles.cancelChanges}>Cancel Edit</Text>
-                    </TouchableOpacity>
-
                     <TouchableOpacity style={styles.saveButton} onPress ={this.onSaveChangesPress}> 
                         <Text style={styles.saveChanges}>Save Changes</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.cancelButton} onPress ={this.onCancelEditChanges}> 
+                        <Text style={styles.cancelChanges}>Cancel Edit</Text>
                     </TouchableOpacity>
 
                 </ScrollView>                            
