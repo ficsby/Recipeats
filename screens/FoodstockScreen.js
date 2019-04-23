@@ -11,6 +11,12 @@ import { Styles } from "../styles/GlobalStyles";
 import { getFoodList } from "../utils/FoodListUtils";
 import FoodItem from "./components/FoodItem";
 import AddFoodItemModal from "./components/AddFoodItemModal";
+import ApiUtils from "./../api/apiUtils";
+import SearchHeaderNav from './../navigation/SearchHeaderNav';
+
+
+// import Bar from 'react-native-bar-collapsible';
+
 import * as firebase from "firebase";
 
 /* Custom Icons */
@@ -23,8 +29,6 @@ import {
   widthPercentageToDP as wPercentage,
   heightPercentageToDP as hPercentage
 } from "react-native-responsive-screen";
-
-
 
 const inventoryList = [
   // FOR TESTING PURPOSES
@@ -60,7 +64,7 @@ export default class FoodstockScreen extends React.Component {
     this.state = {
       addModalVisible: false,
       isFoodInfoModalVisible: false,
-      tableHead: ["Name", "Quantity", ""],
+      tableHead: ["Name", "Amount", ""],
       externalFoodList: [],
       editable: false,
       ingredients: [],
@@ -68,7 +72,7 @@ export default class FoodstockScreen extends React.Component {
       // ingredient info
       itemName: "",
       itemId: null,
-      itemQuantity: null,
+      Amount: null,
       itemUnit: "",
       itemPrice: null,
       itemDate: "",
@@ -124,6 +128,7 @@ export default class FoodstockScreen extends React.Component {
       <KeyboardShift>
         {() => (
           <View>
+            <SearchHeaderNav/>
             <ScrollView>
               {/* Launches food item modal to add a food item to user's food stock */}
               <AddFoodItemModal
@@ -136,7 +141,7 @@ export default class FoodstockScreen extends React.Component {
                 name=""
                 parent={this}
                 price={null}
-                quantity={null}
+                amount={null}
                 unit=""
               />
 
@@ -152,15 +157,15 @@ export default class FoodstockScreen extends React.Component {
                   {state.externalFoodList &&
                     state.externalFoodList.map(rowData => {
                       return (
-
                         // Launches food item dialogue that displays the information for each food item, user can also edit values here
                         <FoodItem
                           key={rowData.name}
                           name={rowData.name}
+                          id={rowData.id}
                           price={rowData.price}
                           datePurchased={rowData.datePurchased}
-                          quantity={rowData.quantity}
-                          id={rowData.id}
+                          amount={rowData.amount}
+                          unit={rowData.unit}
                           parent={this}
                           tableData={rowData.tableData}
                           foodInfoModalVisible={this.state.isFoodInfoModalVisible}
@@ -176,19 +181,20 @@ export default class FoodstockScreen extends React.Component {
               friction={90}
               tension={100}
               activeScale={0.95}
-              containerStyle={{backgroundColor:'rgba(209, 201, 200, 0.2)', 
-                               paddingTop: wPercentage('3%'),
-                               paddingBottom: wPercentage('3%'), 
-                               paddingLeft: wPercentage('8%'), 
-                               paddingRight: wPercentage('8%'),
-                               borderTopColor: 'rgba(0,0,0,0.1)',
-                               borderBottomColor: 'rgba(0,0,0,0.1)',
-                               borderTopWidth: 1,
-                               borderBottomWidth: 1
-                              }}
+              containerStyle={{
+                backgroundColor: 'rgba(209, 201, 200, 0.2)',
+                paddingTop: wPercentage('3%'),
+                paddingBottom: wPercentage('3%'),
+                paddingLeft: wPercentage('8%'),
+                paddingRight: wPercentage('8%'),
+                borderTopColor: 'rgba(0,0,0,0.1)',
+                borderBottomColor: 'rgba(0,0,0,0.1)',
+                borderTopWidth: 1,
+                borderBottomWidth: 1
+              }}
               title="Add New Food Item"
-              rightIcon={<Icon name='plus' size={18} color='rgba(63, 61, 58, 0.65)'/>}
-              titleStyle={{ color: 'rgba(63, 61, 58, 0.65)', fontWeight: '500', fontSize:17, paddingRight: wPercentage('2%'), textAlign: 'right' }}
+              rightIcon={<Icon name='plus' size={18} color='rgba(63, 61, 58, 0.65)' />}
+              titleStyle={{ color: 'rgba(63, 61, 58, 0.65)', fontWeight: '500', fontSize: 17, paddingRight: wPercentage('2%'), textAlign: 'right' }}
               onPress={this.toggleIngrModalVisibility}
             />
           </View>

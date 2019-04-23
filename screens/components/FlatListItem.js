@@ -43,11 +43,11 @@ class FlatListItem extends Component {
                             const deletedRow = this.state.activeRowKey;
                             // Refresh FlatList
                             switch (this.props.sectionId) {
-                                case 1: this.props.parentFlatList.state.extendedIngredients.splice(this.props.rowId, 1);
-                                    this.props.parentFlatList.setState({ extendedIngredients: this.props.flatListData });
+                                case 1: this.props.parentFlatList.state.tempIngredients.splice(this.props.rowId, 1);
+                                    this.props.parentFlatList.setState({ tempIngredients: this.props.flatListData });
                                     break;
-                                case 2: this.props.parentFlatList.state.instructions.splice(this.props.rowId, 1);
-                                    this.props.parentFlatList.setState({ instructions: this.props.flatListData });
+                                case 2: this.props.parentFlatList.state.tempInstructions.splice(this.props.rowId, 1);
+                                    this.props.parentFlatList.setState({ tempInstructions: this.props.flatListData });
                                     break;
                             }
 

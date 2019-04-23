@@ -6,27 +6,27 @@ const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 // /* <Francis Buendia> March 15, 2019
 //         API Request call to 'Autocomplete recipe search' recipes by name 
 // */
-// async function getAutoCompleteRecipesByName(text, context){
+async function getAutoCompleteRecipesByName(text, context){
 
-//     try{
+    try{
         
-//         // Returns a promise which then gets the result from the request call
-//         const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/autocomplete?number=10&query=${text}`, {
-//             method: "GET",
-//             headers: {
-//                 "Content-Type": "application/json",
-//                 "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
-//             },
-//         });
+        // Returns a promise which then gets the result from the request call
+        const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/autocomplete?number=10&query=${text}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+            },
+        });
 
-//         const json = await response.json();
-//         context.setState({recipes: json});
+        const json = await response.json();
+        context.setState({recipes: json});
         
-//     } catch (err) {
-//         console.log(err);
-//     }
+    } catch (err) {
+        console.log(err);
+    }
     
-// }
+}
 
 // /**
 //  * API request call to 'Autocomplete ingredients search' ingredients by name
@@ -57,98 +57,127 @@ const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 // /* <Francis Buendia> March 15, 2019
 //         API Request call to 'Get Recipe Info from Id' to get the recipe information
 // */
-// async function getRecipeInfoFromId(id, context){
-//     // Returns a promise which then gets the result from the request call
-//     const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information`, {
-//         method: "GET",
-//         headers: {
-//             "Content-Type": "application/json",
-//             "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
-//         },
-//     });
+async function getRecipeInfoFromId(id, context){
+    // Returns a promise which then gets the result from the request call
+    const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information?includeNutrition=true`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+        },
+    });
 
-//     const json = await response.json();
+    const json = await response.json();
     
-//     // Check if component is mounted before changing state, this check is to prevent memory leaks
-//     if(context._ismounted)
-//     {
-//         nutrtionTags = {}
-//         for(key in json)
-//         {   
-//             if(key in context.state){
-//                 context.setState({
-//                     [key]: json[key]
-//                 });
-//             }
-//             else if(key in context.state.nutritionalTags)
-//             {
-//                 nutrtionTags[key] = json[key];
-//             }
-//         }
+    // Check if component is mounted before changing state, this check is to prevent memory leaks
+    if(context._ismounted)
+    {
+        nutrtionTags = {}
+        for(key in json)
+        {   
+            if(key in context.state){
+                if(key == 'servings'){
+                    context.setState({
+                        [key]: json[key] + ' servings'
+                    });
+                }
+                else if(key == 'readyInMinutes'){
+                    context.setState({
+                        [key]: json[key] + ' minutes'
+                    });
+                }
+                else{
+                    context.setState({
+                        [key]: json[key]
+                    });
+                }
+            }
+            else if(key in context.state.nutritionalTags)
+            {
+                nutrtionTags[key] = json[key];
+            }
+        }
 
-//         context.setState({
-//             nutritionalTags: nutrtionTags 
-//         });
-//     }
-//     return new Promise((resolve) =>
-//         setTimeout(
-//         () => { resolve('result') },
-//         5000
-//         )
-//     );
-// }
+        context.setState({
+			nutritionalTags: nutrtionTags 
+        });
+    }
+    return new Promise((resolve) =>
+        setTimeout(
+        () => { resolve('result') },
+        5000
+        )
+    );
+}
 
 // /* <Christine Tran> April 10, 2019
 //         API Request call to 'Get analyzed instructions' to break the recipe instructions into a list of steps
 // */
-// async function getAnalyzedInstructions(id, context){
-//     // Returns a promise which then gets the result from the request call
-//     const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/324695/analyzedInstructions?stepBreakdown=true`, {
-//         method: "GET",
-//         headers: {
-//             "Content-Type": "application/json",
-//             "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
-//         },
-//     });
+async function getAnalyzedInstructions(id, context){
+    // Returns a promise which then gets the result from the request call
+    const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/analyzedInstructions?stepBreakdown=true`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+        },
+    });
 
-//     const json = await response.json();
+    const json = await response.json();
+	
+    // Check if component is mounted before changing state, this check is to prevent memory leaks
+    if(context._ismounted)
+    {
+        context.setState({
+            instructions : json[0].steps 
+        });
+    }
 
-//     console.log(json);
-
-//     // Check if component is mounted before changing state, this check is to prevent memory leaks
-//     if(context._ismounted)
-//     {
-//         context.setState({
-//             instructionSteps : json[0].steps 
-//         });
-//     }
-
-//     return new Promise((resolve) =>
-//         setTimeout(
-//         () => { resolve('result') },
-//         5000
-//         )
-//     );
-// }
+    return new Promise((resolve) =>
+        setTimeout(
+        () => { resolve('result') },
+        5000
+        )
+    );
+}
 
 
-// async function searchRecipeByName(name, cuisine, diet, intolerances, context){
-//     console.log('in search recipe');
-//     // let url = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=${cuisine}&diet=${diet}&excludeIngredients=''&intolerances=${intolerances}&number=10&offset=0&type=main+course&query=${name}`;
-//     // console.log(url);
-//     // //https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=thai&diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&offset=0&type=main+course&query=burger
-//     // //"https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=thai&diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&offset=0&type=main+course&query=burger"
-//     // const response = await fetch(url, {
-//     //     method: "GET",
-//     //     headers: {
-//     //         "Content-Type": "application/json",
-//     //         "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
-//     //     },
-//     // });
-//     // console.log(response);
-//     // const json = await response.json();
-//     // console.log(json);
-// }
+async function searchRecipeByName(name, cuisine, diet, intolerances, context){
+    console.log('in search recipe');
+    let url = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=${cuisine}&diet=${diet}&intolerances=${intolerances}&number=10&offset=0&query=${name}`;
+    
+    if(cuisine.length == 0)
+    {
+        url = url.replace('cuisine=&', '');
+    }
+    if(diet.length == 0)
+    {
+        url = url.replace('diet=&', '');
+    }
+    if(intolerances.length == 0)
+    {
+        url = url.replace('intolerances=&', '');
+    }    
+
+    //https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=thai&diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&offset=0&type=main+course&query=burger
+    //"https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=thai&diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&offset=0&type=main+course&query=burger"
+    const response = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+        },
+    });
+    const json = await response.json();
+
+    context.setState({searchResults: json.results});
+    return new Promise((resolve) =>
+        setTimeout(
+            () => { resolve('result') },
+            5000
+        )
+    );
+}
 
 /**
  * API request call to "Get food information" to get information about a specific food (ingredient)
@@ -176,9 +205,9 @@ async function getIngredientInfoFromId(id, amnt, context) {
         for (key in json) {
 			
             if (key in context.state) {
-                context.setState({
-                    [key]: json[key]
-                });
+				context.setState({
+					[key]: json[key]
+				});
             }
             else {
 				if(key == 'nutrition')
@@ -367,13 +396,42 @@ async function getIngredientInfoFromId(id, amnt, context) {
 //     return new Promise((resolve) => setTimeout( () => { resolve('result') }, 5000 ) );
 // }
 
+async function convertAmount(requiredAmount, userTargetUnit, context){
+	const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/convert?ingredientName=${requiredAmount}&targetUnit=${userTargetUnit}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+        },
+	});
+	
+	const json = await response.json();
+	
+	// Check if component is mounted before changing state, this check is to prevent memory leaks
+    if(context._ismounted)
+    {
+        context.setState({
+            convertedAmount : json
+        });
+    }
+
+    return new Promise((resolve) =>
+        setTimeout(
+        () => { resolve('result') },
+        5000
+        )
+    );
+}
+
 export default {
     // getAutoCompleteRecipesByName,
     // getAutoCompleteIngredientsByName,
-    // getRecipeInfoFromId,
+    getRecipeInfoFromId,
     // getRandomFoodTrivia,
     // getRandomFoodVideos,
     // getRandomFoodArticles,
-    // searchRecipeByName,
-    getIngredientInfoFromId,
+    searchRecipeByName,
+	getIngredientInfoFromId,
+	getAnalyzedInstructions,
+	convertAmount
 }

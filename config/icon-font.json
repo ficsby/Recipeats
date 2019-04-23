@@ -239,12 +239,6 @@
       "src": "fontawesome"
     },
     {
-      "uid": "d4aeb916de8d3aea716442778346d244",
-      "css": "plus-circled",
-      "code": 59414,
-      "src": "elusive"
-    },
-    {
       "uid": "qab5uvjyoc3uu4d2pvt8soshtgkuvpak",
       "css": "minus",
       "code": 59415,
@@ -291,6 +285,12 @@
       "css": "logout",
       "code": 59418,
       "src": "entypo"
+    },
+    {
+      "uid": "a66e72da83c98248ae3ef43808efc452",
+      "css": "plus-circle",
+      "code": 59420,
+      "src": "websymbols"
     },
     {
       "uid": "059ee84db3ec1875f05b6b29e53c8cd1",

@@ -78,7 +78,7 @@ export default class SearchHeaderNav extends React.Component {
                     </View>
                 
                 </View>
-
+                
                 <Autocomplete
                     editable = {this.state.searchBarSensitivity}
                     containerStyle={styles.searchContainer}  

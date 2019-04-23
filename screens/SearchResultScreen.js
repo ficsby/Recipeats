@@ -6,7 +6,8 @@ import Autocomplete from 'react-native-autocomplete-input';
 import { CheckBox } from 'react-native-elements'
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 import { StackActions } from 'react-navigation';
-import ApiUtils from './../api/apiUtils';
+import apiUtils from './../api/apiUtils';
+import Font from 'expo';
 // import globalStyles from './../styles/GlobalStyles';
 var globalStyles = require('./../styles/GlobalStyles.js');
 
@@ -88,20 +89,28 @@ export default class SearchResultScreen extends React.Component {
 
     async componentDidMount() {
         this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
-        await Font.loadAsync({
-        'dancing-script': require('./../assets/fonts/DancingScript-Regular.otf'),
-        }); 
+        // await Font.loadAsync({
+        // 'dancing-script': require('./../assets/fonts/DancingScript-Regular.otf'),
+        // }); 
         this.setState({fontLoaded: true});
-        // this.setState({searchResults:})
+        
+        const name = NavigationService.getTopLevelNavigator().state.params.name;
+        const cuisine = NavigationService.getTopLevelNavigator().state.params.cuisine;
+        const diet = NavigationService.getTopLevelNavigator().state.params.diet;
+        const intolerances = NavigationService.getTopLevelNavigator().state.params.foodIntolerances;
+
+        apiUtils.searchRecipeByName(name, cuisine, diet, intolerances, this);
     }
 
     componentWillUnmount () {
         this._ismounted = false; // after component is unmounted reste boolean
     }
 
+    showRecipeScreen(selectedRecipe) {
+        NavigationService.navigate('RecipeScreen', {recipeId: selectedRecipe.id});
+    }
+
     render() {
-        // console.log("Query Result from Search Screen: " + NavigationService.getTopLevelNavigator().state.params.queryResult);
-        // console.log("Food Intolerances Result from Search Screen: " + NavigationService.getTopLevelNavigator().state.params.foodIntolerances);
         return (
             <View>
                 <SearchHeaderNav/>
@@ -110,7 +119,7 @@ export default class SearchResultScreen extends React.Component {
                     {
                         this.state.searchResults.map( (item, i) =>  
                         ( 
-                            <TouchableOpacity key={i}>
+                            <TouchableOpacity key={i} onPress={() => this.showRecipeScreen(item)}>
                                 <View>
                                     <ListItem title={item.title} subtitle={"Serving size: " + item.servings +"\nReady in: " + item.readyInMinutes + " minutes"} 
                                             titleStyle={styles.ingredientText} subtitleStyle={styles.quantityText} 
