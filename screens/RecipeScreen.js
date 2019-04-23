@@ -48,15 +48,9 @@ export default class RecipeScreen extends React.Component {
             comparisonModalVisible: false,
 
             id: NavigationService.getTopLevelNavigator().state.params.recipeId,
-<<<<<<< HEAD
             title: NavigationService.getTopLevelNavigator().state.params.title,
             servings: NavigationService.getTopLevelNavigator().state.params.servings,
             readyInMinutes: NavigationService.getTopLevelNavigator().state.params.readyInMinutes,
-=======
-            title: '',
-            servings: '',
-            readyInMinutes: '',
->>>>>>> 5c9354373205cef591ae114d2a2dfb039221bc12
             extendedIngredients: [],
             nutrition: null,
 

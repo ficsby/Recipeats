@@ -39,6 +39,7 @@ export default class UserRecipesScreen extends React.Component {
             recipeModalVisible: false,
             query: '',
             isLoading: true,
+            recipeCreated: false,
             customRecipes: 
             [
                 {   
@@ -134,6 +135,8 @@ export default class UserRecipesScreen extends React.Component {
         this.toggleRecipeModalVisibility = this.toggleRecipeModalVisibility.bind(this);
         this.renderCustomRecipes = this.renderCustomRecipes.bind(this);
         this.renderBookmarks = this.renderBookmarks.bind(this);
+        this.showCreateRecipeModal = this.showCreateRecipeModal.bind(this);
+        this.showRecipeScreen = this.showRecipeScreen.bind(this) // Calls the NavigationService.navigate
     };
 
     static navigationOptions = {
@@ -191,22 +194,47 @@ export default class UserRecipesScreen extends React.Component {
         });
     };
 
+    showCreateRecipeModal() {
+        return(
+            <CreateRecipeModal isModalVisible={this.state.recipeModalVisible} parent={this} />
+        );
+    }
+
   
     toggleRecipeModalVisibility() {
         this.setState({  recipeModalVisible: !this.state.recipeModalVisible  });
     };
 
+    
+  showRecipeScreen(newRecipe){
+    NavigationService.navigate('RecipeScreen', 
+                                  { 
+                                    recipeId: newRecipe.id,
+                                    title: newRecipe.title,
+                                    servings: newRecipe.servings,
+                                    readyInMinutes: newRecipe.readyInMinutes,
+                                    calories: newRecipe.calories,
+                                    protein: newRecipe.protein,
+                                    carbs: newRecipe.carbs,
+                                    fats: newRecipe.fats
+                                  }
+                            );
+    this.setState({recipeCreated: false});
+  };
+
     render() {
         // if (this.state.isLoading) {
         //     return <LoadingScreen />;
         // };
-        console.log("IN USER RECIPES SCREEN");
-        console.log(this.state.customRecipes);
+        if (this.state.recipeCreated)
+        {
+            this.showRecipeScreen(customRecipes[[customRecipes.length-1]]);
+        }
         return (
             <View style={styles.pageContainer}>
                 <SearchHeaderNav/>
 
-                <CreateRecipeModal isModalVisible={this.state.recipeModalVisible} parent={this} />
+                {this.showCreateRecipeModal()}
 
                 <ScrollableTabView  renderTabBar={() => ( <ScrollableTabBar  style={styles.scrollStyle} tabStyle={styles.tabStyle} /> )}
                 tabBarTextStyle={styles.tabBarTextStyle}

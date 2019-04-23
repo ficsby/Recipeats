@@ -37,7 +37,6 @@ class CreateRecipeModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      parent: this.props.parent,
       isLoading: true,
       inputModal: "",
       opening: true,
@@ -61,8 +60,8 @@ class CreateRecipeModal extends React.Component {
       //   tableHead: ["Title", "Amount", "Unit", "% of Daily Needs"],
       //   tableData: [],
     };
-    // this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
-  }
+    this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
+  };
 
   async componentDidMount() {
     this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
@@ -98,30 +97,16 @@ class CreateRecipeModal extends React.Component {
 
   componentWillUnmount() {
     this._ismounted = false; // after component is unmounted reste boolean
-  }
-
-  showRecipeScreen(newRecipe){
-    console.log("recipe id: ", newRecipe.id);
-    NavigationService.navigate('RecipeScreen', 
-                                  { 
-                                    recipeId: newRecipe.id,
-                                    title: newRecipe.title,
-                                    servings: newRecipe.servings,
-                                    readyInMinutes: newRecipe.readyInMinutes,
-                                    calories: newRecipe.calories,
-                                    protein: newRecipe.protein,
-                                    carbs: newRecipe.carbs,
-                                    fats: newRecipe.fats
-                                  }
-                                );
-  }
+  };
 
   onSaveChangesPress(){
     // FRANCIS ASSIGN THE ID SOMEWHERE AROUND HERE PLS & THANK U @@@@@@@@@@@@@~~~~~~~~~~~~~~~~~!!!!!!!!!!!!!!!!!!!!!!!!!!***********************%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     var temp = [...this.props.parent.state.customRecipes];
     // --idCount;
+    --CreateRecipeModal.idCount; 
+    console.log("RECIPE ID: ", CreateRecipeModal.idCount);
     var newRecipe = {
-                        id: --CreateRecipeModal.idCount,
+                        id: -140,
                         title: this.state.title,
                         // image: this.state.image,
                         servings: this.state.servings,
@@ -136,8 +121,8 @@ class CreateRecipeModal extends React.Component {
                     };
     temp.push(newRecipe);
     this.props.parent.setState({ customRecipes: temp });
-    this.props.parent.toggleRecipeModalVisibility();
-    this.showRecipeScreen(newRecipe);
+    this.props.parent.setState({recipeModalVisible: false,
+                                recipeCreated: true });
   };
 
   render() {
@@ -157,7 +142,6 @@ class CreateRecipeModal extends React.Component {
           this.props.parent.setState({ recipeModalVisible : false });
         }}
       >
-
         <View style={[styles.container, { ...modalStyleProps }]}>
           <ScrollView contentContainerStyle={[styles.modal_container, { ...modalStyleProps }]} >
             <View style={styles.modal_body}>
@@ -251,7 +235,7 @@ class CreateRecipeModal extends React.Component {
                   <Text style={styles.saveText}>Create Recipe</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => this.state.parent.toggleRecipeModalVisibility()} >
+                <TouchableOpacity onPress={() => {this.props.parent.setState({recipeModalVisible: false})}} >
                   <Text style={styles.cancelText}>Cancel</Text>
                 </TouchableOpacity>
               </View>
