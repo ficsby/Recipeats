@@ -359,10 +359,10 @@ const styles = StyleSheet.create({
     },
 
     saveButton: {
-        marginTop: 50,
-        marginBottom: 50,
-        marginLeft: 30,
-        marginRight: 30,
+        marginTop: hPercentage('5%'),
+        marginBottom: hPercentage('5%'),
+        marginLeft: wPercentage('7%'),
+        marginRight: wPercentage('7%'),
         paddingTop: 10,
         paddingBottom: 10,
         backgroundColor: 'rgba(204, 102, 102, 0.9)',
@@ -375,17 +375,5 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '600',
     },
-
-    deleteAccount: {
-        marginTop: 20,
-        marginBottom: 50,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-
-    deleteAccountText: {
-        fontSize: 15,
-        fontWeight: '500',
-    }
 
 });
