@@ -132,6 +132,8 @@ export default class UserRecipesScreen extends React.Component {
             ],
         };
         this.toggleRecipeModalVisibility = this.toggleRecipeModalVisibility.bind(this);
+        this.renderCustomRecipes = this.renderCustomRecipes.bind(this);
+        this.renderBookmarks = this.renderBookmarks.bind(this);
     };
 
     static navigationOptions = {
@@ -168,25 +170,27 @@ export default class UserRecipesScreen extends React.Component {
         this.setState({visible: true});
     };
 
-    /**
-     *  Renders bookmarks, in which each item in bookmarkedRecipes is mapped as a RecipeListItem. 
-     *  Each RecipeListItem displays the title, image, serving size, cook time
-     */
-    renderBookmarks() {
-        return this.state.bookmarkedRecipes.map((recipe, index) => {
-            return <RecipeListItem parent={this} listData={this.state.bookmarkedRecipes} item={recipe} rowId={index} sectionId={1} />  //sectionId 1 refers to bookmarked recipes
-        });
-    };
-
+    
     /**
      *  Renders the user's custom recipes, in which each item in customRecipes is mapped as a RecipeListItem. 
      *  Each RecipeListItem displays the title, image, serving size, cook time
      */
     renderCustomRecipes() {
         return this.state.customRecipes.map((recipe, index) => {
-            return <RecipeListItem  parent={this} listData={this.state.customRecipes} item={recipe} rowId={index} sectionId={2} />  //sectionId 2 refers to custom recipes
+            return <RecipeListItem  parent={this} item={recipe} rowId={index} sectionId={1} />  //sectionId 1 refers to custom recipes
         });
     };
+
+    /**
+     *  Renders bookmarks, in which each item in bookmarkedRecipes is mapped as a RecipeListItem. 
+     *  Each RecipeListItem displays the title, image, serving size, cook time
+     */
+    renderBookmarks() {
+        return this.state.bookmarkedRecipes.map((recipe, index) => {
+            return <RecipeListItem parent={this} item={recipe} rowId={index} sectionId={2} />  //sectionId 2 refers to bookmarked recipes
+        });
+    };
+
   
     toggleRecipeModalVisibility() {
         this.setState({  recipeModalVisible: !this.state.recipeModalVisible  });

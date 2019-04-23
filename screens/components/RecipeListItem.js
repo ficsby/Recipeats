@@ -16,11 +16,11 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
         super(props);
         this.state = {
             parent: this.props.parent,
-            listData: this.props.listData,
             item: this.props.item,
             rowId: this.props.rowId,
             sectionId: this.props.sectionId
         }
+        this.onPressDelete = this.onPressDelete.bind(this);
     }
 
     onPressItem() {
@@ -45,21 +45,20 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 				{
 					text: "Yes",
 					onPress: () => {
+                        var temp = [];
+                        console.log("rowid: ", this.props.rowId);
                         switch (this.state.sectionId) {
-                            case 1: parent.setState({
-                                        bookmarkedRecipes: this.state.listData.filter(
-                                            item => item.id != this.state.item.id
-                                        )
-                                    });
-                                    // Set bookmark to false for the recipe
+                            case 1: temp = [...this.props.parent.state.customRecipes];
+                                    console.log("BEFORE\n", temp);
+                                    temp.splice(this.props.rowId, 1);
+                                    this.props.parent.setState({ customRecipes: temp });
                                     break;
-                            case 2: parent.setState({
-                                        customRecipes: this.state.listData.filter(
-                                            item => item.id != this.state.item.id
-                                        )
-                                    });
+                            case 2: temp = [...this.props.parent.state.bookmarkedRecipes];
+                                    temp.splice(this.props.rowId, 1);
+                                    this.props.parent.setState({ bookmarkedRecipes: temp });
                                     break;
                         }
+                        console.log("AFTER\n", temp);
                     }
 				}
 			],
