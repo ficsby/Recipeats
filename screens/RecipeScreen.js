@@ -29,6 +29,7 @@ import LoadingScreen from './LoadingScreen';
 import DialogInput from 'react-native-dialog-input';
 import apiUtils from '../api/apiUtils.js';
 import RecipeEditingScreen from './RecipeEditingScreen';
+import SearchHeaderNav from './../navigation/SearchHeaderNav';
 
 const { width: WIDTH } = Dimensions.get('window');
 var globalStyles = require('../styles/GlobalStyles.js');
@@ -342,6 +343,7 @@ export default class RecipeScreen extends React.Component {
 
         return ( 
             <View> 
+                <SearchHeaderNav/>
                 {/*---------------------------------------------------------------------------------
                    Recipe Page Contents 
                 ------------------------------------------------------------------------------------*/}
