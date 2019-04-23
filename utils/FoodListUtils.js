@@ -14,6 +14,16 @@ export const findMissingFoodItems = (firstList, secondList) => {
 };
 
 /**
+ * Comparison function to find similar FoodItem objects between two arrays
+ * @param {array} firstList - list of needed ingredients
+ * @param {array} secondList - list to check for missing needed ingredients
+ */
+export const findSimilarFoodItems = (firstList, secondList) => {
+	const secondListIds = secondList.map(f => f.id);
+	return firstList.filter(foodItem => secondListIds.includes(foodItem.id));
+  };
+
+/**
  * Function to subtract ingredient amounts in the first array from the second array and returns the resulting array.
  * This method assumes that both lists contain the same ingredients.
  * @param {array} firstList
@@ -132,3 +142,39 @@ export const getTotalPrice = foodlist => {
     getPrices(foodlist)
   );
 };
+
+/**
+ * Function that returns the total value of a foodlist
+ * @param {*} foodlist - foodlist that you want the total price of
+ */
+export const abbreviateUnit = unit => {
+	switch(unit)
+	{
+		case 'milliliters':
+			return 'mL';
+		case 'liters':
+			return 'L';
+		case 'grams':
+			return 'g';
+		case 'milligrams':
+			return 'mg';
+		case 'kilograms':
+			return 'kg';
+		case 'teaspoons':
+			return 'tsp';
+		case 'tablespoons':
+			return 'tbsp';
+		case 'ounces':
+			return 'oz';
+		case 'pounds': 
+			return 'lb';
+		case 'pints':
+			return 'pt';
+		case 'quarts':
+			return 'qt';
+		case 'gallons':
+			return 'gal';
+		default:
+			return 'unit';
+	}
+  };

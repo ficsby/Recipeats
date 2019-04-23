@@ -112,7 +112,7 @@ async function getAnalyzedInstructions(id, context){
     });
 
     const json = await response.json();
-	console.log(json);
+	
     // Check if component is mounted before changing state, this check is to prevent memory leaks
     if(context._ismounted)
     {
@@ -365,6 +365,33 @@ async function getIngredientInfoFromId(id, amnt, context) {
 //     return new Promise((resolve) => setTimeout( () => { resolve('result') }, 5000 ) );
 // }
 
+async function convertAmount(requiredAmount, userTargetUnit, context){
+	const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/convert?ingredientName=${requiredAmount}&targetUnit=${userTargetUnit}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+        },
+	});
+	
+	const json = await response.json();
+	
+	// Check if component is mounted before changing state, this check is to prevent memory leaks
+    if(context._ismounted)
+    {
+        context.setState({
+            convertedAmount : json
+        });
+    }
+
+    return new Promise((resolve) =>
+        setTimeout(
+        () => { resolve('result') },
+        5000
+        )
+    );
+}
+
 export default {
     // getAutoCompleteRecipesByName,
     // getAutoCompleteIngredientsByName,
@@ -374,5 +401,6 @@ export default {
     // getRandomFoodArticles,
     // searchRecipeByName,
 	getIngredientInfoFromId,
-	getAnalyzedInstructions
+	getAnalyzedInstructions,
+	convertAmount
 }

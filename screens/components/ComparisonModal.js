@@ -18,7 +18,9 @@ import { Table, Row, Rows } from "react-native-table-component";
 import { Styles } from "../../styles/GlobalStyles";
 import {
   findMissingFoodItems,
+  findSimilarFoodItems,
   modifyFoodStock,
+  abbreviateUnit,
   getFoodList
 } from "../../utils/FoodListUtils";
 import ApiUtils from "../../api/apiUtils";
@@ -32,6 +34,8 @@ import {
 /* Custom Icons */
 import { createIconSetFromFontello } from "react-native-vector-icons";
 import fontelloConfig from "./../../config/icon-font.json";
+import apiUtils from "../../api/apiUtils";
+
 const Icon = createIconSetFromFontello(fontelloConfig, "fontello");
 
 /**
@@ -42,8 +46,11 @@ export default class ComparisonModal extends React.Component {
     super(props);
 
     this.state = {
+		isLoading: true,
       parent: this.props.parent,
-      foodstock: this.props.foodstock,
+	  foodstock: this.props.foodstock,
+	  filteredFoodStock: [],
+	  convertedAmount: [],
 	  recipeIngredients: this.props.recipeIngredients,
       isLoading: true,
       tableHead: ["Name", "Required", "Your Stock", "Amount After"],
@@ -53,52 +60,62 @@ export default class ComparisonModal extends React.Component {
     // this.getIngredientInfo = this.getIngredientInfo.bind(this);
   }
 
-componentDidMount() {
+async componentDidMount() {
 	this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
 	// console.log(this.state.recipeIngredients);
 	// Snapshot is the depiction of the user's current data
-	foodList = [];
-
-	retrieveData = () => {
-		ref = getFoodList(firebase.auth().currentUser.uid);
-		return ref.once("value");
-	};
-    retrieveData().then(snapshot => {
-		if (this._ismounted) {
-		  foodListSnapshot = snapshot.val();
-  
-		  for (var key in foodListSnapshot) {
-			if (foodListSnapshot.hasOwnProperty(key)) {
-				console.log(foodListSnapshot[key]);
-			  foodList.push(foodListSnapshot[key]);
-			}
-		  }
-		  this.setState({
-			foodstock: foodList
-		  });
-		}
-	});
-
-	this.compareRecipes(this.state.foodstock);
+	await this.compareRecipes();
+	if(this.state.tableData != null)
+	{
+		this.setState({isLoading: false});
+	}
+	// const similarItems = findSimilarFoodItems(this.state.recipeIngredients, this.state.foodstock);
+	// console.log('similar items');
+	// console.log(similarItems);
+	// apiUtils.convertAmount(reqAmount, userAmountUnit, this);
+	// console.log(this.state.foodstock);
   }
 
   componentWillUnmount() {
     this._ismounted = false; // after component is unmounted reste boolean
   }
 
-  compareRecipes(foodstock) {
+  async compareRecipes() {
 	ingrDict = {}
 	ingrYouHave = []
 	ingrYouDontHave = []
 
-	console.log('foodstock');
-	console.log(foodstock);
+	// console.log('Recipes');
+	// console.log(this.state.recipeIngredients);
 	for(idx in this.state.recipeIngredients){
 		ingr = this.state.recipeIngredients[idx];
 		ingrDict[ingr.id] = ingr;
 	}
-	// console.log('Ingredient dict');
-	// console.log(ingrDict);
+	// console.log('foodstock');
+	// console.log(this.state.foodstock);
+	convertedData = [];
+	for(idx in this.state.foodstock){
+		userStockIngrInfo = this.state.foodstock[idx];
+		ingrId = userStockIngrInfo.id;
+		if(ingrId in ingrDict){
+			// Recipe Ingredient Data
+			recipeIngrInfo = ingrDict[ingrId];
+			ingrName = recipeIngrInfo.name;
+			reqAmountPhrase = recipeIngrInfo.original;
+			reqAmount = recipeIngrInfo.amount;
+			recipeUnit = recipeIngrInfo.unit;
+
+			userAmountUnit = userStockIngrInfo.unit;
+			userAmount = userStockIngrInfo.amount;
+			convertedAmount = await apiUtils.convertAmount(reqAmount, userAmountUnit, this);
+			amountDifference = userAmount - this.state.convertedAmount.targetAmount;
+			convertedData.push([
+				ingrName, reqAmount + ' ' + abbreviateUnit(recipeUnit), userAmount + ' ' + abbreviateUnit(userAmountUnit), 
+				amountDifference + ' ' + abbreviateUnit(userAmountUnit)
+			]);
+		}
+	}
+	this.setState({tableData: convertedData});
   }
 
   /**
@@ -120,6 +137,11 @@ componentDidMount() {
 //   }
 
   render() {
+	if(this.state.isLoading)
+	{
+		return <LoadingScreen />;
+	}
+
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Title bar */}

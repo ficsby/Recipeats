@@ -11,7 +11,12 @@ import { Font, AppLoading } from 'expo';
 import * as firebase from 'firebase';
 // import NavigationService from '../navigation/NavigationService.js';
 import ComparisonModal from './components/ComparisonModal';
-import {getFoodList} from './../utils/FoodListUtils';
+import {
+	findMissingFoodItems,
+	findSimilarFoodItems,
+	modifyFoodStock,
+	getFoodList
+  } from "../utils/FoodListUtils";
 
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
@@ -24,6 +29,7 @@ import LoadingScreen from './LoadingScreen';
 import DialogInput from 'react-native-dialog-input';
 import apiUtils from '../api/apiUtils.js';
 import RecipeEditingScreen from './RecipeEditingScreen';
+
 const { width: WIDTH } = Dimensions.get('window');
 var globalStyles = require('../styles/GlobalStyles.js');
 const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
@@ -59,6 +65,9 @@ export default class RecipeScreen extends React.Component {
             isIngredientModalVisible: false,
             isInstructionModalVisible: false,
 			extendedIngredients: [],
+
+			userFoodStock: [],
+			convertedAmounts: [],
             // extendedIngredients: [   // FOR TESTING PURPOSES
             //     {
             //         id: 12061,
@@ -192,10 +201,8 @@ export default class RecipeScreen extends React.Component {
             foodList.push(foodListSnapshot[key]);
           }
         }
-        
+        this.setState({userFoodStock:foodList});
       });
-
-      return foodList;
     }
 
     // Renders the icon according to its current state
@@ -275,11 +282,15 @@ export default class RecipeScreen extends React.Component {
 
 		var recipeData = await apiUtils.getRecipeInfoFromId(this.state.id, this);
 		var instructionData = await apiUtils.getAnalyzedInstructions(this.state.id, this);
+		this.getFoodStock();
+		
+		// findSimilarFoodItems();
         if(recipeData != null && instructionData != null)
-        {
+        {	
+			console.log('foodstock');
+			console.log(this.state.userFoodStock);
             this.setState({ isLoading: false });
 		}        
-		// console.log(this.state.instructions);
     };
 
     componentWillUnmount () {
@@ -346,7 +357,7 @@ export default class RecipeScreen extends React.Component {
                     >
                       <ComparisonModal
                         parent={this}
-                        foodstock={this.getFoodStock()}
+                        foodstock={this.state.userFoodStock}
                         recipeIngredients={this.state.extendedIngredients}
                       />
                     </Modal>
