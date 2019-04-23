@@ -59,7 +59,7 @@ async function getAutoCompleteRecipesByName(text, context){
 // */
 async function getRecipeInfoFromId(id, context){
     // Returns a promise which then gets the result from the request call
-    const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information`, {
+    const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information?includeNutrition=true`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

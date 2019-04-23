@@ -51,6 +51,8 @@ export default class RecipeScreen extends React.Component {
             title: 'Ramen Noodle Coleslaw blahbalsdfadfsdfsdfasdfasdfasdf',
             servings: '4 servings',
             readyInMinutes: '60 mins',
+            extendedIngredients: [],
+            nutrition: null,
 
             calories: 155,
             protein: 3,
@@ -60,11 +62,10 @@ export default class RecipeScreen extends React.Component {
             sourceUrl: '',
             creditText: '',
             sourceName: '',
-            imageURL: './../assets/images/ramen-noodle-coleslaw.jpg',
+            image: './../assets/images/ramen-noodle-coleslaw.jpg',
 
             isIngredientModalVisible: false,
             isInstructionModalVisible: false,
-			extendedIngredients: [],
 
 			userFoodStock: [],
 			convertedAmounts: [],
@@ -363,7 +364,7 @@ export default class RecipeScreen extends React.Component {
                     </Modal>
 
                     {/* <ImageBackground source={require('./../assets/images/test_photo.jpg')} /> */}
-                    <ImageBackground source={require('./../assets/images/ramen-noodle-coleslaw.jpg')} style={styles.image}>
+                    <ImageBackground source={{uri:this.state.image}} style={styles.image}>
                         <View style={styles.overlayButtonsContainer}> 
                             <TouchableOpacity onPress={this.toggleHeart} >
                                 {this.renderIcon("heart") }
