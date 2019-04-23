@@ -165,7 +165,7 @@ export default class ComparisonModal extends React.Component {
 
           <View styles={styles.dataRow}>
             <Text style={styles.inputLabel}>Results</Text>
-            <Table style={{marginBottom: hPercentage('5%'), marginTop:hPercentage('1%')}} borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
+            <Table style={{marginBottom: hPercentage('5%'), marginTop:hPercentage('1%'), fontSize:15}} borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
               <Row
                 data={this.state.tableHead}
                 style={styles.head}
@@ -177,12 +177,12 @@ export default class ComparisonModal extends React.Component {
 
           <View styles={styles.dataRow}>
             <Text style={styles.inputLabel}>Missing Ingredients</Text>
-            <Text style={{marginTop:hPercentage('1%')}}>
+            <Text style={{marginTop:hPercentage('1%'), fontSize:15}}>
               {findMissingFoodItems(
                 this.state.recipeIngredients,
                 this.state.foodstock
               ).reduce((missingStr, food) => {
-                missingStr = missingStr + food.name + ", ";
+                missingStr = missingStr + food.original + "\n";
                 return missingStr;
               }, "")}
             </Text>
