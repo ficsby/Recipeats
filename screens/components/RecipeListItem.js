@@ -52,7 +52,12 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
                         <View style={styles.detailsContainer}>
                             {/* { getPretext(item) } */}
                             <Text style={styles.title}>{this.state.item.title}</Text>
-                            <Text>{this.state.item.servings + "   " + this.state.item.readyInMinutes}</Text>
+                            <View style={{flexDirection:'row'}}>
+                                <Text>{this.state.item.servings}</Text> 
+                                <Text style={{marginLeft: wPercentage('1%'), marginRight: wPercentage('2%')}}>servings</Text>
+                                <Text>{this.state.item.readyInMinutes}</Text> 
+                                <Text style={{marginLeft: wPercentage('1%'), marginRight: wPercentage('1%')}}>mins</Text> 
+                            </View>
                         </View>
                     </View>
                     <View style={styles.photoContainer}>
@@ -74,16 +79,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         // marginRight:  wPercentage('10%'),
         // marginLeft:  wPercentage('10%'),
-        paddingTop: 10,
-        paddingBottom: 10,
+        paddingTop: hPercentage('2%'),
+        paddingBottom: hPercentage('2%'),
         borderBottomWidth: 1,
-        borderBottomColor: '#E4E4E4'
+        borderBottomColor: '#E4E4E4',
     },
     ItemDescription: {
         flex: 2,
         flexDirection: 'row',
         paddingTop: hPercentage('1%'),
         paddinBottom: hPercentage('5%'),
+        marginLeft: wPercentage('7%'),
     },
     number: {
         flex: 0.5,
@@ -106,11 +112,11 @@ const styles = StyleSheet.create({
         flex: 1,
         // justifyContent: 'center',
         // alignItems: 'center'
-        marginRight: wPercentage('20%'),
+        marginRight: wPercentage('15%'),
 
     },
     photo: {
-        width: wPercentage('50%'),
+        width: wPercentage('35%'),
         height: hPercentage('10%'),
     },
 });
