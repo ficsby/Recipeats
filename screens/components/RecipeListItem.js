@@ -15,6 +15,7 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
     constructor(props) {
         super(props);
         this.state = {
+            parent: this.props.parent,
             listData: this.props.listData,
             item: this.props.item,
             rowId: this.props.rowId,
@@ -27,8 +28,9 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
     };
 
     onPressDelete() {
-		const parent = this.state.parent;
-
+        const parent = this.state.parent;
+        console.log('item id');
+        console.log(this.state.item.id);
 		Alert.alert(
 			"Warning",
 			"Are you sure you want to remove " +
@@ -43,19 +45,19 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 				{
 					text: "Yes",
 					onPress: () => {
-                        switch (this.props.sectionId) {
-                            case 1: this.props.parent.setState({
-                                        customRecipes: this.state.listData.filter(
-                                            item => item.id != this.state.item.id
-                                        )
-                                    });
-                                    break;
-                            case 2: this.props.parent.setState({
+                        switch (this.state.sectionId) {
+                            case 1: parent.setState({
                                         bookmarkedRecipes: this.state.listData.filter(
                                             item => item.id != this.state.item.id
                                         )
                                     });
                                     // Set bookmark to false for the recipe
+                                    break;
+                            case 2: parent.setState({
+                                        customRecipes: this.state.listData.filter(
+                                            item => item.id != this.state.item.id
+                                        )
+                                    });
                                     break;
                         }
                     }
