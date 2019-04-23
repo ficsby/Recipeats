@@ -111,9 +111,9 @@ export default class SearchScreen extends React.Component {
 
     async componentDidMount() {
         this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
-        await Font.loadAsync({
-        'dancing-script': require('./../assets/fonts/DancingScript-Regular.otf'),
-        }); 
+        // await Font.loadAsync({
+        // 'dancing-script': require('./../assets/fonts/DancingScript-Regular.otf'),
+        // }); 
         this.setState({fontLoaded: true});
     }
 
@@ -153,6 +153,7 @@ export default class SearchScreen extends React.Component {
         foodIntolerances = foodIntolerances.substring(0, foodIntolerances.length-2);
         NavigationService.navigate('SearchResults', {name: query, cuisine: cuisine, diet: diet, foodIntolerances: foodIntolerances});
     }
+
     goBack(){
         NavigationService.setSearchSensitivity(true);
         NavigationService.goBack();

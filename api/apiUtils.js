@@ -130,23 +130,42 @@ async function getAnalyzedInstructions(id, context){
 }
 
 
-// async function searchRecipeByName(name, cuisine, diet, intolerances, context){
-//     console.log('in search recipe');
-//     // let url = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=${cuisine}&diet=${diet}&excludeIngredients=''&intolerances=${intolerances}&number=10&offset=0&type=main+course&query=${name}`;
-//     // console.log(url);
-//     // //https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=thai&diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&offset=0&type=main+course&query=burger
-//     // //"https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=thai&diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&offset=0&type=main+course&query=burger"
-//     // const response = await fetch(url, {
-//     //     method: "GET",
-//     //     headers: {
-//     //         "Content-Type": "application/json",
-//     //         "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
-//     //     },
-//     // });
-//     // console.log(response);
-//     // const json = await response.json();
-//     // console.log(json);
-// }
+async function searchRecipeByName(name, cuisine, diet, intolerances, context){
+    console.log('in search recipe');
+    let url = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=${cuisine}&diet=${diet}&intolerances=${intolerances}&number=10&offset=0&query=${name}`;
+    
+    if(cuisine.length == 0)
+    {
+        url = url.replace('cuisine=&', '');
+    }
+    if(diet.length == 0)
+    {
+        url = url.replace('diet=&', '');
+    }
+    if(intolerances.length == 0)
+    {
+        url = url.replace('intolerances=&', '');
+    }    
+
+    //https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=thai&diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&offset=0&type=main+course&query=burger
+    //"https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=thai&diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&offset=0&type=main+course&query=burger"
+    const response = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+        },
+    });
+    const json = await response.json();
+
+    context.setState({searchResults: json.results});
+    return new Promise((resolve) =>
+        setTimeout(
+            () => { resolve('result') },
+            5000
+        )
+    );
+}
 
 /**
  * API request call to "Get food information" to get information about a specific food (ingredient)
@@ -399,7 +418,7 @@ export default {
     // getRandomFoodTrivia,
     // getRandomFoodVideos,
     // getRandomFoodArticles,
-    // searchRecipeByName,
+    searchRecipeByName,
 	getIngredientInfoFromId,
 	getAnalyzedInstructions,
 	convertAmount
