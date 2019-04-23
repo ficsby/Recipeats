@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
         flex: 2,
         flexDirection: 'row',
         paddingTop: hPercentage('1%'),
-        paddinBottom: hPercentage('5%'),
+        paddingBottom: hPercentage('5%'),
         marginLeft: wPercentage('7%'),
     },
     number: {
