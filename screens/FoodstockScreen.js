@@ -37,6 +37,8 @@ import Button from "./components/Button";
 import FoodItemForm from "./components/FoodItemForm";
 import AddFoodItemModal from "./components/AddFoodItemModal";
 import ApiUtils from "./../api/apiUtils";
+import SearchHeaderNav from './../navigation/SearchHeaderNav';
+
 
 // import Bar from 'react-native-bar-collapsible';
 
@@ -167,6 +169,7 @@ export default class FoodstockScreen extends React.Component {
       <KeyboardShift>
         {() => (
           <View>
+            <SearchHeaderNav/>
             <ScrollView>
               {/* Launches food item modal to add a food item to user's food stock */}
               <AddFoodItemModal
