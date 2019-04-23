@@ -8,7 +8,6 @@ import FlatListItem from './components/FlatListItem';
 import AddFoodItemModal from "./components/AddFoodItemModal";
 
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
-import KeyboardShift from "./../styles/KeyboardShift.js";
 import { Font, AppLoading } from 'expo';
 import * as firebase from 'firebase';
 import NavigationService from '../navigation/NavigationService.js';
@@ -29,17 +28,10 @@ const fetch = require('node-fetch');
 
 import LoadingScreen from './LoadingScreen';
 import DialogInput from 'react-native-dialog-input';
-<<<<<<< HEAD
 import apiUtils from '../api/apiUtils.js';
 import RecipeEditingScreen from './RecipeEditingScreen';
 import SearchHeaderNav from './../navigation/SearchHeaderNav';
-=======
-import { heightPercentageToDP } from 'react-native-responsive-screen';
-// import apiUtils from '../api/apiUtils.js';
->>>>>>> screen-scaling-merge
 
-const { width: WIDTH } = Dimensions.get('window');
-var globalStyles = require('../styles/GlobalStyles.js');
 const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 
 export default class RecipeScreen extends React.Component {

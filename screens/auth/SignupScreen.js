@@ -451,10 +451,10 @@ const styles = StyleSheet.create({
 ------------------------------------------------------------------------*/
 
   signupButton: {
-    marginTop: 40,
-    marginBottom: 30,
-    marginRight: 40,
-    marginLeft: 40,
+    marginTop: hPercentage('5%'),
+    marginBottom: hPercentage('5%'),
+    marginRight: wPercentage('5%'),
+    marginLeft: wPercentage('5%'),
     paddingTop: 10,
     paddingBottom: 10,
     backgroundColor: "rgba(204, 102, 102, 0.9)",
@@ -471,16 +471,16 @@ const styles = StyleSheet.create({
   },
 
   loginButton: {
-    marginBottom: 20,
-    marginRight: 40,
-    marginLeft: 40,
+    marginBottom: hPercentage('3%'),
+    marginRight: wPercentage('5%'),
+    marginLeft: wPercentage('5%'),
     paddingBottom: 10,
     alignItems: "center",
     justifyContent: "center"
   },
 
   selectDate: {
-    marginBottom: hPercentage("5%"),
+    marginBottom: hPercentage("7%"),
     marginRight: 40,
     paddingLeft: 40,
     paddingTop: 10,
