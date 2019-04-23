@@ -112,7 +112,7 @@ export default class SearchResultScreen extends React.Component {
 
     render() {
         return (
-            <View>
+            <View style={{flex:1}}>
                 <SearchHeaderNav/>
                 
                 <ScrollView styles={styles.searchScreenContainer}>
