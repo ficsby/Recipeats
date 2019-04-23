@@ -208,8 +208,8 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontWeight: '500',
         marginBottom: hPercentage('2%'),
-        marginLeft: 10,
-        marginRight: 40,
+        marginLeft: wPercentage('2%'),
+        marginRight: wPercentage('5%'),
 
     },
 
