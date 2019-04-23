@@ -29,9 +29,11 @@ import {
 /* Custom Icons */
 import { createIconSetFromFontello } from "react-native-vector-icons";
 import fontelloConfig from "./../../config/icon-font.json";
+import NavigationService from "../../navigation/NavigationService";
 const Icon = createIconSetFromFontello(fontelloConfig, "fontello");
 
 class CreateRecipeModal extends React.Component {
+  static idCount = 0;
   constructor(props) {
     super(props);
     this.state = {
@@ -59,7 +61,7 @@ class CreateRecipeModal extends React.Component {
       //   tableHead: ["Title", "Amount", "Unit", "% of Daily Needs"],
       //   tableData: [],
     };
-    this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
+    // this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
   }
 
   async componentDidMount() {
@@ -98,26 +100,44 @@ class CreateRecipeModal extends React.Component {
     this._ismounted = false; // after component is unmounted reste boolean
   }
 
-  onSaveChangesPress = () => {
-    const parent = this.state.parent;
+  showRecipeScreen(newRecipe){
+    console.log("recipe id: ", newRecipe.id);
+    NavigationService.navigate('RecipeScreen', 
+                                  { 
+                                    recipeId: newRecipe.id,
+                                    title: newRecipe.title,
+                                    servings: newRecipe.servings,
+                                    readyInMinutes: newRecipe.readyInMinutes,
+                                    calories: newRecipe.calories,
+                                    protein: newRecipe.protein,
+                                    carbs: newRecipe.carbs,
+                                    fats: newRecipe.fats
+                                  }
+                                );
+  }
 
+  onSaveChangesPress(){
     // FRANCIS ASSIGN THE ID SOMEWHERE AROUND HERE PLS & THANK U @@@@@@@@@@@@@~~~~~~~~~~~~~~~~~!!!!!!!!!!!!!!!!!!!!!!!!!!***********************%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     var temp = [...this.props.parent.state.customRecipes];
-    temp.push(
-      {
-        id: this.state.id,
-        title: this.state.title,
-        image: this.state.image,
-        servings: this.state.servings,
-        readyInMinutes: this.state.readyInMinutes,
-        calories: this.state.calories,
-        protein: this.state.protein,
-        carbs: this.state.carbs,
-        fats: this.state.fats,
-        // As well as other recipe information
-      }
-    );
+    // --idCount;
+    var newRecipe = {
+                        id: --CreateRecipeModal.idCount,
+                        title: this.state.title,
+                        // image: this.state.image,
+                        servings: this.state.servings,
+                        readyInMinutes: this.state.readyInMinutes,
+                        calories: this.state.calories,
+                        protein: this.state.protein,
+                        carbs: this.state.carbs,
+                        fats: this.state.fats,
+                        bookmarked: false,
+                        liked: false,
+                        // As well as other recipe information
+                    };
+    temp.push(newRecipe);
     this.props.parent.setState({ customRecipes: temp });
+    this.props.parent.toggleRecipeModalVisibility();
+    this.showRecipeScreen(newRecipe);
   };
 
   render() {
@@ -134,17 +154,15 @@ class CreateRecipeModal extends React.Component {
         transparent={true}
         visible={this.props.isModalVisible}
         onRequestClose={() => {
-          this.parent.setState({ createModalVisible: false });
+          this.props.parent.setState({ recipeModalVisible : false });
         }}
       >
 
         <View style={[styles.container, { ...modalStyleProps }]}>
           <ScrollView contentContainerStyle={[styles.modal_container, { ...modalStyleProps }]} >
             <View style={styles.modal_body}>
-              <Text style={styles.title_modal}>{this.state.title}</Text>
-
-              {/* 
-					You can reuse the header to put the title and the close icon on the same row, so leave this commented for now
+              
+				{/* 	You can reuse the header to put the title and the close icon on the same row, so leave this commented for now
 				*/}
               {/* Title header
 				--------------------------------------------------------------------------------------------------------- */}
