@@ -55,7 +55,7 @@ class RecipeEditingScreen extends React.Component {
             sourceUrl: this.props.parent.state.sourceUrl,
             creditText:this.props.parent.state.creditText,
             sourceName: this.props.parent.state.sourceName,
-            imageURL: this.props.parent.state.imageURL,
+            image: this.props.parent.state.image,
             ingredientModalVisible: false,
             instructionModalVisible: false,
             tempIngredients: this.props.parent.state.extendedIngredients,
@@ -69,6 +69,7 @@ class RecipeEditingScreen extends React.Component {
         this.renderIngredientsList = this.renderIngredientsList.bind(this);
         this.renderInstructionsList = this.renderInstructionsList.bind(this);
         this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
+        this.onCancelEditChanges = this.onCancelEditChanges.bind(this);
         this.toggleBookmark = this.toggleBookmark.bind(this);
         this.toggleHeart = this.toggleHeart.bind(this);
         this.toggleIngrModalVisibility = this.toggleIngrModalVisibility.bind(this);
@@ -222,13 +223,17 @@ class RecipeEditingScreen extends React.Component {
             protein:  this.state.protein,
             carbs:  this.state.carbs,
             fats:  this.state.fats,
-            imageURL: this.state.imageURL,
+            image: this.state.image,
 
             extendedIngredients:  this.state.tempIngredients,
             instructions: this.state.tempInstructions,
             nutritionalTags: this.state.nutritionalTags
         })
         Alert.alert("Your changes have been saved.");
+        this.props.parent.toggleEditable();
+    }
+
+    onCancelEditChanges() {
         this.props.parent.toggleEditable();
     }
 
@@ -414,9 +419,13 @@ class RecipeEditingScreen extends React.Component {
 
                     <View style={styles.whitespaceBuffer} />
                     
-                        <TouchableOpacity style={styles.saveButton} onPress ={this.onSaveChangesPress}> 
-                            <Text style={styles.saveChanges}>Save Changes</Text>
-                        </TouchableOpacity>
+                    <TouchableOpacity style={styles.cancelButton} onPress ={this.onCancelEditChanges}> 
+                        <Text style={styles.cancelChanges}>Cancel Edit</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.saveButton} onPress ={this.onSaveChangesPress}> 
+                        <Text style={styles.saveChanges}>Save Changes</Text>
+                    </TouchableOpacity>
 
                 </ScrollView>                            
             </View>
@@ -489,6 +498,25 @@ const styles = StyleSheet.create({
     },
 
     saveChanges: {
+        width: '100%',
+        textAlign: 'center',
+        color: 'rgba(255,255,255,1)',
+        fontSize: 16,
+        fontWeight: '600',
+    },
+
+    cancelButton: {
+        marginBottom: 30,
+        marginLeft: 30,
+        marginRight: 30,
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: 'grey',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    cancelChanges: {
         width: '100%',
         textAlign: 'center',
         color: 'rgba(255,255,255,1)',
