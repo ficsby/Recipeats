@@ -76,9 +76,21 @@ async function getRecipeInfoFromId(id, context){
         for(key in json)
         {   
             if(key in context.state){
-				context.setState({
-					[key]: json[key]
-				});
+                if(key == 'servings'){
+                    context.setState({
+                        [key]: json[key] + ' servings'
+                    });
+                }
+                else if(key == 'readyInMinutes'){
+                    context.setState({
+                        [key]: json[key] + ' minutes'
+                    });
+                }
+                else{
+                    context.setState({
+                        [key]: json[key]
+                    });
+                }
             }
             else if(key in context.state.nutritionalTags)
             {
