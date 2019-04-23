@@ -18,7 +18,9 @@ import { Table, Row, Rows } from "react-native-table-component";
 import { Styles } from "../../styles/GlobalStyles";
 import {
   findMissingFoodItems,
+  findSimilarFoodItems,
   modifyFoodStock,
+  abbreviateUnit,
   getFoodList
 } from "../../utils/FoodListUtils";
 import ApiUtils from "../../api/apiUtils";
@@ -32,6 +34,8 @@ import {
 /* Custom Icons */
 import { createIconSetFromFontello } from "react-native-vector-icons";
 import fontelloConfig from "./../../config/icon-font.json";
+import apiUtils from "../../api/apiUtils";
+
 const Icon = createIconSetFromFontello(fontelloConfig, "fontello");
 
 /**
@@ -42,9 +46,12 @@ export default class ComparisonModal extends React.Component {
     super(props);
 
     this.state = {
+      isLoading: true,
       parent: this.props.parent,
       foodstock: this.props.foodstock,
-	  recipeIngredients: this.props.recipeIngredients,
+      filteredFoodStock: [],
+      convertedAmount: [],
+      recipeIngredients: this.props.recipeIngredients,
       isLoading: true,
       tableHead: ["Name", "Required", "Your Stock", "Amount After"],
       tableData: []
@@ -53,52 +60,61 @@ export default class ComparisonModal extends React.Component {
     // this.getIngredientInfo = this.getIngredientInfo.bind(this);
   }
 
-componentDidMount() {
-	this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
-	// console.log(this.state.recipeIngredients);
-	// Snapshot is the depiction of the user's current data
-	foodList = [];
-
-	retrieveData = () => {
-		ref = getFoodList(firebase.auth().currentUser.uid);
-		return ref.once("value");
-	};
-    retrieveData().then(snapshot => {
-		if (this._ismounted) {
-		  foodListSnapshot = snapshot.val();
-  
-		  for (var key in foodListSnapshot) {
-			if (foodListSnapshot.hasOwnProperty(key)) {
-				console.log(foodListSnapshot[key]);
-			  foodList.push(foodListSnapshot[key]);
-			}
-		  }
-		  this.setState({
-			foodstock: foodList
-		  });
-		}
-	});
-
-	this.compareRecipes(this.state.foodstock);
+  async componentDidMount() {
+    this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
+    // console.log(this.state.recipeIngredients);
+    // Snapshot is the depiction of the user's current data
+    await this.compareRecipes();
+    if (this.state.tableData != null) {
+      this.setState({ isLoading: false });
+    }
+    // const similarItems = findSimilarFoodItems(this.state.recipeIngredients, this.state.foodstock);
+    // console.log('similar items');
+    // console.log(similarItems);
+    // apiUtils.convertAmount(reqAmount, userAmountUnit, this);
+    // console.log(this.state.foodstock);
   }
 
   componentWillUnmount() {
     this._ismounted = false; // after component is unmounted reste boolean
   }
 
-  compareRecipes(foodstock) {
-	ingrDict = {}
-	ingrYouHave = []
-	ingrYouDontHave = []
+  async compareRecipes() {
+    ingrDict = {}
+    ingrYouHave = []
+    ingrYouDontHave = []
 
-	console.log('foodstock');
-	console.log(foodstock);
-	for(idx in this.state.recipeIngredients){
-		ingr = this.state.recipeIngredients[idx];
-		ingrDict[ingr.id] = ingr;
-	}
-	// console.log('Ingredient dict');
-	// console.log(ingrDict);
+    // console.log('Recipes');
+    // console.log(this.state.recipeIngredients);
+    for (idx in this.state.recipeIngredients) {
+      ingr = this.state.recipeIngredients[idx];
+      ingrDict[ingr.id] = ingr;
+    }
+    // console.log('foodstock');
+    // console.log(this.state.foodstock);
+    convertedData = [];
+    for (idx in this.state.foodstock) {
+      userStockIngrInfo = this.state.foodstock[idx];
+      ingrId = userStockIngrInfo.id;
+      if (ingrId in ingrDict) {
+        // Recipe Ingredient Data
+        recipeIngrInfo = ingrDict[ingrId];
+        ingrName = recipeIngrInfo.name;
+        reqAmountPhrase = recipeIngrInfo.original;
+        reqAmount = recipeIngrInfo.amount;
+        recipeUnit = recipeIngrInfo.unit;
+
+        userAmountUnit = userStockIngrInfo.unit;
+        userAmount = userStockIngrInfo.amount;
+        convertedAmount = await apiUtils.convertAmount(reqAmount, userAmountUnit, this);
+        amountDifference = userAmount - this.state.convertedAmount.targetAmount;
+        convertedData.push([
+          ingrName, reqAmount + ' ' + abbreviateUnit(recipeUnit), userAmount + ' ' + abbreviateUnit(userAmountUnit),
+          amountDifference + ' ' + abbreviateUnit(userAmountUnit)
+        ]);
+      }
+    }
+    this.setState({ tableData: convertedData });
   }
 
   /**
@@ -110,16 +126,20 @@ componentDidMount() {
   //   await ApiUtils.getAutoCompleteIngredientsByName(text, this);
   // }
 
-//   async getIngredientInfo(ingrName, ingrId, quantity) {
-//     console.log(ingrName);
-//     console.log(ingrId);
-//     var data = await ApiUtils.getIngredientInfoFromId(ingrId, quantity, this);
-//     if (data != null && this.state.nutritionalTags != null) {
-//       console.log(this.state.nutritionalTags);
-//     }
-//   }
+  //   async getIngredientInfo(ingrName, ingrId, quantity) {
+  //     console.log(ingrName);
+  //     console.log(ingrId);
+  //     var data = await ApiUtils.getIngredientInfoFromId(ingrId, quantity, this);
+  //     if (data != null && this.state.nutritionalTags != null) {
+  //       console.log(this.state.nutritionalTags);
+  //     }
+  //   }
 
   render() {
+    if (this.state.isLoading) {
+      return <LoadingScreen />;
+    }
+
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Title bar */}
@@ -144,8 +164,8 @@ componentDidMount() {
         <View style={Styles.screenContainer}>
 
           <View styles={styles.dataRow}>
-		  	<Text style={styles.inputLabel}>Ingredients you have</Text>
-			  <Table borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
+            <Text style={styles.inputLabel}>Results</Text>
+            <Table style={{marginBottom: hPercentage('5%'), marginTop:hPercentage('1%'), fontSize:15}} borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
               <Row
                 data={this.state.tableHead}
                 style={styles.head}
@@ -153,54 +173,30 @@ componentDidMount() {
               />
               <Rows data={this.state.tableData} textStyle={styles.text} />
             </Table>
-		  </View>
-
-		  <View styles={styles.dataRow}>
-		  	<Text style={styles.inputLabel}>Ingredients you don't have</Text>
-			  <Table borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
-              <Row
-                data={this.state.tableHead}
-                style={styles.head}
-                textStyle={styles.text}
-              />
-              <Rows data={this.state.tableData} textStyle={styles.text} />
-            </Table>
-		  </View>
-
-          {/* <View styles={styles.dataRow}>
-            <Text style={styles.inputLabel}>Ingredients Comparison</Text>
-            <Table borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
-              <Row
-                data={this.state.tableHead}
-                style={styles.head}
-                textStyle={styles.text}
-              />
-              <Rows data={this.state.tableData} textStyle={styles.text} />
-            </Table>
-          </View> */}
+          </View>
 
           <View styles={styles.dataRow}>
             <Text style={styles.inputLabel}>Missing Ingredients</Text>
-            <Text>
+            <Text style={{marginTop:hPercentage('1%'), fontSize:15}}>
               {findMissingFoodItems(
                 this.state.recipeIngredients,
                 this.state.foodstock
               ).reduce((missingStr, food) => {
-                missingStr = missingStr + food.name + ", ";
+                missingStr = missingStr + food.original + "\n";
                 return missingStr;
               }, "")}
             </Text>
           </View>
 
           <TouchableOpacity
-            style={styles.cancelButton}
+            style={styles.closeButton}
             onPress={() => {
               this.state.parent.setState({
                 comparisonModalVisible: !this.state.parent.state.comparisonModalVisible
               });
             }}
           >
-            <Text style={styles.cancelText}>Cancel</Text>
+            <Text style={styles.cancelText}>Close</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -249,7 +245,8 @@ const styles = StyleSheet.create({
     fontWeight: "600"
   },
 
-  cancelButton: {
+  closeButton: {
+    marginTop: hPercentage('5%'),
     height: hPercentage("5%"),
     backgroundColor: "rgba(175,76,99,1)",
     color: "rgba(249, 248, 248, 1)",
@@ -285,7 +282,7 @@ const styles = StyleSheet.create({
   },
 
   dataRow: {
-    marginBottom: hPercentage("5%")
+    // marginBottom: hPercentage("5%")
   },
 
   searchContainer: {

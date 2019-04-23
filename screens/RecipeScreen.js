@@ -9,9 +9,14 @@ import AddFoodItemModal from "./components/AddFoodItemModal";
 
 import { Font, AppLoading } from 'expo';
 import * as firebase from 'firebase';
-// import NavigationService from '../navigation/NavigationService.js';
+import NavigationService from '../navigation/NavigationService.js';
 import ComparisonModal from './components/ComparisonModal';
-import {getFoodList} from './../utils/FoodListUtils';
+import {
+	findMissingFoodItems,
+	findSimilarFoodItems,
+	modifyFoodStock,
+	getFoodList
+  } from "../utils/FoodListUtils";
 
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
@@ -24,6 +29,7 @@ import LoadingScreen from './LoadingScreen';
 import DialogInput from 'react-native-dialog-input';
 import apiUtils from '../api/apiUtils.js';
 import RecipeEditingScreen from './RecipeEditingScreen';
+
 const { width: WIDTH } = Dimensions.get('window');
 var globalStyles = require('../styles/GlobalStyles.js');
 const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
@@ -41,10 +47,12 @@ export default class RecipeScreen extends React.Component {
             liked: false,
             comparisonModalVisible: false,
 
-            id: 556177,
+            id: NavigationService.getTopLevelNavigator().state.params.recipeId,
             title: 'Ramen Noodle Coleslaw blahbalsdfadfsdfsdfasdfasdfasdf',
             servings: '4 servings',
             readyInMinutes: '60 mins',
+            extendedIngredients: [],
+            nutrition: null,
 
             calories: 155,
             protein: 3,
@@ -60,6 +68,8 @@ export default class RecipeScreen extends React.Component {
             isInstructionModalVisible: false,
             extendedIngredients: [],
             nutrients: [],
+            userFoodStock: [],
+			convertedAmounts: [],
             
             deletedRowKey: null,
 
@@ -111,13 +121,13 @@ export default class RecipeScreen extends React.Component {
 
     toggleBookmark() {
         this.setState({  bookmarked: !this.state.bookmarked  });
-        if(this.state.bookmarked)
+        if(!this.state.bookmarked)
         {
             firebase.database().ref('bookmarkedRecipes/' + firebase.auth().currentUser.uid + '/' + this.state.title + '_' + this.state.id).update({
                 id: this.state.id,
                 title: this.state.title,
-                servings: this.state.servinges.toString() + ' servings',
-                readyInMinutes: this.state.readyInMinutes.toString() + ' minutes',
+                servings: this.state.servings + ' servings',
+                readyInMinutes: this.state.readyInMinutes + ' minutes',
 
                 calories: 155,
                 protein: 3,
@@ -174,10 +184,8 @@ export default class RecipeScreen extends React.Component {
             foodList.push(foodListSnapshot[key]);
           }
         }
-        
+        this.setState({userFoodStock:foodList});
       });
-
-      return foodList;
     }
 
     // Renders the icon according to its current state
@@ -257,11 +265,15 @@ export default class RecipeScreen extends React.Component {
 
 		var recipeData = await apiUtils.getRecipeInfoFromId(this.state.id, this);
 		var instructionData = await apiUtils.getAnalyzedInstructions(this.state.id, this);
+		this.getFoodStock();
+		
+		// findSimilarFoodItems();
         if(recipeData != null && instructionData != null)
-        {
+        {	
+			console.log('foodstock');
+			console.log(this.state.userFoodStock);
             this.setState({ isLoading: false });
 		}        
-		// console.log(this.state.instructions);
     };
 
     componentWillUnmount () {
@@ -328,13 +340,13 @@ export default class RecipeScreen extends React.Component {
                     >
                       <ComparisonModal
                         parent={this}
-                        foodstock={this.getFoodStock()}
+                        foodstock={this.state.userFoodStock}
                         recipeIngredients={this.state.extendedIngredients}
                       />
                     </Modal>
 
                     {/* <ImageBackground source={require('./../assets/images/test_photo.jpg')} /> */}
-                    <ImageBackground source={require('./../assets/images/ramen-noodle-coleslaw.jpg')} style={styles.image}>
+                    <ImageBackground source={{uri:this.state.image}} style={styles.image}>
                         <View style={styles.overlayButtonsContainer}> 
                             <TouchableOpacity onPress={this.toggleHeart} >
                                 {this.renderIcon("heart") }

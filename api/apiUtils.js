@@ -6,27 +6,27 @@ const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 // /* <Francis Buendia> March 15, 2019
 //         API Request call to 'Autocomplete recipe search' recipes by name 
 // */
-// async function getAutoCompleteRecipesByName(text, context){
+async function getAutoCompleteRecipesByName(text, context){
 
-//     try{
+    try{
         
-//         // Returns a promise which then gets the result from the request call
-//         const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/autocomplete?number=10&query=${text}`, {
-//             method: "GET",
-//             headers: {
-//                 "Content-Type": "application/json",
-//                 "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
-//             },
-//         });
+        // Returns a promise which then gets the result from the request call
+        const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/autocomplete?number=10&query=${text}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+            },
+        });
 
-//         const json = await response.json();
-//         context.setState({recipes: json});
+        const json = await response.json();
+        context.setState({recipes: json});
         
-//     } catch (err) {
-//         console.log(err);
-//     }
+    } catch (err) {
+        console.log(err);
+    }
     
-// }
+}
 
 // /**
 //  * API request call to 'Autocomplete ingredients search' ingredients by name
@@ -59,7 +59,7 @@ const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 // */
 async function getRecipeInfoFromId(id, context){
     // Returns a promise which then gets the result from the request call
-    const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information`, {
+    const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information?includeNutrition=true`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -112,7 +112,7 @@ async function getAnalyzedInstructions(id, context){
     });
 
     const json = await response.json();
-	console.log(json);
+	
     // Check if component is mounted before changing state, this check is to prevent memory leaks
     if(context._ismounted)
     {
@@ -130,23 +130,42 @@ async function getAnalyzedInstructions(id, context){
 }
 
 
-// async function searchRecipeByName(name, cuisine, diet, intolerances, context){
-//     console.log('in search recipe');
-//     // let url = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=${cuisine}&diet=${diet}&excludeIngredients=''&intolerances=${intolerances}&number=10&offset=0&type=main+course&query=${name}`;
-//     // console.log(url);
-//     // //https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=thai&diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&offset=0&type=main+course&query=burger
-//     // //"https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=thai&diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&offset=0&type=main+course&query=burger"
-//     // const response = await fetch(url, {
-//     //     method: "GET",
-//     //     headers: {
-//     //         "Content-Type": "application/json",
-//     //         "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
-//     //     },
-//     // });
-//     // console.log(response);
-//     // const json = await response.json();
-//     // console.log(json);
-// }
+async function searchRecipeByName(name, cuisine, diet, intolerances, context){
+    console.log('in search recipe');
+    let url = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=${cuisine}&diet=${diet}&intolerances=${intolerances}&number=10&offset=0&query=${name}`;
+    
+    if(cuisine.length == 0)
+    {
+        url = url.replace('cuisine=&', '');
+    }
+    if(diet.length == 0)
+    {
+        url = url.replace('diet=&', '');
+    }
+    if(intolerances.length == 0)
+    {
+        url = url.replace('intolerances=&', '');
+    }    
+
+    //https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=thai&diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&offset=0&type=main+course&query=burger
+    //"https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=thai&diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&offset=0&type=main+course&query=burger"
+    const response = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+        },
+    });
+    const json = await response.json();
+
+    context.setState({searchResults: json.results});
+    return new Promise((resolve) =>
+        setTimeout(
+            () => { resolve('result') },
+            5000
+        )
+    );
+}
 
 /**
  * API request call to "Get food information" to get information about a specific food (ingredient)
@@ -365,6 +384,33 @@ async function getIngredientInfoFromId(id, amnt, context) {
 //     return new Promise((resolve) => setTimeout( () => { resolve('result') }, 5000 ) );
 // }
 
+async function convertAmount(requiredAmount, userTargetUnit, context){
+	const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/convert?ingredientName=${requiredAmount}&targetUnit=${userTargetUnit}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+        },
+	});
+	
+	const json = await response.json();
+	
+	// Check if component is mounted before changing state, this check is to prevent memory leaks
+    if(context._ismounted)
+    {
+        context.setState({
+            convertedAmount : json
+        });
+    }
+
+    return new Promise((resolve) =>
+        setTimeout(
+        () => { resolve('result') },
+        5000
+        )
+    );
+}
+
 export default {
     // getAutoCompleteRecipesByName,
     // getAutoCompleteIngredientsByName,
@@ -372,7 +418,8 @@ export default {
     // getRandomFoodTrivia,
     // getRandomFoodVideos,
     // getRandomFoodArticles,
-    // searchRecipeByName,
+    searchRecipeByName,
 	getIngredientInfoFromId,
-	getAnalyzedInstructions
+	getAnalyzedInstructions,
+	convertAmount
 }
