@@ -48,9 +48,9 @@ export default class RecipeScreen extends React.Component {
             comparisonModalVisible: false,
 
             id: NavigationService.getTopLevelNavigator().state.params.recipeId,
-            title: 'Ramen Noodle Coleslaw blahbalsdfadfsdfsdfasdfasdfasdf',
-            servings: '4 servings',
-            readyInMinutes: '60 mins',
+            title: '',
+            servings: '',
+            readyInMinutes: '',
             extendedIngredients: [],
             nutrition: null,
 
@@ -62,7 +62,7 @@ export default class RecipeScreen extends React.Component {
             sourceUrl: '',
             creditText: '',
             sourceName: '',
-            image: './../assets/images/ramen-noodle-coleslaw.jpg',
+            image: '',
 
             isIngredientModalVisible: false,
             isInstructionModalVisible: false,
@@ -143,10 +143,30 @@ export default class RecipeScreen extends React.Component {
                 extendedIngredients: this.state.extendedIngredients,
                 instructions: this.state.instructions,
             })
+            Alert.alert("You have bookmarked this recipe.");
         }
         else{
-            Alert.alert('Are you sure you want to unbookmark this recipe?');
-            firebase.database().ref('bookmarkedRecipes/' + firebase.auth().currentUser.uid + '/' + this.state.title + '_' + this.state.id).remove();
+            Alert.alert(
+                "Warning",
+                "Are you sure you want to remove " +
+                this.state.title +
+                " from your Bookmarks?",
+                [
+                    {
+                        text: "Cancel",
+                        onPress: () => this.setState({  bookmarked: !this.state.bookmarked  }),
+                        style: "cancel"
+                    },
+                    {
+                        text: "Yes",
+                        onPress: () => {
+                            firebase.database().ref('bookmarkedRecipes/' + firebase.auth().currentUser.uid + '/' + this.state.title + '_' + this.state.id).remove();
+                        }
+                    }
+                ],
+                { cancelable: false }
+            );
+            
         }
     };
 
