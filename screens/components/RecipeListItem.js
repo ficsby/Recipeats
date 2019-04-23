@@ -45,7 +45,7 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
                 onPress={this.onPressItem}
             >
                 <View style={styles.itemContainer}>
-                    <View style={styles.itemText}>
+                    <View style={styles.ItemDescription}>
                         <View style={styles.number}>
                             <Text style={styles.number}>{number}.</Text>
                         </View>
@@ -72,17 +72,18 @@ const styles = StyleSheet.create({
     itemContainer: {
         flex: 1,
         flexDirection: 'row',
-        paddingRight: 15,
-        paddingLeft: 15,
+        // marginRight:  wPercentage('10%'),
+        // marginLeft:  wPercentage('10%'),
         paddingTop: 10,
         paddingBottom: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#E4E4E4'
     },
-    itemText: {
+    ItemDescription: {
         flex: 2,
         flexDirection: 'row',
-        padding: 10
+        paddingTop: hPercentage('1%'),
+        paddinBottom: hPercentage('5%'),
     },
     number: {
         flex: 0.5,
@@ -105,10 +106,12 @@ const styles = StyleSheet.create({
         flex: 1,
         // justifyContent: 'center',
         // alignItems: 'center'
+        marginRight: wPercentage('20%'),
+
     },
     photo: {
-        width: 50,
-        height: 50
+        width: wPercentage('50%'),
+        height: hPercentage('10%'),
     },
 });
 

@@ -25,6 +25,7 @@ var globalStyles = require('./../styles/GlobalStyles.js');
 const fetch = require('node-fetch');
 
 import Button from './components/Button';
+import CreateRecipeModal from './components/CreateRecipeModal';
 // import NewsItem from './components/NewsItem';
 // import apiUtils from '../api/apiUtils.js';
 const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
@@ -35,6 +36,7 @@ export default class UserRecipesScreen extends React.Component {
         super(props);
         this.state = {
             visible: false,
+            recipeModalVisible: false,
             query: '',
             isLoading: true,
             customRecipes: 
@@ -129,6 +131,7 @@ export default class UserRecipesScreen extends React.Component {
                 }
             ],
         };
+        this.toggleRecipeModalVisibility = this.toggleRecipeModalVisibility.bind(this);
     };
 
     static navigationOptions = {
@@ -185,12 +188,8 @@ export default class UserRecipesScreen extends React.Component {
         });
     };
   
-    renderCreateRecipeButton() {
-        return(
-            <TouchableOpacity style={styles.createRecipeButton}>
-                <Icon name='plus-circled' size={47} color='rgba(100, 92, 92, 0.8)' />
-            </TouchableOpacity>
-        );
+    toggleRecipeModalVisibility() {
+        this.setState({  recipeModalVisible: !this.state.recipeModalVisible  });
     };
 
     render() {
@@ -201,6 +200,9 @@ export default class UserRecipesScreen extends React.Component {
         return (
             <View style={styles.pageContainer}>
                 <SearchHeaderNav/>
+
+                <CreateRecipeModal isModalVisible={this.state.recipeModalVisible} parent={this}></CreateRecipeModal>
+
                 <ScrollableTabView  renderTabBar={() => ( <ScrollableTabBar  style={styles.scrollStyle} tabStyle={styles.tabStyle} /> )}
                 tabBarTextStyle={styles.tabBarTextStyle}
                 tabBarInactiveTextColor={'black'}
@@ -226,7 +228,9 @@ export default class UserRecipesScreen extends React.Component {
 
                 </ScrollableTabView>       
 
-                {this.renderCreateRecipeButton()}
+                <TouchableOpacity style={styles.createRecipeButton} onPress={() => this.toggleRecipeModalVisibility()}>
+                    <Icon name='plus-circled' size={47} color='rgba(100, 92, 92, 0.8)' />
+                </TouchableOpacity>
      
         </View>
         );

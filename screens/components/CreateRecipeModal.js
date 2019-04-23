@@ -12,7 +12,6 @@ import {
   ScrollView
 } from "react-native";
 
-import { Divider } from "react-native-elements";
 import DatePicker from "react-native-datepicker";
 import Autocomplete from "react-native-autocomplete-input";
 import AutocompleteData from "./../../data/AutocompleteData";
@@ -36,31 +35,31 @@ class CreateRecipeModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
       parent: this.props.parent,
       isLoading: true,
       inputModal: "",
       opening: true,
 
-      // Autocomplete search bar data
-      query: "",
-      ingredients: AutocompleteData.ingredientSuggestions,
-      
       id: this.props.id,
       title: '',
-      imageUrl: '',
-      nutritionalTags: [],
-      amount: '',
-      unit: '',
+      image: '',
+      servings: '',
+      readyInMinutes: '',
+
+      calories: '',
+      protein: '',
+      carbs: '',
+      fats: '',
+
+      // amount: '',
+      // unit: '',
       dateCreated: '',
 
       // data for nutrition info table
-    //   tableHead: ["Title", "Amount", "Unit", "% of Daily Needs"],
-    //   tableData: [],
+      //   tableHead: ["Title", "Amount", "Unit", "% of Daily Needs"],
+      //   tableData: [],
     };
-    this.onTemporaryAddIngredient = this.onTemporaryAddIngredient.bind(this);
     this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
-    this.getIngredientInfo = this.getIngredientInfo.bind(this);
   }
 
   async componentDidMount() {
@@ -105,145 +104,23 @@ class CreateRecipeModal extends React.Component {
     // FRANCIS ASSIGN THE ID SOMEWHERE AROUND HERE PLS & THANK U @@@@@@@@@@@@@~~~~~~~~~~~~~~~~~!!!!!!!!!!!!!!!!!!!!!!!!!!***********************%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     var temp = [...this.props.parent.state.customRecipes];
     temp.push(
-        {
-        id: 8234235234234,      //TEMPORARY FOR NOW
-        name: this.state.name,
-        amount: this.state.amount,
-        unit: this.state.unit
-        }
+      {
+        id: this.state.id,
+        title: this.state.title,
+        image: this.state.image,
+        servings: this.state.servings,
+        readyInMinutes: this.state.readyInMinutes,
+        calories: this.state.calories,
+        protein: this.state.protein,
+        carbs: this.state.carbs,
+        fats: this.state.fats,
+        // As well as other recipe information
+      }
     );
     this.props.parent.setState({ customRecipes: temp });
-      // modifyRecipeIngredients(
-      //   firebase.auth().currentUser.uid,
-      //   this.state.name,
-      //   this.state.id,
-      //   this.state.price,
-      //   this.state.amount,
-      //   this.state.unit,
-      //   this.state.datePurchased,
-      //   this.state.tableData);
-      // // create a re with the new item to replace the externalFoodList
-      // newFoodList = [];
-      // newFoodList = parent.state.externalFoodList;
-      // newFoodList.push({
-      //   name: this.state.name,
-      //   id: this.state.id,
-      //   price: this.state.price,
-      //   amount: this.state.amount,
-      //   unit: this.state.unit,
-      //   datePurchased: this.state.datePurchased,
-      //   nutritionData: this.state.tableData
-      // });
-      // newFoodList.sort((a, b) =>
-      //   a.itemName > b.itemName ? 1 : b.itemName > a.itemName ? -1 : 0
-      // );
-
-      // parent.setState({
-      //   addModalVisible: !parent.state.addModalVisible,
-      //   externalFoodList: newFoodList
-      // });
   };
-
-  /**
-   * Calls the Spoonacular API to autocomplete search for an ingredient
-   * @param {string} text
-   */
-  // async getAutoCompleteIngredientsByName(text) {
-  //   this.setState({ query: text });
-  //   await ApiUtils.getAutoCompleteIngredientsByName(text, this);
-  // }
-
-  async getIngredientInfo(ingrName, ingrId, amount) {
-
-    var data = await ApiUtils.getIngredientInfoFromId(ingrId, amount, this);
-  }
-
-  /**
-   * Filters out ingredient suggestions to the top 5 suggested results
-   * @param {string} query
-   */
-  findIngredient = query => {
-    if (query === "") {
-      return [];
-    }
-    const { ingredients } = this.state;
-    const regex = new RegExp(`${query.trim()}`, "i");
-    return ingredients
-      .filter(ingredient => ingredient.ingredientName.search(regex) >= 0)
-      .slice(0, 5);
-  };
-
-  /**
-   * Will show price input if necessary to
-   */
-  showPriceInput() {
-    if (this.props.showPriceInput) {
-      return (
-        <View style={styles.dataRow}>
-          <Text style={styles.inputLabel}>Price</Text>
-          <TextInput
-            style={styles.input_container}
-            value={this.state.price}
-            onChangeText={itemPrice => this.setState({ price: itemPrice })}
-          />
-        </View>
-      );
-    }
-  }
-
-  showDatePicker() {
-    if (this.props.showDatePicker) {
-      return (
-        <View style={styles.dataRow}>
-          <Text style={styles.inputLabel}>Date Purchased</Text>
-
-          <View style={styles.selectDate}>
-            <DatePicker
-              style={{ width: wPercentage("65%") }}
-              date={this.state.datePurchased}
-              mode="date"
-              placeholder="Select date"
-              format="YYYY-MM-DD"
-              minDate="1900-01-01"
-              maxDate={new Date()}
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              customStyles={{
-                dateIcon: {
-                  position: "absolute",
-                  left: 0,
-                  top: 4,
-                  marginLeft: 0
-                },
-                dateInput: {
-                  marginLeft: 45,
-                  marginRight: 40
-                }
-              }}
-              onDateChange={date => {
-                this.setState({ datePurchased: date });
-              }}
-            />
-          </View>
-        </View>
-      );
-    }
-  }
 
   render() {
-    const { query } = this.state;
-    const ingredients = this.findIngredient(query);
-    const comp = (a, b) => a.toLowerCase().trim() == b.toLowerCase().trim();
-    let title = this.props.title || "";
-
-    if (!this.state.opening) {
-      value = this.state.inputModal;
-    } else {
-      value = this.props.initValueTextInput
-        ? this.props.initValueTextInput
-        : "";
-    }
-
     let textProps = this.props.textInputProps || null;
     let modalStyleProps = this.props.modalStyle || {};
     var cancelText = this.props.cancelText || "Cancel";
@@ -257,231 +134,106 @@ class CreateRecipeModal extends React.Component {
         transparent={true}
         visible={this.props.isModalVisible}
         onRequestClose={() => {
-          //   this.props.closeDialog();
-          this.parent.setState({ addModalVisible: false });
+          this.parent.setState({ createModalVisible: false });
         }}
       >
-	  
+
         <View style={[styles.container, { ...modalStyleProps }]}>
-          <ScrollView
-            contentContainerStyle={[
-              styles.modal_container,
-              { ...modalStyleProps }
-            ]}
-          >
+          <ScrollView contentContainerStyle={[styles.modal_container, { ...modalStyleProps }]} >
             <View style={styles.modal_body}>
-              <Text style={styles.title_modal}>{title}</Text>
+              <Text style={styles.title_modal}>{this.state.title}</Text>
 
               {/* 
 					You can reuse the header to put the title and the close icon on the same row, so leave this commented for now
 				*/}
               {/* Title header
 				--------------------------------------------------------------------------------------------------------- */}
-              {/* <View style={styles.titleRow}>
-              <TouchableOpacity onPress={this.onGoBack}>
-                <Icon
-                  name="left"
-                  size={30}
-                  color="rgba(100, 92, 92, 0.8)"
-                  onPress={() => {
-                    this.state.parent.setState({
-                      addModalVisible: !this.state.parent.state.addModalVisible
-                    });
-                  }}
-                  style={{ marginLeft: wPercentage("5%") }}
-                />
-              </TouchableOpacity>
-              <Text style={styles.addFoodItemTitle}>
-                {this.state.screenTitle}
-              </Text>
-			</View> */}
+         
+              <Text style={styles.title_modal}>Create New Recipe</Text>
 
               {/* Beginning of content section 
-				--------------------------------------------------------------------------------------------------------- */}
+			            -------------------------------------------------------------------------------------------------- */}
               <View style={Styles.screenContainer}>
 
+                <Text style={styles.inputHeader}>Basic Information</Text>
 
-                {/* Recipe Title Section 
-				--------------------------------------------------------------------------------------------------------- */}
-                <View style={styles.dataRow}>
-                  <Text style={styles.inputLabel}> Recipe Title </Text>
-                  <TextInput
-                    style={styles.input_container}
-                    value={this.state.name}
-                    onChangeText={itemName => this.setState({ name: itemName })}
-                  />
-                </View>
-
-
-                {/* Search Ingredient Section 
-					User can search for a particular ingredient within the database which would return additional information based on some given info
-				--------------------------------------------------------------------------------------------------------- */}
-                <View style={styles.dataRow}>
-                  <Text style={styles.inputLabel}>
-                    Search Ingredient by Name
-                  </Text>
-
-                  <Autocomplete
-                    // containerStyle={styles.searchContainer}
-                    inputContainerStyle={styles.searchInputContainer}
-                    data={
-                      ingredients.length === 1 &&
-                        comp(query, ingredients[0].ingredientName)
-                        ? []
-                        : ingredients
-                    }
-                    defaultValue={query}
-                    autoCorrect={false}
-                    placeholder="    Search ingredients..."
-                    onChangeText={text => this.setState({ query: text })}
-                    renderItem={({ ingredientName, ingredientId }) => (
-                      // This is the suggestion list the autocomplete compiles while user types in the search bar
-                      <TouchableOpacity
-                        style={styles.itemTextContainer}
-                        onPress={() =>
-                          this.getIngredientInfo(
-                            ingredientName,
-                            ingredientId,
-                            1
-                          )
-                        }
-                      >
-                        <Text style={styles.itemText}>{ingredientName}</Text>
-                      </TouchableOpacity>
-                    )}
-                  />
-                </View>
-
-                {/* Price Section 
-				--------------------------------------------------------------------------------------------------------- */}
-                {this.showPriceInput()}
-
-                {/* Amount Section 
-				--------------------------------------------------------------------------------------------------------- */}
-                <View style={styles.dataRow}>
-                  <Text style={styles.inputLabel}>Amount</Text>
-                  <View style={styles.metricsRow}>
-                    <TextInput
-                      style={styles.amountInput}
-                      value={this.state.amount}
-                      onChangeText={itemAmount => {
-                        this.setState({ amount: itemAmount });
-                        this.state.parent.setState({
-							itemAmount: itemAmount
-                        });
-                      }}
-                    />
-
-                    {/* Food measurements */}
-                    <View style={styles.choiceContainer}>
-                      <Picker
-                        style={styles.metricPicker}
-                        selectedValue={this.state.unit}
-                        onValueChange={(itemValue, itemIndex) => {
-                          this.setState({ unit: itemValue });
-                          this.state.parent.setState({ itemUnit: itemValue });
-                        }}
-                      >
-                        <Picker.Item
-                          style={styles.picker}
-                          label="unit"
-                          value="units"
-                        />
-                        <Picker.Item
-                          style={styles.picker}
-                          label="mL (milliliters)"
-                          value="milliliters"
-                        />
-                        <Picker.Item
-                          style={styles.picker}
-                          label="L (liters)"
-                          value="liters"
-                        />
-                        <Picker.Item
-                          style={styles.picker}
-                          label="g (grams)"
-                          value="grams"
-                        />
-                        <Picker.Item
-                          style={styles.picker}
-                          label="mg (milligrams)"
-                          value="milligrams"
-                        />
-                        <Picker.Item
-                          style={styles.picker}
-                          label="kg (kilograms)"
-                          value="kilograms"
-                        />
-                        <Picker.Item
-                          style={styles.picker}
-                          label="tsp (teaspoons)"
-                          value="teaspoons"
-                        />
-                        <Picker.Item
-                          style={styles.picker}
-                          label="tbsp (tablespoons)"
-                          value="tablespoons"
-                        />
-                        <Picker.Item
-                          style={styles.picker}
-                          label="oz (ounces)"
-                          value="ounces"
-                        />
-                        <Picker.Item
-                          style={styles.picker}
-                          label="lb (pounds)"
-                          value="pounds"
-                        />
-                        <Picker.Item
-                          style={styles.picker}
-                          label="pt (pints)"
-                          value="pints"
-                        />
-                        <Picker.Item
-                          style={styles.picker}
-                          label="qt (quarts)"
-                          value="quarts"
-                        />
-                        <Picker.Item
-                          style={styles.picker}
-                          label="gal (gallons)"
-                          value="gallons"
-                        />
-                      </Picker>
+                {/* Recipe Basic Information Section 
+                    -----------------------------*/}
+                    <View style={styles.dataRow}>
+                      <Text style={styles.inputLabel}>Title: </Text>
+                      <TextInput
+                        style={styles.long_input_container}
+                        value={this.state.title}
+                        onChangeText={input => this.setState({ title: input })}
+                      />
                     </View>
+
+
+                <View style={styles.dataRow}>
+                  <View style={{flexDirection: 'column'}}>
+                    <Text style={styles.inputLabel}>Cook Time (mins): </Text>
+                    <Text style={styles.inputLabel}>Servings: </Text>
+                  </View>
+                  <View style={{flexDirection: 'column'}}>
+                    <TextInput
+                      style={styles.short_input_container}
+                      value={this.state.readyInMinutes}
+                      onChangeText={input => { this.setState({ readyInMinutes: input }) }}
+                    />
+                    <TextInput
+                      style={styles.short_input_container}
+                      value={this.state.servings}
+                      onChangeText={input => { this.setState({ servings: input }) }}
+                    />
                   </View>
                 </View>
 
-                {/* Date purchased Section 
-				--------------------------------------------------------------------------------------------------------- */}
-                {this.showDatePicker()}
+      
+                {/* Macronutrient Section 
+                 --------------------------------------------------------------------------------------------- */}
+                <Text style={styles.inputHeader}>Macronutrients</Text>
 
-                {/* Nutritional information Section 
-				--------------------------------------------------------------------------------------------------------- */}
-                <View styles={styles.dataRow}>
-                  <Text style={styles.inputLabel}>Nutritional Information</Text>
-                  <Table
-                    borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}
-                  >
-                    <Row
-                      data={this.state.tableHead}
-                      style={styles.head}
-                      textStyle={styles.text}
+                <View style={styles.dataRow}>
+
+                  <View style={{flexDirection: 'column'}}>
+                    <Text style={styles.inputLabel}>Calories: </Text>
+                    <Text style={styles.inputLabel}>Protein: </Text>
+                    <Text style={styles.inputLabel}>Carbs: </Text>
+                    <Text style={styles.inputLabel}>Fats: </Text>
+                  </View>
+
+                  <View style={{flexDirection: 'column'}}> 
+                    <TextInput
+                        style={styles.short_input_container}
+                        value={this.state.calories}
+                        onChangeText={input => { this.setState({ calories: input }) }}
                     />
-                    <Rows data={this.state.tableData} textStyle={styles.text} />
-                  </Table>
+                    <TextInput
+                      style={styles.short_input_container}
+                      value={this.state.protein}
+                      onChangeText={input => { this.setState({ protein: input }) }}
+                    />
+                    <TextInput
+                      style={styles.short_input_container}
+                      value={this.state.carbs}
+                      onChangeText={input => { this.setState({ carbs: input }) }}
+                    />
+                    <TextInput
+                      style={styles.short_input_container}
+                      value={this.state.fats}
+                      onChangeText={input => { this.setState({ fats: input }) }}
+                    />
+                  </View>
                 </View>
 
                 <TouchableOpacity
                   style={styles.saveButton}
                   onPress={this.onSaveChangesPress}
                 >
-                  <Text style={styles.saveText}>Add Ingredient</Text>
+                  <Text style={styles.saveText}>Create Recipe</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity
-                  onPress={() => this.state.parent.toggleIngrModalVisibility()}
-                >
+                <TouchableOpacity onPress={() => this.state.parent.toggleRecipeModalVisibility()} >
                   <Text style={styles.cancelText}>Cancel</Text>
                 </TouchableOpacity>
               </View>
@@ -508,8 +260,8 @@ const styles = StyleSheet.create({
   },
   modal_container: {
     marginLeft: 30,
-	marginRight: 30,
-	marginTop: hPercentage('15%'),
+    marginRight: 30,
+    marginTop: hPercentage('15%'),
     ...Platform.select({
       ios: {
         backgroundColor: "#E3E6E7",
@@ -537,7 +289,7 @@ const styles = StyleSheet.create({
   },
   title_modal: {
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 24,
     ...Platform.select({
       ios: {
         marginTop: 10,
@@ -545,7 +297,8 @@ const styles = StyleSheet.create({
         marginBottom: 5
       },
       android: {
-        textAlign: "left"
+        textAlign: "left",
+        marginLeft: wPercentage('5%')
       }
     })
   },
@@ -562,10 +315,35 @@ const styles = StyleSheet.create({
       }
     })
   },
-  input_container: {
+  short_input_container: {
     textAlign: "left",
     fontSize: 16,
     color: "rgba(0,0,0,0.54)",
+    width: wPercentage('15%'),
+    marginTop: hPercentage('1.4%'),
+    ...Platform.select({
+      ios: {
+        backgroundColor: "white",
+        borderRadius: 5,
+        paddingTop: 5,
+        borderWidth: 1,
+        borderColor: "#B0B0B0",
+        paddingBottom: 5,
+        paddingLeft: 10,
+        marginBottom: 15,
+        marginTop: 10
+      },
+      android: {
+        borderBottomWidth: 2,
+        borderColor: "#009688"
+      }
+    })
+  },
+  long_input_container: {
+    textAlign: "left",
+    fontSize: 16,
+    color: "rgba(0,0,0,0.54)",
+    width: wPercentage('45%'),
     ...Platform.select({
       ios: {
         backgroundColor: "white",
@@ -663,7 +441,18 @@ const styles = StyleSheet.create({
     })
   },
 
+  inputHeader: {
+    width: wPercentage('100%'),
+    marginBottom: hPercentage('2%'),
+    marginTop: hPercentage('3%'),
+    fontSize: 24,
+    fontWeight: '500',
+    color: "rgba(137, 35, 59, 1)"
+  },
+
   inputLabel: {
+    marginTop: hPercentage('2%'),
+    marginRight: wPercentage('4%'),
     fontSize: 20,
     color: "rgba(175,76,99,1)"
   },
@@ -676,7 +465,8 @@ const styles = StyleSheet.create({
   },
 
   dataRow: {
-    marginBottom: hPercentage("5%")
+    flex: 1,
+    flexDirection: 'row',
   },
 
   itemText: {
@@ -733,7 +523,7 @@ const styles = StyleSheet.create({
     width: wPercentage("35%")
   },
 
-  amountInput: {
+  input_container: {
     textAlign: "left",
     fontSize: 16,
     color: "rgba(0,0,0,0.54)",
@@ -759,19 +549,10 @@ const styles = StyleSheet.create({
   },
 
   /*------------------------------------------------------------------------
-		  Date Styles
-	------------------------------------------------------------------------*/
-  selectDate: {
-    // marginRight: 40,
-    // paddingLeft: 40,
-    fontSize: 15,
-    color: "rgba(91, 88, 88, 0.9)"
-  },
-  /*------------------------------------------------------------------------
 		  Save Button Styles
 	------------------------------------------------------------------------*/
   saveButton: {
-    marginVertical: hPercentage("3%"),
+    marginTop: hPercentage("10%"),
     height: hPercentage("5%"),
     backgroundColor: "rgba(175,76,99,1)",
     color: "rgba(249, 248, 248, 1)",
