@@ -181,44 +181,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2.1,
       },
 
-      
-     /*------------------------------------------------------------------------
-        Autocomplete Section
-    ------------------------------------------------------------------------*/
-    searchContainer: {
-        alignSelf: 'center',
-        width: '74%',
-        marginTop: 10,
-        flex: 1,
-        top: 17,
-        zIndex: 1,
-        position: 'absolute',
-    },
-
-    searchInputContainer: {
-        alignSelf: 'center',
-        width: '94%',
-        paddingLeft: 10,
-        backgroundColor: 'rgba(255,255,255,1)',
-    },
-
-    searchInput: {
-        width: '100%',
-        fontSize: 15,
-        paddingLeft: 10,
-    },
-
-    searchResultsContainer: {
-        width: '100%',
-        marginLeft: 10,
-        marginRight: 10,
-        marginBottom: 5,
-    },
-
-    searchResult: {
-        width: '100%',
-    },
-
     /*------------------------------------------------------------------------
         Tabs Styles
     ------------------------------------------------------------------------*/
