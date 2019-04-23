@@ -60,8 +60,6 @@ export default class FoodItemForm extends React.Component {
 
   async componentDidMount() {
     this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
-    // console.log("INgredients");
-    // console.log(this.state.ingredients);
     // Returns a promise of the user's value
     // await function retrieveData(){
     //   var ref = firebase.database().ref('ingredients/ingredients');

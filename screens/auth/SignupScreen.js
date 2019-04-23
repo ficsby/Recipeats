@@ -7,20 +7,13 @@ import {
   TextInput,
   TouchableOpacity,
   Picker,
-  Button,
   Alert,
   Dimensions
 } from "react-native";
-import { StackActions } from "react-navigation";
 import * as firebase from "firebase";
 import DatePicker from "react-native-datepicker";
-
-import logo from "./../../assets/images/logo_transparent.png";
-import { stringify } from "qs";
-
 import KeyboardShift from "./../../styles/KeyboardShift.js";
 import AutocompleteData from './../../data/AutocompleteData';
-
 import {
   widthPercentageToDP as wPercentage,
   heightPercentageToDP as hPercentage
@@ -71,7 +64,6 @@ export default class SignupScreen extends React.Component {
     text = text.substring(0, text.length - 1);
   };
 
-  //
   onSignUpPress = () => {
     if (this.state.password !== this.state.passwordConfirm) {
       Alert.alert("Passwords do not match");
@@ -423,19 +415,7 @@ const styles = StyleSheet.create({
     width: WIDTH - 130,
     height: 40,
     fontSize: 15,
-    marginLeft: -25
-    //borderBottomColor: 'rgba(181, 83, 102, 1)', // Medium Pink
-    //borderBottomWidth: 2,
-  },
-
-  inputActivity: {
-    marginTop: 10,
-    marginLeft: 40,
-    marginRight: 40,
-    marginBottom: 10,
-    justifyContent: "center", // Used to set Text Component Vertically Center
-    alignItems: "center", // Used to set Text Component Horizontally Center
-    backgroundColor: "rgba(244, 238, 238, 0.7)" // Sandy
+    marginLeft: wPercentage('-7%')
   },
 
   pickerContainer: {
@@ -446,15 +426,15 @@ const styles = StyleSheet.create({
     flex: 2,
     flexWrap: "wrap",
     height: 40,
-    marginLeft: 40
+    marginLeft: wPercentage('10%')
   },
 
   choiceContainer: {
     backgroundColor: "rgba(244, 238, 238, 0.7)",
     height: 40,
-    marginTop: 7,
-    marginLeft: 40,
-    marginRight: 40
+    marginTop: hPercentage('2%'),
+    marginLeft: wPercentage('10%'),
+    marginRight: wPercentage('10%')
   },
 
   choiceRow: {
@@ -471,10 +451,10 @@ const styles = StyleSheet.create({
 ------------------------------------------------------------------------*/
 
   signupButton: {
-    marginTop: 40,
-    marginBottom: 30,
-    marginRight: 40,
-    marginLeft: 40,
+    marginTop: hPercentage('5%'),
+    marginBottom: hPercentage('5%'),
+    marginRight: wPercentage('5%'),
+    marginLeft: wPercentage('5%'),
     paddingTop: 10,
     paddingBottom: 10,
     backgroundColor: "rgba(204, 102, 102, 0.9)",
@@ -491,16 +471,16 @@ const styles = StyleSheet.create({
   },
 
   loginButton: {
-    marginBottom: 20,
-    marginRight: 40,
-    marginLeft: 40,
+    marginBottom: hPercentage('3%'),
+    marginRight: wPercentage('5%'),
+    marginLeft: wPercentage('5%'),
     paddingBottom: 10,
     alignItems: "center",
     justifyContent: "center"
   },
 
   selectDate: {
-    marginBottom: hPercentage("5%"),
+    marginBottom: hPercentage("7%"),
     marginRight: 40,
     paddingLeft: 40,
     paddingTop: 10,

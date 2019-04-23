@@ -231,15 +231,7 @@ const styles = StyleSheet.create({
 	},
 	
 	sidebarIconRow: {
-		// flex: 1,
 		flexDirection: "row",
-		// justifyContent: 'space-between',
 		width: wPercentage("100%"),
-		// height: hPercentage("9%"),
-		// backgroundColor: "rgba(249, 248, 248, 1)",
-		// borderBottomColor: "rgba(141, 130, 130, 1)",
-		// borderBottomWidth: 2,
-		// justifyContent: "center",
-		// alignItems: "center"
 	  },
   })

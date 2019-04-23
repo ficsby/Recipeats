@@ -8,8 +8,7 @@ import SearchHeaderNav from './../navigation/SearchHeaderNav';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view-forked'
 import LoadingScreen from './LoadingScreen';
-
-//import * as firebase from 'firebase';
+import * as firebase from 'firebase';
 
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
@@ -17,15 +16,11 @@ import fontelloConfig from './../config/icon-font.json';
 import NavigationService from '../navigation/NavigationService.js';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
-const { width: WIDTH } = Dimensions.get('window');
-var globalStyles = require('./../styles/GlobalStyles.js');
-
 // Fetch News Components
 const fetch = require('node-fetch');
 
-import Button from './components/Button';
 import NewsItem from './components/NewsItem';
-// import apiUtils from '../api/apiUtils.js';
+import apiUtils from '../api/apiUtils.js';
 const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 
 export default class HomeScreen extends React.Component {
@@ -56,14 +51,14 @@ export default class HomeScreen extends React.Component {
         }); 
         this.setState({fontLoaded: true});
 
-        // const foodTrivia = await apiUtils.getRandomFoodTrivia(this);
-        // const foodArticles = await apiUtils.getRandomFoodArticles(this);
-        // const foodVids = await apiUtils.getRandomFoodVideos(this);
+        const foodTrivia = await apiUtils.getRandomFoodTrivia(this);
+        const foodArticles = await apiUtils.getRandomFoodArticles(this);
+        const foodVids = await apiUtils.getRandomFoodVideos(this);
         
-        // if((foodTrivia != null) && (foodVids != null) && (foodArticles != null))
-        // {
-        //     this.setState({ isLoading: false });
-        // }
+        if((foodTrivia != null) && (foodVids != null) && (foodArticles != null))
+        {
+            this.setState({ isLoading: false });
+        }
     };
 
     componentWillUnmount () {
@@ -105,45 +100,45 @@ export default class HomeScreen extends React.Component {
     };
 
     render() {
-		return(
-			<View>
-				<SearchHeaderNav/>
-				<Text>Home screen</Text>
-			</View>
-		)
-        // if (this.state.isLoading) {
-        //     return <LoadingScreen />;
-        // };
+		// return(
+		// 	<View>
+		// 		<SearchHeaderNav/>
+		// 		<Text>Home screen</Text>
+		// 	</View>
+		// )
+        if (this.state.isLoading) {
+            return <LoadingScreen />;
+        };
         
-        // return (
-        //     <View style={styles.pageContainer}>
-        //         <SearchHeaderNav/>
-        //         <ScrollableTabView  renderTabBar={() => ( <ScrollableTabBar  style={styles.scrollStyle} tabStyle={styles.tabStyle} /> )}
-        //         tabBarTextStyle={styles.tabBarTextStyle}
-        //         tabBarInactiveTextColor={'black'}
-        //         tabBarActiveTextColor={'red'}
-        //         tabBarUnderlineStyle={styles.underlineStyle}
-        //         initialPage={0}
-        //         >
+        return (
+            <View style={styles.pageContainer}>
+                <SearchHeaderNav/>
+                <ScrollableTabView  renderTabBar={() => ( <ScrollableTabBar  style={styles.scrollStyle} tabStyle={styles.tabStyle} /> )}
+                tabBarTextStyle={styles.tabBarTextStyle}
+                tabBarInactiveTextColor={'black'}
+                tabBarActiveTextColor={'red'}
+                tabBarUnderlineStyle={styles.underlineStyle}
+                initialPage={0}
+                >
 
-        //         <View key={'1'} tabLabel={'Popular'} style={styles.tabContentSyle}>
-        //             <ScrollView>
-        //                 <View style={styles.foodTriviaContainer}>
-        //                     <View style={styles.row}>
-        //                         <Icon name='lightbulb' size={30} color='rgba(0,0,0,1)' height={200} style={{marginLeft: 15}} />
-        //                         <Text style={styles.foodTriviaHeader}> Food Trivia of the Day </Text>
-        //                     </View>
-        //                     <Text style= {styles.foodTrivia}>  {this.state.food_trivia}  </Text>
-        //                 </View>
-        //                 {this.renderArticles()}
-        //             </ScrollView>
-        //         </View>
-        //         <View key={'2'} tabLabel={'Videos'} style={styles.tabContentSyle}>   
-        //             <ScrollView>{this.renderVideos()}</ScrollView>
-        //         </View>
-        //         </ScrollableTabView>            
-        // </View>
-        // );
+                <View key={'1'} tabLabel={'Popular'} style={styles.tabContentSyle}>
+                    <ScrollView>
+                        <View style={styles.foodTriviaContainer}>
+                            <View style={styles.row}>
+                                <Icon name='lightbulb' size={30} color='rgba(0,0,0,1)' height={200} style={{marginLeft: 15}} />
+                                <Text style={styles.foodTriviaHeader}> Food Trivia of the Day </Text>
+                            </View>
+                            <Text style= {styles.foodTrivia}>  {this.state.food_trivia}  </Text>
+                        </View>
+                        {this.renderArticles()}
+                    </ScrollView>
+                </View>
+                <View key={'2'} tabLabel={'Videos'} style={styles.tabContentSyle}>   
+                    <ScrollView>{this.renderVideos()}</ScrollView>
+                </View>
+                </ScrollableTabView>            
+        </View>
+        );
     }
 }
 
@@ -166,75 +161,6 @@ const styles = StyleSheet.create({
         width: '100%',
     },
 
-    topContainer: {
-        width: '100%',
-        height: 80,
-        paddingTop: 30,
-        paddingBottom: 10,
-        backgroundColor: 'rgba(244, 238, 238, 0.9)',
-        borderBottomColor: 'rgba(225, 218, 218, 0.7)',
-        borderBottomWidth: 2.1,
-      },
-
-      
-     /*------------------------------------------------------------------------
-        Autocomplete Section
-    ------------------------------------------------------------------------*/
-    searchContainer: {
-        alignSelf: 'center',
-        width: '74%',
-        marginTop: 10,
-        flex: 1,
-        top: 17,
-        zIndex: 1,
-        position: 'absolute',
-    },
-
-    searchInputContainer: {
-        alignSelf: 'center',
-        width: '94%',
-        paddingLeft: 10,
-        backgroundColor: 'rgba(255,255,255,1)',
-        // marginTop: -5,
-    },
-
-    searchInput: {
-        width: '100%',
-        fontSize: 15,
-        paddingLeft: 10,
-    },
-
-    searchResultsContainer: {
-        width: '100%',
-        marginLeft: 10,
-        marginRight: 10,
-        marginBottom: 5,
-    },
-
-    searchResult: {
-        width: '100%',
-    },
-
-    /*------------------------------------------------------------------------
-        Sidebar Navigation Section
-    ------------------------------------------------------------------------*/
-
-    /*
-    logoText: {
-        marginTop: -60,
-        marginBottom: 15,
-        fontFamily: 'dancing-script',
-        fontSize: 45,
-        color: 'rgba(181, 83, 102, 1)', // Medium Pink
-    },
-
-    logo: {
-        width: 90,
-        height: 90,
-        marginBottom: 50,
-    },
-    */
-
     /*------------------------------------------------------------------------
         Tabs Styles
     ------------------------------------------------------------------------*/
@@ -248,7 +174,6 @@ const styles = StyleSheet.create({
 
     scrollStyle: {
         backgroundColor: 'white',
-        // justifyContent: 'center',
     },
 
     tabBarTextStyle: {
@@ -273,74 +198,21 @@ const styles = StyleSheet.create({
         paddingLeft: 30,
         paddingTop: 20,
         paddingBottom: 30,
-        marginTop: 13,
-        marginBottom: 13,
+        marginTop: hPercentage('2%'),
+        marginBottom: hPercentage('2%'),
     },
 
     foodTriviaHeader: {
         width: '100%',
         fontSize: 25,
         fontWeight: '500',
-        marginBottom: 15,
-        marginLeft: 10,
-        marginRight: 40,
+        marginBottom: hPercentage('2%'),
+        marginLeft: wPercentage('2%'),
+        marginRight: wPercentage('5%'),
 
     },
 
     foodTrivia: {
         fontSize: 15,
     },
-
-   
-    // header: {
-    //     flexDirection: 'row',
-    //     backgroundColor: '#FFF',
-    //     padding: 5,
-    //     fontSize: 25,
-    //     borderBottomColor: '#E1E1E1',
-    //     borderBottomWidth: 1
-    // },
-
-    // headerButton: {
-    //     flex: 1,
-    // },
-
-    // headerText: {
-    //     flex: 1,
-    // },
-
-    // headerTextLabel: {
-    //     width: '100%',
-    //     fontSize: 20,
-    //     textAlign: 'center'
-    // },
-
-    newsContainer: {
-        backgroundColor: 'rgba(226, 226, 226, 0.5)',
-        alignContent: 'center',
-        width: '100%',
-    },
-
-    whitespace: {
-        flex: 1
-    },
-    
-    backButton: {
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    // back_button_label: {
-    //     color: '#397CA9',
-    //     fontSize: 20,
-    // },
-
-    /*------------------------------------------------------------------------
-        Bottom Menu Section
-    ------------------------------------------------------------------------*/
-    menuBar: {
-        width: '20%',
-        height: 100, 
-        backgroundColor: 'rgba(225, 218, 218, 0.7)'},
-    },
-
-);
+});

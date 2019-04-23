@@ -67,8 +67,6 @@ class AddFoodItemModal extends React.Component {
 
   async componentDidMount() {
     this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
-    // console.log("INgredients");
-    // console.log(this.state.ingredients);
     // Returns a promise of the user's value
     // await function retrieveData(){
     //   var ref = firebase.database().ref('ingredients/ingredients');
@@ -739,8 +737,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,1)",
     borderWidth: 0,
     borderBottomWidth: 2
-    // borderRadius: 4
-    // marginTop: -5,
   },
 
   searchInput: {
@@ -801,8 +797,6 @@ const styles = StyleSheet.create({
 		  Date Styles
 	------------------------------------------------------------------------*/
   selectDate: {
-    // marginRight: 40,
-    // paddingLeft: 40,
     fontSize: 15,
     color: "rgba(91, 88, 88, 0.9)"
   },
@@ -828,15 +822,12 @@ const styles = StyleSheet.create({
 
   cancelButton: {
     height: hPercentage("5%"),
-    // backgroundColor: "rgba(175,76,99,1)",
-    // color: "rgba(249, 248, 248, 1)",
     justifyContent: "center",
     alignItems: "center"
   },
 
   cancelText: {
     fontSize: 16,
-    // color: "rgba(249, 248, 248, 1)",
     textAlign: "center",
     width: wPercentage("100%")
   },
