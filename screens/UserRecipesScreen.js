@@ -211,12 +211,19 @@ export default class UserRecipesScreen extends React.Component {
                 initialPage={0}
                 >
 
-                <View key={'1'} tabLabel={'Your Recipes'} style={styles.tabContentSyle}>
+                <View key={'1'} tabLabel={'Custom Recipes'} style={styles.tabContentSyle}>
                     <ScrollView>
                         <View style={styles.customRecipesContainer}>
                             {this.renderCustomRecipes()}
                         </View>
                     </ScrollView>
+                    
+                <View style={styles.behindIcon}></View>
+
+                <TouchableOpacity style={styles.createRecipeButton} onPress={() => this.toggleRecipeModalVisibility()}>
+                    <Icon name='plus-circle' size={50} color='rgb(196, 70, 70)' />
+                </TouchableOpacity>
+
                 </View>
                 <View key={'2'} tabLabel={'Bookmarks'} style={styles.tabContentSyle}>   
                     <ScrollView>
@@ -227,11 +234,6 @@ export default class UserRecipesScreen extends React.Component {
                 </View>
 
                 </ScrollableTabView>       
-
-                <TouchableOpacity style={styles.createRecipeButton} onPress={() => this.toggleRecipeModalVisibility()}>
-                    <Icon name='plus-circled' size={47} color='rgba(100, 92, 92, 0.8)' />
-                </TouchableOpacity>
-     
         </View>
         );
     }
@@ -248,11 +250,25 @@ const styles = StyleSheet.create({
         width: '100%',
     },
 
+    behindIcon: {
+        flex: 0,
+        backgroundColor: 'white',
+        position: 'absolute',
+        borderRadius: 100,
+        right: 28,
+        bottom: 28,
+        height: 50,
+        width: 50,
+    },
+
     
     createRecipeButton: {
         flex: 2,
         alignSelf: 'flex-end',
         position: 'absolute',
+        borderRadius: 120,
+        borderColor: 'rgb(178, 60, 60)',
+        borderWidth: 2,
         right: 25,
         bottom: 25
     },
