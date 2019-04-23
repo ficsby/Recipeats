@@ -6,27 +6,27 @@ const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 // /* <Francis Buendia> March 15, 2019
 //         API Request call to 'Autocomplete recipe search' recipes by name 
 // */
-// async function getAutoCompleteRecipesByName(text, context){
+async function getAutoCompleteRecipesByName(text, context){
 
-//     try{
+    try{
         
-//         // Returns a promise which then gets the result from the request call
-//         const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/autocomplete?number=10&query=${text}`, {
-//             method: "GET",
-//             headers: {
-//                 "Content-Type": "application/json",
-//                 "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
-//             },
-//         });
+        // Returns a promise which then gets the result from the request call
+        const response = await fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/autocomplete?number=10&query=${text}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "X-RapidAPI-Key" : API_KEY     // API key registered for Spoonacular API
+            },
+        });
 
-//         const json = await response.json();
-//         context.setState({recipes: json});
+        const json = await response.json();
+        context.setState({recipes: json});
         
-//     } catch (err) {
-//         console.log(err);
-//     }
+    } catch (err) {
+        console.log(err);
+    }
     
-// }
+}
 
 // /**
 //  * API request call to 'Autocomplete ingredients search' ingredients by name

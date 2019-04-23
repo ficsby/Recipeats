@@ -99,6 +99,10 @@ export default class SearchResultScreen extends React.Component {
         this._ismounted = false; // after component is unmounted reste boolean
     }
 
+    showRecipeScreen(selectedRecipe) {
+        NavigationService.navigate('RecipeScreen', {recipeId: selectedRecipe.id});
+    }
+
     render() {
         // console.log("Query Result from Search Screen: " + NavigationService.getTopLevelNavigator().state.params.queryResult);
         // console.log("Food Intolerances Result from Search Screen: " + NavigationService.getTopLevelNavigator().state.params.foodIntolerances);
@@ -110,7 +114,7 @@ export default class SearchResultScreen extends React.Component {
                     {
                         this.state.searchResults.map( (item, i) =>  
                         ( 
-                            <TouchableOpacity key={i}>
+                            <TouchableOpacity key={i} onPress={() => this.showRecipeScreen(item)}>
                                 <View>
                                     <ListItem title={item.title} subtitle={"Serving size: " + item.servings +"\nReady in: " + item.readyInMinutes + " minutes"} 
                                             titleStyle={styles.ingredientText} subtitleStyle={styles.quantityText} 

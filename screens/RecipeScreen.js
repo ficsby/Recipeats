@@ -9,7 +9,7 @@ import AddFoodItemModal from "./components/AddFoodItemModal";
 
 import { Font, AppLoading } from 'expo';
 import * as firebase from 'firebase';
-// import NavigationService from '../navigation/NavigationService.js';
+import NavigationService from '../navigation/NavigationService.js';
 import ComparisonModal from './components/ComparisonModal';
 import {
 	findMissingFoodItems,
@@ -47,7 +47,7 @@ export default class RecipeScreen extends React.Component {
             liked: false,
             comparisonModalVisible: false,
 
-            id: 556177,
+            id: NavigationService.getTopLevelNavigator().state.params.recipeId,
             title: 'Ramen Noodle Coleslaw blahbalsdfadfsdfsdfasdfasdfasdf',
             servings: '4 servings',
             readyInMinutes: '60 mins',
