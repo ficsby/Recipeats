@@ -1,5 +1,6 @@
 import React, { Component } from 'react'; 
 import { StyleSheet, Text, View, WebView, Linking, Image, TouchableOpacity } from 'react-native';
+import Swipeout from 'react-native-swipeout';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 
 /* Custom Icons */
@@ -20,24 +21,86 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
         }
     }
 
+    
+	onPressDelete() {
+		const parent = this.state.parent;
+
+		Alert.alert(
+			"Warning",
+			"Are you sure you want to delete " +
+			this.state.title +
+			" from your recipe list?",
+			[
+				{
+					text: "Cancel",
+					onPress: () => console.log("Cancel Pressed"),
+					style: "cancel"
+				},
+				{
+					text: "Yes",
+					onPress: () => {
+						// removeFromFoodStock(
+						// 	firebase.auth().currentUser.uid,
+						// 	this.state.name,
+						// 	this.state.id
+						// );
+
+						//update the parent's foodlist to keep it synced with firebase
+						parent.setState({
+							customRecipes: parent.state.customRecipes.filter(
+								recipe => recipe.title != this.state.name
+							)
+						});
+					}
+				}
+			],
+			{ cancelable: false }
+		);
+	}
+
     onPressItem() {
         alert("Item Pressed");
     };
 
     render() {
         let number = (this.state.index + 1).toString();
-        let itemContent;
+        
+        const swipeSettings =
+        {
+            autoClose: true,
+            onClose: (sectionId, rowId, direction) => {
+                if (this.state.activeRowKey != null) {
+                    this.setState({ activeRowKey: null });
+                }
+            },
+            onOpen: (sectionId, rowId, direction) => {
+                if (this.state.activeRowKey != null) {
+                    this.setState({ activeRowKey: this.props.id });
+                }
+            },
+            right:
+                [
+                    {
+                        onPress: () => {
+                            const deletedRow = this.state.activeRowKey;
+                            // Refresh FlatList
+                            switch (this.props.sectionId) {
+                                case 1: this.props.parentFlatList.state.customRecipes.splice(this.props.rowId, 1);
+                                    this.props.parentFlatList.setState({ tempIngredients: this.props.flatListData });
+                                    break;
+                                case 2: this.props.parentFlatList.state.tempInstructions.splice(this.props.rowId, 1);
+                                    this.props.parentFlatList.setState({ tempInstructions: this.props.flatListData });
+                                    break;
+                            }
 
-        // if (this.state.type==1) // Type 1:  Trivia tab
-        // {
-        // } 
-        // else if (this.state.type==2) // Type 2: Popular tab (Articles are listed here)
-        // {
-        //     // NewsContent is set as an image
-        //     itemContent = 'bookmarked recipes';
-        // }
-        // console.log(itemContent);
-    
+                        },
+                        text: 'Delete',
+                        type: 'delete',
+                    }
+                ],
+            rowId: this.props.index,
+            sectionId: this.props.sectionId,
+        }
         return (
             <Button
                 key={this.state.index}
