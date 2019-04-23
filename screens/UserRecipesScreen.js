@@ -184,7 +184,7 @@ export default class UserRecipesScreen extends React.Component {
      */
     renderCustomRecipes() {
         return this.state.customRecipes.map((recipe, index) => {
-            return <RecipeListItem  parent={this} listData={this.state.customRecipes} item={recipe} rowId={index} sectionId={2} />  //sectionId 2 refers to custom recipes
+            return <RecipeListItem  parent={this} listData={this.state.customRecipes} item={recipe} id={recipe.id} rowId={index} sectionId={2} />  //sectionId 2 refers to custom recipes
         });
     };
   

@@ -55,12 +55,11 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
                                     // Set bookmark to false for the recipe
                                     break;
                             case 2: 
-                                    this.setState({
-                                        listData : this.state.listData.filter(item => item.id != id)
-                                    });
-
+                                    test = parent.state.customRecipes.filter(
+                                        item => item.id != id
+                                    );
                                     parent.setState({
-                                        customRecipes: this.state.listData
+                                        customRecipes: test
                                     });
                                     break;
                         }
@@ -135,8 +134,6 @@ const styles = StyleSheet.create({
     itemContainer: {
         flex: 1,
         flexDirection: 'row',
-        // marginRight:  wPercentage('10%'),
-        // marginLeft:  wPercentage('10%'),
         paddingTop: hPercentage('2%'),
         paddingBottom: hPercentage('2%'),
         borderBottomWidth: 1,
