@@ -6,6 +6,7 @@ import { ListItem, Badge, Divider} from 'react-native-elements';
 // import DialogInput from 'react-native-dialog-input';
 import FlatListItem from './components/FlatListItem';
 import AddFoodItemModal from "./components/AddFoodItemModal";
+import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 
 import { Font, AppLoading } from 'expo';
 import * as firebase from 'firebase';
@@ -30,6 +31,7 @@ import DialogInput from 'react-native-dialog-input';
 import apiUtils from '../api/apiUtils.js';
 import RecipeEditingScreen from './RecipeEditingScreen';
 import SearchHeaderNav from './../navigation/SearchHeaderNav';
+import { heightPercentageToDP } from 'react-native-responsive-screen';
 
 const { width: WIDTH } = Dimensions.get('window');
 var globalStyles = require('../styles/GlobalStyles.js');
@@ -115,7 +117,6 @@ export default class RecipeScreen extends React.Component {
         this.onPressAddInstruction= this.onPressAddInstruction.bind(this);
         this.renderIngredientsList = this.renderIngredientsList.bind(this);
         this.renderInstructionsList = this.renderInstructionsList.bind(this);
-        this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
         this.toggleBookmark = this.toggleBookmark.bind(this);
         this.toggleHeart = this.toggleHeart.bind(this);
     };
@@ -342,7 +343,7 @@ export default class RecipeScreen extends React.Component {
       
 
         return ( 
-            <View> 
+            <View style={{flex:1}}> 
                 <SearchHeaderNav/>
                 {/*---------------------------------------------------------------------------------
                    Recipe Page Contents 
@@ -515,8 +516,6 @@ export default class RecipeScreen extends React.Component {
                             <View style={{paddingBottom: 20}} />
                         </View>
                     </View>
-
-                    <View style={styles.whitespaceBuffer} />
                     {/* {
                         this.state.editable?            
                         <TouchableOpacity style={styles.saveButton} onPress ={this.onSaveChangesPress}> 
@@ -524,7 +523,9 @@ export default class RecipeScreen extends React.Component {
                         </TouchableOpacity> : null
                     } */}
 
-                </ScrollView>                            
+                </ScrollView>               
+				{/* <View style={styles.whitespaceBuffer} /> */}
+             
             </View>
         )
     }
@@ -551,7 +552,11 @@ const styles = StyleSheet.create({
         borderBottomColor: 'rgba(0,0,0,0.3)',
         borderTopWidth: 1,
         borderBottomWidth: 1,
-    },
+	},
+	
+	whitespaceBuffer:{
+		marginBottom: hPercentage('20%')
+	},
 
     collapsibleTitle: {
         marginLeft: 15,
@@ -677,7 +682,8 @@ const styles = StyleSheet.create({
     },
 
     recipeContainer: {
-        backgroundColor: 'rgba(0, 0, 0, 0.05)',
+		backgroundColor: 'rgba(0, 0, 0, 0.05)',
+		// paddingBottom: hPercentage('20%')
     },
 
     image: {
