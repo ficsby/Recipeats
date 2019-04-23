@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
   modal_container: {
     marginLeft: 30,
     marginRight: 30,
-    marginTop: hPercentage('15%'),
+    marginTop: hPercentage('8%'),
     ...Platform.select({
       ios: {
         backgroundColor: "#E3E6E7",
