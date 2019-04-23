@@ -10,7 +10,7 @@ import AddFoodItemModal from "./components/AddFoodItemModal";
 import * as firebase from 'firebase';
 
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
-
+import KeyboardShift from "./../styles/KeyboardShift.js";
 import { Font, AppLoading } from 'expo';
 
 // import NavigationService from '../navigation/NavigationService.js';
@@ -454,7 +454,6 @@ export default class RecipeScreen extends React.Component {
                             submitInput={ (inputText) => {this.sendInput(inputText)} }
                             closeDialog={ () => {this.showDialog(false)}}/>
 
-        
                         <View style ={styles.sectionContainer}>
                             <View style={styles.row}>
                                 <Text style={styles.sectionTitle}>Ingredients</Text>
@@ -476,8 +475,6 @@ export default class RecipeScreen extends React.Component {
                                 <Text style={styles.compareText}>Compare To Food Stock</Text>
                             </TouchableOpacity>
                         </View>
-
-                        {/* contentContainerStyle={styles.numberContainer} rightContentContainerStyle={styles.instructionStepContainer} />  */}
 
                         <View style ={styles.sectionContainer}>
                             <View style={styles.row}>
@@ -738,10 +735,7 @@ const styles = StyleSheet.create({
        Ingredients
     -------------------------*/
     addIcon: {
-        // backgroundColor: 'rgba(188, 107, 107, 1)',
-        // marginTop: 25,
         paddingTop: 10,
-        // paddingBottom: 10,
         paddingRight: 30,
     },
     
@@ -765,7 +759,6 @@ const styles = StyleSheet.create({
     ingredientText: {
         fontSize: 14,
         marginLeft: wPercentage('3%'),
-        // marginBottom: hPercentage('1%'),
         color: 'rgba(105,105,105,1)',
     },
 
@@ -773,7 +766,6 @@ const styles = StyleSheet.create({
         width: '100%',
         fontStyle: 'italic',
         marginRight: wPercentage('3%'),
-        // marginBottom: hPercentage('-1%'),
     },
 
 
@@ -783,7 +775,6 @@ const styles = StyleSheet.create({
 
     instructionStepContainer: {
         marginRight: wPercentage('5%'),
-        // marginLeft: '-100%', 
         marginLeft: wPercentage('-10%'),
         justifyContent: 'flex-start',
     },

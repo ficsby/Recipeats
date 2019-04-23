@@ -86,15 +86,6 @@ export default class SearchHeaderNav extends React.Component {
                     placeholder= "    Search recipes, ingredients..."
                     onFocus = {this.onModalOpen}    
                 />
-                
-                {/* <Modal
-                    animationType ="fade"
-                    transparent = {false}
-                    visible = {this.state.modalVisible}
-                    onRequestClose= {this.onModalClose}>
-                
-                    <SearchScreen/>
-                </Modal> */}
 
             </SafeAreaView>
         )

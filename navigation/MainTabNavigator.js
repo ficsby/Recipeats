@@ -134,11 +134,6 @@ const HomeTab = createStackNavigator({
 const AppDrawerNavigator = createDrawerNavigator({
     Home: {
         screen: HomeTab,
-        // navigationOptions: {
-        //     drawerIcon: ({tintColor}) => (
-        //         <Icon name="home" style ={{fontSize: 24, color:tintColor}} />
-        //     )
-        // }
     },
 },{
     contentComponent: props => <Sidebar {...props} />,

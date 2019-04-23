@@ -9,8 +9,6 @@ import { value } from "react-native-extended-stylesheet";
  * @param {array} secondList - list to check for missing needed ingredients
  */
 export const findMissingFoodItems = (firstList, secondList) => {
-  console.log(firstList);
-  console.log(secondList);
   const secondListIds = secondList.map(f => f.id);
   return firstList.filter(foodItem => !secondListIds.includes(foodItem.id));
 };
@@ -32,7 +30,6 @@ export const subtractFoodList = (firstList, secondList) => {
  */
 export const getFoodList = userId => {
   ref = firebase.database().ref("foodlist/" + userId + "/");
-  //return ref.once("value", (snapshot) => console.log(snapshot.val()) );
   return ref;
 };
 

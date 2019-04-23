@@ -8,8 +8,7 @@ import SearchHeaderNav from './../navigation/SearchHeaderNav';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view-forked'
 import LoadingScreen from './LoadingScreen';
-
-//import * as firebase from 'firebase';
+import * as firebase from 'firebase';
 
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
@@ -17,15 +16,11 @@ import fontelloConfig from './../config/icon-font.json';
 import NavigationService from '../navigation/NavigationService.js';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
-const { width: WIDTH } = Dimensions.get('window');
-var globalStyles = require('./../styles/GlobalStyles.js');
-
 // Fetch News Components
 const fetch = require('node-fetch');
 
-import Button from './components/Button';
 import NewsItem from './components/NewsItem';
-// import apiUtils from '../api/apiUtils.js';
+import apiUtils from '../api/apiUtils.js';
 const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 
 export default class HomeScreen extends React.Component {
@@ -56,14 +51,14 @@ export default class HomeScreen extends React.Component {
         }); 
         this.setState({fontLoaded: true});
 
-        // const foodTrivia = await apiUtils.getRandomFoodTrivia(this);
-        // const foodArticles = await apiUtils.getRandomFoodArticles(this);
-        // const foodVids = await apiUtils.getRandomFoodVideos(this);
+        const foodTrivia = await apiUtils.getRandomFoodTrivia(this);
+        const foodArticles = await apiUtils.getRandomFoodArticles(this);
+        const foodVids = await apiUtils.getRandomFoodVideos(this);
         
-        // if((foodTrivia != null) && (foodVids != null) && (foodArticles != null))
-        // {
-        //     this.setState({ isLoading: false });
-        // }
+        if((foodTrivia != null) && (foodVids != null) && (foodArticles != null))
+        {
+            this.setState({ isLoading: false });
+        }
     };
 
     componentWillUnmount () {
@@ -105,45 +100,45 @@ export default class HomeScreen extends React.Component {
     };
 
     render() {
-		return(
-			<View>
-				<SearchHeaderNav/>
-				<Text>Home screen</Text>
-			</View>
-		)
-        // if (this.state.isLoading) {
-        //     return <LoadingScreen />;
-        // };
+		// return(
+		// 	<View>
+		// 		<SearchHeaderNav/>
+		// 		<Text>Home screen</Text>
+		// 	</View>
+		// )
+        if (this.state.isLoading) {
+            return <LoadingScreen />;
+        };
         
-        // return (
-        //     <View style={styles.pageContainer}>
-        //         <SearchHeaderNav/>
-        //         <ScrollableTabView  renderTabBar={() => ( <ScrollableTabBar  style={styles.scrollStyle} tabStyle={styles.tabStyle} /> )}
-        //         tabBarTextStyle={styles.tabBarTextStyle}
-        //         tabBarInactiveTextColor={'black'}
-        //         tabBarActiveTextColor={'red'}
-        //         tabBarUnderlineStyle={styles.underlineStyle}
-        //         initialPage={0}
-        //         >
+        return (
+            <View style={styles.pageContainer}>
+                <SearchHeaderNav/>
+                <ScrollableTabView  renderTabBar={() => ( <ScrollableTabBar  style={styles.scrollStyle} tabStyle={styles.tabStyle} /> )}
+                tabBarTextStyle={styles.tabBarTextStyle}
+                tabBarInactiveTextColor={'black'}
+                tabBarActiveTextColor={'red'}
+                tabBarUnderlineStyle={styles.underlineStyle}
+                initialPage={0}
+                >
 
-        //         <View key={'1'} tabLabel={'Popular'} style={styles.tabContentSyle}>
-        //             <ScrollView>
-        //                 <View style={styles.foodTriviaContainer}>
-        //                     <View style={styles.row}>
-        //                         <Icon name='lightbulb' size={30} color='rgba(0,0,0,1)' height={200} style={{marginLeft: 15}} />
-        //                         <Text style={styles.foodTriviaHeader}> Food Trivia of the Day </Text>
-        //                     </View>
-        //                     <Text style= {styles.foodTrivia}>  {this.state.food_trivia}  </Text>
-        //                 </View>
-        //                 {this.renderArticles()}
-        //             </ScrollView>
-        //         </View>
-        //         <View key={'2'} tabLabel={'Videos'} style={styles.tabContentSyle}>   
-        //             <ScrollView>{this.renderVideos()}</ScrollView>
-        //         </View>
-        //         </ScrollableTabView>            
-        // </View>
-        // );
+                <View key={'1'} tabLabel={'Popular'} style={styles.tabContentSyle}>
+                    <ScrollView>
+                        <View style={styles.foodTriviaContainer}>
+                            <View style={styles.row}>
+                                <Icon name='lightbulb' size={30} color='rgba(0,0,0,1)' height={200} style={{marginLeft: 15}} />
+                                <Text style={styles.foodTriviaHeader}> Food Trivia of the Day </Text>
+                            </View>
+                            <Text style= {styles.foodTrivia}>  {this.state.food_trivia}  </Text>
+                        </View>
+                        {this.renderArticles()}
+                    </ScrollView>
+                </View>
+                <View key={'2'} tabLabel={'Videos'} style={styles.tabContentSyle}>   
+                    <ScrollView>{this.renderVideos()}</ScrollView>
+                </View>
+                </ScrollableTabView>            
+        </View>
+        );
     }
 }
 
@@ -273,15 +268,15 @@ const styles = StyleSheet.create({
         paddingLeft: 30,
         paddingTop: 20,
         paddingBottom: 30,
-        marginTop: 13,
-        marginBottom: 13,
+        marginTop: hPercentage('2%'),
+        marginBottom: hPercentage('2%'),
     },
 
     foodTriviaHeader: {
         width: '100%',
         fontSize: 25,
         fontWeight: '500',
-        marginBottom: 15,
+        marginBottom: hPercentage('2%'),
         marginLeft: 10,
         marginRight: 40,
 
