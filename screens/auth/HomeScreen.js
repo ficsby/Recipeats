@@ -17,15 +17,11 @@ import fontelloConfig from './../config/icon-font.json';
 import NavigationService from '../navigation/NavigationService.js';
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
-const { width: WIDTH } = Dimensions.get('window');
-var globalStyles = require('./../styles/GlobalStyles.js');
-
 // Fetch News Components
 const fetch = require('node-fetch');
 
-import Button from './components/Button';
 import NewsItem from './components/NewsItem';
-import apiUtils from '../api/apiUtils.js';
+//import apiUtils from '../api/apiUtils.js';
 const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 
 export default class HomeScreen extends React.Component {
@@ -85,11 +81,11 @@ export default class HomeScreen extends React.Component {
         this.setState({visible: true});
     };
 
-    // renderTrivia() {
-    //     return this.state.trivia_items.map((triv, index) => {
-    //         return <NewsItem key={index} news={triv} index={index} type={1} />
-    //     });
-    // };
+    renderTrivia() {
+        return this.state.trivia_items.map((triv, index) => {
+            return <NewsItem key={index} news={triv} index={index} type={1} />
+        });
+    };
 
     /**
      *  Renders food articles, in which each article_item is mapped as a NewsItem. 
@@ -185,64 +181,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2.1,
       },
 
-      
-     /*------------------------------------------------------------------------
-        Autocomplete Section
-    ------------------------------------------------------------------------*/
-    searchContainer: {
-        alignSelf: 'center',
-        width: '74%',
-        marginTop: 10,
-        flex: 1,
-        top: 17,
-        zIndex: 1,
-        position: 'absolute',
-    },
-
-    searchInputContainer: {
-        alignSelf: 'center',
-        width: '94%',
-        paddingLeft: 10,
-        backgroundColor: 'rgba(255,255,255,1)',
-        // marginTop: -5,
-    },
-
-    searchInput: {
-        width: '100%',
-        fontSize: 15,
-        paddingLeft: 10,
-    },
-
-    searchResultsContainer: {
-        width: '100%',
-        marginLeft: 10,
-        marginRight: 10,
-        marginBottom: 5,
-    },
-
-    searchResult: {
-        width: '100%',
-    },
-
-    /*------------------------------------------------------------------------
-        Sidebar Navigation Section
-    ------------------------------------------------------------------------*/
-
-    /*
-    logoText: {
-        marginTop: -60,
-        marginBottom: 15,
-        fontFamily: 'dancing-script',
-        fontSize: 45,
-        color: 'rgba(181, 83, 102, 1)', // Medium Pink
-    },
-    logo: {
-        width: 90,
-        height: 90,
-        marginBottom: 50,
-    },
-    */
-
     /*------------------------------------------------------------------------
         Tabs Styles
     ------------------------------------------------------------------------*/
@@ -256,7 +194,6 @@ const styles = StyleSheet.create({
 
     scrollStyle: {
         backgroundColor: 'white',
-        // justifyContent: 'center',
     },
 
     tabBarTextStyle: {
@@ -299,30 +236,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
 
-   
-    // header: {
-    //     flexDirection: 'row',
-    //     backgroundColor: '#FFF',
-    //     padding: 5,
-    //     fontSize: 25,
-    //     borderBottomColor: '#E1E1E1',
-    //     borderBottomWidth: 1
-    // },
-
-    // headerButton: {
-    //     flex: 1,
-    // },
-
-    // headerText: {
-    //     flex: 1,
-    // },
-
-    // headerTextLabel: {
-    //     width: '100%',
-    //     fontSize: 20,
-    //     textAlign: 'center'
-    // },
-
     newsContainer: {
         backgroundColor: 'rgba(226, 226, 226, 0.5)',
         alignContent: 'center',
@@ -337,10 +250,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center'
     },
-    // back_button_label: {
-    //     color: '#397CA9',
-    //     fontSize: 20,
-    // },
 
     /*------------------------------------------------------------------------
         Bottom Menu Section

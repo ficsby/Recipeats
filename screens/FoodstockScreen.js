@@ -1,40 +1,15 @@
 import React from "react";
 import {
-  //   Modal,
   ScrollView,
   Text,
-  TextInput,
-  TouchableHighlight,
   View,
-  Dimensions,
-  TouchableOpacity,
-  Alert
 } from "react-native";
-import { Font, AppLoading } from "expo";
 import { ListItem } from "react-native-elements";
 import KeyboardShift from "../styles/KeyboardShift.js";
 import TouchableScale from "react-native-touchable-scale";
-
-import {
-  Table,
-  TableWrapper,
-  Row,
-  Rows,
-  Col,
-  Cols,
-  Cell
-} from "react-native-table-component";
-
 import { Styles } from "../styles/GlobalStyles";
-import {
-  modifyFoodStock,
-  logPurchaseDate,
-  getFoodList,
-  removeFromFoodStock
-} from "../utils/FoodListUtils";
+import { getFoodList } from "../utils/FoodListUtils";
 import FoodItem from "./components/FoodItem";
-import Button from "./components/Button";
-import FoodItemForm from "./components/FoodItemForm";
 import AddFoodItemModal from "./components/AddFoodItemModal";
 import ApiUtils from "./../api/apiUtils";
 import SearchHeaderNav from './../navigation/SearchHeaderNav';
@@ -54,8 +29,6 @@ import {
   widthPercentageToDP as wPercentage,
   heightPercentageToDP as hPercentage
 } from "react-native-responsive-screen";
-
-
 
 const inventoryList = [
   // FOR TESTING PURPOSES
@@ -148,22 +121,8 @@ export default class FoodstockScreen extends React.Component {
     this.setState({ addModalVisible: !this.state.addModalVisible });
   }
 
-  _alertIndex(index) {
-    Alert.alert(`This is row ${index + 1}`);
-  }
-
   render() {
     const state = this.state;
-    /**
-     * Not sure if this code is ever used or needed for something, will ask later
-     */
-    // const element = (data, index) => (
-    //   <TouchableOpacity onPress={() => this._alertIndex(index)}>
-    //     <View style={Styles.btn}>
-    //       <Text style={Styles.btnText}>button</Text>
-    //     </View>
-    //   </TouchableOpacity>
-    // );
 
     return (
       <KeyboardShift>

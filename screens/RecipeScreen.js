@@ -7,6 +7,8 @@ import { ListItem, Badge, Divider} from 'react-native-elements';
 import FlatListItem from './components/FlatListItem';
 import AddFoodItemModal from "./components/AddFoodItemModal";
 
+import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
+import KeyboardShift from "./../styles/KeyboardShift.js";
 import { Font, AppLoading } from 'expo';
 import * as firebase from 'firebase';
 import NavigationService from '../navigation/NavigationService.js';
@@ -27,9 +29,14 @@ const fetch = require('node-fetch');
 
 import LoadingScreen from './LoadingScreen';
 import DialogInput from 'react-native-dialog-input';
+<<<<<<< HEAD
 import apiUtils from '../api/apiUtils.js';
 import RecipeEditingScreen from './RecipeEditingScreen';
 import SearchHeaderNav from './../navigation/SearchHeaderNav';
+=======
+import { heightPercentageToDP } from 'react-native-responsive-screen';
+// import apiUtils from '../api/apiUtils.js';
+>>>>>>> screen-scaling-merge
 
 const { width: WIDTH } = Dimensions.get('window');
 var globalStyles = require('../styles/GlobalStyles.js');
@@ -473,7 +480,6 @@ export default class RecipeScreen extends React.Component {
                             submitInput={ (inputText) => {this.sendInput(inputText)} }
                             closeDialog={ () => {this.showDialog(false)}}/> */}
 
-        
                         <View style ={styles.sectionContainer}>
                             <View style={styles.row}>
                                 <Text style={styles.sectionTitle}>Ingredients</Text>
@@ -495,8 +501,6 @@ export default class RecipeScreen extends React.Component {
                                 <Text style={styles.compareText}>Compare To Food Stock</Text>
                             </TouchableOpacity>
                         </View>
-
-                        {/* contentContainerStyle={styles.numberContainer} rightContentContainerStyle={styles.instructionStepContainer} />  */}
 
                         <View style ={styles.sectionContainer}>
                             <View style={styles.row}>
@@ -553,12 +557,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
 
-    collapsibleTitle: {
-        marginLeft: 15,
-        color: 'rgba(0,0,0,0.9)',
-        fontSize: 18,
-    },
-
     recipeRow: {
         flex: 1,
         flexDirection: 'row',
@@ -569,8 +567,8 @@ const styles = StyleSheet.create({
     },
 
     contents: {
-        marginTop: 5,
-        marginBottom: 15,
+        marginTop: hPercentage('2%'),
+        marginBottom: hPercentage('2%'),
     },
 
         
@@ -580,14 +578,12 @@ const styles = StyleSheet.create({
         paddingRight: 20,
         textDecorationLine: 'underline',
         fontSize: 15
-        // color: 'black',
     },
     
     saveButton: {
-        marginTop: 50,
-        marginBottom: 50,
-        marginLeft: 30,
-        marginRight: 30,
+        marginBottom: hPercentage('5%'),
+        marginLeft: wPercentage('5%'),
+        marginRight: wPercentage('5%'),
         paddingTop: 10,
         paddingBottom: 10,
         backgroundColor: 'rgba(204, 102, 102, 0.9)',
@@ -613,47 +609,6 @@ const styles = StyleSheet.create({
         borderBottomColor: 'rgba(225, 218, 218, 0.7)',
         borderBottomWidth: 2.1,
     },
-
-  
-/*------------------------------------------------------------------------
-    Autocomplete Section
-------------------------------------------------------------------------*/
-    
-    searchContainer: {
-        alignSelf: 'center',
-        width: '74%',
-        marginTop: 10,
-        flex: 1,
-        top: 17,
-        zIndex: 1,
-        position: 'absolute',
-    },
-
-    searchInputContainer: {
-        alignSelf: 'center',
-        width: '94%',
-        paddingLeft: 10,
-        backgroundColor: 'rgba(255,255,255,1)',
-        // marginTop: -5,
-    },
-
-    searchInput: {
-        width: '100%',
-        fontSize: 15,
-        paddingLeft: 10,
-    },
-
-    searchResultsContainer: {
-        flex: 1,
-        width: '100%',
-        marginLeft: 10,
-        marginRight: 10,
-        marginBottom: 5,
-    },
-    searchResult: {
-        width: '100%',
-    },
-
 
 /*------------------------------------------------------------------------
     Recipe Info Section
@@ -687,7 +642,7 @@ const styles = StyleSheet.create({
     },
 
     recipeTitleContainer: {
-        marginTop: -5,
+        marginTop: hPercentage('-1%'),
         paddingTop: 5,
         backgroundColor: 'rgba(255,255,255,1)',
     },
@@ -695,9 +650,9 @@ const styles = StyleSheet.create({
     recipeTitle: {
         width: '70%',
         maxHeight: 80,
-        marginTop: 10,
-        marginLeft: 25,
-        marginRight: 25,
+        marginTop: hPercentage('2%'),
+        marginLeft: wPercentage('7%'),
+        marginRight: wPercentage('5%'),
         fontSize: 20,
         fontWeight: '500',
         color: 'rgba(181, 83, 102, 1)', // Medium Pink
@@ -707,8 +662,8 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         width: '100%',
-        marginTop: 10,
-        marginLeft: 10,
+        marginTop: hPercentage('2%'),
+        marginLeft: wPercentage('3%'),
         paddingBottom: 15,
     },
 
@@ -716,12 +671,12 @@ const styles = StyleSheet.create({
     stats: {
         fontSize: 18,
         color: 'rgba(0,0,0, 0.8)',
-        marginLeft: 6,
+        marginLeft: wPercentage('1%'),
     },
     
     statsIcon: {
-        marginTop: 3,
-        marginLeft: 15,
+        marginTop: hPercentage('1%'),
+        marginLeft: wPercentage('2%'),
         fontSize: 18,
         color: 'rgba(0,0,0, 0.5)',
     },
@@ -753,7 +708,7 @@ const styles = StyleSheet.create({
 
       macrosContainer: {
         paddingTop: 20,
-        marginBottom: 15,
+        marginBottom: hPercentage('2%'),
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-evenly',
@@ -783,7 +738,7 @@ const styles = StyleSheet.create({
     -------------------------*/
     
     sectionContainer: {
-        marginBottom: 15,
+        marginBottom: hPercentage('2%'),
         paddingTop: 10,
         backgroundColor: 'rgba(255,255,255,1)',
         borderBottomColor: 'rgba(0,0,0,0.15)',
@@ -794,9 +749,9 @@ const styles = StyleSheet.create({
 
     sectionTitle: {
         flex: 1,
-        marginTop: 5,
-        marginBottom: 5,
-        marginLeft: 30,
+        marginTop: hPercentage('1%'),
+        marginBottom: hPercentage('2%'),
+        marginLeft: wPercentage('5%'),
         fontSize: 20,
         fontWeight: '600',
         color: 'rgba(0,0,0,1)',
@@ -806,16 +761,13 @@ const styles = StyleSheet.create({
        Ingredients
     -------------------------*/
     addIcon: {
-        // backgroundColor: 'rgba(188, 107, 107, 1)',
-        // marginTop: 25,
         paddingTop: 10,
-        // paddingBottom: 10,
         paddingRight: 30,
     },
     
     compareButton: {
         backgroundColor: 'rgba(188, 107, 107, 1)',
-        marginTop: 25,
+        marginTop: hPercentage('2%'),
         paddingTop: 10,
         paddingBottom: 10,
         paddingLeft: 20,
@@ -832,16 +784,14 @@ const styles = StyleSheet.create({
 
     ingredientText: {
         fontSize: 14,
-        marginLeft: 20,
-        marginBottom: -15,
+        marginLeft: wPercentage('3%'),
         color: 'rgba(105,105,105,1)',
     },
 
     amountText: {
         width: '100%',
         fontStyle: 'italic',
-        marginRight: 20,
-        marginBottom: -15,
+        marginRight: wPercentage('3%'),
     },
 
 
@@ -850,8 +800,8 @@ const styles = StyleSheet.create({
     -------------------------*/
 
     instructionStepContainer: {
-        marginRight: 35,
-        marginLeft: '-100%', 
+        marginRight: wPercentage('5%'),
+        marginLeft: wPercentage('-10%'),
         justifyContent: 'flex-start',
     },
 
@@ -861,8 +811,8 @@ const styles = StyleSheet.create({
     },
 
     numberContainer: {
-        marginLeft: 10,
-        marginRight: 15,
+        marginLeft: hPercentage('2%'),
+        marginRight: wPercentage('3%'),
     },
 
     numberBadge: {

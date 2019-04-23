@@ -1,7 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, Image } from 'react-native';
-//import {TextLoader} from 'react-native-indicator';
-
+import {
+    widthPercentageToDP as wPercentage,
+    heightPercentageToDP as hPercentage
+  } from "react-native-responsive-screen";
 import { UIActivityIndicator } from 'react-native-indicators';
 import logo from './../assets/images/logo_transparent.png';
 
@@ -20,7 +22,7 @@ const styles = StyleSheet.create({
 
     loadingIndicator: {
         flex: 1,
-        marginTop: -100,
+        marginTop: hPercentage('-10%'),
         justifyContent: 'center'
     },
 

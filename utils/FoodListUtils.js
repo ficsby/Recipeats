@@ -40,7 +40,6 @@ export const subtractFoodList = (firstList, secondList) => {
  */
 export const getFoodList = userId => {
   ref = firebase.database().ref("foodlist/" + userId + "/");
-  //return ref.once("value", (snapshot) => console.log(snapshot.val()) );
   return ref;
 };
 
