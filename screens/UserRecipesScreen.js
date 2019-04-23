@@ -228,7 +228,7 @@ export default class UserRecipesScreen extends React.Component {
         // };
         if (this.state.recipeCreated)
         {
-            this.showRecipeScreen(customRecipes[[customRecipes.length-1]]);
+            this.showRecipeScreen(this.state.customRecipes[[customRecipes.length-1]]);
         }
         return (
             <View style={styles.pageContainer}>
