@@ -54,65 +54,13 @@ export default class RecipeScreen extends React.Component {
             sourceUrl: '',
             creditText: '',
             sourceName: '',
-            imageURL: './../assets/images/ramen-noodle-coleslaw.jpg',
+            image: './../assets/images/ramen-noodle-coleslaw.jpg',
 
             isIngredientModalVisible: false,
             isInstructionModalVisible: false,
-			extendedIngredients: [],
-            // extendedIngredients: [   // FOR TESTING PURPOSES
-            //     {
-            //         id: 12061,
-            //         name: 'Almonds',
-            //         amount: '1/4 cups'
-            //     },
-            //     {
-            //         id: 6583,
-            //         name: 'Beef flavor ramen noodle soup mix',
-            //         amount: '1 package'
-            //     },
-            //     {
-            //         id: 10011109,
-            //         name: 'Shredded coleslaw mix',
-            //         amount: '1 bag'
-            //     },
-            //     {
-            //         id: 11291,
-            //         name: 'Green onions',
-            //         amount: '5 stalks'
-            //     },
-            //     {
-            //         id: 4053,
-            //         name: 'Olive oil',
-            //         amount: '2 Tbsp'
-            //     },
-            //     {
-            //         id: 1002030,
-            //         name: 'Pepper',
-            //         amount: '1/2 tsp'
-            //     },
-            //     {
-            //         id: 2047,
-            //         name: 'Salt',
-            //         amount: '1/2 tsp'
-            //     },
-            //     {
-            //         id: 19335,
-            //         name: 'Sugar',
-            //         amount: '3 Tbsp'
-            //     },
-            //     {
-            //         id: 12023,
-            //         name: 'Sesame seeds',
-            //         amount: '3 Tbsp'
-            //     },
-            //     {
-            //         id: 2053,
-            //         name: 'Vinegar',
-            //         amount: '3 Tbsp'
-            //     },
-                
-            // ],
-
+            extendedIngredients: [],
+            nutrients: [],
+            
             deletedRowKey: null,
 
             instructions:[   // FOR TESTING PURPOSES
@@ -163,8 +111,42 @@ export default class RecipeScreen extends React.Component {
 
     toggleBookmark() {
         this.setState({  bookmarked: !this.state.bookmarked  });
+        if(this.state.bookmarked)
+        {
+            firebase.database().ref('bookmarkedRecipes/' + firebase.auth().currentUser.uid + '/' + this.state.title + '_' + this.state.id).update({
+                id: this.state.id,
+                title: this.state.title,
+                servings: this.state.servinges.toString() + ' servings',
+                readyInMinutes: this.state.readyInMinutes.toString() + ' minutes',
+
+                calories: 155,
+                protein: 3,
+                carbs: 8,
+                fats: 16,
+                
+                nutrients : this.state.nutrients,
+                sourceUrl: this.state.sourceUrl,
+                creditText: this.state.creditText,
+                sourceName: this.state.sourceName,
+                image: this.state.image,
+
+                extendedIngredients: this.state.extendedIngredients,
+                instructions: this.state.instructions,
+            })
+        }
+        else{
+            Alert.alert('Are you sure you want to unbookmark this recipe?');
+            firebase.database().ref('bookmarkedRecipes/' + firebase.auth().currentUser.uid + '/' + this.state.title + '_' + this.state.id).remove();
+        }
     };
 
+    // export const removeFromFoodStock = (userId, foodItemName, foodItemID) => {
+    //     firebase
+    //       .database()
+    //       .ref("foodlist/" + userId + "/" + foodItemName + "_" + foodItemID)
+    //       .remove();
+    //   };
+      
     toggleComparisonModal() {
         this.setState({comparisonModalVisible: !this.state.comparisonModalVisible});
     }

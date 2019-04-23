@@ -200,7 +200,8 @@ export default class UserRecipesScreen extends React.Component {
         // if (this.state.isLoading) {
         //     return <LoadingScreen />;
         // };
-        
+        console.log("IN USER RECIPES SCREEN");
+        console.log(this.state.customRecipes);
         return (
             <View style={styles.pageContainer}>
                 <SearchHeaderNav/>
