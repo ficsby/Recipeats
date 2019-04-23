@@ -49,16 +49,22 @@ export default class RecipeScreen extends React.Component {
             comparisonModalVisible: false,
 
             id: NavigationService.getTopLevelNavigator().state.params.recipeId,
+<<<<<<< HEAD
+            title: NavigationService.getTopLevelNavigator().state.params.title,
+            servings: NavigationService.getTopLevelNavigator().state.params.servings,
+            readyInMinutes: NavigationService.getTopLevelNavigator().state.params.readyInMinutes,
+=======
             title: '',
             servings: '',
             readyInMinutes: '',
+>>>>>>> 5c9354373205cef591ae114d2a2dfb039221bc12
             extendedIngredients: [],
             nutrition: null,
 
-            calories: 155,
-            protein: 3,
-            carbs: 8,
-            fats: 16,
+            calories: NavigationService.getTopLevelNavigator().state.params.calories,
+            protein: NavigationService.getTopLevelNavigator().state.params.protein,
+            carbs: NavigationService.getTopLevelNavigator().state.params.carbs,
+            fats: NavigationService.getTopLevelNavigator().state.params.fats,
 
             sourceUrl: '',
             creditText: '',
@@ -279,22 +285,25 @@ export default class RecipeScreen extends React.Component {
 
     async componentDidMount() {
         this._ismounted = true;
-        await Font.loadAsync({
-          'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
-        }); 
         this.setState({fontLoaded: true});
 
-		var recipeData = await apiUtils.getRecipeInfoFromId(this.state.id, this);
-		var instructionData = await apiUtils.getAnalyzedInstructions(this.state.id, this);
-		this.getFoodStock();
-		
-		// findSimilarFoodItems();
-        if(recipeData != null && instructionData != null)
-        {	
-			console.log('foodstock');
-			console.log(this.state.userFoodStock);
+        if(this.state.id < 0){
             this.setState({ isLoading: false });
-		}        
+        }
+        else
+        {
+            var recipeData = await apiUtils.getRecipeInfoFromId(this.state.id, this);
+            var instructionData = await apiUtils.getAnalyzedInstructions(this.state.id, this);
+            this.getFoodStock();
+            
+            // findSimilarFoodItems();
+            if(recipeData != null && instructionData != null)
+            {	
+                console.log('foodstock');
+                console.log(this.state.userFoodStock);
+                this.setState({ isLoading: false });
+            }
+        }
     };
 
     componentWillUnmount () {
@@ -320,11 +329,6 @@ export default class RecipeScreen extends React.Component {
         });
         this.state.editable?  Alert.alert("Not editable now") : Alert.alert("Values should be editable now.");
     };
-    
-    onSaveChangesPress() {
-        this.toggleEditable();
-        Alert.alert("Your changes have been saved.");
-    }
 
 	toggleIngrModalVisibility() {
 		this.setState({

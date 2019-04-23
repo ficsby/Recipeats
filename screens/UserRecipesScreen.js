@@ -206,7 +206,7 @@ export default class UserRecipesScreen extends React.Component {
             <View style={styles.pageContainer}>
                 <SearchHeaderNav/>
 
-                <CreateRecipeModal isModalVisible={this.state.recipeModalVisible} parent={this}></CreateRecipeModal>
+                <CreateRecipeModal isModalVisible={this.state.recipeModalVisible} parent={this} />
 
                 <ScrollableTabView  renderTabBar={() => ( <ScrollableTabBar  style={styles.scrollStyle} tabStyle={styles.tabStyle} /> )}
                 tabBarTextStyle={styles.tabBarTextStyle}
