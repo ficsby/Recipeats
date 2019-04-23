@@ -1,5 +1,5 @@
 import React, { Component } from 'react'; 
-import { StyleSheet, Text, View, WebView, Linking, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, WebView, Linking, Image, Alert, TouchableOpacity } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 
@@ -15,20 +15,24 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
     constructor(props) {
         super(props);
         this.state = {
+            listData: this.props.listData,
             item: this.props.item,
-            index: this.props.index,
-            type: this.props.type
+            rowId: this.props.rowId,
+            sectionId: this.props.sectionId
         }
     }
 
-    
-	onPressDelete() {
+    onPressItem() {
+        alert("Item Pressed");
+    };
+
+    onPressDelete() {
 		const parent = this.state.parent;
 
 		Alert.alert(
 			"Warning",
-			"Are you sure you want to delete " +
-			this.state.title +
+			"Are you sure you want to remove " +
+			this.state.item.title +
 			" from your recipe list?",
 			[
 				{
@@ -39,73 +43,35 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 				{
 					text: "Yes",
 					onPress: () => {
-						// removeFromFoodStock(
-						// 	firebase.auth().currentUser.uid,
-						// 	this.state.name,
-						// 	this.state.id
-						// );
-
-						//update the parent's foodlist to keep it synced with firebase
-						parent.setState({
-							customRecipes: parent.state.customRecipes.filter(
-								recipe => recipe.title != this.state.name
-							)
-						});
-					}
+                        switch (this.props.sectionId) {
+                            case 1: this.props.parent.setState({
+                                        customRecipes: this.state.listData.filter(
+                                            item => item.id != this.state.item.id
+                                        )
+                                    });
+                                    break;
+                            case 2: this.props.parent.setState({
+                                        bookmarkedRecipes: this.state.listData.filter(
+                                            item => item.id != this.state.item.id
+                                        )
+                                    });
+                                    // Set bookmark to false for the recipe
+                                    break;
+                        }
+                    }
 				}
 			],
 			{ cancelable: false }
 		);
-	}
-
-    onPressItem() {
-        alert("Item Pressed");
     };
 
-    render() {
-        let number = (this.state.index + 1).toString();
-        
-        const swipeSettings =
-        {
-            autoClose: true,
-            onClose: (sectionId, rowId, direction) => {
-                if (this.state.activeRowKey != null) {
-                    this.setState({ activeRowKey: null });
-                }
-            },
-            onOpen: (sectionId, rowId, direction) => {
-                if (this.state.activeRowKey != null) {
-                    this.setState({ activeRowKey: this.props.id });
-                }
-            },
-            right:
-                [
-                    {
-                        onPress: () => {
-                            const deletedRow = this.state.activeRowKey;
-                            // Refresh FlatList
-                            switch (this.props.sectionId) {
-                                case 1: this.props.parentFlatList.state.customRecipes.splice(this.props.rowId, 1);
-                                    this.props.parentFlatList.setState({ tempIngredients: this.props.flatListData });
-                                    break;
-                                case 2: this.props.parentFlatList.state.tempInstructions.splice(this.props.rowId, 1);
-                                    this.props.parentFlatList.setState({ tempInstructions: this.props.flatListData });
-                                    break;
-                            }
-
-                        },
-                        text: 'Delete',
-                        type: 'delete',
-                    }
-                ],
-            rowId: this.props.index,
-            sectionId: this.props.sectionId,
-        }
+    renderRecipes(){
+        let number = (this.state.rowId + 1).toString();
         return (
             <Button
-                key={this.state.index}
-                noDefaultStyles={true}
-                onPress={this.onPressItem}
+            key={this.state.rowId}
+            noDefaultStyles={true}
+            onPress={this.onPressItem}
             >
                 <View style={styles.itemContainer}>
                     <View style={styles.ItemDescription}>
@@ -129,6 +95,29 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
                     </View>
                 </View>
             </Button>
+        );
+    }
+
+    render() {        
+        const swipeSettings =
+        {
+            noDefaultStyles: true,
+            autoClose: true,
+            right:
+                [
+                    {
+                        onPress: () => {this.onPressDelete()},
+                        text: 'Delete',
+                        type: 'delete',
+                    }
+                ],
+            rowId: this.props.rowId,
+            sectionId: this.props.sectionId,
+        }
+        return (
+            <Swipeout  {...swipeSettings}>
+                {this.renderRecipes()}
+            </Swipeout>
         );
 
     }

@@ -49,36 +49,36 @@ export default class UserRecipesScreen extends React.Component {
                     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
                 },
                 {   
-                    id: 556177,
-                    title: 'Ramen Noodle Coleslaw',
+                    id: 556178,
+                    title: 'Rammy',
                     servings: '4',
                     readyInMinutes: '60',
                     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
                 },
                 {   
-                    id: 556177,
-                    title: 'Ramen Noodle Coleslaw',
+                    id: 556179,
+                    title: 'Some yummy food',
                     servings: '4',
                     readyInMinutes: '60',
                     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
                 },
                 {   
-                    id: 556177,
-                    title: 'Ramen Noodle Coleslaw',
+                    id: 556120,
+                    title: 'Best pizza ever',
                     servings: '4',
                     readyInMinutes: '60',
                     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
                 },
                 {   
-                    id: 556177,
-                    title: 'Ramen Noodle Coleslaw',
+                    id: 556125,
+                    title: 'Frenchy Friez',
                     servings: '4',
                     readyInMinutes: '60',
                     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
                 },
                 {   
-                    id: 556177,
-                    title: 'Ramen Noodle Coleslaw',
+                    id: 5561721,
+                    title: 'Cheez Burger',
                     servings: '4',
                     readyInMinutes: '60',
                     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
@@ -88,43 +88,43 @@ export default class UserRecipesScreen extends React.Component {
             bookmarkedRecipes: 
             [
                 {   
-                    id: 556177,
+                    id: 456177,
                     title: 'Ramen Noodle Coleslaw',
                     servings: '4',
                     readyInMinutes: '60',
                     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
                 },
                 {   
-                    id: 556177,
-                    title: 'Ramen Noodle Coleslaw',
+                    id: 456178,
+                    title: 'Rammy',
                     servings: '4',
                     readyInMinutes: '60',
                     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
                 },
                 {   
-                    id: 556177,
-                    title: 'Ramen Noodle Coleslaw',
+                    id: 456179,
+                    title: 'Some yummy food',
                     servings: '4',
                     readyInMinutes: '60',
                     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
                 },
                 {   
-                    id: 556177,
-                    title: 'Ramen Noodle Coleslaw',
+                    id: 456171,
+                    title: 'Best pizza ever',
                     servings: '4',
                     readyInMinutes: '60',
                     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
                 },
                 {   
-                    id: 556177,
-                    title: 'Ramen Noodle Coleslaw',
+                    id: 456172,
+                    title: 'Frenchy Friez',
                     servings: '4',
                     readyInMinutes: '60',
                     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
                 },
                 {   
-                    id: 556177,
-                    title: 'Ramen Noodle Coleslaw',
+                    id: 256171,
+                    title: 'Cheez Burger',
                     servings: '4',
                     readyInMinutes: '60',
                     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
@@ -174,7 +174,7 @@ export default class UserRecipesScreen extends React.Component {
      */
     renderBookmarks() {
         return this.state.bookmarkedRecipes.map((recipe, index) => {
-            return <RecipeListItem key={index} item={recipe} index={index} type={1} />  //type 1 refers to bookmarked recipes
+            return <RecipeListItem parent={this} listData={this.state.bookmarkedRecipes} item={recipe} rowId={index} sectionId={1} />  //sectionId 1 refers to bookmarked recipes
         });
     };
 
@@ -184,7 +184,7 @@ export default class UserRecipesScreen extends React.Component {
      */
     renderCustomRecipes() {
         return this.state.customRecipes.map((recipe, index) => {
-            return <RecipeListItem key={index} item={recipe} index={index} type={2} />  //bott 1 refers to custom recipes
+            return <RecipeListItem  parent={this} listData={this.state.customRecipes} item={recipe} rowId={index} sectionId={2} />  //sectionId 2 refers to custom recipes
         });
     };
   
