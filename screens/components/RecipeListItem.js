@@ -28,9 +28,10 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
     };
 
     onPressDelete() {
-        const parent = this.state.parent;
-        console.log('item id');
-        console.log(this.state.item.id);
+        const parent = this.props.parent;
+        const id = this.props.item.id;
+        console.log(this.state.item.title);
+        console.log(id);
 		Alert.alert(
 			"Warning",
 			"Are you sure you want to remove " +
@@ -53,10 +54,13 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
                                     });
                                     // Set bookmark to false for the recipe
                                     break;
-                            case 2: parent.setState({
-                                        customRecipes: this.state.listData.filter(
-                                            item => item.id != this.state.item.id
-                                        )
+                            case 2: 
+                                    this.setState({
+                                        listData : this.state.listData.filter(item => item.id != id)
+                                    });
+
+                                    parent.setState({
+                                        customRecipes: this.state.listData
                                     });
                                     break;
                         }

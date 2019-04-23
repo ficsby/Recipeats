@@ -195,15 +195,15 @@ export default class FoodstockScreen extends React.Component {
                   {state.externalFoodList &&
                     state.externalFoodList.map(rowData => {
                       return (
-						// Launches food item dialogue that displays the information for each food item, user can also edit values here
+                        // Launches food item dialogue that displays the information for each food item, user can also edit values here
                         <FoodItem
                           key={rowData.name}
-						  name={rowData.name}
-						  id={rowData.id}
+                          name={rowData.name}
+                          id={rowData.id}
                           price={rowData.price}
                           datePurchased={rowData.datePurchased}
-						  amount={rowData.amount}
-						  unit = {rowData.unit}
+                          amount={rowData.amount}
+                          unit={rowData.unit}
                           parent={this}
                           tableData={rowData.tableData}
                           foodInfoModalVisible={this.state.isFoodInfoModalVisible}
@@ -219,19 +219,20 @@ export default class FoodstockScreen extends React.Component {
               friction={90}
               tension={100}
               activeScale={0.95}
-              containerStyle={{backgroundColor:'rgba(209, 201, 200, 0.2)', 
-                               paddingTop: wPercentage('3%'),
-                               paddingBottom: wPercentage('3%'), 
-                               paddingLeft: wPercentage('8%'), 
-                               paddingRight: wPercentage('8%'),
-                               borderTopColor: 'rgba(0,0,0,0.1)',
-                               borderBottomColor: 'rgba(0,0,0,0.1)',
-                               borderTopWidth: 1,
-                               borderBottomWidth: 1
-                              }}
+              containerStyle={{
+                backgroundColor: 'rgba(209, 201, 200, 0.2)',
+                paddingTop: wPercentage('3%'),
+                paddingBottom: wPercentage('3%'),
+                paddingLeft: wPercentage('8%'),
+                paddingRight: wPercentage('8%'),
+                borderTopColor: 'rgba(0,0,0,0.1)',
+                borderBottomColor: 'rgba(0,0,0,0.1)',
+                borderTopWidth: 1,
+                borderBottomWidth: 1
+              }}
               title="Add New Food Item"
-              rightIcon={<Icon name='plus' size={18} color='rgba(63, 61, 58, 0.65)'/>}
-              titleStyle={{ color: 'rgba(63, 61, 58, 0.65)', fontWeight: '500', fontSize:17, paddingRight: wPercentage('2%'), textAlign: 'right' }}
+              rightIcon={<Icon name='plus' size={18} color='rgba(63, 61, 58, 0.65)' />}
+              titleStyle={{ color: 'rgba(63, 61, 58, 0.65)', fontWeight: '500', fontSize: 17, paddingRight: wPercentage('2%'), textAlign: 'right' }}
               onPress={this.toggleIngrModalVisibility}
             />
           </View>
