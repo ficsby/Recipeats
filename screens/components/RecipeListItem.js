@@ -56,7 +56,7 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
                         </View>
                     </View>
                     <View style={styles.photoContainer}>
-                        <Image source={{uri:this.state.item.image}} style={styles.photo}/>
+                        <Image source={require('./../../assets/images/ramen-noodle-coleslaw.jpg')} style={styles.photo}/>
                         {console.log(this.state.item.image)}
                     </View>
                 </View>
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         color: '#000',
-        fontFamily: 'georgia'
+        // fontFamily: 'georgia'
     },
     photoContainer: {
         flex: 1,
