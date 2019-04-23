@@ -174,7 +174,6 @@ const styles = StyleSheet.create({
 
     scrollStyle: {
         backgroundColor: 'white',
-        // justifyContent: 'center',
     },
 
     tabBarTextStyle: {
