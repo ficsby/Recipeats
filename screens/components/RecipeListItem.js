@@ -69,6 +69,7 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
         let number = (this.state.rowId + 1).toString();
         return (
             <Button
+            style={{backgroundColor:'white'}}
             key={this.state.rowId}
             noDefaultStyles={true}
             onPress={this.onPressItem}
@@ -101,7 +102,6 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
     render() {        
         const swipeSettings =
         {
-            noDefaultStyles: true,
             autoClose: true,
             right:
                 [
@@ -115,7 +115,7 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
             sectionId: this.props.sectionId,
         }
         return (
-            <Swipeout  {...swipeSettings}>
+            <Swipeout  {...swipeSettings} style={{backgroundColor:'rgb(247, 247, 247)'}}>
                 {this.renderRecipes()}
             </Swipeout>
         );
