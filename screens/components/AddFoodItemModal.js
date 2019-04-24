@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   Platform,
   Picker,
-  ScrollView
+  ScrollView,
+  Alert
 } from "react-native";
 
 import { Divider } from "react-native-elements";
@@ -78,7 +79,6 @@ class AddFoodItemModal extends React.Component {
 
       nutritionalTags: {},
       price: '',
-      amount: '',
       unit: '',
       datePurchased: null,
 
@@ -169,9 +169,19 @@ class AddFoodItemModal extends React.Component {
   //   await ApiUtils.getAutoCompleteIngredientsByName(text, this);
   // }
 
-  async getIngredientInfo(ingrName, ingrId, amount) {
+  async getIngredientInfo() {
 
-    var data = await ApiUtils.getIngredientInfoFromId(ingrId, amount, this);
+    ingrId = this.state.id;
+    ingrAmt = this.state.amount;
+    ingrUnit = this.state.unit;
+
+    if(ingrId && ingrAmt && ingrUnit)
+    {
+      await ApiUtils.getIngredientInfoFromId(ingrId, ingrAmt, ingrUnit, this);
+    } 
+    else{
+      Alert.alert('Must put in an amount to calcualte nutritional information.');
+    }
   }
 
   /**
@@ -274,7 +284,7 @@ class AddFoodItemModal extends React.Component {
         visible={this.props.isModalVisible}
         onRequestClose={() => {
           //   this.props.closeDialog();
-          this.parent.setState({ addModalVisible: false });
+          this.state.parent.setState({ addModalVisible: false });
         }}
       >
 	  
@@ -320,11 +330,7 @@ class AddFoodItemModal extends React.Component {
                       <TouchableOpacity
                         style={styles.itemTextContainer}
                         onPress={() =>
-                          this.getIngredientInfo(
-                            ingredientName,
-                            ingredientId,
-                            1
-                          )
+                          this.setState({id: ingredientId, name:ingredientName})
                         }
                       >
                         <Text style={styles.itemText}>{ingredientName}</Text>
@@ -448,6 +454,14 @@ class AddFoodItemModal extends React.Component {
 				--------------------------------------------------------------------------------------------------------- */}
                 {this.showDatePicker()}
 
+                <View style={{flexDirection: 'row'}}>
+                  <TouchableOpacity style={styles.calculateNutrientsButton} onPress={this.getIngredientInfo}>
+                    <Icon name='lightbulb' size={25} color='rgba(255,255,255,1)'
+                           />
+                    {/* style={{marginLeft:wPercentage('5%'), width:wPercentage('30%')}} */}
+                    <Text style={styles.calcualteNutrientsText}>Calculate Nutritional Info</Text>
+                  </TouchableOpacity>
+                </View>
                 {/* Nutritional information Section 
 				--------------------------------------------------------------------------------------------------------- */}
                 <View styles={styles.dataRow}>
@@ -810,5 +824,22 @@ cancelChanges: {
     fontSize: 16,
     fontWeight: '600',
 },
+
+calculateNutrientsButton: {
+  marginTop: 0, 
+  flexDirection: 'row', 
+  backgroundColor: "#c8e1ff",
+  padding: wPercentage('2%'),
+  textAlign: 'center'
+  // paddingTop: hPercentage('1%'),
+  // paddingBottom: hPercentage('1%'),
+},
+
+calcualteNutrientsText: {
+  fontSize: 16,
+    // color: 'rgba(255,255,255,1)',
+    textAlign: "center",
+    marginLeft: wPercentage('5%')
+}
 });
 export default AddFoodItemModal;

@@ -184,10 +184,10 @@ async function searchRecipeByName(name, cuisine, diet, intolerances, context){
  * @param {int} id - API ID of the food
  * @param {reference} context - Reference to the object that the function is called in
  */
-async function getIngredientInfoFromId(id, amnt, context) {
+async function getIngredientInfoFromId(id, amnt, unit, context) {
     // Returns a promise which then gets the result from the request call
     const response = await fetch(
-      `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/ingredients/${id}/information?amount=${amnt}&unit=gram`,
+      `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/ingredients/${id}/information?amount=${amnt}&unit=${unit}`,
       {
         method: "GET",
         headers: {
@@ -205,9 +205,18 @@ async function getIngredientInfoFromId(id, amnt, context) {
         for (key in json) {
 			
             if (key in context.state) {
-				context.setState({
-					[key]: json[key]
-				});
+                if(key == 'amount')
+                {
+                    context.setState({
+                        [key]: json[key].toString()
+                    });
+                }
+                else{
+                    context.setState({
+                        [key]: json[key]
+                    });
+                }
+				
             }
             else {
 				if(key == 'nutrition')
@@ -218,11 +227,10 @@ async function getIngredientInfoFromId(id, amnt, context) {
 					var tableData = [];
 					for(nutridx in nutrients){
 						nutrData = nutrients[nutridx];
-						console.log(nutrients[nutridx]);
+						
 						tableData.push([nutrData['title'], nutrData['amount'], nutrData['unit'], nutrData['percentOfDailyNeeds']]);
 					}
 					
-					console.log(tableData);
 					context.setState({
 						tableData: tableData
 					});
