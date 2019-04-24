@@ -16,6 +16,7 @@ import EditAccountScreen from './../screens/auth/EditAccountScreen';
 import HomeScreen from './../screens/HomeScreen';
 import LoadingScreen from './../screens/LoadingScreen';
 import RecipeScreen from './../screens/RecipeScreen';
+import UserRecipesScreen from './../screens/UserRecipesScreen';
 import BudgetScreen from './../screens/BudgetScreen';
 import BookmarksScreen from './../screens/BookmarksScreen';
 import FoodstockScreen from './../screens/FoodstockScreen';
@@ -30,7 +31,6 @@ import Sidebar from './SideBar';
 Home Page Navigations
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
-
 // Bottom tab navigator
 const Tabs = createBottomTabNavigator({
     Home: {
@@ -43,7 +43,7 @@ const Tabs = createBottomTabNavigator({
     },
 
     Recipes: {
-        screen: RecipeScreen,
+        screen: UserRecipesScreen,
         navigationOptions: {
             tabBarIcon: ({tintColor}) => (
                 <Icon name='recipe-book' size={32} color={tintColor} />
@@ -84,15 +84,10 @@ const Tabs = createBottomTabNavigator({
         activeBackgroundColor: 'rgba(175,76,99,1)',
         inactiveTintColor: 'rgba(175,76,99,1)',
         inactiveBackgroundColor: 'rgba(249, 248, 248, 1)',
-    },
-})
-
-const SearchStack = createStackNavigator({
-    Search: {
-        screen: SearchScreen,
-        navigationOptions: {
-            header: null
-        }
+        style: {
+            // backgroundColor: '#fff', // Makes Android tab bar white instead of standard blue
+            height: hPercentage('7%') // I didn't use this in my app, so the numbers may be off. 
+          }
     },
 })
 
@@ -102,13 +97,6 @@ const HomeTab = createStackNavigator({
         screen: Tabs,
         navigationOptions: {
             header: null,
-        }
-    },
-    
-    Loading: {
-        screen: LoadingScreen,
-        navigationOptions: {
-            header: null
         }
     },
 
@@ -131,6 +119,13 @@ const HomeTab = createStackNavigator({
         navigationOptions:{
             header:null,
         }
+    },
+
+    RecipeScreen: {
+        screen: RecipeScreen,
+        navigationOptions:{
+            header:null,
+        }
     }
 
 },{
@@ -140,55 +135,10 @@ const HomeTab = createStackNavigator({
     },
 })
 
-const CustomDrawerComponent = (props) => (
-    <ScrollView>
-        <View style={{justifyContent: 'center', alignItems:'center'}}>
-            <Image source= {defAccIcon} style={{flex:1, width: wPercentage('30%'), height: hPercentage('30%'), resizeMode: 'center'}}/>
-        </View>
-        <View style={styles.container}>
-            <TouchableOpacity
-                onPress={() => navToTab('Home', 'Home', props)}
-                style={styles.uglyDrawerItem}>
-                <Text>Home</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                onPress={() => navToTab('Home', 'Recipes', props)}
-                style={styles.uglyDrawerItem}>
-                <Text>Bookmarks</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                onPress={() => navToTab('Home', 'Budget', props)}
-                style={styles.uglyDrawerItem}>
-                <Text>Budget</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                onPress={() => navToTab('Home', 'FoodStock', props)}
-                style={styles.uglyDrawerItem}>
-                <Text>Foodstock</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                onPress={() => navToTab('Home', 'FoodDiary', props)}
-                style={styles.uglyDrawerItem}>
-                <Text>FoodDiary</Text>
-            </TouchableOpacity>
-        </View>
-    </ScrollView>
-    
-)
-
 // Side bar navigation works on all screens other than login, signup and forgot password screen
 const AppDrawerNavigator = createDrawerNavigator({
     Home: {
         screen: HomeTab,
-        // navigationOptions: {
-        //     drawerIcon: ({tintColor}) => (
-        //         <Icon name="home" style ={{fontSize: 24, color:tintColor}} />
-        //     )
-        // }
     },
 },{
     contentComponent: props => <Sidebar {...props} />,

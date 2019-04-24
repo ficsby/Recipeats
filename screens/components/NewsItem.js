@@ -40,7 +40,7 @@ const NewsItem = ({ news, index, type }) => {
                         />;
     }
     return (
-        // <Button key={index} noDefaultStyles={true} style = {{ flex: 1 }} >
+        <Button key={index} noDefaultStyles={true} style = {{ flex: 1 }} >
             <View style={styles.newsItem}>
                 <View style={styles.newsText}>
                     <View style={styles.newsTextContainer}>
@@ -54,7 +54,7 @@ const NewsItem = ({ news, index, type }) => {
                     if type==3,  newsContent renders food videos  (finished)      */}
                 {newsContent} 
             </View>
-        // </Button>
+        </Button>
     );
 }
 

@@ -1,158 +1,183 @@
 import React from "react";
 import {
-  Modal,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View,
-  Image
+	Modal,
+	StyleSheet,
+	Text,
+	TouchableHighlight,
+	TouchableOpacity,
+	View,
+	Image
 } from "react-native";
 import {
-  widthPercentageToDP as wPercentage,
-  heightPercentageToDP as hPercentage
+	widthPercentageToDP as wPercentage,
+	heightPercentageToDP as hPercentage
 } from "react-native-responsive-screen";
+import { ListItem, Divider } from 'react-native-elements';
+import Swipeout from 'react-native-swipeout';
+
 
 import Button from "./Button";
 import {
-  modifyFoodStock,
-  logPurchaseDate,
-  getFoodList,
-  removeFromFoodStock
+	modifyFoodStock,
+	logPurchaseDate,
+	getFoodList,
+	removeFromFoodStock
 } from "../../utils/FoodListUtils";
 import * as firebase from "firebase";
 import { Alert } from "react-native";
 import FoodItemForm from './FoodItemForm';
-
-function onPress(food) {
-  alert(food.name + " was pressed.");
-}
+import AddFoodItemModal from "./AddFoodItemModal";
 
 export default class FoodItem extends React.Component {
-  constructor(props) {
-    super(props);
+	constructor(props) {
+		super(props);
 
-    this.state = {
-      itemModalVisible: false,
-      name: props.name,
-      quantity: props.quantity
-      //purchaseDate: props.purchaseDate,
-    };
+		this.state = {
+			activeRowKey: null,
+			itemModalVisible: false,
+			id: this.props.id,
+			name: this.props.name,
+			price: this.props.price,
+			parent: this.props.parent,
+			datePurchased: this.props.datePurchased,
+			amount: this.props.amount,
+			unit: this.props.unit,
+			tableData: this.props.tableData
+		};
 
-    this.toggleItemModalVisible = this.toggleItemModalVisible.bind(this);
-  }
+		this.toggleIngrModalVisibility = this.toggleIngrModalVisibility.bind(this);
+	}
 
-  /**
-   * Function to set whether the add item modal is visible or not
-   * @param {*} visible - boolean value to set
-   */
-  toggleItemModalVisible() {
-    this.setState({ itemModalVisible: !this.state.itemModalVisible });
-  }
+	async componentDidMount() {
+		this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
+	}
+	/**
+	 * Function to set whether the add item modal is visible or not
+	 * @param {*} visible - boolean value to set
+	 */
+	toggleIngrModalVisibility() {
+		this.setState({ itemModalVisible: !this.state.itemModalVisible });
+	}
 
-  onPressItem() {
-    //alert(this.state.name + " was pressed.");
-    this.toggleItemModalVisible;
-  }
+	renderFoodItem() {
+		return (	
+			<TouchableOpacity onPress = {() => this.toggleIngrModalVisibility()}>
+				<ListItem key={this.props.rowId} title={this.state.name} rightTitle={this.state.amount + "  " + this.state.unit} />
+				<Divider />
+			</TouchableOpacity>
+		);
+	}
 
-  onPressDelete() {
-    //alert(this.state.name + " delete button was pressed.");
-    //removeFromFoodStock(firebase.auth().currentUser.uid, this.state.name);
-    Alert.alert(
-      "Warning",
-      "Are you sure you want to delete " +
-        this.state.name +
-        " from your inventory?",
-      [
+	onPressItem() {
+		//alert(this.state.name + " was pressed.");
+		this.toggleIngrModalVisibility;
+	}
+
+	onPressDelete() {
+		const parent = this.state.parent;
+
+		Alert.alert(
+			"Warning",
+			"Are you sure you want to delete " +
+			this.state.name +
+			" from your inventory?",
+			[
+				{
+					text: "Cancel",
+					onPress: () => console.log("Cancel Pressed"),
+					style: "cancel"
+				},
+				{
+					text: "Yes",
+					onPress: () => {
+						removeFromFoodStock(
+							firebase.auth().currentUser.uid,
+							this.state.name,
+							this.state.id
+						);
+
+						//update the parent's foodlist to keep it synced with firebase
+						parent.setState({
+							externalFoodList: parent.state.externalFoodList.filter(
+								foodItem => foodItem.name != this.state.name
+							)
+						});
+					}
+				}
+			],
+			{ cancelable: false }
+		);
+	}
+
+	render() {
+		const swipeSettings =
         {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        {
-          text: "Yes",
-          onPress: () =>
-            removeFromFoodStock(
-              firebase.auth().currentUser.uid,
-              this.state.name
-            )
+            autoClose: true,
+            // onClose: (sectionId, rowId, direction) => {
+            //     if (this.state.activeRowKey != null) {
+            //         this.setState({ activeRowKey: null });
+            //     }
+            // },
+            // onOpen: (sectionId, rowId, direction) => {
+            //     if (this.state.activeRowKey != null) {
+            //         this.setState({ activeRowKey: this.state.id });
+            //     }
+            // },
+            right:
+                [
+                    {
+                        onPress: () => {
+                            const deletedRow = this.state.activeRowKey;
+							this.onPressDelete()  // Delete item and update the list
+                        },
+                        text: 'Delete',
+                        type: 'delete',
+                    }
+                ],
         }
-      ],
-      { cancelable: false }
-    );
-  }
+		return (
+			<View>
 
-  render() {
-    return (
-      <View>
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.itemModalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-          }}
-        >
-          <FoodItemForm
-            datePurchased={new Date()}
-            metric=""
-            name={this.state.name}
-            price={null}
-            quantity={this.state.quantity}
-          />
-          <TouchableHighlight onPress={this.toggleItemModalVisible}>
-            <Text>Hide Modal</Text>
-          </TouchableHighlight>
-        </Modal>
+				<AddFoodItemModal
+					isModalVisible={this.state.itemModalVisible}
+					title={"Edit Ingredient"}
+					showPriceInput={true}
+					showDatePicker={true}
+					datePurchased={this.state.datePurchased}
+					id={this.state.id}
+					name={this.state.name}
+					parent={this}
+					price={this.state.price}
+					amount={this.state.amount}
+					unit={this.state.unit}
+					tableData={this.state.tableData}
+				/>
 
-        <Button
-          key={this.props.index}
-          noDefaultStyles={true}
-          onPress={this.toggleItemModalVisible}
-        >
-          <View style={styles.foodItemContainer}>
-            <Text style={styles.foodName}>{this.state.name}</Text>
-            <Text style={styles.foodQuantity}>{this.state.quantity}</Text>
-            <Button
-              key={this.props.index}
-              style={styles.foodButton}
-              onPress={this.onPressDelete.bind(this, this.props)}
-            >
-              <Text>Delete</Text>
-            </Button>
-          </View>
-          {/* <View style={styles.foodItemContainer}>
-                    <Text style={styles.foodQuantity}>{this.state.quantity}</Text>
-                </View> */}
-        </Button>
-      </View>
-    );
-  }
+				<Button
+					key={this.props.index}
+					noDefaultStyles={true}
+					onPress={() => this.toggleIngrModalVisibility()}
+				>
+				<Swipeout {...swipeSettings}>
+					{this.renderFoodItem()}
+				</Swipeout>
+
+				</Button>
+			</View>
+		);
+	}
 }
 
 const styles = StyleSheet.create({
-  foodItemContainer: {
-    flex: 1,
-    flexDirection: "row",
-    paddingRight: 20,
-    paddingTop: 10,
-    paddingBottom: 30,
-    backgroundColor: "rgba(244, 238, 238, 0.9)",
-    marginBottom: 13
-  },
+	foodItemContainer: {
+		marginLeft: wPercentage('10%'),
+		marginRight: wPercentage('10%'),
+		marginTop: wPercentage('5%'),
+		marginBottom: wPercentage('5%'),
+		backgroundColor: "rgba(244, 238, 238, 0.9)",
+	},
 
-  foodName: {
-    flexDirection: "column",
-    marginLeft: wPercentage("0%")
-  },
-
-  foodQuantity: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-
-  foodButton: {
-    flexDirection: "column",
-    marginLeft: wPercentage("10%")
-  }
+	foodButton: {
+		marginLeft: wPercentage("10%")
+	}
 });

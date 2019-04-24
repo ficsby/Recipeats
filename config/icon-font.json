@@ -239,12 +239,6 @@
       "src": "fontawesome"
     },
     {
-      "uid": "d4aeb916de8d3aea716442778346d244",
-      "css": "plus-circled",
-      "code": 59414,
-      "src": "elusive"
-    },
-    {
       "uid": "qab5uvjyoc3uu4d2pvt8soshtgkuvpak",
       "css": "minus",
       "code": 59415,
@@ -273,6 +267,30 @@
       "css": "search-2",
       "code": 59417,
       "src": "iconic"
+    },
+    {
+      "uid": "c709da589c923ba3c2ad48d9fc563e93",
+      "css": "cancel-1",
+      "code": 59419,
+      "src": "entypo"
+    },
+    {
+      "uid": "06301c50d89b5d3e651bd07ebd6d7de7",
+      "css": "cancel-3",
+      "code": 59421,
+      "src": "mfglabs"
+    },
+    {
+      "uid": "2d76f2c8d13be40694ecadfea7fb83c3",
+      "css": "logout",
+      "code": 59418,
+      "src": "entypo"
+    },
+    {
+      "uid": "a66e72da83c98248ae3ef43808efc452",
+      "css": "plus-circle",
+      "code": 59420,
+      "src": "websymbols"
     },
     {
       "uid": "059ee84db3ec1875f05b6b29e53c8cd1",
