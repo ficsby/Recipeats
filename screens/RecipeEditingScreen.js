@@ -10,9 +10,13 @@ import AddFoodItemModal from "./components/AddFoodItemModal";
 
 import { Font, AppLoading } from 'expo';
 import * as firebase from 'firebase';
-// import NavigationService from '../navigation/NavigationService.js';
 import ComparisonModal from './components/ComparisonModal';
 import {getFoodList} from './../utils/FoodListUtils';
+
+import {
+    widthPercentageToDP as wPercentage,
+    heightPercentageToDP as hPercentage
+  } from "react-native-responsive-screen";
 
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
@@ -311,13 +315,16 @@ class RecipeEditingScreen extends React.Component {
                             <View style={styles.statsContainer}>
                                 <Icon style={styles.statsIcon} name='clock' size={13} color='rgba(0,0,0, 0.5)' />
                                 <TextInput style={styles.stats} 
-                                    value ={this.state.readyInMinutes}  onChangeText={(readyInMinutes) => this.setState({readyInMinutes})}
+                                    value ={this.state.readyInMinutes.toString()}  onChangeText={(readyInMinutes) => this.setState({readyInMinutes})}
                                     editable={this.state.editable}/>
+                                <Text style={{fontSize: 18, marginTop: wPercentage('0.35%'), marginLeft: wPercentage('1.6%'), marginRight: wPercentage('2.2%')}}>mins</Text>
+
 
                                 <Icon style={styles.statsIcon} name='adult' size={13} color='rgba(0,0,0, 0.5)' />
                                 <TextInput style={styles.stats} 
-                                    value ={this.state.servings}  onChangeText={(servings) => this.setState({servings})}
+                                    value ={this.state.servings.toString()}  onChangeText={(servings) => this.setState({servings})}
                                     editable={this.state.editable}/>
+                                <Text style={{fontSize: 18,  marginTop:hPercentage('0.35%'), marginLeft: wPercentage('1.6%'), marginRight: wPercentage('2%')}}>servings</Text>
                             </View>
                         </View>
 
@@ -389,8 +396,9 @@ class RecipeEditingScreen extends React.Component {
 
                             </View>
                             {
-                                this.renderIngredientsList()
-                            }           
+                                (this.state.tempIngredients.length > 0)?
+                                this.renderIngredientsList() : <Text style={styles.emptyListText}>There are no ingredients to show.</Text>
+                            }
                             <TouchableOpacity 
                                 style={styles.compareButton} 
                                 onPress={this.toggleComparisonModal}
@@ -408,10 +416,10 @@ class RecipeEditingScreen extends React.Component {
                                     <TouchableOpacity   onPress ={this.onPressAddInstruction}>
                                         <Icon style={styles.addIcon} name='plus' size={18} color='rgba(0,0,0, 0.65)' />
                                     </TouchableOpacity>
-
                             </View>
                             {
-                               this.renderInstructionsList()
+                               (this.state.tempInstructions.length > 0)?
+                               this.renderInstructionsList() : <Text style={styles.emptyListText}>There are no instructions to show.</Text>
                             }
                             <View style={{paddingBottom: 20}} />
                         </View>
@@ -630,16 +638,16 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         width: '100%',
-        marginTop: 10,
-        marginLeft: 10,
-        paddingBottom: 15,
+        marginTop: hPercentage('1%'),
+        marginBottom: hPercentage('2%'), 
+        marginLeft: wPercentage('3%'),
     },
 
 
     stats: {
         fontSize: 18,
         color: 'rgba(0,0,0, 0.8)',
-        marginLeft: 6,
+        marginLeft: wPercentage('3%'),
     },
     
     statsIcon: {
@@ -725,21 +733,23 @@ const styles = StyleSheet.create({
         color: 'rgba(0,0,0,1)',
     },
 
+    emptyListText: {
+        marginLeft: wPercentage('7%'),
+        marginTop: hPercentage('2%'),
+        marginBottom: hPercentage('2%'),
+    },
+
     /*-----------------------
        Ingredients
     -------------------------*/
     addIcon: {
-        // backgroundColor: 'rgba(188, 107, 107, 1)',
-        // marginTop: 25,
         paddingTop: 10,
-        // paddingBottom: 10,
         paddingRight: 30,
     },
     
     compareButton: {
-        backgroundColor: 'rgba(188, 107, 107, 1)',
+        // backgroundColor: 'rgba(227, 234, 231, 1)',
         marginTop: 25,
-        paddingTop: 10,
         paddingBottom: 10,
         paddingLeft: 20,
         paddingRight: 20,
@@ -749,7 +759,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: '500',
         width: '100%',
-        color: 'rgba(255, 255, 255, 1)',
+        color: 'rgba(58, 170, 170, 1)',
         textAlign: 'center',
     },
 

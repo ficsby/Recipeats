@@ -6,6 +6,10 @@ import { ListItem, Badge, Divider} from 'react-native-elements';
 // import DialogInput from 'react-native-dialog-input';
 import FlatListItem from './components/FlatListItem';
 import AddFoodItemModal from "./components/AddFoodItemModal";
+import {
+    widthPercentageToDP as wPercentage,
+    heightPercentageToDP as hPercentage
+  } from "react-native-responsive-screen";
 
 import { Font, AppLoading } from 'expo';
 import * as firebase from 'firebase';
@@ -41,7 +45,7 @@ export default class RecipeScreen extends React.Component {
         super(props);
         this.state = {
             isLoading: true,
-            editable: false,
+            editable: NavigationService.getTopLevelNavigator().state.params.editable,
             query: '',
             recipes: [],
             bookmarked: false,
@@ -52,7 +56,8 @@ export default class RecipeScreen extends React.Component {
             title: NavigationService.getTopLevelNavigator().state.params.title,
             servings: NavigationService.getTopLevelNavigator().state.params.servings,
             readyInMinutes: NavigationService.getTopLevelNavigator().state.params.readyInMinutes,
-            extendedIngredients: [],
+            extendedIngredients: NavigationService.getTopLevelNavigator().state.params.extendedIngredients,
+            instructions: NavigationService.getTopLevelNavigator().state.params.instructions,
             nutrition: null,
 
             calories: NavigationService.getTopLevelNavigator().state.params.calories,
@@ -74,27 +79,6 @@ export default class RecipeScreen extends React.Component {
             
             deletedRowKey: null,
 
-            instructions:[   // FOR TESTING PURPOSES
-                {
-                    instruction: 'Toast the sesame seeds, about 350 degrees in the oven for about 10-15 minutes. Keep an eye on them to make sure they do not burn.'
-                },
-                {
-                    instruction: 'Mix together the following to make the dressing: olive oil, vinegar, sugar, salt, pepper, green onions, chicken flavor packet from the ramen noodle package.'
-                },
-                {
-                    instruction: 'Crush the ramen noodles until there are no large chunks (small chunks are OK).'
-                },
-                {
-                    instruction: 'Combine the shredded cabbage and ramen noodles in a large bowl.'
-                },
-                {
-                    instruction: 'Pour the dressing on the cabbage/noodle mixture and toss to coat.'
-                },
-                {
-                    instruction: 'Top with the toasted sesame seeds and almonds.'
-                },
-              ],
-
             nutritionalTags: {'vegetarian': false,
                               'vegan': false,
                               'glutenFree': false,
@@ -115,7 +99,6 @@ export default class RecipeScreen extends React.Component {
         this.onPressAddInstruction= this.onPressAddInstruction.bind(this);
         this.renderIngredientsList = this.renderIngredientsList.bind(this);
         this.renderInstructionsList = this.renderInstructionsList.bind(this);
-        this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
         this.toggleBookmark = this.toggleBookmark.bind(this);
         this.toggleHeart = this.toggleHeart.bind(this);
     };
@@ -127,8 +110,8 @@ export default class RecipeScreen extends React.Component {
             firebase.database().ref('bookmarkedRecipes/' + firebase.auth().currentUser.uid + '/' + this.state.title + '_' + this.state.id).update({
                 id: this.state.id,
                 title: this.state.title,
-                servings: this.state.servings + ' servings',
-                readyInMinutes: this.state.readyInMinutes + ' minutes',
+                servings: this.state.servings,
+                readyInMinutes: this.state.readyInMinutes,
 
                 calories: 155,
                 protein: 3,
@@ -405,11 +388,13 @@ export default class RecipeScreen extends React.Component {
                                 <TextInput style={styles.stats} 
                                     value ={this.state.readyInMinutes.toString()}  onChangeText={(readyInMinutes) => this.setState({readyInMinutes})}
                                     editable={this.state.editable}/>
+                                <Text style={{fontSize: 18, marginTop: wPercentage('0.35%'), marginLeft: wPercentage('1.6%'), marginRight: wPercentage('2.2%')}}>mins</Text>
 
                                 <Icon style={styles.statsIcon} name='adult' size={13} color='rgba(0,0,0, 0.5)' />
                                 <TextInput style={styles.stats} 
                                     value ={this.state.servings.toString()}  onChangeText={(servings) => this.setState({servings})}
                                     editable={this.state.editable}/>
+                                <Text style={{fontSize: 18,  marginTop:hPercentage('0.35%'), marginLeft: wPercentage('1.6%'), marginRight: wPercentage('2%')}}>servings</Text>
                             </View>
                         </View>
 
@@ -486,8 +471,9 @@ export default class RecipeScreen extends React.Component {
                                 } */}
                             </View>
                             {
-                                this.renderIngredientsList()
-                            }           
+                                (this.state.extendedIngredients.length > 0)?
+                                this.renderIngredientsList() : <Text style={styles.emptyListText}>There are no ingredients to show.</Text>
+                            }         
                             <TouchableOpacity 
                                 style={styles.compareButton} 
                                 onPress={this.toggleComparisonModal}
@@ -510,13 +496,12 @@ export default class RecipeScreen extends React.Component {
                                 } */}
                             </View>
                             {
-                               this.renderInstructionsList()
+                               (this.state.instructions.length > 0)?
+                               this.renderInstructionsList() : <Text  style={styles.emptyListText}>There are no instructions to show.</Text>
                             }
-                            <View style={{paddingBottom: 20}} />
                         </View>
                     </View>
-
-                    <View style={styles.whitespaceBuffer} />
+                    <View style={styles.whitespaceBuffer}></View>
                     {/* {
                         this.state.editable?            
                         <TouchableOpacity style={styles.saveButton} onPress ={this.onSaveChangesPress}> 
@@ -524,7 +509,7 @@ export default class RecipeScreen extends React.Component {
                         </TouchableOpacity> : null
                     } */}
 
-                </ScrollView>                            
+                </ScrollView>        
             </View>
         )
     }
@@ -557,6 +542,11 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         color: 'rgba(0,0,0,0.9)',
         fontSize: 18,
+    },
+
+    whitespaceBuffer: {
+        width: 50,
+        paddingBottom: hPercentage('10%'),
     },
 
     recipeRow: {
@@ -707,17 +697,18 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         width: '100%',
-        marginTop: 10,
-        marginLeft: 10,
-        paddingBottom: 15,
+        marginTop: hPercentage('1%'),
+        marginBottom: hPercentage('2%'), 
+        marginLeft: wPercentage('2%'),
     },
 
 
     stats: {
         fontSize: 18,
         color: 'rgba(0,0,0, 0.8)',
-        marginLeft: 6,
+        marginLeft: wPercentage('3%'),
     },
+    
     
     statsIcon: {
         marginTop: 3,
@@ -814,7 +805,7 @@ const styles = StyleSheet.create({
     },
     
     compareButton: {
-        backgroundColor: 'rgba(188, 107, 107, 1)',
+        // backgroundColor: 'rgba(227, 234, 231, 1)',
         marginTop: 25,
         paddingTop: 10,
         paddingBottom: 10,
@@ -826,7 +817,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: '500',
         width: '100%',
-        color: 'rgba(255, 255, 255, 1)',
+        color: 'rgba(58, 170, 170, 1)',
         textAlign: 'center',
     },
 
@@ -844,6 +835,11 @@ const styles = StyleSheet.create({
         marginBottom: -15,
     },
 
+    emptyListText: {
+        marginLeft: wPercentage('7%'),
+        marginTop: hPercentage('2%'),
+        marginBottom: hPercentage('2%'),
+    },
 
     /*-----------------------
        Instructions

@@ -209,6 +209,7 @@ export default class UserRecipesScreen extends React.Component {
   showRecipeScreen(newRecipe){
     NavigationService.navigate('RecipeScreen', 
                                   { 
+                                    editable: true,
                                     recipeId: newRecipe.id,
                                     title: newRecipe.title,
                                     servings: newRecipe.servings,
@@ -216,7 +217,9 @@ export default class UserRecipesScreen extends React.Component {
                                     calories: newRecipe.calories,
                                     protein: newRecipe.protein,
                                     carbs: newRecipe.carbs,
-                                    fats: newRecipe.fats
+                                    fats: newRecipe.fats,
+                                    extendedIngredients: [],
+                                    instructions: []
                                   }
                             );
     this.setState({recipeCreated: false});
@@ -228,7 +231,7 @@ export default class UserRecipesScreen extends React.Component {
         // };
         if (this.state.recipeCreated)
         {
-            this.showRecipeScreen(this.state.customRecipes[[customRecipes.length-1]]);
+            this.showRecipeScreen(this.state.customRecipes[[this.state.customRecipes.length-1]]);
         }
         return (
             <View style={styles.pageContainer}>
