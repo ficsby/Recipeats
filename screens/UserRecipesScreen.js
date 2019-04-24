@@ -10,7 +10,7 @@ import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native
 import LoadingScreen from './LoadingScreen';
 import RecipeListItem from './components/RecipeListItem'
 
-//import * as firebase from 'firebase';
+import * as firebase from 'firebase';
 
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
@@ -26,6 +26,7 @@ const fetch = require('node-fetch');
 
 import Button from './components/Button';
 import CreateRecipeModal from './components/CreateRecipeModal';
+
 // import NewsItem from './components/NewsItem';
 // import apiUtils from '../api/apiUtils.js';
 const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
@@ -42,94 +43,94 @@ export default class UserRecipesScreen extends React.Component {
             recipeCreated: false,
             customRecipes: 
             [
-                {   
-                    id: 556177,
-                    title: 'Ramen Noodle Coleslaw',
-                    servings: '4',
-                    readyInMinutes: '60',
-                    image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                },
-                {   
-                    id: 556178,
-                    title: 'Rammy',
-                    servings: '4',
-                    readyInMinutes: '60',
-                    image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                },
-                {   
-                    id: 556179,
-                    title: 'Some yummy food',
-                    servings: '4',
-                    readyInMinutes: '60',
-                    image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                },
-                {   
-                    id: 556120,
-                    title: 'Best pizza ever',
-                    servings: '4',
-                    readyInMinutes: '60',
-                    image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                },
-                {   
-                    id: 556125,
-                    title: 'Frenchy Friez',
-                    servings: '4',
-                    readyInMinutes: '60',
-                    image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                },
-                {   
-                    id: 5561721,
-                    title: 'Cheez Burger',
-                    servings: '4',
-                    readyInMinutes: '60',
-                    image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                }
+                // {   
+                //     id: 556177,
+                //     title: 'Ramen Noodle Coleslaw',
+                //     servings: '4',
+                //     readyInMinutes: '60',
+                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
+                // },
+                // {   
+                //     id: 556178,
+                //     title: 'Rammy',
+                //     servings: '4',
+                //     readyInMinutes: '60',
+                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
+                // },
+                // {   
+                //     id: 556179,
+                //     title: 'Some yummy food',
+                //     servings: '4',
+                //     readyInMinutes: '60',
+                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
+                // },
+                // {   
+                //     id: 556120,
+                //     title: 'Best pizza ever',
+                //     servings: '4',
+                //     readyInMinutes: '60',
+                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
+                // },
+                // {   
+                //     id: 556125,
+                //     title: 'Frenchy Friez',
+                //     servings: '4',
+                //     readyInMinutes: '60',
+                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
+                // },
+                // {   
+                //     id: 5561721,
+                //     title: 'Cheez Burger',
+                //     servings: '4',
+                //     readyInMinutes: '60',
+                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
+                // }
             ],
             
             bookmarkedRecipes: 
             [
-                {   
-                    id: 456177,
-                    title: 'Ramen Noodle Coleslaw',
-                    servings: '4',
-                    readyInMinutes: '60',
-                    image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                },
-                {   
-                    id: 456178,
-                    title: 'Rammy',
-                    servings: '4',
-                    readyInMinutes: '60',
-                    image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                },
-                {   
-                    id: 456179,
-                    title: 'Some yummy food',
-                    servings: '4',
-                    readyInMinutes: '60',
-                    image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                },
-                {   
-                    id: 456171,
-                    title: 'Best pizza ever',
-                    servings: '4',
-                    readyInMinutes: '60',
-                    image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                },
-                {   
-                    id: 456172,
-                    title: 'Frenchy Friez',
-                    servings: '4',
-                    readyInMinutes: '60',
-                    image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                },
-                {   
-                    id: 256171,
-                    title: 'Cheez Burger',
-                    servings: '4',
-                    readyInMinutes: '60',
-                    image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                }
+                // {   
+                //     id: 456177,
+                //     title: 'Ramen Noodle Coleslaw',
+                //     servings: '4',
+                //     readyInMinutes: '60',
+                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
+                // },
+                // {   
+                //     id: 456178,
+                //     title: 'Rammy',
+                //     servings: '4',
+                //     readyInMinutes: '60',
+                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
+                // },
+                // {   
+                //     id: 456179,
+                //     title: 'Some yummy food',
+                //     servings: '4',
+                //     readyInMinutes: '60',
+                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
+                // },
+                // {   
+                //     id: 456171,
+                //     title: 'Best pizza ever',
+                //     servings: '4',
+                //     readyInMinutes: '60',
+                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
+                // },
+                // {   
+                //     id: 456172,
+                //     title: 'Frenchy Friez',
+                //     servings: '4',
+                //     readyInMinutes: '60',
+                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
+                // },
+                // {   
+                //     id: 256171,
+                //     title: 'Cheez Burger',
+                //     servings: '4',
+                //     readyInMinutes: '60',
+                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
+                // }
             ],
         };
         this.toggleRecipeModalVisibility = this.toggleRecipeModalVisibility.bind(this);
@@ -151,8 +152,7 @@ export default class UserRecipesScreen extends React.Component {
           'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
         }); 
         this.setState({fontLoaded: true});
-
-        // Get bookmarks and custom recipes from firebase here
+        this.getCustomRecipesFromFirebase();
     };
 
     componentWillUnmount () {
@@ -172,15 +172,66 @@ export default class UserRecipesScreen extends React.Component {
         // this.props.navigation.dispatch(navActions);
         this.setState({visible: true});
     };
-
     
+    getCustomRecipesFromFirebase(){
+        // Returns a promise of the user's value
+        retrieveData = () => {
+            userId = firebase.auth().currentUser.uid;
+            ref = firebase.database().ref("customRecipes/" + userId + "/");
+            return ref.once("value");
+        };
+        
+        context = this;
+        retrieveData().then(snapshot => {
+            customRecipeSnapshot = snapshot.val();
+            recipes = [];
+            if(context.state.customRecipes.length != Object.keys(customRecipeSnapshot).length)
+            {
+                for (var key in customRecipeSnapshot) {
+                    if (customRecipeSnapshot.hasOwnProperty(key)) {
+                        recipes.push(customRecipeSnapshot[key]);
+                    }
+                }
+
+                context.setState({
+                    customRecipes: recipes
+                });
+            }
+        });
+    }
+
+    getBookmarkedRecipesFromFirebase(){
+        retrieveData = () => {
+            userId = firebase.auth().currentUser.uid;
+            ref = firebase.database().ref("bookmarkedRecipes/" + userId + "/");
+            return ref.once("value");
+        };
+        // bookmarkedRecipes
+        context = this;
+        retrieveData().then(snapshot => {
+            bookmarkedRecipeSnapshot = snapshot.val();
+            recipes = [];
+            if(context.state.bookmarkedRecipes.length != Object.keys(bookmarkedRecipeSnapshot).length)
+            {
+                for (var key in bookmarkedRecipeSnapshot) {
+                    if (bookmarkedRecipeSnapshot.hasOwnProperty(key)) {
+                        recipes.push(bookmarkedRecipeSnapshot[key]);
+                    }
+                }
+
+                context.setState({
+                    bookmarkedRecipes: recipes
+                });
+            }
+        });
+    }
     /**
      *  Renders the user's custom recipes, in which each item in customRecipes is mapped as a RecipeListItem. 
      *  Each RecipeListItem displays the title, image, serving size, cook time
      */
     renderCustomRecipes() {
         return this.state.customRecipes.map((recipe, index) => {
-            return <RecipeListItem  parent={this} item={recipe} rowId={index} sectionId={1} />  //sectionId 1 refers to custom recipes
+            return <RecipeListItem  parent={this} item={recipe} rowId={index} sectionId={1} bookmarked={false}/>  //sectionId 1 refers to custom recipes
         });
     };
 
@@ -190,7 +241,7 @@ export default class UserRecipesScreen extends React.Component {
      */
     renderBookmarks() {
         return this.state.bookmarkedRecipes.map((recipe, index) => {
-            return <RecipeListItem parent={this} item={recipe} rowId={index} sectionId={2} />  //sectionId 2 refers to bookmarked recipes
+            return <RecipeListItem parent={this} item={recipe} rowId={index} sectionId={2} bookmarked={true} />  //sectionId 2 refers to bookmarked recipes
         });
     };
 
@@ -229,6 +280,8 @@ export default class UserRecipesScreen extends React.Component {
         // if (this.state.isLoading) {
         //     return <LoadingScreen />;
         // };
+        this.getCustomRecipesFromFirebase();
+        this.getBookmarkedRecipesFromFirebase();
         if (this.state.recipeCreated)
         {
             this.showRecipeScreen(this.state.customRecipes[[this.state.customRecipes.length-1]]);

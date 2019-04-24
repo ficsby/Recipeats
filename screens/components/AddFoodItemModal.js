@@ -106,7 +106,7 @@ class AddFoodItemModal extends React.Component {
     var temp = [...this.props.parent.state.tempIngredients];
     temp.push(
       {
-        id: 8234235234234,      //TEMPORARY FOR NOW
+        id: this.state.id,      //TEMPORARY FOR NOW
         name: this.state.name,
         amount: this.state.amount,
         unit: this.state.unit
@@ -121,35 +121,6 @@ class AddFoodItemModal extends React.Component {
 
     if (this.state.title == 'Add Ingredient to Recipe') {
         this.onTemporaryAddIngredient();
-      // modifyRecipeIngredients(
-      //   firebase.auth().currentUser.uid,
-      //   this.state.name,
-      //   this.state.id,
-      //   this.state.price,
-      //   this.state.amount,
-      //   this.state.unit,
-      //   this.state.datePurchased,
-      //   this.state.tableData);
-      // // create a re with the new item to replace the externalFoodList
-      // newFoodList = [];
-      // newFoodList = parent.state.externalFoodList;
-      // newFoodList.push({
-      //   name: this.state.name,
-      //   id: this.state.id,
-      //   price: this.state.price,
-      //   amount: this.state.amount,
-      //   unit: this.state.unit,
-      //   datePurchased: this.state.datePurchased,
-      //   nutritionData: this.state.tableData
-      // });
-      // newFoodList.sort((a, b) =>
-      //   a.itemName > b.itemName ? 1 : b.itemName > a.itemName ? -1 : 0
-      // );
-
-      // parent.setState({
-      //   addModalVisible: !parent.state.addModalVisible,
-      //   externalFoodList: newFoodList
-      // });
     }
     else if (this.state.title == 'Add Ingredient to Food Stock') {
       modifyFoodStock(

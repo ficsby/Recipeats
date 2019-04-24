@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, WebView, Linking, Image, Alert, TouchableOpacity } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
+import NavigationService from '../../navigation/NavigationService.js';
 
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
@@ -18,13 +19,20 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
             parent: this.props.parent,
             item: this.props.item,
             rowId: this.props.rowId,
-            sectionId: this.props.sectionId
+            sectionId: this.props.sectionId,
+            bookmarked: this.props.bookmarked
         }
+        this.onPressItem = this.onPressItem.bind(this);
         this.onPressDelete = this.onPressDelete.bind(this);
+        this.showRecipeScreen = this.showRecipeScreen.bind(this);
+    }
+
+    showRecipeScreen(selectedRecipe) {
+        NavigationService.navigate('RecipeScreen', {recipeId: selectedRecipe.id, bookmarked: this.state.bookmarked});
     }
 
     onPressItem() {
-        alert("Item Pressed");
+        this.showRecipeScreen(this.state.item);
     };
 
     onPressDelete() {
@@ -84,7 +92,7 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
                         <View style={styles.detailsContainer}>
                             {/* { getPretext(item) } */}
                             <Text style={styles.title}>{this.state.item.title}</Text>
-                            <View style={{flexDirection:'row'}}>
+                            <View style={{flexDirection:'row', marginTop: hPercentage('5%')}}>
                                 <Text>{this.state.item.servings}</Text> 
                                 <Text style={{marginLeft: wPercentage('1%'), marginRight: wPercentage('2%')}}>servings</Text>
                                 <Text>{this.state.item.readyInMinutes}</Text> 
@@ -93,7 +101,7 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
                         </View>
                     </View>
                     <View style={styles.photoContainer}>
-                        <Image source={require('./../../assets/images/ramen-noodle-coleslaw.jpg')} style={styles.photo}/>
+                        <Image source={{uri:this.state.item.image}} style={styles.photo}/>
                         {console.log(this.state.item.image)}
                     </View>
                 </View>
@@ -139,8 +147,8 @@ const styles = StyleSheet.create({
     ItemDescription: {
         flex: 2,
         flexDirection: 'row',
-        paddingTop: hPercentage('1%'),
-        paddingBottom: hPercentage('5%'),
+        // paddingTop: hPercentage('1%'),
+        // paddingBottom: hPercentage('5%'),
         marginLeft: wPercentage('7%'),
     },
     number: {
@@ -164,11 +172,11 @@ const styles = StyleSheet.create({
         flex: 1,
         // justifyContent: 'center',
         // alignItems: 'center'
-        marginRight: wPercentage('15%'),
+        marginRight: wPercentage('10%'),
 
     },
     photo: {
-        width: wPercentage('35%'),
+        width: wPercentage('30%'),
         height: hPercentage('10%'),
     },
 });

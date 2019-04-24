@@ -64,7 +64,8 @@ class RecipeEditingScreen extends React.Component {
             instructionModalVisible: false,
             tempIngredients: this.props.parent.state.extendedIngredients,
             tempInstructions: this.props.parent.state.instructions,
-            nutritionalTags: this.props.parent.state.nutritionalTags
+            nutritionalTags: this.props.parent.state.nutritionalTags,
+            nutrients : null,
         
         };
         this.toggleComparisonModal = this.toggleComparisonModal.bind(this);
@@ -218,6 +219,34 @@ class RecipeEditingScreen extends React.Component {
     
     onSaveChangesPress() {
         // UPDATE FIREBASE WITH THE NEW RECIPE CHANGES HERE
+        ref = 'customRecipes/' + firebase.auth().currentUser.uid + '/' + this.state.title + '_' + this.state.id;
+        
+        firebase.database().ref(ref).set({
+            extendedIngredients: this.state.tempIngredients,
+            instructions: this.state.tempInstructions,
+        });
+
+        firebase.database().ref(ref).update({
+            id: this.state.id,
+            title: this.state.title,
+            servings: this.state.servings,
+            readyInMinutes: this.state.readyInMinutes,
+
+            calories: 155,
+            protein: 3,
+            carbs: 8,
+            fats: 16,
+            
+            nutrients : this.state.nutrients,
+            sourceUrl: this.state.sourceUrl,
+            creditText: this.state.creditText,
+            sourceName: this.state.sourceName,
+            image: this.state.image,
+        })
+
+        
+
+        Alert.alert("You have bookmarked this recipe.");
         this.props.parent.setState({
             title: this.state.title,
             servings:  this.state.servings,

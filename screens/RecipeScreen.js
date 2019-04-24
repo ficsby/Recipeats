@@ -48,7 +48,7 @@ export default class RecipeScreen extends React.Component {
             editable: NavigationService.getTopLevelNavigator().state.params.editable,
             query: '',
             recipes: [],
-            bookmarked: false,
+            bookmarked: NavigationService.getTopLevelNavigator().state.params.bookmarked,
             liked: false,
             comparisonModalVisible: false,
 
@@ -262,7 +262,11 @@ export default class RecipeScreen extends React.Component {
 
     async componentDidMount() {
         this._ismounted = true;
-        this.setState({fontLoaded: true});
+        this.setState({
+            fontLoaded: true,
+            readyInMinutes: (this.state.readyInMinutes)? this.state.readyInMinutes.toString() + ' minutes' : '',
+            servings: (this.state.servings)? this.state.servings + ' servings' : ''
+        });
 
         if(this.state.id < 0){
             this.setState({ isLoading: false });
@@ -496,7 +500,7 @@ export default class RecipeScreen extends React.Component {
                                 } */}
                             </View>
                             {
-                               (this.state.instructions.length > 0)?
+                               (this.state.instructions && this.state.instructions.length > 0) ?
                                this.renderInstructionsList() : <Text  style={styles.emptyListText}>There are no instructions to show.</Text>
                             }
                         </View>
