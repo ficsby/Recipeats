@@ -42,6 +42,19 @@ class AddInstructionModal extends React.Component {
 			instruction: '',
 			insertAtStep: '',
 		};
+
+		this.initialState = {
+			parent: this.props.parent,
+			isLoading: true,
+			inputModal: "",
+			opening: true,
+			title: this.props.title,
+
+			id: this.props.id,
+			instructionData: '',
+			instruction: '',
+			insertAtStep: '',
+		};
 		this.onTemporaryAddInstruction = this.onTemporaryAddInstruction.bind(this);
 		this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
 	}
@@ -55,11 +68,12 @@ class AddInstructionModal extends React.Component {
 	}
 
 	onTemporaryAddInstruction = () => {
-		// FRANCIS ASSIGN THE ID SOMEWHERE AROUND HERE PLS & THANK U @@@@@@@@@@@@@~~~~~~~~~~~~~~~~~!!!!!!!!!!!!!!!!!!!!!!!!!!***********************%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 		var temp = [...this.state.instructionData];
-		var userInstruction = { instruction: this.state.instruction };
+		var userInstruction = { step: this.state.instruction };
 		temp.splice(parseInt(this.state.insertAtStep) - 1, 0, userInstruction);
 		this.props.parent.setState({ tempInstructions: temp });
+
+		this.setState(this.initialState);
 	}
 
 
