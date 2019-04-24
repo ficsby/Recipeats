@@ -103,6 +103,37 @@ export default class RecipeScreen extends React.Component {
         this.toggleHeart = this.toggleHeart.bind(this);
     };
 
+    async componentDidMount() {
+        this._ismounted = true;
+        this.setState({
+            fontLoaded: true,
+            readyInMinutes: (this.state.readyInMinutes)? this.state.readyInMinutes.toString() + ' minutes' : '',
+            servings: (this.state.servings)? this.state.servings + ' servings' : ''
+        });
+
+        if(this.state.id < 0){
+            this.setState({ isLoading: false });
+        }
+        else
+        {
+            var recipeData = await apiUtils.getRecipeInfoFromId(this.state.id, this);
+            var instructionData = await apiUtils.getAnalyzedInstructions(this.state.id, this);
+            this.getFoodStock();
+            
+            // findSimilarFoodItems();
+            if(recipeData != null && instructionData != null)
+            {	
+                console.log('foodstock');
+                console.log(this.state.userFoodStock);
+                this.setState({ isLoading: false });
+            }
+        }
+    };
+
+    componentWillUnmount () {
+        this._ismounted = false; // after component is unmounted reste boolean
+     }
+
     toggleBookmark() {
         this.setState({  bookmarked: !this.state.bookmarked  });
         if(!this.state.bookmarked)
@@ -154,13 +185,6 @@ export default class RecipeScreen extends React.Component {
         }
     };
 
-    // export const removeFromFoodStock = (userId, foodItemName, foodItemID) => {
-    //     firebase
-    //       .database()
-    //       .ref("foodlist/" + userId + "/" + foodItemName + "_" + foodItemID)
-    //       .remove();
-    //   };
-      
     toggleComparisonModal() {
         this.setState({comparisonModalVisible: !this.state.comparisonModalVisible});
     }
@@ -169,6 +193,19 @@ export default class RecipeScreen extends React.Component {
     toggleHeart() {
         this.setState({  liked: !this.state.liked });
     };
+
+    toggleEditable() {
+        this.setState({
+            editable: !this.state.editable
+        });
+        this.state.editable?  Alert.alert("Not editable now") : Alert.alert("Values should be editable now.");
+    };
+
+	toggleIngrModalVisibility() {
+		this.setState({
+			ingredientModalVisible : !this.state.ingredientModalVisible
+		})
+	}
 
     getFoodStock() {
       foodList = [];
@@ -219,16 +256,21 @@ export default class RecipeScreen extends React.Component {
         this.setState({instructionModalVisible: true});
     }
 
+    onAccountIconPress = () => {
+        var navActions = StackActions.reset({
+            index: 1,
+            actions: [
+                // We need to push both the current screen and the next screen that we are transitioning to incase the user wants to go to previous screen
+                StackActions.push({ routeName: "Home" }),       
+                StackActions.push({ routeName: "EditAccount" }),
+            ]
+        });
+
+        this.props.navigation.dispatch(navActions);
+    };
+
     renderIngredientsList(){
         return (
-            // (this.state.editable)?
-            // <FlatList data={this.state.extendedIngredients}
-            // keyExtractor={(item, index) => index.toString()}
-            // renderItem={({item, index}) => 
-            //   <FlatListItem parentFlatList={this} flatListData={this.state.extendedIngredients} sectionId={1} rowId={index} 
-            //         title={item.name} rightTitle={item.amount} titleStyle={styles.ingredientText} rightTitleStyle={styles.amountText}/>
-            // }/>
-            // :
             this.state.extendedIngredients.map( (item, index) =>  
             ( 
               <View>
@@ -259,63 +301,6 @@ export default class RecipeScreen extends React.Component {
             ))
         );
     };
-
-    async componentDidMount() {
-        this._ismounted = true;
-        this.setState({
-            fontLoaded: true,
-            readyInMinutes: (this.state.readyInMinutes)? this.state.readyInMinutes.toString() + ' minutes' : '',
-            servings: (this.state.servings)? this.state.servings + ' servings' : ''
-        });
-
-        if(this.state.id < 0){
-            this.setState({ isLoading: false });
-        }
-        else
-        {
-            var recipeData = await apiUtils.getRecipeInfoFromId(this.state.id, this);
-            var instructionData = await apiUtils.getAnalyzedInstructions(this.state.id, this);
-            this.getFoodStock();
-            
-            // findSimilarFoodItems();
-            if(recipeData != null && instructionData != null)
-            {	
-                console.log('foodstock');
-                console.log(this.state.userFoodStock);
-                this.setState({ isLoading: false });
-            }
-        }
-    };
-
-    componentWillUnmount () {
-        this._ismounted = false; // after component is unmounted reste boolean
-     }
-
-    onAccountIconPress = () => {
-        var navActions = StackActions.reset({
-            index: 1,
-            actions: [
-                // We need to push both the current screen and the next screen that we are transitioning to incase the user wants to go to previous screen
-                StackActions.push({ routeName: "Home" }),       
-                StackActions.push({ routeName: "EditAccount" }),
-            ]
-        });
-
-        this.props.navigation.dispatch(navActions);
-    };
-
-    toggleEditable() {
-        this.setState({
-            editable: !this.state.editable
-        });
-        this.state.editable?  Alert.alert("Not editable now") : Alert.alert("Values should be editable now.");
-    };
-
-	toggleIngrModalVisibility() {
-		this.setState({
-			ingredientModalVisible : !this.state.ingredientModalVisible
-		})
-	}
 
     render() {
            

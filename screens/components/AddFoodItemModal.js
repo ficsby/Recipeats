@@ -93,34 +93,6 @@ class AddFoodItemModal extends React.Component {
 
   async componentDidMount() {
     this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
-    // console.log("INgredients");
-    // console.log(this.state.ingredients);
-    // Returns a promise of the user's value
-    // await function retrieveData(){
-    //   var ref = firebase.database().ref('ingredients/ingredients');
-    //   return ref.once('value');
-    // }
-
-    // // // Snapshot is the depiction of the user's current data
-    // var ingredientSuggestions = await retrieveData().then( (snapshot) => {
-    //   if(this._ismounted)
-    //   {
-    //       this.setState( {
-    //         ingredients: snapshot.val()
-    //       })
-
-    //     return new Promise((resolve) =>
-    //       setTimeout(
-    //           () => { resolve('result') },
-    //           5000
-    //       )
-    //     );
-    //   }
-    // })
-
-    // if(ingredientSuggestions != null){
-    //   this.setState({isLoading: false});
-    // }
   }
 
   componentWillUnmount() {
@@ -158,6 +130,7 @@ class AddFoodItemModal extends React.Component {
         this.state.unit,
         this.state.datePurchased,
         this.state.tableData);
+
       // create a newFoodList with the new item to replace the externalFoodList
       newFoodList = [];
       newFoodList = parent.state.externalFoodList;
@@ -316,28 +289,6 @@ class AddFoodItemModal extends React.Component {
               <Text style={styles.title_modal}>{title}</Text>
 
               {/* 
-					You can reuse the header to put the title and the close icon on the same row, so leave this commented for now
-				*/}
-              {/* Title header
-				--------------------------------------------------------------------------------------------------------- */}
-              {/* <View style={styles.titleRow}>
-              <TouchableOpacity onPress={this.onGoBack}>
-                <Icon
-                  name="left"
-                  size={30}
-                  color="rgba(100, 92, 92, 0.8)"
-                  onPress={() => {
-                    this.state.parent.setState({
-                      addModalVisible: !this.state.parent.state.addModalVisible
-                    });
-                  }}
-                  style={{ marginLeft: wPercentage("5%") }}
-                />
-              </TouchableOpacity>
-              <Text style={styles.addFoodItemTitle}>
-                {this.state.screenTitle}
-              </Text>
-			</View> */}
 
               {/* Beginning of content section 
 				--------------------------------------------------------------------------------------------------------- */}
