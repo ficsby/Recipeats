@@ -148,15 +148,22 @@ class AddFoodItemModal extends React.Component {
       );
 
       this.setState(this.initialState);
-      parent.setState({
-        addModalVisible: !parent.state.addModalVisible,
-        externalFoodList: newFoodList
-      });
+      parent.toggleIngrModalVisibility();
 
       this.setState(this.initialState);
     }
     else {
+      modifyFoodStock(
+        firebase.auth().currentUser.uid,
+        this.state.name,
+        this.state.id,
+        this.state.price,
+        this.state.amount,
+        this.state.unit,
+        this.state.datePurchased,
+        this.state.tableData);
 
+        parent.toggleIngrModalVisibility();
     }
   };
 
@@ -284,7 +291,7 @@ class AddFoodItemModal extends React.Component {
         visible={this.props.isModalVisible}
         onRequestClose={() => {
           //   this.props.closeDialog();
-          this.state.parent.setState({ addModalVisible: false });
+          this.state.parent.toggleIngrModalVisibility();
         }}
       >
 	  
