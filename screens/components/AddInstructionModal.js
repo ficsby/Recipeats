@@ -82,18 +82,6 @@ class AddInstructionModal extends React.Component {
 	};
 
 	render() {
-		// const { query } = this.state;
-		// const ingredients = this.findIngredient(query);
-		// const comp = (a, b) => a.toLowerCase().trim() == b.toLowerCase().trim();
-		// let title = this.props.title || "";
-
-		// if (!this.state.opening) {
-		//   value = this.state.inputModal;
-		// } else {
-		//   value = this.props.initValueTextInput
-		//     ? this.props.initValueTextInput
-		//     : "";
-		// }
 
 		let textProps = this.props.textInputProps || null;
 		let modalStyleProps = this.props.modalStyle || {};
@@ -119,30 +107,6 @@ class AddInstructionModal extends React.Component {
 						>
 							<View style={styles.modal_body}>
 								<Text style={styles.title_modal}>{this.state.title}</Text>
-
-								{/* 
-					You can reuse the header to put the title and the close icon on the same row, so leave this commented for now
-				*/}
-								{/* Title header
-				--------------------------------------------------------------------------------------------------------- */}
-								{/* <View style={styles.titleRow}>
-				<TouchableOpacity onPress={this.onGoBack}>
-				<Icon
-					name="left"
-					size={30}
-					color="rgba(100, 92, 92, 0.8)"
-					onPress={() => {
-					this.state.parent.setState({
-						addModalVisible: !this.state.parent.state.addModalVisible
-					});
-					}}
-					style={{ marginLeft: wPercentage("5%") }}
-				/>
-				</TouchableOpacity>
-				<Text style={styles.addFoodItemTitle}>
-				{this.state.screenTitle}
-				</Text>
-					</View> */}
 
 								{/* Beginning of content section 
 				--------------------------------------------------------------------------------------------------------- */}
