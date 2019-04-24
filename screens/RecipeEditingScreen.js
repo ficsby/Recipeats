@@ -85,7 +85,6 @@ class RecipeEditingScreen extends React.Component {
         this.toggleHeart = this.toggleHeart.bind(this);
         this.toggleIngrModalVisibility = this.toggleIngrModalVisibility.bind(this);
         this.toggleInstrModalVisibility = this.toggleInstrModalVisibility.bind(this);
-        this.toggleImageModalVisibility = this.toggleImageModalVisibility.bind(this);
         this._pickImage = this._pickImage.bind(this);
     };
 
@@ -124,12 +123,6 @@ class RecipeEditingScreen extends React.Component {
 		this.setState({
 			instructionModalVisible : !this.state.instructionModalVisible
 		})
-    }
-    
-    toggleImageModalVisibility() {
-        this.setState({
-            imageModalVisible : !this.state.imageModalVisible
-        })
     }
 
     getFoodStock() {
@@ -271,27 +264,6 @@ class RecipeEditingScreen extends React.Component {
         this.props.parent.toggleEditable();
     }
 
-    getPhotos = () => {
-        CameraRoll.getPhotos({
-          first: 20,
-          assetType: 'All'
-        })
-        .then(r => this.setState({photos: r.edges}))
-    }
-
-    async requestPhotosPermission() {
-        try {
-          const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE)
-            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-              this.getPhotos();
-            } else {
-              console.log("Photos permission denied")
-            }
-        } catch (err) {
-          console.warn(err)
-        }
-      }
-
     _pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
@@ -330,50 +302,23 @@ class RecipeEditingScreen extends React.Component {
                       />
                     </Modal>
 
-                    {/* <View styles={styles.imageModal}>
-                        <Modal
-                            animationType='slide'
-                            transparent={false}
-                            visible ={this.state.imageModalVisible}
-                            onRequestClose={this.toggleImageModalVisibility}
-                        >
-                            <Button title='Close' onPress={this.toggleImageModalVisibility}/>
-                            <ScrollView contentContainerStyle={styles.imageGalleryScrollView}>
-                                {
-                                    this.state.photos.map((photo, index) => {
-                                        return (
-                                            <TouchableOpacity>
-                                                <Image
-                                                 style={{
-                                                     width: wPercentage('8%'),
-                                                     height: wPercentage('8%')
-                                                 }}
-                                                 source ={{uri:photo.node.image.uri}} 
-                                                 />
-                                            </TouchableOpacity>
-                                        )
-                                    })
-                                }
-                            </ScrollView>
-                        </Modal>
-                    </View> */}
-                    
-                    {/* <ImageBackground source={require('./../assets/images/test_photo.jpg')} /> */}
-                    <ImageBackground source={{uri:this.state.image}} style={styles.image}>
-                        <View style={styles.overlayButtonsContainer}> 
-                            <TouchableOpacity onPress={this.toggleHeart} >
-                                {this.renderIcon("heart") }
-                            </TouchableOpacity>
+                    <TouchableOpacity onPress={this._pickImage}>
+                        <ImageBackground source={{uri:this.state.image}} style={styles.image}>
+                            <View style={styles.overlayButtonsContainer}> 
+                                <TouchableOpacity onPress={this.toggleHeart} >
+                                    {this.renderIcon("heart") }
+                                </TouchableOpacity>
 
-                            <TouchableOpacity onPress={this.toggleBookmark} >
-                                {this.renderIcon("bookmark") }
-                            </TouchableOpacity>
+                                <TouchableOpacity onPress={this.toggleBookmark} >
+                                    {this.renderIcon("bookmark") }
+                                </TouchableOpacity>
 
-                            <TouchableOpacity onPress={this.downloadRecipe} >
-                                <Icon name='download' size={27} color='rgba(255,255,255,1)' style={styles.overlayButtons}/>   
-                            </TouchableOpacity>
-                        </View>
-                    </ImageBackground>
+                                <TouchableOpacity onPress={this.downloadRecipe} >
+                                    <Icon name='download' size={27} color='rgba(255,255,255,1)' style={styles.overlayButtons}/>   
+                                </TouchableOpacity>
+                            </View>
+                        </ImageBackground>
+                    </TouchableOpacity>
 
                     <View style={styles.contents}>
 
@@ -382,14 +327,6 @@ class RecipeEditingScreen extends React.Component {
                                 <TextInput multiline style={styles.recipeTitle} 
                                     value ={this.state.title}  onChangeText={(title) => this.setState({title})}
                                     editable={this.state.editable}/>
-
-                                {/* <Text style={styles.title}>{this.state.title}</Text> */}
-                                {/* {
-                                    !(this.state.editable)? 
-                                    <TouchableOpacity>
-                                        <Text style={styles.editButton} onPress ={this.toggleEditable}>Edit</Text>
-                                    </TouchableOpacity> : null
-                                } */}
                             </View>
 
                             <View style={styles.statsContainer}>
@@ -434,12 +371,7 @@ class RecipeEditingScreen extends React.Component {
                                 <Text style ={styles.macrosLabel}> FATS </Text>
                             </View>
                         </View>
-                        
-                        <TouchableOpacity onPress={this._pickImage}>
-                            <Text>Image Gallery</Text>
-                            {/* {this.state.photo &&
-                            <Image source={{ uri: this.state.photo }} style={{ width: 200, height: 200 }} />} */}
-                        </TouchableOpacity>
+                                
 						{/* Shows the add ingredient modal if ingredientModalVisible is true (i.e when the user clicks '+' icon to add an ingredient */}
 						
 						<AddFoodItemModal
@@ -456,12 +388,6 @@ class RecipeEditingScreen extends React.Component {
 							amount={null}
 							unit=""
 						/>
-                        {/* <AddItemModal isModalVisible={this.state.ingredientModalVisible}
-                            title={"Add Ingredient"}
-                            message1={"Name:"} message2={"Amount:"}
-                            suggestion1={"Example: mushrooms"} suggestion2={"Example: 1/2 cups"}
-                            submitInput={ (inputText) => {this.sendInput(inputText)} }
-                            closeDialog={ () => {this.showDialog(false)}}/> */}
 
                         {/* Shows the add ingredient modal if ingredientModalVisible is true (i.e when the user clicks '+' icon to add an ingredient */}
                         <AddInstructionModal 
@@ -896,20 +822,6 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         textAlign: 'center',
     },
-    
-    /*------------------------------------------------------------------------
-        Image Modal Styles
-    ------------------------------------------------------------------------*/
-
-    imageGalleryScrollView: {
-        flexWrap: 'wrap',
-        flexDirection: 'row'
-    },
-
-    imageModal: {
-        paddingTop:hPercentage('5%'),
-        flex: 1
-    }
 });
 
 export default RecipeEditingScreen;
