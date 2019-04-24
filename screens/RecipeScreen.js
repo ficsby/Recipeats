@@ -8,7 +8,6 @@ import FlatListItem from './components/FlatListItem';
 import AddFoodItemModal from "./components/AddFoodItemModal";
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 
-import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 import { Font, AppLoading } from 'expo';
 import * as firebase from 'firebase';
 import NavigationService from '../navigation/NavigationService.js';

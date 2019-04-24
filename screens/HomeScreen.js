@@ -100,12 +100,6 @@ export default class HomeScreen extends React.Component {
     };
 
     render() {
-		// return(
-		// 	<View>
-		// 		<SearchHeaderNav/>
-		// 		<Text>Home screen</Text>
-		// 	</View>
-		// )
         if (this.state.isLoading) {
             return <LoadingScreen />;
         };
