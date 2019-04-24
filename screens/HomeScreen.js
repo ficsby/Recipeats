@@ -66,16 +66,7 @@ export default class HomeScreen extends React.Component {
      };
 
     onAccountIconPress = () => {
-        // var navActions = StackActions.reset({
-        //     index: 1,
-        //     actions: [
-        //         // We need to push both the current screen and the next screen that we are transitioning to incase the user wants to go to previous screen
-        //         StackActions.push({ routeName: "Home" }),       
-        //         StackActions.push({ routeName: "EditAccount" }),
-        //     ]
-        // });
-
-        // this.props.navigation.dispatch(navActions);
+        NavigationService.navigate('EditAccountScreen');
         this.setState({visible: true});
     };
 
