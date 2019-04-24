@@ -84,6 +84,10 @@ const Tabs = createBottomTabNavigator({
         activeBackgroundColor: 'rgba(175,76,99,1)',
         inactiveTintColor: 'rgba(175,76,99,1)',
         inactiveBackgroundColor: 'rgba(249, 248, 248, 1)',
+        style: {
+            // backgroundColor: '#fff', // Makes Android tab bar white instead of standard blue
+            height: hPercentage('7%') // I didn't use this in my app, so the numbers may be off. 
+          }
     },
 })
 

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, WebView, Linking, Image, Alert, TouchableOpacity } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
-
+import NavigationService from '../../navigation/NavigationService.js';
+import * as firebase from 'firebase';
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from './../../config/icon-font.json';
@@ -18,20 +19,37 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
             parent: this.props.parent,
             item: this.props.item,
             rowId: this.props.rowId,
-            sectionId: this.props.sectionId
+            sectionId: this.props.sectionId,
+            bookmarked: this.props.bookmarked
         }
+        this.onPressItem = this.onPressItem.bind(this);
         this.onPressDelete = this.onPressDelete.bind(this);
+        this.showRecipeScreen = this.showRecipeScreen.bind(this);
+    }
+
+    showRecipeScreen(selectedRecipe) {
+        NavigationService.navigate('RecipeScreen', {recipeId: selectedRecipe.id, bookmarked: this.state.bookmarked, image: this.state.item.image});
     }
 
     onPressItem() {
-        alert("Item Pressed");
+        this.showRecipeScreen(this.state.item);
     };
+
+    /**
+ * Function to remove a food item from a user's food inventory in the database
+ * @param {string} userId - user id of the foodstock to delete from
+ * @param {int} foodItemId - id of the food item to be removed
+ */
+    removeRecipe = () => {
+    firebase
+      .database()
+      .ref("foodlist/" + userId + "/" + foodItemName + "_" + foodItemID)
+      .remove();
+  };
 
     onPressDelete() {
         const parent = this.props.parent;
         const id = this.props.item.id;
-        console.log(this.state.item.title);
-        console.log(id);
 		Alert.alert(
 			"Warning",
 			"Are you sure you want to remove " +
@@ -47,19 +65,26 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 					text: "Yes",
 					onPress: () => {
                         var temp = [];
-                        console.log("rowid: ", this.props.rowId);
+                        var userId = firebase.auth().currentUser.uid;
                         switch (this.state.sectionId) {
-                            case 1: temp = [...this.props.parent.state.customRecipes];
-                                    console.log("BEFORE\n", temp);
-                                    temp.splice(this.props.rowId, 1);
+                            case 1: 
+                                    firebase
+                                    .database()
+                                    .ref("customRecipes/" + userId + "/" + this.state.item.title + "_" + this.state.item.id)
+                                    .remove();
+                                    temp = [...this.props.parent.state.customRecipes];
                                     this.props.parent.setState({ customRecipes: temp });
                                     break;
-                            case 2: temp = [...this.props.parent.state.bookmarkedRecipes];
-                                    temp.splice(this.props.rowId, 1);
+                            case 2: 
+                                    console.log(' ACTUAL ID: ' + actualId);
+                                    firebase
+                                    .database()
+                                    .ref("bookmarkedRecipes/" + userId + "/" + this.state.item.title + "_" + this.state.item.id )
+                                    .remove();
+                                    temp = [...this.props.parent.state.bookmarkedRecipes];
                                     this.props.parent.setState({ bookmarkedRecipes: temp });
                                     break;
                         }
-                        console.log("AFTER\n", temp);
                     }
 				}
 			],
@@ -84,7 +109,7 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
                         <View style={styles.detailsContainer}>
                             {/* { getPretext(item) } */}
                             <Text style={styles.title}>{this.state.item.title}</Text>
-                            <View style={{flexDirection:'row'}}>
+                            <View style={{flexDirection:'row', marginTop: hPercentage('5%')}}>
                                 <Text>{this.state.item.servings}</Text> 
                                 <Text style={{marginLeft: wPercentage('1%'), marginRight: wPercentage('2%')}}>servings</Text>
                                 <Text>{this.state.item.readyInMinutes}</Text> 
@@ -93,8 +118,7 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
                         </View>
                     </View>
                     <View style={styles.photoContainer}>
-                        <Image source={require('./../../assets/images/ramen-noodle-coleslaw.jpg')} style={styles.photo}/>
-                        {console.log(this.state.item.image)}
+                        <Image source={{uri:this.state.item.image}} style={styles.photo}/>
                     </View>
                 </View>
             </Button>
@@ -139,8 +163,8 @@ const styles = StyleSheet.create({
     ItemDescription: {
         flex: 2,
         flexDirection: 'row',
-        paddingTop: hPercentage('1%'),
-        paddingBottom: hPercentage('5%'),
+        // paddingTop: hPercentage('1%'),
+        // paddingBottom: hPercentage('5%'),
         marginLeft: wPercentage('7%'),
     },
     number: {
@@ -164,11 +188,11 @@ const styles = StyleSheet.create({
         flex: 1,
         // justifyContent: 'center',
         // alignItems: 'center'
-        marginRight: wPercentage('15%'),
+        marginRight: wPercentage('10%'),
 
     },
     photo: {
-        width: wPercentage('35%'),
+        width: wPercentage('30%'),
         height: hPercentage('10%'),
     },
 });

@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   Platform,
   Picker,
-  ScrollView
+  ScrollView,
+  CameraRoll
 } from "react-native";
 
 import DatePicker from "react-native-datepicker";
@@ -33,7 +34,7 @@ import NavigationService from "../../navigation/NavigationService";
 const Icon = createIconSetFromFontello(fontelloConfig, "fontello");
 
 class CreateRecipeModal extends React.Component {
-  static idCount = 0;
+  static idCount = -1;
   constructor(props) {
     super(props);
     this.state = {
@@ -41,7 +42,7 @@ class CreateRecipeModal extends React.Component {
       inputModal: "",
       opening: true,
 
-      id: this.props.id,
+      id: CreateRecipeModal.idCount,
       title: '',
       image: '',
       servings: '',
@@ -65,34 +66,6 @@ class CreateRecipeModal extends React.Component {
 
   async componentDidMount() {
     this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
-    // console.log("INgredients");
-    // console.log(this.state.ingredients);
-    // Returns a promise of the user's value
-    // await function retrieveData(){
-    //   var ref = firebase.database().ref('ingredients/ingredients');
-    //   return ref.once('value');
-    // }
-
-    // // // Snapshot is the depiction of the user's current data
-    // var ingredientSuggestions = await retrieveData().then( (snapshot) => {
-    //   if(this._ismounted)
-    //   {
-    //       this.setState( {
-    //         ingredients: snapshot.val()
-    //       })
-
-    //     return new Promise((resolve) =>
-    //       setTimeout(
-    //           () => { resolve('result') },
-    //           5000
-    //       )
-    //     );
-    //   }
-    // })
-
-    // if(ingredientSuggestions != null){
-    //   this.setState({isLoading: false});
-    // }
   }
 
   componentWillUnmount() {
@@ -100,13 +73,13 @@ class CreateRecipeModal extends React.Component {
   };
 
   onSaveChangesPress(){
-    // FRANCIS ASSIGN THE ID SOMEWHERE AROUND HERE PLS & THANK U @@@@@@@@@@@@@~~~~~~~~~~~~~~~~~!!!!!!!!!!!!!!!!!!!!!!!!!!***********************%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     var temp = [...this.props.parent.state.customRecipes];
     // --idCount;
-    --CreateRecipeModal.idCount; 
+    
     console.log("RECIPE ID: ", CreateRecipeModal.idCount);
+
     var newRecipe = {
-                        id: -140,
+                        id: CreateRecipeModal.idCount,
                         title: this.state.title,
                         // image: this.state.image,
                         servings: this.state.servings,
@@ -119,8 +92,29 @@ class CreateRecipeModal extends React.Component {
                         liked: false,
                         // As well as other recipe information
                     };
+    --CreateRecipeModal.idCount; 
     temp.push(newRecipe);
+
     this.props.parent.setState({ customRecipes: temp });
+    firebase.database().ref('customRecipes/' + firebase.auth().currentUser.uid + '/' + this.state.title + '_' + this.state.id).set({
+      id: CreateRecipeModal.idCount,
+      title: this.state.title,
+      servings: this.state.servings,
+      readyInMinutes: this.state.readyInMinutes,
+      calories: this.state.calories,
+      protein: this.state.protein,
+      carbs: this.state.carbs,
+      fats: this.state.fats,
+      bookmarked: false,
+      liked: false,
+
+      nutrients : {},
+      sourceUrl: '',
+      creditText: '',
+      sourceName: '',
+      image: '',
+  });
+
     this.props.parent.setState({recipeModalVisible: false,
                                 recipeCreated: true });
   };
