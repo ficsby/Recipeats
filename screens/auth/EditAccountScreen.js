@@ -73,11 +73,6 @@ export default class EditAccountScreen extends React.Component {
             birthDate: user.birthDate,
             selectedHeightMetric: user.selectedHeightMetric,
             selectedGender: user.selectedGender
-            // calories: this.state.calories,
-            // protein: this.state.email,
-            // fats: this.state.fats,
-            // carbs: this.state.carbs,
-            // budget: this.state.budget
         });
     }
 
