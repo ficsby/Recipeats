@@ -180,7 +180,6 @@ export default class UserRecipesScreen extends React.Component {
             ref = firebase.database().ref("customRecipes/" + userId + "/");
             return ref.once("value");
         };
-        console.log(this.state.customRecipes.length);
         context = this;
         retrieveData().then(snapshot => {
             customRecipeSnapshot = snapshot.val();

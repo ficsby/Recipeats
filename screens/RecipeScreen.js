@@ -68,7 +68,7 @@ export default class RecipeScreen extends React.Component {
             sourceUrl: '',
             creditText: '',
             sourceName: '',
-            image: '',
+            image: NavigationService.getTopLevelNavigator().state.params.image,
 
             isIngredientModalVisible: false,
             isInstructionModalVisible: false,

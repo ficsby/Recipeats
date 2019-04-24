@@ -94,6 +94,7 @@ class RecipeEditingScreen extends React.Component {
           'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
         }); 
         this.setState({fontLoaded: true});
+        if(this.state.id > 0){ this.setState({id: -this.state.id})}
     };
 
     componentWillUnmount () {

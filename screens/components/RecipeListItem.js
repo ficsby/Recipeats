@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, WebView, Linking, Image, Alert, TouchableOpacit
 import Swipeout from 'react-native-swipeout';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 import NavigationService from '../../navigation/NavigationService.js';
-
+import * as firebase from 'firebase';
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from './../../config/icon-font.json';
@@ -28,18 +28,28 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
     }
 
     showRecipeScreen(selectedRecipe) {
-        NavigationService.navigate('RecipeScreen', {recipeId: selectedRecipe.id, bookmarked: this.state.bookmarked});
+        NavigationService.navigate('RecipeScreen', {recipeId: selectedRecipe.id, bookmarked: this.state.bookmarked, image: this.state.item.image});
     }
 
     onPressItem() {
         this.showRecipeScreen(this.state.item);
     };
 
+    /**
+ * Function to remove a food item from a user's food inventory in the database
+ * @param {string} userId - user id of the foodstock to delete from
+ * @param {int} foodItemId - id of the food item to be removed
+ */
+    removeRecipe = () => {
+    firebase
+      .database()
+      .ref("foodlist/" + userId + "/" + foodItemName + "_" + foodItemID)
+      .remove();
+  };
+
     onPressDelete() {
         const parent = this.props.parent;
         const id = this.props.item.id;
-        console.log(this.state.item.title);
-        console.log(id);
 		Alert.alert(
 			"Warning",
 			"Are you sure you want to remove " +
@@ -55,19 +65,26 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 					text: "Yes",
 					onPress: () => {
                         var temp = [];
-                        console.log("rowid: ", this.props.rowId);
+                        var userId = firebase.auth().currentUser.uid;
                         switch (this.state.sectionId) {
-                            case 1: temp = [...this.props.parent.state.customRecipes];
-                                    console.log("BEFORE\n", temp);
-                                    temp.splice(this.props.rowId, 1);
+                            case 1: 
+                                    firebase
+                                    .database()
+                                    .ref("customRecipes/" + userId + "/" + this.state.item.title + "_" + this.state.item.id)
+                                    .remove();
+                                    temp = [...this.props.parent.state.customRecipes];
                                     this.props.parent.setState({ customRecipes: temp });
                                     break;
-                            case 2: temp = [...this.props.parent.state.bookmarkedRecipes];
-                                    temp.splice(this.props.rowId, 1);
+                            case 2: 
+                                    console.log(' ACTUAL ID: ' + actualId);
+                                    firebase
+                                    .database()
+                                    .ref("bookmarkedRecipes/" + userId + "/" + this.state.item.title + "_" + this.state.item.id )
+                                    .remove();
+                                    temp = [...this.props.parent.state.bookmarkedRecipes];
                                     this.props.parent.setState({ bookmarkedRecipes: temp });
                                     break;
                         }
-                        console.log("AFTER\n", temp);
                     }
 				}
 			],
@@ -102,7 +119,6 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
                     </View>
                     <View style={styles.photoContainer}>
                         <Image source={{uri:this.state.item.image}} style={styles.photo}/>
-                        {console.log(this.state.item.image)}
                     </View>
                 </View>
             </Button>
