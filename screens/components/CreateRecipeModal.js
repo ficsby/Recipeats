@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   Platform,
   Picker,
-  ScrollView
+  ScrollView,
+  CameraRoll
 } from "react-native";
 
 import DatePicker from "react-native-datepicker";
@@ -65,34 +66,6 @@ class CreateRecipeModal extends React.Component {
 
   async componentDidMount() {
     this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
-    // console.log("INgredients");
-    // console.log(this.state.ingredients);
-    // Returns a promise of the user's value
-    // await function retrieveData(){
-    //   var ref = firebase.database().ref('ingredients/ingredients');
-    //   return ref.once('value');
-    // }
-
-    // // // Snapshot is the depiction of the user's current data
-    // var ingredientSuggestions = await retrieveData().then( (snapshot) => {
-    //   if(this._ismounted)
-    //   {
-    //       this.setState( {
-    //         ingredients: snapshot.val()
-    //       })
-
-    //     return new Promise((resolve) =>
-    //       setTimeout(
-    //           () => { resolve('result') },
-    //           5000
-    //       )
-    //     );
-    //   }
-    // })
-
-    // if(ingredientSuggestions != null){
-    //   this.setState({isLoading: false});
-    // }
   }
 
   componentWillUnmount() {
@@ -100,7 +73,6 @@ class CreateRecipeModal extends React.Component {
   };
 
   onSaveChangesPress(){
-    // FRANCIS ASSIGN THE ID SOMEWHERE AROUND HERE PLS & THANK U @@@@@@@@@@@@@~~~~~~~~~~~~~~~~~!!!!!!!!!!!!!!!!!!!!!!!!!!***********************%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     var temp = [...this.props.parent.state.customRecipes];
     // --idCount;
     
