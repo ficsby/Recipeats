@@ -60,6 +60,32 @@ class AddFoodItemModal extends React.Component {
       tableHead: ["Title", "Amount", "Unit", "% of Daily Needs"],
       tableData: this.props.tableData,
     };
+    
+    this.initialState = {
+
+      parent: this.props.parent,
+      isLoading: true,
+      inputModal: "",
+      opening: true,
+      title: this.props.title,
+
+      id: '',
+
+      // Autocomplete search bar data
+      query: "",
+      ingredients: AutocompleteData.ingredientSuggestions,
+      name: '',
+
+      nutritionalTags: {},
+      price: '',
+      amount: '',
+      unit: '',
+      datePurchased: null,
+
+      // data for nutrition info table
+      tableHead: ["Title", "Amount", "Unit", "% of Daily Needs"],
+      tableData: [],
+    };
     this.onTemporaryAddIngredient = this.onTemporaryAddIngredient.bind(this);
     this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
     this.getIngredientInfo = this.getIngredientInfo.bind(this);
@@ -148,10 +174,13 @@ class AddFoodItemModal extends React.Component {
         a.itemName > b.itemName ? 1 : b.itemName > a.itemName ? -1 : 0
       );
 
+      this.setState(this.initialState);
       parent.setState({
         addModalVisible: !parent.state.addModalVisible,
         externalFoodList: newFoodList
       });
+
+      this.setState(this.initialState);
     }
     else {
 
@@ -248,7 +277,7 @@ class AddFoodItemModal extends React.Component {
     const { query } = this.state;
     const ingredients = this.findIngredient(query);
     const comp = (a, b) => a.toLowerCase().trim() == b.toLowerCase().trim();
-    let title = this.props.title || "";
+    let title = this.state.title || "";
 
     if (!this.state.opening) {
       value = this.state.inputModal;
