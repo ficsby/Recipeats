@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
-// var shuffle = require('shuffle-array');
+var shuffle = require('shuffle-array');
 
 
 // /* <Francis Buendia> March 15, 2019

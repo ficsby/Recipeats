@@ -93,35 +93,6 @@ class AddFoodItemModal extends React.Component {
 
   async componentDidMount() {
     this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
-<<<<<<< HEAD
-    // Returns a promise of the user's value
-    // await function retrieveData(){
-    //   var ref = firebase.database().ref('ingredients/ingredients');
-    //   return ref.once('value');
-    // }
-
-    // // // Snapshot is the depiction of the user's current data
-    // var ingredientSuggestions = await retrieveData().then( (snapshot) => {
-    //   if(this._ismounted)
-    //   {
-    //       this.setState( {
-    //         ingredients: snapshot.val()
-    //       })
-
-    //     return new Promise((resolve) =>
-    //       setTimeout(
-    //           () => { resolve('result') },
-    //           5000
-    //       )
-    //     );
-    //   }
-    // })
-
-    // if(ingredientSuggestions != null){
-    //   this.setState({isLoading: false});
-    // }
-=======
->>>>>>> userrecipes-screen
   }
 
   componentWillUnmount() {
