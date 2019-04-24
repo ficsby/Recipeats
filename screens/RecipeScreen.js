@@ -402,7 +402,7 @@ const styles = StyleSheet.create({
     saveChanges: {
         color: 'rgba(255,255,255,1)',
         fontSize: 16,
-        fontweight: '600',
+        fontWeight: '600',
     },
 
 /*------------------------------------------------------------------------
