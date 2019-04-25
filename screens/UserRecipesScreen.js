@@ -57,33 +57,37 @@ export default class UserRecipesScreen extends React.Component {
         )
     } 
 
-    async componentDidMount() {
-		console.log('test');
+    componentDidMount() {
         this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
-        await Font.loadAsync({
-          'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
-        }); 
+        this.subs = [
+            NavigationService.getTopLevelNavigator().addListener('didFocus', () => this.setState(this.state)),
+        ];
         this.setState({fontLoaded: true});
         this.getCustomRecipesFromFirebase();
     };
 
+    componentDidFocus(){
+        this.setState({state: this.state});
+    }
+
     componentWillUnmount () {
         this._ismounted = false; // after component is unmounted reste boolean
+        this.subs.forEach(sub => sub.remove());
      };
 
-    onAccountIconPress = () => {
-        // var navActions = StackActions.reset({
-        //     index: 1,
-        //     actions: [
-        //         // We need to push both the current screen and the next screen that we are transitioning to incase the user wants to go to previous screen
-        //         StackActions.push({ routeName: "Home" }),       
-        //         StackActions.push({ routeName: "EditAccount" }),
-        //     ]
-        // });
+    // onAccountIconPress = () => {
+    //     // var navActions = StackActions.reset({
+    //     //     index: 1,
+    //     //     actions: [
+    //     //         // We need to push both the current screen and the next screen that we are transitioning to incase the user wants to go to previous screen
+    //     //         StackActions.push({ routeName: "Home" }),       
+    //     //         StackActions.push({ routeName: "EditAccount" }),
+    //     //     ]
+    //     // });
 
-        // this.props.navigation.dispatch(navActions);
-        this.setState({visible: true});
-    };
+    //     // this.props.navigation.dispatch(navActions);
+    //     this.setState({visible: true});
+    // };
     
     getCustomRecipesFromFirebase(){
         // Returns a promise of the user's value
@@ -371,7 +375,8 @@ const styles = StyleSheet.create({
     },
 
     tabBarTextStyle: {
-        width: wPercentage('20%'),
+        width: wPercentage('35%'),
+        paddingLeft: wPercentage('7%'),
         fontSize: 14,
         fontWeight: 'normal',
     },
