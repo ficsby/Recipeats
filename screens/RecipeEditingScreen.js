@@ -85,6 +85,8 @@ class RecipeEditingScreen extends React.Component {
         this.toggleHeart = this.toggleHeart.bind(this);
         this.toggleIngrModalVisibility = this.toggleIngrModalVisibility.bind(this);
         this.toggleInstrModalVisibility = this.toggleInstrModalVisibility.bind(this);
+        this.renderDefaultBackgroundImage = this.renderDefaultBackgroundImage.bind(this);
+        this.renderChosenBackgroundImage = this.renderChosenBackgroundImage.bind(this);
         this._pickImage = this._pickImage.bind(this);
     };
 
@@ -265,6 +267,46 @@ class RecipeEditingScreen extends React.Component {
         this.props.parent.toggleEditable();
     }
 
+    renderDefaultBackgroundImage() {
+        return (
+            <ImageBackground source={require('./../assets/images/default_image.png')} style={styles.image}>
+                <View style={styles.overlayButtonsContainer}> 
+                    <TouchableOpacity onPress={this.toggleHeart} >
+                        {this.renderIcon("heart") }
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={this.toggleBookmark} >
+                        {this.renderIcon("bookmark") }
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={this.downloadRecipe} >
+                        <Icon name='download' size={27} color='rgba(255,255,255,1)' style={styles.overlayButtons}/>   
+                    </TouchableOpacity>
+                </View>
+            </ImageBackground>
+        );
+    };
+
+    renderChosenBackgroundImage(){
+        return(
+            <ImageBackground source={{uri:this.state.image}} style={styles.image}>
+                <View style={styles.overlayButtonsContainer}> 
+                    <TouchableOpacity onPress={this.toggleHeart} >
+                        {this.renderIcon("heart") }
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={this.toggleBookmark} >
+                        {this.renderIcon("bookmark") }
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={this.downloadRecipe} >
+                        <Icon name='download' size={27} color='rgba(255,255,255,1)' style={styles.overlayButtons}/>   
+                    </TouchableOpacity>
+                </View>
+            </ImageBackground>  
+        );
+    };
+
     _pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
@@ -302,23 +344,11 @@ class RecipeEditingScreen extends React.Component {
                         recipeIngredients={this.state.tempIngredients}
                       />
                     </Modal>
-
+                    
                     <TouchableOpacity onPress={this._pickImage}>
-                        <ImageBackground source={{uri:this.state.image}} style={styles.image}>
-                            <View style={styles.overlayButtonsContainer}> 
-                                <TouchableOpacity onPress={this.toggleHeart} >
-                                    {this.renderIcon("heart") }
-                                </TouchableOpacity>
-
-                                <TouchableOpacity onPress={this.toggleBookmark} >
-                                    {this.renderIcon("bookmark") }
-                                </TouchableOpacity>
-
-                                <TouchableOpacity onPress={this.downloadRecipe} >
-                                    <Icon name='download' size={27} color='rgba(255,255,255,1)' style={styles.overlayButtons}/>   
-                                </TouchableOpacity>
-                            </View>
-                        </ImageBackground>
+                    {
+                        (this.state.image)? this.renderChosenBackgroundImage() : this.renderDefaultBackgroundImage()
+                    }
                     </TouchableOpacity>
 
                     <View style={styles.contents}>

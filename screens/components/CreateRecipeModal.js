@@ -41,7 +41,7 @@ class CreateRecipeModal extends React.Component {
       inputModal: "",
       opening: true,
 
-      // id: ,
+      id: '',
       title: '',
       image: '',
       servings: '',
@@ -51,14 +51,8 @@ class CreateRecipeModal extends React.Component {
       protein: '',
       carbs: '',
       fats: '',
-
-      // amount: '',
-      // unit: '',
+      
       dateCreated: '',
-
-      // data for nutrition info table
-      //   tableHead: ["Title", "Amount", "Unit", "% of Daily Needs"],
-      //   tableData: [],
     };
     this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
   };
@@ -73,8 +67,16 @@ class CreateRecipeModal extends React.Component {
 
   onSaveChangesPress(){
     var temp = [...this.props.parent.state.customRecipes];
+	
+	var sumOfTitle = 0;
+	this.state.title.toUpperCase().split('').forEach(function(alphabet) {
+		sumOfTitle += alphabet.charCodeAt(0) - 64;
+	});
+
+    var newId = -1*(this.state.title.length * sumOfTitle);
+
     var newRecipe = {
-                        id: CreateRecipeModal.idCount,
+                        id: newId,
                         title: this.state.title,
                         // image: this.state.image,
                         servings: this.state.servings,
@@ -91,7 +93,7 @@ class CreateRecipeModal extends React.Component {
 
     this.props.parent.setState({ customRecipes: temp });
     firebase.database().ref('customRecipes/' + firebase.auth().currentUser.uid + '/' + this.state.title + '_' + this.state.id).set({
-      // id: ,
+      id : this.state.id,
       title: this.state.title,
       servings: this.state.servings,
       readyInMinutes: this.state.readyInMinutes,
