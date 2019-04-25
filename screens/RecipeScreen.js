@@ -356,6 +356,52 @@ export default class RecipeScreen extends React.Component {
     );
   }
 
+  renderDefaultBackgroundImage() {
+    return (
+        <ImageBackground source={require('./../assets/images/default_image_0.png')} style={styles.image}>
+            <View style={styles.overlayButtonsContainer}> 
+                <TouchableOpacity onPress={this.toggleHeart} >
+                    {this.renderIcon("heart") }
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={this.toggleBookmark} >
+                    {this.renderIcon("bookmark") }
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={this.downloadRecipe} >
+                    <Icon name='download' size={27} color='rgba(255,255,255,1)' style={styles.overlayButtons}/>   
+                </TouchableOpacity>
+            </View>
+        </ImageBackground>
+    );
+};
+
+renderChosenBackgroundImage(){
+    return(
+        <ImageBackground source={{uri:this.state.image}} style={styles.image}>
+            <View style={styles.overlayButtonsContainer}> 
+                <TouchableOpacity onPress={this.toggleHeart} >
+                    {this.renderIcon("heart") }
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={this.toggleBookmark} >
+                    {this.renderIcon("bookmark") }
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={this.downloadRecipe} >
+                    <Icon name='download' size={27} color='rgba(255,255,255,1)' style={styles.overlayButtons}/>   
+                </TouchableOpacity>
+            </View>
+        </ImageBackground>  
+    );
+};
+
+// Handles not a number exception
+handleNaN = (text) => {
+    Alert.alert("Please enter a number");
+    text = text.substring(0, text.length - 1);
+}
+
   render() {
     if (this.state.isLoading) {
       return <LoadingScreen />;
@@ -389,29 +435,10 @@ export default class RecipeScreen extends React.Component {
             />
           </Modal>
 
-          <ImageBackground
-            source={{ uri: this.state.image }}
-            style={styles.image}
-          >
-            <View style={styles.overlayButtonsContainer}>
-              <TouchableOpacity onPress={this.toggleHeart}>
-                {this.renderIcon("heart")}
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={this.toggleBookmark}>
-                {this.renderIcon("bookmark")}
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={this.downloadRecipe}>
-                <Icon
-                  name="download"
-                  size={27}
-                  color="rgba(255,255,255,1)"
-                  style={styles.overlayButtons}
-                />
-              </TouchableOpacity>
-            </View>
-          </ImageBackground>
+                {
+                    // Gets the recipe cover photo. If null, uses default photo.
+                    (this.state.image)? this.renderChosenBackgroundImage() : this.renderDefaultBackgroundImage()
+                }
 
           <View style={styles.contents}>
             <View style={styles.recipeTitleContainer}>
@@ -533,7 +560,7 @@ export default class RecipeScreen extends React.Component {
               <View style={styles.row}>
                 <Text style={styles.sectionTitle}>Ingredients</Text>
               </View>
-              {this.state.extendedIngredients.length > 0 ? (
+              { this.state.extendedIngredients && this.state.extendedIngredients.length > 0 ? (
                 this.renderIngredientsList()
               ) : (
                 <Text style={styles.emptyListText}>
