@@ -196,7 +196,7 @@ class RecipeEditingScreen extends React.Component {
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({item, index}) => 
               <FlatListItem parentFlatList={this} flatListData={this.state.tempInstructions} sectionId={2} rowId={index} title={item.step} 
-                    leftIcon={<Badge value={index+1} containerStyle={styles.numberContainer} badgeStyle={styles.numberBadge} textStyle={styles.instructionNumber} rightIcon={<Icon name='left-open' size={17} color={'grey'} style={styles.swipeIndicator}/>} />} 
+                    leftIcon={<Badge value={index+1} containerStyle={styles.numberContainer} badgeStyle={styles.numberBadge} textStyle={styles.instructionNumber} rightIcon={<Icon name='left-open' size={17} color={'grey'} style={{marginRight: wPercentage('50%')}}/>} />} 
                />
             }/>
         );
@@ -835,7 +835,7 @@ const styles = StyleSheet.create({
     },
 
     numberContainer: {
-        marginLeft: wPercentage('7%'), 
+        marginLeft: wPercentage('4%'), 
         marginRight:  wPercentage('8%'),
     },
 
