@@ -108,7 +108,7 @@ export default class HomeScreen extends React.Component {
 
   render() {
     if (this.state.isLoading) {
-      return <LoadingScreen />;
+      return <LoadingScreen />
     }
 
     return (
