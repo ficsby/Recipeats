@@ -41,7 +41,7 @@ class CreateRecipeModal extends React.Component {
       inputModal: "",
       opening: true,
 
-      id: ,
+      // id: ,
       title: '',
       image: '',
       servings: '',
@@ -91,7 +91,7 @@ class CreateRecipeModal extends React.Component {
 
     this.props.parent.setState({ customRecipes: temp });
     firebase.database().ref('customRecipes/' + firebase.auth().currentUser.uid + '/' + this.state.title + '_' + this.state.id).set({
-      id: ,
+      // id: ,
       title: this.state.title,
       servings: this.state.servings,
       readyInMinutes: this.state.readyInMinutes,
