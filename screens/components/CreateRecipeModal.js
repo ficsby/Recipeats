@@ -71,6 +71,16 @@ class CreateRecipeModal extends React.Component {
     this._ismounted = false; // after component is unmounted reste boolean
   }
 
+  handleNaN(text) {
+    Alert.alert("This input must be a number.");
+    text = text.substring(0, text.length - 1);
+  }
+
+  overCharLimit(text, charLimit) {
+    Alert.alert("You cannot exceed " + charLimit.toString() + " characters.");
+    text = text.substring(0, text.length - 1);
+  }
+
   onSaveChangesPress() {
     var temp = [...this.props.parent.state.customRecipes];
 
@@ -181,7 +191,11 @@ class CreateRecipeModal extends React.Component {
                   <TextInput
                     style={styles.long_input_container}
                     value={this.state.title}
-                    onChangeText={input => this.changeText(input)}
+                    onChangeText={input =>
+                      input.length > 40
+                        ? this.overCharLimit(input, 40)
+                        : this.changeText(input)
+                    }
                   />
                 </View>
 
@@ -194,16 +208,20 @@ class CreateRecipeModal extends React.Component {
                     <TextInput
                       style={styles.short_input_container}
                       value={this.state.readyInMinutes}
-                      onChangeText={input => {
-                        this.setState({ readyInMinutes: input });
-                      }}
+                      onChangeText={input =>
+                        isNaN(input)
+                          ? this.handleNaN(input)
+                          : this.setState({ readyInMinutes: input })
+                      }
                     />
                     <TextInput
                       style={styles.short_input_container}
                       value={this.state.servings}
-                      onChangeText={input => {
-                        this.setState({ servings: input });
-                      }}
+                      onChangeText={input =>
+                        isNaN(input)
+                          ? this.handleNaN(input)
+                          : this.setState({ servings: input })
+                      }
                     />
                   </View>
                 </View>
@@ -224,30 +242,38 @@ class CreateRecipeModal extends React.Component {
                     <TextInput
                       style={styles.short_input_container}
                       value={this.state.calories}
-                      onChangeText={input => {
-                        this.setState({ calories: input });
-                      }}
+                      onChangeText={input =>
+                        isNaN(input)
+                          ? this.handleNaN(input)
+                          : this.setState({ calories: input })
+                      }
                     />
                     <TextInput
                       style={styles.short_input_container}
                       value={this.state.protein}
-                      onChangeText={input => {
-                        this.setState({ protein: input });
-                      }}
+                      onChangeText={input =>
+                        isNaN(input)
+                          ? this.handleNaN(input)
+                          : this.setState({ protein: input })
+                      }
                     />
                     <TextInput
                       style={styles.short_input_container}
                       value={this.state.carbs}
-                      onChangeText={input => {
-                        this.setState({ carbs: input });
-                      }}
+                      onChangeText={input =>
+                        isNaN(input)
+                          ? this.handleNaN(input)
+                          : this.setState({ carbs: input })
+                      }
                     />
                     <TextInput
                       style={styles.short_input_container}
                       value={this.state.fats}
-                      onChangeText={input => {
-                        this.setState({ fats: input });
-                      }}
+                      onChangeText={input =>
+                        isNaN(input)
+                          ? this.handleNaN(input)
+                          : this.setState({ fats: input })
+                      }
                     />
                   </View>
                 </View>
