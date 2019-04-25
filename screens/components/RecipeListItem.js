@@ -28,7 +28,7 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
     }
 
     showRecipeScreen(selectedRecipe) {
-        NavigationService.navigate('RecipeScreen', {recipeId: selectedRecipe.id, bookmarked: this.state.bookmarked, image: this.state.item.image});
+        NavigationService.navigate('RecipeScreen', {title: selectedRecipe.title, recipeId: selectedRecipe.id, bookmarked: this.state.bookmarked, image: this.state.item.image});
     }
 
     onPressItem() {

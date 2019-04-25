@@ -237,7 +237,7 @@ class RecipeEditingScreen extends React.Component {
             sourceUrl: this.state.sourceUrl,
             creditText: this.state.creditText,
             sourceName: this.state.sourceName,
-            image: this.state.image,
+            image: (this.state.image)? this.state.image : '',
         })
 
         this.props.parent.setState({
@@ -335,7 +335,7 @@ class RecipeEditingScreen extends React.Component {
                                 <TextInput style={styles.stats} 
                                     value ={this.state.readyInMinutes.toString()}  onChangeText={(readyInMinutes) => this.setState({readyInMinutes})}
                                     editable={this.state.editable}/>
-                                <Text style={{fontSize: 18, marginTop: wPercentage('0.35%'), marginLeft: wPercentage('1.6%'), marginRight: wPercentage('2.2%')}}>mins</Text>
+                                <Text style={{fontSize: 18, marginTop: wPercentage('0.35%'), marginLeft: wPercentage('1.6%'), marginRight: wPercentage('2.2%')}}>minutes</Text>
 
 
                                 <Icon style={styles.statsIcon} name='adult' size={13} color='rgba(0,0,0, 0.5)' />
@@ -433,11 +433,9 @@ class RecipeEditingScreen extends React.Component {
                                (this.state.tempInstructions && this.state.tempInstructions.length > 0)?
                                this.renderInstructionsList() : <Text style={styles.emptyListText}>There are no instructions to show.</Text>
                             }
-                            <View style={{paddingBottom: 20}} />
+                            <View style={{paddingBottom: hPercentage('5%')}} />
                         </View>
                     </View>
-
-                    <View style={styles.whitespaceBuffer} />
                     
                     <TouchableOpacity style={styles.saveButton} onPress ={this.onSaveChangesPress}> 
                         <Text style={styles.saveChanges}>Save Changes</Text>
@@ -492,8 +490,8 @@ const styles = StyleSheet.create({
     },
 
     contents: {
-        marginTop: 5,
-        marginBottom: 15,
+        marginTop: hPercentage('2%'),
+        marginBottom: hPercentage('1%'),
     },
 
         
@@ -507,11 +505,11 @@ const styles = StyleSheet.create({
     },
     
     saveButton: {
-        marginBottom: 30,
-        marginLeft: 30,
-        marginRight: 30,
-        paddingTop: 10,
-        paddingBottom: 10,
+        marginBottom: hPercentage('1%'),
+        marginLeft: wPercentage('4%'),
+        marginRight: wPercentage('4%'),
+        paddingTop: hPercentage('1%'),
+        paddingBottom: hPercentage('1%'),
         backgroundColor: 'rgba(204, 102, 102, 0.9)',
         alignItems: 'center',
         justifyContent: 'center',
@@ -526,11 +524,12 @@ const styles = StyleSheet.create({
     },
 
     cancelButton: {
-        marginBottom: 30,
-        marginLeft: 30,
-        marginRight: 30,
-        paddingTop: 10,
-        paddingBottom: 10,
+        // marginTop: hPercentage('3%'),
+        marginBottom: hPercentage('3%'),
+        marginLeft: wPercentage('4%'),
+        marginRight: wPercentage('4%'),
+        paddingTop: hPercentage('1%'),
+        paddingBottom: hPercentage('1%'),
         backgroundColor: 'grey',
         alignItems: 'center',
         justifyContent: 'center',
@@ -760,11 +759,10 @@ const styles = StyleSheet.create({
     },
     
     compareButton: {
-        // backgroundColor: 'rgba(227, 234, 231, 1)',
-        marginTop: 25,
-        paddingBottom: 10,
-        paddingLeft: 20,
-        paddingRight: 20,
+        marginTop: hPercentage('3%'),
+        marginBottom: hPercentage('2%'),
+        marginRight: wPercentage('5%'),
+        marginLeft: wPercentage('5%'),
     },
     
     compareText: {

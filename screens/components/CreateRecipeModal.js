@@ -34,7 +34,6 @@ import NavigationService from "../../navigation/NavigationService";
 const Icon = createIconSetFromFontello(fontelloConfig, "fontello");
 
 class CreateRecipeModal extends React.Component {
-  static idCount = -1;
   constructor(props) {
     super(props);
     this.state = {
@@ -42,7 +41,7 @@ class CreateRecipeModal extends React.Component {
       inputModal: "",
       opening: true,
 
-      id: CreateRecipeModal.idCount,
+      id: ,
       title: '',
       image: '',
       servings: '',
@@ -74,10 +73,6 @@ class CreateRecipeModal extends React.Component {
 
   onSaveChangesPress(){
     var temp = [...this.props.parent.state.customRecipes];
-    // --idCount;
-    
-    console.log("RECIPE ID: ", CreateRecipeModal.idCount);
-
     var newRecipe = {
                         id: CreateRecipeModal.idCount,
                         title: this.state.title,
@@ -92,12 +87,11 @@ class CreateRecipeModal extends React.Component {
                         liked: false,
                         // As well as other recipe information
                     };
-    --CreateRecipeModal.idCount; 
     temp.push(newRecipe);
 
     this.props.parent.setState({ customRecipes: temp });
     firebase.database().ref('customRecipes/' + firebase.auth().currentUser.uid + '/' + this.state.title + '_' + this.state.id).set({
-      id: CreateRecipeModal.idCount,
+      id: ,
       title: this.state.title,
       servings: this.state.servings,
       readyInMinutes: this.state.readyInMinutes,
