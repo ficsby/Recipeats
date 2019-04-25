@@ -75,10 +75,10 @@ export default class RecipeScreen extends React.Component {
         .instructions,
       nutrition: null,
 
-      calories: NavigationService.getTopLevelNavigator().state.params.calories,
-      protein: NavigationService.getTopLevelNavigator().state.params.protein,
-      carbs: NavigationService.getTopLevelNavigator().state.params.carbs,
-      fats: NavigationService.getTopLevelNavigator().state.params.fats,
+      calories: (NavigationService.getTopLevelNavigator().state.params.calories)? NavigationService.getTopLevelNavigator().state.params.calories : '0',
+      protein: (NavigationService.getTopLevelNavigator().state.params.protein? NavigationService.getTopLevelNavigator().state.params.protein : '0'),
+      carbs: (NavigationService.getTopLevelNavigator().state.params.carbs)? NavigationService.getTopLevelNavigator().state.params.carbs : '0',
+      fats: (NavigationService.getTopLevelNavigator().state.params.fats)? NavigationService.getTopLevelNavigator().state.params.fats : '0',
 
       sourceUrl: "",
       creditText: "",
