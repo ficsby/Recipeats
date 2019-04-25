@@ -473,8 +473,8 @@ export default class RecipeScreen extends React.Component {
             : this.renderDefaultBackgroundImage()}
 
           <View style={styles.contents}>
-            <View style={{paddingTop: hPercentage('5%')}} />
             <View style={styles.recipeTitleContainer}>
+              <View style={{paddingTop: hPercentage('0.2%')}} />
               <View style={styles.row}>
                 <TextInput
                   multiline
@@ -535,7 +535,7 @@ export default class RecipeScreen extends React.Component {
                 </Text>
               </View>
             </View>
-
+            <Divider />
             <View style={styles.macrosContainer}>
               <View style={styles.macrosColumn}>
                 <TextInput
@@ -706,7 +706,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     paddingTop: hPercentage("1%"),
-    paddingBottom: hPercentage("3%"),
+    paddingBottom: hPercentage("1%"),
     paddingRight: wPercentage("1%"),
     width: "100%",
     backgroundColor: "rgba(0,0,0,0.6)"
@@ -724,12 +724,12 @@ const styles = StyleSheet.create({
   image: {
     //position: 'relative',
     width: "100%",
-    height: 300
+    height: 300,
+    marginBottom: 0,
   },
 
   // @CT
   recipeTitleContainer: {
-    marginTop: hPercentage("-1%"),
     paddingTop: hPercentage("2%"),
     backgroundColor: "rgba(255,255,255,1)"
   },
@@ -737,7 +737,6 @@ const styles = StyleSheet.create({
   //@CT
   recipeTitle: {
     width: wPercentage("65%"),
-    maxHeight: hPercentage("5%"),
     marginLeft: wPercentage("7%"),
     marginRight: wPercentage("8%"),
     fontSize: 20,
@@ -750,7 +749,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     marginTop: hPercentage("2%"),
-    marginBottom: hPercentage("2%"),
+    marginBottom: hPercentage("3%"),
     marginLeft: wPercentage("3%")
   },
 
@@ -772,7 +771,8 @@ const styles = StyleSheet.create({
     ------------------------------------------------------------------------*/
 
   macrosContainer: {
-    paddingTop: hPercentage("2%"),
+    paddingTop: hPercentage("1%"),
+    paddingBottom: hPercentage('-5%'),
     marginBottom: hPercentage("2%"),
     flex: 1,
     flexDirection: "row",
