@@ -18,7 +18,6 @@ import { Table, Row, Rows } from "react-native-table-component";
 import { Styles } from "./../../styles/GlobalStyles";
 import { modifyFoodStock, logPurchaseDate } from "../../utils/FoodListUtils";
 import ApiUtils from "../../api/apiUtils";
-import LoadingScreen from "./../LoadingScreen";
 
 import {
   widthPercentageToDP as wPercentage,
@@ -399,10 +398,6 @@ const styles = StyleSheet.create({
   /*------------------------------------------------------------------------
 		  General Styles
 	------------------------------------------------------------------------*/
-  sectionContainer: {
-    marginHorizontal: wPercentage("3%"),
-    marginVertical: hPercentage("3%")
-  },
 
   inputLabel: {
     fontSize: 25,
@@ -466,12 +461,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,1)",
     borderRadius: 4
     // marginTop: -5,
-  },
-
-  searchInput: {
-    width: wPercentage("100%"),
-    fontSize: 15,
-    paddingLeft: 10
   },
 
   itemTextContainer: {

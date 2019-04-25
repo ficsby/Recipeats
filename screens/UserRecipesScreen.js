@@ -215,7 +215,7 @@ export default class UserRecipesScreen extends React.Component {
                 initialPage={0}
                 >
 
-                <View key={'1'} tabLabel={'Custom Recipes'} style={styles.tabContentSyle}>
+                <View key={'1'} tabLabel={'Custom Recipes'} style={styles.tabContentStyle}>
                     <ScrollView>
                         <View style={styles.customRecipesContainer}>
                             {this.renderCustomRecipes()}
@@ -229,7 +229,7 @@ export default class UserRecipesScreen extends React.Component {
                 </TouchableOpacity>
 
                 </View>
-                <View key={'2'} tabLabel={'Bookmarks'} style={styles.tabContentSyle}>   
+                <View key={'2'} tabLabel={'Bookmarks'} style={styles.tabContentStyle}>   
                     <ScrollView>
                         <View style={styles.bookmarksContainer}>
                             {this.renderBookmarks()}
@@ -248,11 +248,6 @@ const styles = StyleSheet.create({
     /*------------------------------------------------------------------------
         General Styles
     ------------------------------------------------------------------------*/
-    row: {
-        flex: 1,
-        flexDirection: 'row',
-        width: '100%',
-    },
 
     behindIcon: {
         flex: 0,
@@ -285,82 +280,13 @@ const styles = StyleSheet.create({
         width: '100%',
     },
 
-    topContainer: {
-        width: '100%',
-        height: 80,
-        paddingTop: 30,
-        paddingBottom: 10,
-        backgroundColor: 'rgba(244, 238, 238, 0.9)',
-        borderBottomColor: 'rgba(225, 218, 218, 0.7)',
-        borderBottomWidth: 2.1,
-      },
-
-      
-     /*------------------------------------------------------------------------
-        Autocomplete Section
-    ------------------------------------------------------------------------*/
-    searchContainer: {
-        alignSelf: 'center',
-        width: '74%',
-        marginTop: 10,
-        flex: 1,
-        top: 17,
-        zIndex: 1,
-        position: 'absolute',
-    },
-
-    searchInputContainer: {
-        alignSelf: 'center',
-        width: '94%',
-        paddingLeft: 10,
-        backgroundColor: 'rgba(255,255,255,1)',
-        // marginTop: -5,
-    },
-
-    searchInput: {
-        width: '100%',
-        fontSize: 15,
-        paddingLeft: 10,
-    },
-
-    searchResultsContainer: {
-        width: '100%',
-        marginLeft: 10,
-        marginRight: 10,
-        marginBottom: 5,
-    },
-
-    searchResult: {
-        width: '100%',
-    },
-
-    /*------------------------------------------------------------------------
-        Sidebar Navigation Section
-    ------------------------------------------------------------------------*/
-
-    /*
-    logoText: {
-        marginTop: -60,
-        marginBottom: 15,
-        fontFamily: 'dancing-script',
-        fontSize: 45,
-        color: 'rgba(181, 83, 102, 1)', // Medium Pink
-    },
-
-    logo: {
-        width: 90,
-        height: 90,
-        marginBottom: 50,
-    },
-    */
-
     /*------------------------------------------------------------------------
         Tabs Styles
     ------------------------------------------------------------------------*/
     tabStyle: {
     },
 
-    tabContentSyle: {
+    tabContentStyle: {
         flex: 1,
         backgroundColor: 'rgb(247, 247, 247)',
     },
@@ -408,72 +334,5 @@ const styles = StyleSheet.create({
     },
     set bookmarksContainer(value) {
         this._bookmarksContainer = value;
-    },
-
-    bookmarksHeader: {
-        width: '100%',
-        fontSize: 25,
-        fontWeight: '500',
-        marginBottom: 15,
-        marginLeft: 10,
-        marginRight: 40,
-
-    },
-
-    bookmarks: {
-        fontSize: 15,
-    },
-
-   
-    // header: {
-    //     flexDirection: 'row',
-    //     backgroundColor: '#FFF',
-    //     padding: 5,
-    //     fontSize: 25,
-    //     borderBottomColor: '#E1E1E1',
-    //     borderBottomWidth: 1
-    // },
-
-    // headerButton: {
-    //     flex: 1,
-    // },
-
-    // headerText: {
-    //     flex: 1,
-    // },
-
-    // headerTextLabel: {
-    //     width: '100%',
-    //     fontSize: 20,
-    //     textAlign: 'center'
-    // },
-
-    newsContainer: {
-        backgroundColor: 'rgba(226, 226, 226, 0.5)',
-        alignContent: 'center',
-        width: '100%',
-    },
-
-    whitespace: {
-        flex: 1
-    },
-    
-    backButton: {
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    // back_button_label: {
-    //     color: '#397CA9',
-    //     fontSize: 20,
-    // },
-
-    /*------------------------------------------------------------------------
-        Bottom Menu Section
-    ------------------------------------------------------------------------*/
-    menuBar: {
-        width: '20%',
-        height: 100, 
-        backgroundColor: 'rgba(225, 218, 218, 0.7)'},
-    },
-
-);
+    },   
+});

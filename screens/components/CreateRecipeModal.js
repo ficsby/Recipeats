@@ -458,95 +458,9 @@ const styles = StyleSheet.create({
 		color: "rgba(175,76,99,1)"
 	},
 
-	inputData: {
-		fontSize: 13,
-		borderRadius: 4,
-		borderWidth: 0.5,
-		height: hPercentage("5%")
-	},
-
 	dataRow: {
 		flex: 1,
 		flexDirection: 'row',
-	},
-
-	itemText: {
-		width: "100%"
-	},
-
-	/*------------------------------------------------------------------------
-			Search Bar styles
-	------------------------------------------------------------------------*/
-
-	searchContainer: {
-		alignSelf: "center",
-		width: wPercentage("95%"),
-		marginTop: 3
-	},
-
-	searchInputContainer: {
-		alignSelf: "center",
-		width: "94%",
-		paddingLeft: 10,
-		backgroundColor: "rgba(255,255,255,1)",
-		borderWidth: 0,
-		borderBottomWidth: 2
-		// borderRadius: 4
-		// marginTop: -5,
-	},
-
-	searchInput: {
-		width: wPercentage("100%"),
-		fontSize: 15,
-		paddingLeft: 10
-	},
-
-	itemTextContainer: {
-		width: "100%",
-		marginLeft: 10
-	},
-
-	/*------------------------------------------------------------------------
-			Amount/Metric picker Styles
-	  ------------------------------------------------------------------------*/
-	choiceContainer: {
-		backgroundColor: "rgba(244, 238, 238, 0.7)",
-		marginLeft: wPercentage("4%")
-	},
-	metricsRow: {
-		flex: 1,
-		flexDirection: "row",
-		width: wPercentage("100%")
-	},
-
-	metricPicker: {
-		height: hPercentage("5%"),
-		width: wPercentage("35%")
-	},
-
-	input_container: {
-		textAlign: "left",
-		fontSize: 16,
-		color: "rgba(0,0,0,0.54)",
-		width: wPercentage("25%"),
-		...Platform.select({
-			ios: {
-				backgroundColor: "white",
-				borderRadius: 5,
-				paddingTop: 5,
-				borderWidth: 1,
-				borderColor: "#B0B0B0",
-				paddingBottom: 5,
-				paddingLeft: 10,
-				marginBottom: 15,
-				marginTop: 10
-			},
-			android: {
-				marginTop: 8,
-				borderBottomWidth: 2,
-				borderColor: "#009688"
-			}
-		})
 	},
 
 	/*------------------------------------------------------------------------
@@ -567,14 +481,6 @@ const styles = StyleSheet.create({
 		fontWeight: "600",
 		width: '100%',
 		color: "rgba(249, 248, 248, 1)"
-	},
-
-	cancelButton: {
-		height: hPercentage("5%"),
-		// backgroundColor: "rgba(175,76,99,1)",
-		// color: "rgba(249, 248, 248, 1)",
-		justifyContent: "center",
-		alignItems: "center"
 	},
 
 	cancelText: {

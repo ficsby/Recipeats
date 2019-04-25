@@ -369,23 +369,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2.1,
       },
 
-    /*------------------------------------------------------------------------
-        Newsfeed Section
-    ------------------------------------------------------------------------*/
-    newsfeedContainer: {
-        height: '81.2%',
-        backgroundColor: 'rgba(215, 215, 215, 0.2)',
-    },
-
-
-    /*------------------------------------------------------------------------
-        Bottom Menu Section
-    ------------------------------------------------------------------------*/
-    menuBar: {
-        width: '20%',
-        height: 100, 
-        backgroundColor: 'rgba(225, 218, 218, 0.7)'},
-
      /*------------------------------------------------------------------------
         Autocomplete Section
     ------------------------------------------------------------------------*/
@@ -408,12 +391,6 @@ const styles = StyleSheet.create({
         // marginTop: -5,
     },
 
-    searchInput: {
-        width: '100%',
-        fontSize: 15,
-        paddingLeft: 10,
-    },
-
     itemTextContainer: {
         width: '100%',
         marginLeft: 10,
@@ -425,24 +402,5 @@ const styles = StyleSheet.create({
 
     intoleranceBox: {
         width: wPercentage('30%'),
-    },
-
-    droidSafeArea: {
-        // flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
-    },
-
-    checkBoxModalContainer: {
-        backgroundColor: 'white',
-        width: wPercentage('90%'),
-        height: hPercentage('50%'),
-    },
-
-    checkBoxModal:{
-        position: 'absolute',
-        top: '25%',
-        width: wPercentage('90%'),
-        height: hPercentage('40%'),
     }
 });

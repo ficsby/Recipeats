@@ -466,7 +466,7 @@ class AddFoodItemModal extends React.Component {
                     <Icon name='lightbulb' size={25} color='rgba(255,255,255,1)'
                            />
                     {/* style={{marginLeft:wPercentage('5%'), width:wPercentage('30%')}} */}
-                    <Text style={styles.calcualteNutrientsText}>Calculate Nutritional Info</Text>
+                    <Text style={styles.calculateNutrientsText}>Calculate Nutritional Info</Text>
                   </TouchableOpacity>
                 </View>
                 {/* Nutritional information Section 
@@ -713,12 +713,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2
   },
 
-  searchInput: {
-    width: wPercentage("100%"),
-    fontSize: 15,
-    paddingLeft: 10
-  },
-
   itemTextContainer: {
     width: "100%",
     marginLeft: 10
@@ -835,7 +829,7 @@ calculateNutrientsButton: {
   // paddingBottom: hPercentage('1%'),
 },
 
-calcualteNutrientsText: {
+calculateNutrientsText: {
   fontSize: 16,
     // color: 'rgba(255,255,255,1)',
     textAlign: "center",

@@ -510,18 +510,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
     },
-
-    divider: {
-        backgroundColor: 'blue' 
-    },
-
-    collapsibleBar: {
-        backgroundColor: 'rgba(255,255,255,1)',
-        borderTopColor: 'rgba(0,0,0,0.3)',
-        borderBottomColor: 'rgba(0,0,0,0.3)',
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
-	},
 	
 	whitespaceBuffer:{
 		marginBottom: hPercentage('20%')
@@ -532,20 +520,10 @@ const styles = StyleSheet.create({
         paddingBottom: hPercentage('10%'),
     },
 
-    recipeRow: {
-        flex: 1,
-        flexDirection: 'row',
-        width: '100%',
-        textAlign: 'center',
-        justifyContent: 'center', // Used to set Text Component Vertically Center
-        alignItems: 'center', // Used to set Text Component Horizontally Center
-    },
-
     contents: {
         marginTop: hPercentage('2%'),
         marginBottom: hPercentage('2%'),
     },
-
         
     editButton: {
         paddingTop: 12,
@@ -570,19 +548,6 @@ const styles = StyleSheet.create({
         color: 'rgba(255,255,255,1)',
         fontSize: 16,
         fontWeight: '600',
-    },
-
-/*------------------------------------------------------------------------
-    Top Section
-------------------------------------------------------------------------*/
-    topContainer: {
-        width: '100%',
-        height: 80,
-        paddingTop: 30,
-        paddingBottom: 10,
-        backgroundColor: 'rgba(244, 238, 238, 0.5)',
-        borderBottomColor: 'rgba(225, 218, 218, 0.7)',
-        borderBottomWidth: 2.1,
     },
 
 /*------------------------------------------------------------------------
@@ -643,13 +608,11 @@ const styles = StyleSheet.create({
         marginLeft: wPercentage('2%'),
     },
 
-
     stats: {
         fontSize: 18,
         color: 'rgba(0,0,0, 0.8)',
         marginLeft: wPercentage('3%'),
     },
-    
     
     statsIcon: {
         marginTop: hPercentage('1%'),
@@ -657,8 +620,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'rgba(0,0,0, 0.5)',
     },
-
-        
+ 
     /*-----------------------
         Description
     -------------------------*/
@@ -708,7 +670,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 15,
     },
-
     
     /*-----------------------
         Recipe Sections
@@ -781,17 +742,6 @@ const styles = StyleSheet.create({
        Instructions
     -------------------------*/
 
-    instructionStepContainer: {
-        marginRight: wPercentage('5%'),
-        marginLeft: wPercentage('-10%'),
-        justifyContent: 'flex-start',
-    },
-
-    instructionStep: {
-        width: '100%',
-        fontSize: 16,
-    },
-
     numberContainer: {
         marginLeft: hPercentage('2%'),
         marginRight: wPercentage('3%'),
@@ -809,29 +759,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: '500',
         textAlign: 'center',
-    },
-
-    /*------------------------------------------------------------------------
-        Bottom Menu Section
-    ------------------------------------------------------------------------*/
-    menubarRow: {
-        flex: 1,
-        flexDirection: 'row',
-        width: '100%',
-        height: 50,
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 90,
-    },
-
-    menuBar: {
-        width: '20%',
-        height: 100, 
-        backgroundColor: 'rgba(246, 238, 238, 1)',
-        borderTopColor: 'rgba(225, 218, 218, 0.7)',
-        borderTopWidth: 2.1,
-    },
-    
+    }, 
 });
 

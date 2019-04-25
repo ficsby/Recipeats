@@ -116,23 +116,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2.1,
       },
 
-    /*------------------------------------------------------------------------
-        Newsfeed Section
-    ------------------------------------------------------------------------*/
-    newsfeedContainer: {
-        height: '81.2%',
-        backgroundColor: 'rgba(215, 215, 215, 0.2)',
-    },
-
-
-    /*------------------------------------------------------------------------
-        Bottom Menu Section
-    ------------------------------------------------------------------------*/
-    menuBar: {
-        width: '20%',
-        height: 100, 
-        backgroundColor: 'rgba(225, 218, 218, 0.7)'},
-
      /*------------------------------------------------------------------------
         Autocomplete Section
     ------------------------------------------------------------------------*/
@@ -152,21 +135,5 @@ const styles = StyleSheet.create({
         width: '94%',
         paddingLeft: 10,
         backgroundColor: 'rgba(255,255,255,1)',
-        // marginTop: -5,
-    },
-
-    searchInput: {
-        width: '100%',
-        fontSize: 15,
-        paddingLeft: 10,
-    },
-
-    itemTextContainer: {
-        width: '100%',
-        marginLeft: 10,
-    },
-
-    itemText: {
-        width: '100%',
-    },
+    }
 });

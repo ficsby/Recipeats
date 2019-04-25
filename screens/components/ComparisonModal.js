@@ -208,10 +208,6 @@ const styles = StyleSheet.create({
   /*------------------------------------------------------------------------
 		  General Styles
 	  ------------------------------------------------------------------------*/
-  sectionContainer: {
-    marginHorizontal: wPercentage("3%"),
-    marginVertical: hPercentage("3%")
-  },
 
   titleRow: {
     flex: 1,
@@ -235,16 +231,6 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
 
-  saveButton: {
-    marginVertical: hPercentage("3%")
-  },
-
-  saveText: {
-    fontSize: 16,
-    textAlign: "center",
-    fontWeight: "600"
-  },
-
   closeButton: {
     marginTop: hPercentage('5%'),
     height: hPercentage("5%"),
@@ -266,52 +252,11 @@ const styles = StyleSheet.create({
     color: "rgba(175,76,99,1)"
   },
 
-  inputData: {
-    fontSize: 13,
-    borderRadius: 4,
-    borderWidth: 0.5,
-    height: hPercentage("5%")
-  },
-
   /*------------------------------------------------------------------------
 		  Search Bar
 	  ------------------------------------------------------------------------*/
-  searchBar: {
-    flex: 1,
-    paddingBottom: 20
-  },
 
   dataRow: {
     // marginBottom: hPercentage("5%")
   },
-
-  searchContainer: {
-    alignSelf: "center",
-    width: wPercentage("95%"),
-    marginTop: 3
-  },
-
-  searchInputContainer: {
-    alignSelf: "center",
-    width: "94%",
-    paddingLeft: 10,
-    backgroundColor: "rgba(255,255,255,1)",
-    borderRadius: 4
-    // marginTop: -5,
-  },
-
-  searchInput: {
-    width: "100%",
-    fontSize: 15,
-    paddingLeft: 10
-  },
-
-  itemTextContainer: {
-    width: "100%",
-    marginLeft: 10
-  },
-
-  itemText: {
-    width: "100%"
-  }
 });

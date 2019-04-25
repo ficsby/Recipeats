@@ -1,31 +1,16 @@
 import React from "react";
 import {
-	Modal,
-	StyleSheet,
-	Text,
-	TouchableHighlight,
 	TouchableOpacity,
 	View,
-	Image
 } from "react-native";
-import {
-	widthPercentageToDP as wPercentage,
-	heightPercentageToDP as hPercentage
-} from "react-native-responsive-screen";
 import { ListItem, Divider } from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 
 
 import Button from "./Button";
-import {
-	modifyFoodStock,
-	logPurchaseDate,
-	getFoodList,
-	removeFromFoodStock
-} from "../../utils/FoodListUtils";
+import { removeFromFoodStock } from "../../utils/FoodListUtils";
 import * as firebase from "firebase";
 import { Alert } from "react-native";
-import FoodItemForm from './FoodItemForm';
 import AddFoodItemModal from "./AddFoodItemModal";
 
 export default class FoodItem extends React.Component {
@@ -166,18 +151,4 @@ export default class FoodItem extends React.Component {
 			</View>
 		);
 	}
-}
-
-const styles = StyleSheet.create({
-	foodItemContainer: {
-		marginLeft: wPercentage('10%'),
-		marginRight: wPercentage('10%'),
-		marginTop: wPercentage('5%'),
-		marginBottom: wPercentage('5%'),
-		backgroundColor: "rgba(244, 238, 238, 0.9)",
-	},
-
-	foodButton: {
-		marginLeft: wPercentage("10%")
-	}
-});
+};

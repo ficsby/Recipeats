@@ -416,8 +416,6 @@ class RecipeEditingScreen extends React.Component {
                             </TouchableOpacity>
                         </View>
 
-                        {/* contentContainerStyle={styles.numberContainer} rightContentContainerStyle={styles.instructionStepContainer} />  */}
-
                         <View style ={styles.sectionContainer}>
                             <View style={styles.row}>
                                 <Text style={styles.sectionTitle}>Instructions</Text>
@@ -461,46 +459,9 @@ const styles = StyleSheet.create({
         width: '100%',
     },
 
-    divider: {
-        backgroundColor: 'blue' 
-    },
-
-    collapsibleBar: {
-        backgroundColor: 'rgba(255,255,255,1)',
-        borderTopColor: 'rgba(0,0,0,0.3)',
-        borderBottomColor: 'rgba(0,0,0,0.3)',
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
-    },
-
-    collapsibleTitle: {
-        marginLeft: 15,
-        color: 'rgba(0,0,0,0.9)',
-        fontSize: 18,
-    },
-
-    recipeRow: {
-        flex: 1,
-        flexDirection: 'row',
-        width: '100%',
-        textAlign: 'center',
-        justifyContent: 'center', // Used to set Text Component Vertically Center
-        alignItems: 'center', // Used to set Text Component Horizontally Center
-    },
-
     contents: {
         marginTop: 5,
         marginBottom: 15,
-    },
-
-        
-    editButton: {
-        paddingTop: 12,
-        paddingLeft: 15,
-        paddingRight: 20,
-        textDecorationLine: 'underline',
-        fontSize: 15
-        // color: 'black',
     },
     
     saveButton: {
@@ -540,60 +501,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '600',
     },
-
-/*------------------------------------------------------------------------
-    Top Section
-------------------------------------------------------------------------*/
-    topContainer: {
-        width: '100%',
-        height: 80,
-        paddingTop: 30,
-        paddingBottom: 10,
-        backgroundColor: 'rgba(244, 238, 238, 0.5)',
-        borderBottomColor: 'rgba(225, 218, 218, 0.7)',
-        borderBottomWidth: 2.1,
-    },
-
-  
-/*------------------------------------------------------------------------
-    Autocomplete Section
-------------------------------------------------------------------------*/
-    
-    searchContainer: {
-        alignSelf: 'center',
-        width: '74%',
-        marginTop: 10,
-        flex: 1,
-        top: 17,
-        zIndex: 1,
-        position: 'absolute',
-    },
-
-    searchInputContainer: {
-        alignSelf: 'center',
-        width: '94%',
-        paddingLeft: 10,
-        backgroundColor: 'rgba(255,255,255,1)',
-        // marginTop: -5,
-    },
-
-    searchInput: {
-        width: '100%',
-        fontSize: 15,
-        paddingLeft: 10,
-    },
-
-    searchResultsContainer: {
-        flex: 1,
-        width: '100%',
-        marginLeft: 10,
-        marginRight: 10,
-        marginBottom: 5,
-    },
-    searchResult: {
-        width: '100%',
-    },
-
 
 /*------------------------------------------------------------------------
     Recipe Info Section
@@ -790,17 +697,6 @@ const styles = StyleSheet.create({
     /*------------------------------------------------------------------------
         Instructions Styles
     ------------------------------------------------------------------------*/
-
-    instructionStepContainer: {
-        marginRight: 35,
-        marginLeft: '-100%', 
-        justifyContent: 'flex-start',
-    },
-
-    instructionStep: {
-        width: '100%',
-        fontSize: 16,
-    },
 
     numberContainer: {
         marginLeft: 10,

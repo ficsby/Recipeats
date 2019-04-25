@@ -90,12 +90,6 @@ const styles = StyleSheet.create({
         // fontFamily: 'georgia'
     },
 
-    articleImageContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-
     articleImage: {
         width: 400,
         height: 200,

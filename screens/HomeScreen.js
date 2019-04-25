@@ -106,7 +106,7 @@ export default class HomeScreen extends React.Component {
                 initialPage={0}
                 >
 
-                <View key={'1'} tabLabel={'Popular'} style={styles.tabContentSyle}>
+                <View key={'1'} tabLabel={'Popular'} style={styles.tabContentStyle}>
                     <ScrollView>
                         <View style={styles.foodTriviaContainer}>
                             <View style={styles.row}>
@@ -118,7 +118,7 @@ export default class HomeScreen extends React.Component {
                         {this.renderArticles()}
                     </ScrollView>
                 </View>
-                <View key={'2'} tabLabel={'Videos'} style={styles.tabContentSyle}>   
+                <View key={'2'} tabLabel={'Videos'} style={styles.tabContentStyle}>   
                     <ScrollView>{this.renderVideos()}</ScrollView>
                 </View>
                 </ScrollableTabView>            
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     tabStyle: {
     },
 
-    tabContentSyle: {
+    tabContentStyle: {
         flex: 1,
         backgroundColor: 'rgb(247, 247, 247)',
     },

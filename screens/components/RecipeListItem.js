@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#E4E4E4',
     },
+    
     ItemDescription: {
         flex: 2,
         flexDirection: 'row',
@@ -167,16 +168,15 @@ const styles = StyleSheet.create({
         // paddingBottom: hPercentage('5%'),
         marginLeft: wPercentage('7%'),
     },
+
     number: {
         flex: 0.5,
     },
+
     detailsContainer: {
         flex: 3
     },
-    pretext: {
-        color: '#3F3F3F',
-        fontSize: 20
-    },
+    
     title: {
         width: wPercentage('50%'),
         fontSize: 18,
