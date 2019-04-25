@@ -130,6 +130,9 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
                             <Image source={{uri:this.state.item.image}} style={styles.photo}/> : <Image source={require('./../../assets/images/default_image_0.png')} style={styles.photo}/>
                         }
                     </View>
+                    <View style={{marginRight: wPercentage('2%')}}>
+                        <Icon name='left-open' size={17} color={'grey'}/>
+                    </View>
                 </View>
             </Button>
         );
@@ -190,8 +193,8 @@ const styles = StyleSheet.create({
     title: {
         width: wPercentage('50%'),
         fontSize: 18,
-        fontWeight: 'bold',
-        color: '#000',
+        fontWeight: '400',
+        color: 'rgb(42, 44, 48)',
         // fontFamily: 'georgia'
     },
     photoContainer: {

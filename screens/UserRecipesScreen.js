@@ -8,7 +8,11 @@ import SearchHeaderNav from './../navigation/SearchHeaderNav';
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view-forked'
 import LoadingScreen from './LoadingScreen';
-import RecipeListItem from './components/RecipeListItem'
+import { ListItem } from "react-native-elements";
+import TouchableScale from "react-native-touchable-scale";
+import RecipeListItem from './components/RecipeListItem';
+import { Styles } from "../styles/GlobalStyles";
+
 
 import * as firebase from 'firebase';
 
@@ -142,13 +146,13 @@ export default class UserRecipesScreen extends React.Component {
      *  Each RecipeListItem displays the title, image, serving size, cook time
      */
     renderCustomRecipes() {
-		if(this.state.customRecipes)
+		if(this.state.customRecipes.length > 0)
 		{
 			return this.state.customRecipes.map((recipe, index) => {
 				return <RecipeListItem  parent={this} item={recipe} rowId={index} sectionId={1} bookmarked={false}/>  //sectionId 1 refers to custom recipes
 			});
 		}
-        return <Text>No custom recipes to show</Text>
+        return <Text style={styles.emptyList}>No custom recipes to show.</Text>
     };
 
     /**
@@ -156,9 +160,14 @@ export default class UserRecipesScreen extends React.Component {
      *  Each RecipeListItem displays the title, image, serving size, cook time
      */
     renderBookmarks() {
-        return this.state.bookmarkedRecipes.map((recipe, index) => {
-            return <RecipeListItem parent={this} item={recipe} rowId={index} sectionId={2} bookmarked={true} />  //sectionId 2 refers to bookmarked recipes
-        });
+        if(this.state.bookmarkedRecipes.length > 0)
+		{
+            return this.state.bookmarkedRecipes.map((recipe, index) => {
+                return <RecipeListItem parent={this} item={recipe} rowId={index} sectionId={2} bookmarked={true} />  //sectionId 2 refers to bookmarked recipes
+            });
+        }
+        return <Text style={{ marginTop: hPercentage('17%'), textAlign: 'center',}}>No bookmarks to show.</Text>
+
     };
 
     showCreateRecipeModal() {
@@ -208,6 +217,8 @@ export default class UserRecipesScreen extends React.Component {
 
                 {this.showCreateRecipeModal()}
 
+                <Text style={Styles.sectionTitle}> Your Recipes </Text>
+
                 <ScrollableTabView  renderTabBar={() => ( <ScrollableTabBar  style={styles.scrollStyle} tabStyle={styles.tabStyle} /> )}
                 tabBarTextStyle={styles.tabBarTextStyle}
                 tabBarInactiveTextColor={'black'}
@@ -217,6 +228,28 @@ export default class UserRecipesScreen extends React.Component {
                 >
 
                 <View key={'1'} tabLabel={'Custom Recipes'} style={styles.tabContentSyle}>
+                    <ListItem
+                            Component={TouchableScale}
+                            friction={90}
+                            tension={100}
+                            activeScale={0.95}
+                            containerStyle={{
+                            backgroundColor: 'rgba(50, 181, 175, 1)',
+                            marginTop: hPercentage('2%'),
+                            paddingTop: hPercentage('1%'),
+                            paddingBottom: hPercentage('1%'),
+                            paddingLeft: wPercentage('8%'),
+                            paddingRight: wPercentage('8%'),
+                            borderTopColor: 'rgba(0,0,0,0.1)',
+                            borderBottomColor: 'rgba(0,0,0,0.1)',
+                            borderTopWidth: 1,
+                            borderBottomWidth: 1
+                            }}
+                            title="Create New Recipe"
+                            rightIcon={<Icon name='plus' size={18} color='rgba(255,255,255,1)' />}
+                            titleStyle={{ color: 'rgba(255,255,255,1)', fontWeight: '500', fontSize: 17, paddingRight: wPercentage('2%'), textAlign: 'center' }}
+                            onPress={() => this.toggleRecipeModalVisibility()}
+                    />
                     <ScrollView>
                         <View style={styles.customRecipesContainer}>
                             {this.renderCustomRecipes()}
@@ -224,10 +257,6 @@ export default class UserRecipesScreen extends React.Component {
                     </ScrollView>
                     
                 <View style={styles.behindIcon}></View>
-
-                <TouchableOpacity style={styles.createRecipeButton} onPress={() => this.toggleRecipeModalVisibility()}>
-                    <Icon name='plus-circle' size={50} color='rgb(196, 70, 70)' />
-                </TouchableOpacity>
 
                 </View>
                 <View key={'2'} tabLabel={'Bookmarks'} style={styles.tabContentSyle}>   
@@ -468,6 +497,11 @@ const styles = StyleSheet.create({
     //     color: '#397CA9',
     //     fontSize: 20,
     // },
+
+    emptyList: {
+        marginTop: hPercentage('10%'),
+        textAlign: 'center',
+    },
 
     /*------------------------------------------------------------------------
         Bottom Menu Section
