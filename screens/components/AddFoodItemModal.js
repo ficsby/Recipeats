@@ -81,7 +81,7 @@ class AddFoodItemModal extends React.Component {
       nutritionalTags: {},
       price: '',
       unit: '',
-      datePurchased: null,
+      datePurchased: new Date(),
 
       // data for nutrition info table
       tableHead: ["Title", "Amount", "Unit", "% of Daily Needs"],
@@ -98,6 +98,11 @@ class AddFoodItemModal extends React.Component {
 
   componentWillUnmount() {
     this._ismounted = false; // after component is unmounted reste boolean
+  }
+
+  handleNaN(text) {
+    Alert.alert("Please enter a number");
+    text = text.substring(0, text.length - 1);
   }
 
   onTemporaryAddIngredient = () => {
@@ -232,7 +237,11 @@ class AddFoodItemModal extends React.Component {
           <TextInput
             style={styles.input_container}
             value={this.state.price}
-            onChangeText={itemPrice => this.setState({ price: itemPrice })}
+            onChangeText={itemPrice => 
+              isNaN(itemPrice) 
+                ? handleNaN(itemPrice)
+                : this.setState({ price: itemPrice })
+            }
           />
         </View>
       );
@@ -385,10 +394,12 @@ class AddFoodItemModal extends React.Component {
                       style={styles.amountInput}
                       value={this.state.amount}
                       onChangeText={itemAmount => {
-                        this.setState({ amount: itemAmount });
-                        this.state.parent.setState({
-							itemAmount: itemAmount
-                        });
+                        isNaN(ingrAmt)
+                          ? handleNaN(ingrAmt) 
+                          : this.setState({ amount: itemAmount });
+                            this.state.parent.setState({
+							                itemAmount: itemAmount
+                            });
                       }}
                     />
 
