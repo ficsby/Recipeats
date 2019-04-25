@@ -6,6 +6,8 @@ import MainTabNavigator from './navigation/MainTabNavigator';
 import Firebase from './config/Firebase';
 import * as firebase from 'firebase';
 
+console.disableYellowBox = true
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);

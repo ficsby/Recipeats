@@ -445,7 +445,7 @@ export default class RecipeScreen extends React.Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <SearchHeaderNav />
+        {/* <SearchHeaderNav /> */}
         {/*---------------------------------------------------------------------------------
                    Recipe Page Contents 
                 ------------------------------------------------------------------------------------*/}

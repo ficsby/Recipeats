@@ -113,7 +113,7 @@ export default class HomeScreen extends React.Component {
 
     return (
       <View style={styles.pageContainer}>
-        <SearchHeaderNav />
+        {/* <SearchHeaderNav /> */}
         <ScrollableTabView
           renderTabBar={() => (
             <ScrollableTabBar

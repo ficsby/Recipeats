@@ -194,7 +194,7 @@ export default class EditAccountScreen extends React.Component {
       return (
         <KeyboardShift>
           {() => (
-            <ScrollView style={{ flex: 1 }}>
+            <ScrollView>
               <View style={styles.titleRow}>
                 {/* Side bar navigation icon */}
                 <TouchableOpacity
@@ -211,11 +211,8 @@ export default class EditAccountScreen extends React.Component {
 
                 <Text style={styles.pageTitle}>Account Settings</Text>
                 {!this.state.editable ? (
-                  <TouchableOpacity>
-                    <Text
-                      style={styles.editButton}
-                      onPress={this.toggleEditable}
-                    >
+                  <TouchableOpacity style={styles.editButton} onPress={this.toggleEditable}>
+                    <Text>
                       Edit
                     </Text>
                   </TouchableOpacity>

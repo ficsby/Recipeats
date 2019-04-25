@@ -80,9 +80,9 @@ export default class ComparisonModal extends React.Component {
   }
 
   async compareRecipes() {
-    ingrDict = {}
-    ingrYouHave = []
-    ingrYouDontHave = []
+    ingrDict = {};
+    ingrYouHave = [];
+    ingrYouDontHave = [];
 
     // console.log('Recipes');
     // console.log(this.state.recipeIngredients);
@@ -106,11 +106,17 @@ export default class ComparisonModal extends React.Component {
 
         userAmountUnit = userStockIngrInfo.unit;
         userAmount = userStockIngrInfo.amount;
-        convertedAmount = await apiUtils.convertAmount(reqAmount, userAmountUnit, this);
+        convertedAmount = await apiUtils.convertAmount(
+          reqAmount,
+          userAmountUnit,
+          this
+        );
         amountDifference = userAmount - this.state.convertedAmount.targetAmount;
         convertedData.push([
-          ingrName, reqAmount + ' ' + abbreviateUnit(recipeUnit), userAmount + ' ' + abbreviateUnit(userAmountUnit),
-          amountDifference + ' ' + abbreviateUnit(userAmountUnit)
+          ingrName,
+          reqAmount + " " + abbreviateUnit(recipeUnit),
+          userAmount + " " + abbreviateUnit(userAmountUnit),
+          amountDifference + " " + abbreviateUnit(userAmountUnit)
         ]);
       }
     }
@@ -151,7 +157,8 @@ export default class ComparisonModal extends React.Component {
               color="rgba(100, 92, 92, 0.8)"
               onPress={() => {
                 this.state.parent.setState({
-                  comparisonModalVisible: !this.state.parent.state.comparisonModalVisible
+                  comparisonModalVisible: !this.state.parent.state
+                    .comparisonModalVisible
                 });
               }}
               style={{ marginLeft: wPercentage("5%") }}
@@ -162,10 +169,16 @@ export default class ComparisonModal extends React.Component {
 
         {/* Beginning of content section */}
         <View style={Styles.screenContainer}>
-
           <View styles={styles.dataRow}>
             <Text style={styles.inputLabel}>Results</Text>
-            <Table style={{marginBottom: hPercentage('5%'), marginTop:hPercentage('1%'), fontSize:15}} borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
+            <Table
+              style={{
+                marginBottom: hPercentage("5%"),
+                marginTop: hPercentage("1%"),
+                fontSize: 15
+              }}
+              borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}
+            >
               <Row
                 data={this.state.tableHead}
                 style={styles.head}
@@ -177,7 +190,7 @@ export default class ComparisonModal extends React.Component {
 
           <View styles={styles.dataRow}>
             <Text style={styles.inputLabel}>Missing Ingredients</Text>
-            <Text style={{marginTop:hPercentage('1%'), fontSize:15}}>
+            <Text style={{ marginTop: hPercentage("1%"), fontSize: 15 }}>
               {findMissingFoodItems(
                 this.state.recipeIngredients,
                 this.state.foodstock
@@ -192,7 +205,8 @@ export default class ComparisonModal extends React.Component {
             style={styles.closeButton}
             onPress={() => {
               this.state.parent.setState({
-                comparisonModalVisible: !this.state.parent.state.comparisonModalVisible
+                comparisonModalVisible: !this.state.parent.state
+                  .comparisonModalVisible
               });
             }}
           >
@@ -246,7 +260,7 @@ const styles = StyleSheet.create({
   },
 
   closeButton: {
-    marginTop: hPercentage('5%'),
+    marginTop: hPercentage("5%"),
     height: hPercentage("5%"),
     backgroundColor: "rgba(175,76,99,1)",
     color: "rgba(249, 248, 248, 1)",
