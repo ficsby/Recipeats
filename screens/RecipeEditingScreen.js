@@ -532,6 +532,7 @@ const styles = StyleSheet.create({
     },
     
     saveButton: {
+        marginTop: hPercentage('-1%'),
         marginBottom: hPercentage('1%'),
         marginLeft: wPercentage('4%'),
         marginRight: wPercentage('4%'),
@@ -633,16 +634,16 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         bottom: 0,
         right: 0,
-        paddingTop: 5,
-        paddingBottom: 5,
-        paddingRight: 3,
+        paddingTop: hPercentage('1%'),
+        paddingBottom: hPercentage('3%'),
+        paddingRight: wPercentage('1%'),
         width: '100%',
         backgroundColor: 'rgba(0,0,0,0.6)',
     },
 
     overlayButtons: {
-        paddingTop: 6, 
-        paddingRight: 22,
+        paddingTop: hPercentage('0.5%'), 
+        paddingRight: wPercentage('5%'),
     },
 
     recipeContainer: {
@@ -655,28 +656,35 @@ const styles = StyleSheet.create({
         height: 300,
     },
 
+    // @CT
     recipeTitleContainer: {
-        marginTop: -5,
-        paddingTop: 5,
+        marginTop: hPercentage('-4%'),
+        paddingTop: hPercentage('2%'),
         backgroundColor: 'rgba(255,255,255,1)',
     },
 
+    //@CT
     recipeTitle: {
-        width: '70%',
-        maxHeight: 80,
-        marginTop: 10,
-        marginLeft: 25,
-        marginRight: 25,
+        width: hPercentage('43%'),
+        maxHeight: hPercentage('5%'),
+        marginLeft: wPercentage('7%'),
+        marginRight: wPercentage('8%'),
         fontSize: 20,
         fontWeight: '500',
         color: 'rgba(181, 83, 102, 1)', // Medium Pink
+        paddingTop: hPercentage('0.2%'),
+        paddingBottom: hPercentage('0.2%'),
+        paddingRight: wPercentage('2%'),
+        paddingLeft: wPercentage('2%'),
+        borderColor: 'rgba(193, 201, 200, 1)',
+        borderWidth: 1,
     },
 
     statsContainer: {
         flex: 1,
         flexDirection: 'row',
         width: '100%',
-        marginTop: hPercentage('1%'),
+        marginTop: hPercentage('2%'),
         marginBottom: hPercentage('2%'), 
         marginLeft: wPercentage('3%'),
     },
@@ -686,43 +694,29 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'rgba(0,0,0, 0.8)',
         marginLeft: wPercentage('3%'),
+        paddingTop: hPercentage('0.2%'),
+        paddingBottom: hPercentage('0.2%'),
+        paddingRight: wPercentage('1.3%'),
+        paddingLeft: wPercentage('1.3%'),
+        borderColor: 'rgba(193, 201, 200, 1)',
+        borderWidth: 1,
     },
     
     statsIcon: {
-        marginTop: 3,
-        marginLeft: 15,
+        marginTop: wPercentage('1%'),
+        marginLeft: wPercentage('5%'),
         fontSize: 18,
         color: 'rgba(0,0,0, 0.5)',
     },
 
-        
-    /*-----------------------
-        Description
-    -------------------------*/
-
-    // descriptionContainer: {
-    //     paddingBottom: 5,
-    //     backgroundColor: 'rgba(255,255,255,1)',
-    //     // borderBottomWidth: 1,
-    //     // borderBottomColor: 'rgba(0,0,0,0.3)',
-    // },
-
-    // description: {
-    //     marginTop: 8,
-    //     marginBottom: 15,
-    //     marginLeft: 17,
-    //     marginRight: 17,
-    //     fontSize: 14,
-    //     color: 'rgba(0,0,0, 0.8)',
-    // },
 
     /*------------------------------------------------------------------------
         Macros Styles
     ------------------------------------------------------------------------*/
 
       macrosContainer: {
-        paddingTop: 20,
-        marginBottom: 15,
+        paddingTop: hPercentage('2%'),
+        marginBottom: hPercentage('2%'),
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-evenly',
@@ -744,6 +738,12 @@ const styles = StyleSheet.create({
     macrosData: {
         textAlign: 'center',
         fontSize: 15,
+        paddingTop: 2,
+        paddingBottom: 2,
+        paddingRight: 5,
+        paddingLeft: 5,
+        borderColor: 'rgba(193, 201, 200, 1)',
+        borderWidth: 1,
     },
 
     
@@ -752,8 +752,8 @@ const styles = StyleSheet.create({
     ------------------------------------------------------------------------*/
     
     sectionContainer: {
-        marginBottom: 15,
-        paddingTop: 10,
+        marginBottom: hPercentage('3%'),
+        paddingTop: hPercentage('1%'),
         backgroundColor: 'rgba(255,255,255,1)',
         borderBottomColor: 'rgba(0,0,0,0.15)',
         borderTopColor: 'rgba(0,0,0,0.15)',
@@ -763,9 +763,9 @@ const styles = StyleSheet.create({
 
     sectionTitle: {
         flex: 1,
-        marginTop: 5,
-        marginBottom: 5,
-        marginLeft: 30,
+        marginTop: hPercentage('2%'),
+        marginBottom: hPercentage('2%'),
+        marginLeft: wPercentage('7%'), //
         fontSize: 20,
         fontWeight: '600',
         color: 'rgba(0,0,0,1)',
@@ -781,8 +781,8 @@ const styles = StyleSheet.create({
         Ingredients Styles
     ------------------------------------------------------------------------*/
     addIcon: {
-        paddingTop: 10,
-        paddingRight: 30,
+        paddingTop: hPercentage('2%'), //10
+        paddingRight: wPercentage('8%'), //30
     },
     
     compareButton: {
@@ -802,7 +802,7 @@ const styles = StyleSheet.create({
 
     ingredientText: {
         fontSize: 14,
-        marginLeft: 20,
+        marginLeft: wPercentage('7.5%'),
         marginBottom: -15,
         color: 'rgba(105,105,105,1)',
     },
@@ -810,7 +810,7 @@ const styles = StyleSheet.create({
     amountText: {
         width: '100%',
         fontStyle: 'italic',
-        marginRight: 20,
+        marginRight: wPercentage('10%'), //20
         marginBottom: -15,
     },
 
@@ -831,15 +831,15 @@ const styles = StyleSheet.create({
     },
 
     numberContainer: {
-        marginLeft: 10,
-        marginRight: 15,
+        marginLeft: wPercentage('7%'), 
+        marginRight:  wPercentage('8%'),
     },
 
     numberBadge: {
         backgroundColor: 'rgba(68, 72, 76, 0.6)',
         borderRadius: 100,
-        width: 30,
-        height: 30,
+        width: wPercentage('5%'),
+        height: hPercentage('5%'),
     },
 
     instructionNumber: {
