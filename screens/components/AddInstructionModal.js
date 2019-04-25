@@ -67,6 +67,16 @@ class AddInstructionModal extends React.Component {
 		this._ismounted = false; // after component is unmounted reste boolean
 	}
 
+	handleNaN(text) {
+		Alert.alert("This input must be a number.");
+		text = text.substring(0, text.length - 1);
+	}
+
+	overCharLimit(text) {
+		Alert.alert("You cannot exceed 240 characters.");
+		text = text.substring(0, text.length - 1);
+	}
+
 	onTemporaryAddInstruction = () => {
 		var temp = this.state.instructionData;
 		var userInstruction = { step: this.state.instruction };
@@ -136,7 +146,14 @@ class AddInstructionModal extends React.Component {
 											multiline={true}
 											numberOfLines={5}
 											value={this.state.instruction}
-											onChangeText={input => this.setState({ instruction: input })}
+											onChangeText={input => {
+												if (input.length > 240) {
+													this.overCharLimit(text);
+												}
+												else {
+													this.setState({ instruction: input })
+												}
+											}}
 										/>
 									</View>
 
@@ -149,7 +166,9 @@ class AddInstructionModal extends React.Component {
 											<TextInput
 												style={styles.numberInput_container}
 												value={this.state.insertAtStep}
-												onChangeText={input => this.setState({ insertAtStep: input })}
+												onChangeText={input => {
+													isNaN(input) ? handleNaN(input) : this.setState({ insertAtStep: input });
+												}}
 											/>
 										</View>
 									</View>

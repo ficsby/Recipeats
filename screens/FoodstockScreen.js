@@ -141,7 +141,6 @@ export default class FoodstockScreen extends React.Component {
                       tableData={rowData.tableData}
                       foodInfoModalVisible={this.state.isFoodInfoModalVisible}
                     />
-
                   );
                 })}
             </View>

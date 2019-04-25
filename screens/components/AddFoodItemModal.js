@@ -159,7 +159,7 @@ class AddFoodItemModal extends React.Component {
 
       this.setState(this.initialState);
     } else {
-      // when the AddFoodItemModal is used to edit a FoodItem
+      // this code executes when the AddFoodItemModal is used to edit a FoodItem
       modifyFoodStock(
         firebase.auth().currentUser.uid,
         this.state.name,
