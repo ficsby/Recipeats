@@ -30,34 +30,6 @@ import {
   heightPercentageToDP as hPercentage
 } from "react-native-responsive-screen";
 
-const inventoryList = [
-  // FOR TESTING PURPOSES
-  {
-    name: "Rice",
-    quantity: "5"
-  },
-  {
-    name: "Peas",
-    quantity: "1"
-  },
-  {
-    name: "Carrots",
-    quantity: "1"
-  },
-  {
-    name: "Corn",
-    quantity: "4"
-  },
-  {
-    name: "Garlic",
-    quantity: "3"
-  },
-  {
-    name: "Vegetable Oil",
-    quantity: "2"
-  }
-];
-
 export default class FoodstockScreen extends React.Component {
   constructor(props) {
     super(props);
