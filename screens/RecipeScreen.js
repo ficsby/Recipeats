@@ -329,7 +329,7 @@ export default class RecipeScreen extends React.Component {
         <ListItem
           key={index}
           title={item.name}
-          rightTitle={item.amount + " " + item.unit}
+          rightTitle={((item.amount % 1 == 0)? (item.amount) : (parseFloat(item.amount).toFixed(1))) + " " + item.unit }
           titleStyle={styles.ingredientText}
           rightTitleStyle={styles.amountText}
         />

@@ -109,10 +109,10 @@ export default class EditAccountScreen extends React.Component {
           height: snapshot.val().height,
           activityLevel: snapshot.val().activityLevel,
           birthDate: snapshot.val().birthDate,
-          calories: snapshot.val().calories,
-          protein: snapshot.val().protein,
-          carbs: snapshot.val().carbs,
-          fats: snapshot.val().fats,
+          calories: (snapshot.val().calories)? snapshot.val().calories: "---" ,
+          protein:  (snapshot.val().protein)? snapshot.val().protein: "---" ,
+          carbs:  (snapshot.val().carbs)? snapshot.val().carbs: "---" ,
+          fats:  (snapshot.val().fats)? snapshot.val().fats: "---" ,
           budget: snapshot.val().budget,
           selectedHeightMetric: snapshot.val().selectedHeightMetric,
           selectedGender: snapshot.val().selectedGender
@@ -474,7 +474,7 @@ const styles = StyleSheet.create({
 
   inputData: {
     width: 200,
-    paddingTop: hPercentage('3%'),
+    paddingTop: hPercentage('1%'),
   },
 
   inputDataBoxed: {
@@ -490,6 +490,7 @@ const styles = StyleSheet.create({
   },
 
   macrosInputData:{
+    marginTop: hPercentage('0.5%'),
     width: wPercentage('20%'),
   },
 
@@ -502,7 +503,8 @@ const styles = StyleSheet.create({
     paddingRight: wPercentage("2%"),
     paddingLeft: wPercentage("2%"),
     borderColor: "rgba(193, 201, 200, 1)",
-    borderWidth: 1
+    borderWidth: 1,
+    textAlign: ('center')
   },
 
   macroLabel: {
@@ -539,12 +541,12 @@ const styles = StyleSheet.create({
   },
 
   saveButton: {
-    marginTop: 50,
-    marginBottom: 50,
-    marginLeft: 30,
-    marginRight: 30,
-    paddingTop: 10,
-    paddingBottom: 10,
+    marginTop: hPercentage("2%"),
+    marginBottom: hPercentage("3%"),
+    marginLeft: wPercentage("7%"),
+    marginRight: wPercentage("7%"),
+    paddingTop: hPercentage("1%"),
+    paddingBottom: hPercentage("1%"),
     backgroundColor: "rgba(204, 102, 102, 0.9)",
     alignItems: "center",
     justifyContent: "center"
