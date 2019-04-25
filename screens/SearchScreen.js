@@ -178,7 +178,7 @@ export default class SearchScreen extends React.Component {
 
                             {/* User account icon  */}
                             <TouchableOpacity onPress ={() => this.createSearchQueryInfo()} >
-                                <Icon name='right' size={25} color='rgba(175,76,99,1)'
+                                <Icon name='search' size={25} color='rgba(175,76,99,1)'
                                     style={{marginLeft: (WIDTH - 85)}} />
                             </TouchableOpacity>
 

@@ -6,9 +6,11 @@ import { ListItem, Badge, Divider} from 'react-native-elements';
 // import DialogInput from 'react-native-dialog-input';
 import FlatListItem from './components/FlatListItem';
 import AddFoodItemModal from "./components/AddFoodItemModal";
-import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
+import {
+    widthPercentageToDP as wPercentage,
+    heightPercentageToDP as hPercentage
+  } from "react-native-responsive-screen";
 
-import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 import { Font, AppLoading } from 'expo';
 import * as firebase from 'firebase';
 import NavigationService from '../navigation/NavigationService.js';
@@ -42,10 +44,10 @@ export default class RecipeScreen extends React.Component {
         super(props);
         this.state = {
             isLoading: true,
-            editable: false,
+            editable: NavigationService.getTopLevelNavigator().state.params.editable,
             query: '',
             recipes: [],
-            bookmarked: false,
+            bookmarked: NavigationService.getTopLevelNavigator().state.params.bookmarked,
             liked: false,
             comparisonModalVisible: false,
 
@@ -53,7 +55,8 @@ export default class RecipeScreen extends React.Component {
             title: NavigationService.getTopLevelNavigator().state.params.title,
             servings: NavigationService.getTopLevelNavigator().state.params.servings,
             readyInMinutes: NavigationService.getTopLevelNavigator().state.params.readyInMinutes,
-            extendedIngredients: [],
+            extendedIngredients: NavigationService.getTopLevelNavigator().state.params.extendedIngredients,
+            instructions: NavigationService.getTopLevelNavigator().state.params.instructions,
             nutrition: null,
 
             calories: NavigationService.getTopLevelNavigator().state.params.calories,
@@ -64,7 +67,7 @@ export default class RecipeScreen extends React.Component {
             sourceUrl: '',
             creditText: '',
             sourceName: '',
-            image: '',
+            image: NavigationService.getTopLevelNavigator().state.params.image,
 
             isIngredientModalVisible: false,
             isInstructionModalVisible: false,
@@ -74,27 +77,6 @@ export default class RecipeScreen extends React.Component {
 			convertedAmounts: [],
             
             deletedRowKey: null,
-
-            instructions:[   // FOR TESTING PURPOSES
-                {
-                    instruction: 'Toast the sesame seeds, about 350 degrees in the oven for about 10-15 minutes. Keep an eye on them to make sure they do not burn.'
-                },
-                {
-                    instruction: 'Mix together the following to make the dressing: olive oil, vinegar, sugar, salt, pepper, green onions, chicken flavor packet from the ramen noodle package.'
-                },
-                {
-                    instruction: 'Crush the ramen noodles until there are no large chunks (small chunks are OK).'
-                },
-                {
-                    instruction: 'Combine the shredded cabbage and ramen noodles in a large bowl.'
-                },
-                {
-                    instruction: 'Pour the dressing on the cabbage/noodle mixture and toss to coat.'
-                },
-                {
-                    instruction: 'Top with the toasted sesame seeds and almonds.'
-                },
-              ],
 
             nutritionalTags: {'vegetarian': false,
                               'vegan': false,
@@ -120,6 +102,37 @@ export default class RecipeScreen extends React.Component {
         this.toggleHeart = this.toggleHeart.bind(this);
     };
 
+    async componentDidMount() {
+        this._ismounted = true;
+        this.setState({
+            fontLoaded: true,
+            readyInMinutes: (this.state.readyInMinutes)? this.state.readyInMinutes.toString() + ' minutes' : '',
+            servings: (this.state.servings)? this.state.servings + ' servings' : ''
+        });
+
+        if(this.state.id < 0){
+            this.setState({ isLoading: false });
+        }
+        else
+        {
+            var recipeData = await apiUtils.getRecipeInfoFromId(this.state.id, this);
+            var instructionData = await apiUtils.getAnalyzedInstructions(this.state.id, this);
+            this.getFoodStock();
+            
+            // findSimilarFoodItems();
+            if(recipeData != null && instructionData != null)
+            {	
+                console.log('foodstock');
+                console.log(this.state.userFoodStock);
+                this.setState({ isLoading: false });
+            }
+        }
+    };
+
+    componentWillUnmount () {
+        this._ismounted = false; // after component is unmounted reste boolean
+     }
+
     toggleBookmark() {
         this.setState({  bookmarked: !this.state.bookmarked  });
         if(!this.state.bookmarked)
@@ -127,8 +140,8 @@ export default class RecipeScreen extends React.Component {
             firebase.database().ref('bookmarkedRecipes/' + firebase.auth().currentUser.uid + '/' + this.state.title + '_' + this.state.id).update({
                 id: this.state.id,
                 title: this.state.title,
-                servings: this.state.servings + ' servings',
-                readyInMinutes: this.state.readyInMinutes + ' minutes',
+                servings: this.state.servings,
+                readyInMinutes: this.state.readyInMinutes,
 
                 calories: 155,
                 protein: 3,
@@ -171,13 +184,6 @@ export default class RecipeScreen extends React.Component {
         }
     };
 
-    // export const removeFromFoodStock = (userId, foodItemName, foodItemID) => {
-    //     firebase
-    //       .database()
-    //       .ref("foodlist/" + userId + "/" + foodItemName + "_" + foodItemID)
-    //       .remove();
-    //   };
-      
     toggleComparisonModal() {
         this.setState({comparisonModalVisible: !this.state.comparisonModalVisible});
     }
@@ -186,6 +192,19 @@ export default class RecipeScreen extends React.Component {
     toggleHeart() {
         this.setState({  liked: !this.state.liked });
     };
+
+    toggleEditable() {
+        this.setState({
+            editable: !this.state.editable
+        });
+        this.state.editable?  Alert.alert("Not editable now") : Alert.alert("Values should be editable now.");
+    };
+
+	toggleIngrModalVisibility() {
+		this.setState({
+			ingredientModalVisible : !this.state.ingredientModalVisible
+		})
+	}
 
     getFoodStock() {
       foodList = [];
@@ -236,16 +255,21 @@ export default class RecipeScreen extends React.Component {
         this.setState({instructionModalVisible: true});
     }
 
+    onAccountIconPress = () => {
+        var navActions = StackActions.reset({
+            index: 1,
+            actions: [
+                // We need to push both the current screen and the next screen that we are transitioning to incase the user wants to go to previous screen
+                StackActions.push({ routeName: "Home" }),       
+                StackActions.push({ routeName: "EditAccount" }),
+            ]
+        });
+
+        this.props.navigation.dispatch(navActions);
+    };
+
     renderIngredientsList(){
         return (
-            // (this.state.editable)?
-            // <FlatList data={this.state.extendedIngredients}
-            // keyExtractor={(item, index) => index.toString()}
-            // renderItem={({item, index}) => 
-            //   <FlatListItem parentFlatList={this} flatListData={this.state.extendedIngredients} sectionId={1} rowId={index} 
-            //         title={item.name} rightTitle={item.amount} titleStyle={styles.ingredientText} rightTitleStyle={styles.amountText}/>
-            // }/>
-            // :
             this.state.extendedIngredients.map( (item, index) =>  
             ( 
               <View>
@@ -276,59 +300,6 @@ export default class RecipeScreen extends React.Component {
             ))
         );
     };
-
-    async componentDidMount() {
-        this._ismounted = true;
-        this.setState({fontLoaded: true});
-
-        if(this.state.id < 0){
-            this.setState({ isLoading: false });
-        }
-        else
-        {
-            var recipeData = await apiUtils.getRecipeInfoFromId(this.state.id, this);
-            var instructionData = await apiUtils.getAnalyzedInstructions(this.state.id, this);
-            this.getFoodStock();
-            
-            // findSimilarFoodItems();
-            if(recipeData != null && instructionData != null)
-            {	
-                console.log('foodstock');
-                console.log(this.state.userFoodStock);
-                this.setState({ isLoading: false });
-            }
-        }
-    };
-
-    componentWillUnmount () {
-        this._ismounted = false; // after component is unmounted reste boolean
-     }
-
-    onAccountIconPress = () => {
-        var navActions = StackActions.reset({
-            index: 1,
-            actions: [
-                // We need to push both the current screen and the next screen that we are transitioning to incase the user wants to go to previous screen
-                StackActions.push({ routeName: "Home" }),       
-                StackActions.push({ routeName: "EditAccount" }),
-            ]
-        });
-
-        this.props.navigation.dispatch(navActions);
-    };
-
-    toggleEditable() {
-        this.setState({
-            editable: !this.state.editable
-        });
-        this.state.editable?  Alert.alert("Not editable now") : Alert.alert("Values should be editable now.");
-    };
-
-	toggleIngrModalVisibility() {
-		this.setState({
-			ingredientModalVisible : !this.state.ingredientModalVisible
-		})
-	}
 
     render() {
            
@@ -405,11 +376,13 @@ export default class RecipeScreen extends React.Component {
                                 <TextInput style={styles.stats} 
                                     value ={this.state.readyInMinutes.toString()}  onChangeText={(readyInMinutes) => this.setState({readyInMinutes})}
                                     editable={this.state.editable}/>
+                                <Text style={{fontSize: 18, marginTop: wPercentage('0.35%'), marginLeft: wPercentage('1.6%'), marginRight: wPercentage('2.2%')}}>mins</Text>
 
                                 <Icon style={styles.statsIcon} name='adult' size={13} color='rgba(0,0,0, 0.5)' />
                                 <TextInput style={styles.stats} 
                                     value ={this.state.servings.toString()}  onChangeText={(servings) => this.setState({servings})}
                                     editable={this.state.editable}/>
+                                <Text style={{fontSize: 18,  marginTop:hPercentage('0.35%'), marginLeft: wPercentage('1.6%'), marginRight: wPercentage('2%')}}>servings</Text>
                             </View>
                         </View>
 
@@ -485,8 +458,9 @@ export default class RecipeScreen extends React.Component {
                                 } */}
                             </View>
                             {
-                                this.renderIngredientsList()
-                            }           
+                                (this.state.extendedIngredients.length > 0)?
+                                this.renderIngredientsList() : <Text style={styles.emptyListText}>There are no ingredients to show.</Text>
+                            }         
                             <TouchableOpacity 
                                 style={styles.compareButton} 
                                 onPress={this.toggleComparisonModal}
@@ -507,11 +481,12 @@ export default class RecipeScreen extends React.Component {
                                 } */}
                             </View>
                             {
-                               this.renderInstructionsList()
+                               (this.state.instructions && this.state.instructions.length > 0) ?
+                               this.renderInstructionsList() : <Text  style={styles.emptyListText}>There are no instructions to show.</Text>
                             }
-                            <View style={{paddingBottom: 20}} />
                         </View>
                     </View>
+                    <View style={styles.whitespaceBuffer}></View>
                     {/* {
                         this.state.editable?            
                         <TouchableOpacity style={styles.saveButton} onPress ={this.onSaveChangesPress}> 
@@ -519,9 +494,7 @@ export default class RecipeScreen extends React.Component {
                         </TouchableOpacity> : null
                     } */}
 
-                </ScrollView>               
-				{/* <View style={styles.whitespaceBuffer} /> */}
-             
+                </ScrollView>        
             </View>
         )
     }
@@ -553,6 +526,11 @@ const styles = StyleSheet.create({
 	whitespaceBuffer:{
 		marginBottom: hPercentage('20%')
 	},
+
+    whitespaceBuffer: {
+        width: 50,
+        paddingBottom: hPercentage('10%'),
+    },
 
     recipeRow: {
         flex: 1,
@@ -660,17 +638,18 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         width: '100%',
-        marginTop: hPercentage('2%'),
-        marginLeft: wPercentage('3%'),
-        paddingBottom: 15,
+        marginTop: hPercentage('1%'),
+        marginBottom: hPercentage('2%'), 
+        marginLeft: wPercentage('2%'),
     },
 
 
     stats: {
         fontSize: 18,
         color: 'rgba(0,0,0, 0.8)',
-        marginLeft: wPercentage('1%'),
+        marginLeft: wPercentage('3%'),
     },
+    
     
     statsIcon: {
         marginTop: hPercentage('1%'),
@@ -776,7 +755,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: '500',
         width: '100%',
-        color: 'rgba(255, 255, 255, 1)',
+        color: 'rgba(58, 170, 170, 1)',
         textAlign: 'center',
     },
 
@@ -792,6 +771,11 @@ const styles = StyleSheet.create({
         marginRight: wPercentage('3%'),
     },
 
+    emptyListText: {
+        marginLeft: wPercentage('7%'),
+        marginTop: hPercentage('2%'),
+        marginBottom: hPercentage('2%'),
+    },
 
     /*-----------------------
        Instructions

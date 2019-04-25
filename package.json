@@ -25,6 +25,7 @@
     "react-native-autocomplete-input": "^3.6.0",
     "react-native-autocomplete-search": "^1.0.8",
     "react-native-bar-collapsible": "^1.6.0",
+    "react-native-camera-roll-picker": "^1.2.3",
     "react-native-cli": "^2.0.1",
     "react-native-collapsible": "^1.4.0",
     "react-native-datepicker": "^1.7.2",

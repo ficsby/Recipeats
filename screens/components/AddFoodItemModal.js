@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   Platform,
   Picker,
-  ScrollView
+  ScrollView,
+  Alert
 } from "react-native";
 
 import { Divider } from "react-native-elements";
@@ -60,6 +61,31 @@ class AddFoodItemModal extends React.Component {
       tableHead: ["Title", "Amount", "Unit", "% of Daily Needs"],
       tableData: this.props.tableData,
     };
+    
+    this.initialState = {
+
+      parent: this.props.parent,
+      isLoading: true,
+      inputModal: "",
+      opening: true,
+      title: this.props.title,
+
+      id: '',
+
+      // Autocomplete search bar data
+      query: "",
+      ingredients: AutocompleteData.ingredientSuggestions,
+      name: '',
+
+      nutritionalTags: {},
+      price: '',
+      unit: '',
+      datePurchased: null,
+
+      // data for nutrition info table
+      tableHead: ["Title", "Amount", "Unit", "% of Daily Needs"],
+      tableData: [],
+    };
     this.onTemporaryAddIngredient = this.onTemporaryAddIngredient.bind(this);
     this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
     this.getIngredientInfo = this.getIngredientInfo.bind(this);
@@ -67,32 +93,6 @@ class AddFoodItemModal extends React.Component {
 
   async componentDidMount() {
     this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
-    // Returns a promise of the user's value
-    // await function retrieveData(){
-    //   var ref = firebase.database().ref('ingredients/ingredients');
-    //   return ref.once('value');
-    // }
-
-    // // // Snapshot is the depiction of the user's current data
-    // var ingredientSuggestions = await retrieveData().then( (snapshot) => {
-    //   if(this._ismounted)
-    //   {
-    //       this.setState( {
-    //         ingredients: snapshot.val()
-    //       })
-
-    //     return new Promise((resolve) =>
-    //       setTimeout(
-    //           () => { resolve('result') },
-    //           5000
-    //       )
-    //     );
-    //   }
-    // })
-
-    // if(ingredientSuggestions != null){
-    //   this.setState({isLoading: false});
-    // }
   }
 
   componentWillUnmount() {
@@ -104,7 +104,7 @@ class AddFoodItemModal extends React.Component {
     var temp = [...this.props.parent.state.tempIngredients];
     temp.push(
       {
-        id: 8234235234234,      //TEMPORARY FOR NOW
+        id: this.state.id,      //TEMPORARY FOR NOW
         name: this.state.name,
         amount: this.state.amount,
         unit: this.state.unit
@@ -119,35 +119,6 @@ class AddFoodItemModal extends React.Component {
 
     if (this.state.title == 'Add Ingredient to Recipe') {
         this.onTemporaryAddIngredient();
-      // modifyRecipeIngredients(
-      //   firebase.auth().currentUser.uid,
-      //   this.state.name,
-      //   this.state.id,
-      //   this.state.price,
-      //   this.state.amount,
-      //   this.state.unit,
-      //   this.state.datePurchased,
-      //   this.state.tableData);
-      // // create a re with the new item to replace the externalFoodList
-      // newFoodList = [];
-      // newFoodList = parent.state.externalFoodList;
-      // newFoodList.push({
-      //   name: this.state.name,
-      //   id: this.state.id,
-      //   price: this.state.price,
-      //   amount: this.state.amount,
-      //   unit: this.state.unit,
-      //   datePurchased: this.state.datePurchased,
-      //   nutritionData: this.state.tableData
-      // });
-      // newFoodList.sort((a, b) =>
-      //   a.itemName > b.itemName ? 1 : b.itemName > a.itemName ? -1 : 0
-      // );
-
-      // parent.setState({
-      //   addModalVisible: !parent.state.addModalVisible,
-      //   externalFoodList: newFoodList
-      // });
     }
     else if (this.state.title == 'Add Ingredient to Food Stock') {
       modifyFoodStock(
@@ -159,6 +130,7 @@ class AddFoodItemModal extends React.Component {
         this.state.unit,
         this.state.datePurchased,
         this.state.tableData);
+
       // create a newFoodList with the new item to replace the externalFoodList
       newFoodList = [];
       newFoodList = parent.state.externalFoodList;
@@ -175,13 +147,23 @@ class AddFoodItemModal extends React.Component {
         a.itemName > b.itemName ? 1 : b.itemName > a.itemName ? -1 : 0
       );
 
-      parent.setState({
-        addModalVisible: !parent.state.addModalVisible,
-        externalFoodList: newFoodList
-      });
+      this.setState(this.initialState);
+      parent.toggleIngrModalVisibility();
+
+      this.setState(this.initialState);
     }
     else {
+      modifyFoodStock(
+        firebase.auth().currentUser.uid,
+        this.state.name,
+        this.state.id,
+        this.state.price,
+        this.state.amount,
+        this.state.unit,
+        this.state.datePurchased,
+        this.state.tableData);
 
+        parent.toggleIngrModalVisibility();
     }
   };
 
@@ -194,9 +176,19 @@ class AddFoodItemModal extends React.Component {
   //   await ApiUtils.getAutoCompleteIngredientsByName(text, this);
   // }
 
-  async getIngredientInfo(ingrName, ingrId, amount) {
+  async getIngredientInfo() {
 
-    var data = await ApiUtils.getIngredientInfoFromId(ingrId, amount, this);
+    ingrId = this.state.id;
+    ingrAmt = this.state.amount;
+    ingrUnit = this.state.unit;
+
+    if(ingrId && ingrAmt && ingrUnit)
+    {
+      await ApiUtils.getIngredientInfoFromId(ingrId, ingrAmt, ingrUnit, this);
+    } 
+    else{
+      Alert.alert('Must put in an amount to calcualte nutritional information.');
+    }
   }
 
   /**
@@ -275,7 +267,7 @@ class AddFoodItemModal extends React.Component {
     const { query } = this.state;
     const ingredients = this.findIngredient(query);
     const comp = (a, b) => a.toLowerCase().trim() == b.toLowerCase().trim();
-    let title = this.props.title || "";
+    let title = this.state.title || "";
 
     if (!this.state.opening) {
       value = this.state.inputModal;
@@ -299,7 +291,7 @@ class AddFoodItemModal extends React.Component {
         visible={this.props.isModalVisible}
         onRequestClose={() => {
           //   this.props.closeDialog();
-          this.parent.setState({ addModalVisible: false });
+          this.state.parent.toggleIngrModalVisibility();
         }}
       >
 	  
@@ -314,28 +306,6 @@ class AddFoodItemModal extends React.Component {
               <Text style={styles.title_modal}>{title}</Text>
 
               {/* 
-					You can reuse the header to put the title and the close icon on the same row, so leave this commented for now
-				*/}
-              {/* Title header
-				--------------------------------------------------------------------------------------------------------- */}
-              {/* <View style={styles.titleRow}>
-              <TouchableOpacity onPress={this.onGoBack}>
-                <Icon
-                  name="left"
-                  size={30}
-                  color="rgba(100, 92, 92, 0.8)"
-                  onPress={() => {
-                    this.state.parent.setState({
-                      addModalVisible: !this.state.parent.state.addModalVisible
-                    });
-                  }}
-                  style={{ marginLeft: wPercentage("5%") }}
-                />
-              </TouchableOpacity>
-              <Text style={styles.addFoodItemTitle}>
-                {this.state.screenTitle}
-              </Text>
-			</View> */}
 
               {/* Beginning of content section 
 				--------------------------------------------------------------------------------------------------------- */}
@@ -367,11 +337,7 @@ class AddFoodItemModal extends React.Component {
                       <TouchableOpacity
                         style={styles.itemTextContainer}
                         onPress={() =>
-                          this.getIngredientInfo(
-                            ingredientName,
-                            ingredientId,
-                            1
-                          )
+                          this.setState({id: ingredientId, name:ingredientName})
                         }
                       >
                         <Text style={styles.itemText}>{ingredientName}</Text>
@@ -495,6 +461,14 @@ class AddFoodItemModal extends React.Component {
 				--------------------------------------------------------------------------------------------------------- */}
                 {this.showDatePicker()}
 
+                <View style={{flexDirection: 'row'}}>
+                  <TouchableOpacity style={styles.calculateNutrientsButton} onPress={this.getIngredientInfo}>
+                    <Icon name='lightbulb' size={25} color='rgba(255,255,255,1)'
+                           />
+                    {/* style={{marginLeft:wPercentage('5%'), width:wPercentage('30%')}} */}
+                    <Text style={styles.calcualteNutrientsText}>Calculate Nutritional Info</Text>
+                  </TouchableOpacity>
+                </View>
                 {/* Nutritional information Section 
 				--------------------------------------------------------------------------------------------------------- */}
                 <View styles={styles.dataRow}>
@@ -850,5 +824,22 @@ cancelChanges: {
     fontSize: 16,
     fontWeight: '600',
 },
+
+calculateNutrientsButton: {
+  marginTop: 0, 
+  flexDirection: 'row', 
+  backgroundColor: "#c8e1ff",
+  padding: wPercentage('2%'),
+  textAlign: 'center'
+  // paddingTop: hPercentage('1%'),
+  // paddingBottom: hPercentage('1%'),
+},
+
+calcualteNutrientsText: {
+  fontSize: 16,
+    // color: 'rgba(255,255,255,1)',
+    textAlign: "center",
+    marginLeft: wPercentage('5%')
+}
 });
 export default AddFoodItemModal;

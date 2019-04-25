@@ -40,21 +40,19 @@ const NewsItem = ({ news, index, type }) => {
                         />;
     }
     return (
-        // <Button key={index} noDefaultStyles={true} style = {{ flex: 1 }} >
-            <View style={styles.newsItem}>
-                <View style={styles.newsText}>
-                    <View style={styles.newsTextContainer}>
-                        { getPretext(news) }
-                        <Text style={styles.newsTitle}>{news.title}</Text>
-                        {/* <Text>{news.summary}</Text> */}
-                    </View>
+        <View style={styles.newsItem}>
+            <View style={styles.newsText}>
+                <View style={styles.newsTextContainer}>
+                    { getPretext(news) }
+                    <Text style={styles.newsTitle}>{news.title}</Text>
+                    {/* <Text>{news.summary}</Text> */}
                 </View>
-                {/* if type==1,  newContent renders food trivia  (not done yet) 
-                    if type==2,  newsContent renders food articles  (in progress) 
-                    if type==3,  newsContent renders food videos  (finished)      */}
-                {newsContent} 
             </View>
-        // </Button>
+            {/* if type==1,  newContent renders food trivia  (not done yet) 
+                if type==2,  newsContent renders food articles  (in progress) 
+                if type==3,  newsContent renders food videos  (finished)      */}
+            {newsContent} 
+        </View>
     );
 }
 

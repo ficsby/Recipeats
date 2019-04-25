@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, Image, ImageBackground, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert, Modal } from 'react-native';
+import { PermissionsAndroid , CameraRoll, TouchableHighight, Button, FlatList, StyleSheet, Image, ImageBackground, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert, Modal } from 'react-native';
 import { StackActions } from 'react-navigation';
 import Autocomplete from 'react-native-autocomplete-input';
 import { ListItem, Badge, Divider} from 'react-native-elements';
@@ -10,9 +10,13 @@ import AddFoodItemModal from "./components/AddFoodItemModal";
 
 import { Font, AppLoading } from 'expo';
 import * as firebase from 'firebase';
-// import NavigationService from '../navigation/NavigationService.js';
 import ComparisonModal from './components/ComparisonModal';
 import {getFoodList} from './../utils/FoodListUtils';
+
+import {
+    widthPercentageToDP as wPercentage,
+    heightPercentageToDP as hPercentage
+  } from "react-native-responsive-screen";
 
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
@@ -21,6 +25,7 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
 const fetch = require('node-fetch');
 
+import { ImagePicker } from 'expo';
 import LoadingScreen from './LoadingScreen';
 import DialogInput from 'react-native-dialog-input';
 
@@ -56,11 +61,17 @@ class RecipeEditingScreen extends React.Component {
             creditText:this.props.parent.state.creditText,
             sourceName: this.props.parent.state.sourceName,
             image: this.props.parent.state.image,
-            ingredientModalVisible: false,
-            instructionModalVisible: false,
+            nutrients : null,
+
             tempIngredients: this.props.parent.state.extendedIngredients,
             tempInstructions: this.props.parent.state.instructions,
-            nutritionalTags: this.props.parent.state.nutritionalTags
+            nutritionalTags: this.props.parent.state.nutritionalTags,
+            
+            photo: null,
+
+            ingredientModalVisible: false,
+            instructionModalVisible: false,
+            imageModalVisible: false
         
         };
         this.toggleComparisonModal = this.toggleComparisonModal.bind(this);
@@ -74,7 +85,21 @@ class RecipeEditingScreen extends React.Component {
         this.toggleHeart = this.toggleHeart.bind(this);
         this.toggleIngrModalVisibility = this.toggleIngrModalVisibility.bind(this);
         this.toggleInstrModalVisibility = this.toggleInstrModalVisibility.bind(this);
+        this._pickImage = this._pickImage.bind(this);
     };
+
+    async componentDidMount() {
+        this._ismounted = true;
+        await Font.loadAsync({
+          'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
+        }); 
+        this.setState({fontLoaded: true});
+        if(this.state.id > 0){ this.setState({id: -this.state.id})}
+    };
+
+    componentWillUnmount () {
+        this._ismounted = false; // after component is unmounted reste boolean
+    }
 
     toggleBookmark() {
         this.setState({  bookmarked: !this.state.bookmarked  });
@@ -88,6 +113,18 @@ class RecipeEditingScreen extends React.Component {
     toggleHeart() {
         this.setState({  liked: !this.state.liked });
     };
+
+    toggleIngrModalVisibility() {
+		this.setState({
+			ingredientModalVisible : !this.state.ingredientModalVisible
+		})
+    }
+    
+    toggleInstrModalVisibility() {
+		this.setState({
+			instructionModalVisible : !this.state.instructionModalVisible
+		})
+    }
 
     getFoodStock() {
       foodList = [];
@@ -142,27 +179,17 @@ class RecipeEditingScreen extends React.Component {
 
     renderIngredientsList(){
         return (
-            // (this.state.editable)?
             <FlatList data={this.state.tempIngredients}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({item, index}) => 
               <FlatListItem parentFlatList={this} flatListData={this.state.tempIngredients} sectionId={1} rowId={index} 
                     title={item.name} rightTitle={item.amount + " " + item.unit} titleStyle={styles.ingredientText} rightTitleStyle={styles.amountText}/>
             }/>
-        //     :
-        //     this.state.tempIngredients.map( (item, index) =>  
-        //     ( 
-        //       <View>
-        //         <ListItem key={index} title={item.name} rightTitle={item.amount} titleStyle={styles.ingredientText} rightTitleStyle={styles.amountText} />
-        //         <Divider />
-        //       </View>
-        //     )) 
         );
     };
     
     renderInstructionsList(){
         return(
-            // (this.state.editable)?
             <FlatList data={this.state.tempInstructions}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({item, index}) => 
@@ -170,34 +197,8 @@ class RecipeEditingScreen extends React.Component {
                   leftIcon={<Badge value={index+1} containerStyle={styles.numberContainer} badgeStyle={styles.numberBadge} textStyle={styles.instructionNumber} />} 
                />
             }/>
-            // :
-            // this.state.tempInstructions.map( (item, index) =>  
-            // ( 
-            //     <View>
-            //         <ListItem key={index} title={item.instruction} leftIcon={<Badge value={index+1} containerStyle={styles.numberContainer} badgeStyle={styles.numberBadge} textStyle={styles.instructionNumber} /> } /> 
-            //         <Divider />
-            //     </View>
-            // ))
         );
     };
-
-    async componentDidMount() {
-        this._ismounted = true;
-        await Font.loadAsync({
-          'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
-        }); 
-        this.setState({fontLoaded: true});
-
-        // var data = apiUtils.getRecipeInfoFromId(this.state.id, this);
-        // if(data != null)
-        // {
-        //     this.setState({ isLoading: false });
-        // }        
-    };
-
-    componentWillUnmount () {
-        this._ismounted = false; // after component is unmounted reste boolean
-     }
 
     onAccountIconPress = () => {
         var navActions = StackActions.reset({
@@ -214,6 +215,31 @@ class RecipeEditingScreen extends React.Component {
     
     onSaveChangesPress() {
         // UPDATE FIREBASE WITH THE NEW RECIPE CHANGES HERE
+        ref = 'customRecipes/' + firebase.auth().currentUser.uid + '/' + this.state.title + '_' + this.state.id;
+        
+        firebase.database().ref(ref).set({
+            extendedIngredients: (this.state.tempIngredients)? this.state.tempIngredients : [],
+            instructions: (this.state.tempInstructions)? this.state.tempInstructions : [],
+        });
+
+        firebase.database().ref(ref).update({
+            id: this.state.id,
+            title: this.state.title,
+            servings: this.state.servings,
+            readyInMinutes: this.state.readyInMinutes,
+
+            calories: 155,
+            protein: 3,
+            carbs: 8,
+            fats: 16,
+            
+            nutrients : this.state.nutrients,
+            sourceUrl: this.state.sourceUrl,
+            creditText: this.state.creditText,
+            sourceName: this.state.sourceName,
+            image: (this.state.image)? this.state.image : '',
+        })
+
         this.props.parent.setState({
             title: this.state.title,
             servings:  this.state.servings,
@@ -228,7 +254,8 @@ class RecipeEditingScreen extends React.Component {
             extendedIngredients:  this.state.tempIngredients,
             instructions: this.state.tempInstructions,
             nutritionalTags: this.state.nutritionalTags
-        })
+		})
+		
         Alert.alert("Your changes have been saved.");
         this.props.parent.toggleEditable();
     }
@@ -237,17 +264,16 @@ class RecipeEditingScreen extends React.Component {
         this.props.parent.toggleEditable();
     }
 
-	toggleIngrModalVisibility() {
-		this.setState({
-			ingredientModalVisible : !this.state.ingredientModalVisible
-		})
-    }
-    
-    toggleInstrModalVisibility() {
-		this.setState({
-			instructionModalVisible : !this.state.instructionModalVisible
-		})
-	}
+    _pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            aspect: [4, 3],
+    });
+
+        if (!result.cancelled) {
+            this.setState({ image: result.uri });
+        }
+    };
 
 
     render() {
@@ -274,22 +300,23 @@ class RecipeEditingScreen extends React.Component {
                       />
                     </Modal>
 
-                    {/* <ImageBackground source={require('./../assets/images/test_photo.jpg')} /> */}
-                    <ImageBackground source={require('./../assets/images/ramen-noodle-coleslaw.jpg')} style={styles.image}>
-                        <View style={styles.overlayButtonsContainer}> 
-                            <TouchableOpacity onPress={this.toggleHeart} >
-                                {this.renderIcon("heart") }
-                            </TouchableOpacity>
+                    <TouchableOpacity onPress={this._pickImage}>
+                        <ImageBackground source={{uri:this.state.image}} style={styles.image}>
+                            <View style={styles.overlayButtonsContainer}> 
+                                <TouchableOpacity onPress={this.toggleHeart} >
+                                    {this.renderIcon("heart") }
+                                </TouchableOpacity>
 
-                            <TouchableOpacity onPress={this.toggleBookmark} >
-                                {this.renderIcon("bookmark") }
-                            </TouchableOpacity>
+                                <TouchableOpacity onPress={this.toggleBookmark} >
+                                    {this.renderIcon("bookmark") }
+                                </TouchableOpacity>
 
-                            <TouchableOpacity onPress={this.downloadRecipe} >
-                                <Icon name='download' size={27} color='rgba(255,255,255,1)' style={styles.overlayButtons}/>   
-                            </TouchableOpacity>
-                        </View>
-                    </ImageBackground>
+                                <TouchableOpacity onPress={this.downloadRecipe} >
+                                    <Icon name='download' size={27} color='rgba(255,255,255,1)' style={styles.overlayButtons}/>   
+                                </TouchableOpacity>
+                            </View>
+                        </ImageBackground>
+                    </TouchableOpacity>
 
                     <View style={styles.contents}>
 
@@ -298,26 +325,21 @@ class RecipeEditingScreen extends React.Component {
                                 <TextInput multiline style={styles.recipeTitle} 
                                     value ={this.state.title}  onChangeText={(title) => this.setState({title})}
                                     editable={this.state.editable}/>
-
-                                {/* <Text style={styles.title}>{this.state.title}</Text> */}
-                                {/* {
-                                    !(this.state.editable)? 
-                                    <TouchableOpacity>
-                                        <Text style={styles.editButton} onPress ={this.toggleEditable}>Edit</Text>
-                                    </TouchableOpacity> : null
-                                } */}
                             </View>
 
                             <View style={styles.statsContainer}>
                                 <Icon style={styles.statsIcon} name='clock' size={13} color='rgba(0,0,0, 0.5)' />
                                 <TextInput style={styles.stats} 
-                                    value ={this.state.readyInMinutes}  onChangeText={(readyInMinutes) => this.setState({readyInMinutes})}
+                                    value ={this.state.readyInMinutes.toString()}  onChangeText={(readyInMinutes) => this.setState({readyInMinutes})}
                                     editable={this.state.editable}/>
+                                <Text style={{fontSize: 18, marginTop: wPercentage('0.35%'), marginLeft: wPercentage('1.6%'), marginRight: wPercentage('2.2%')}}>mins</Text>
+
 
                                 <Icon style={styles.statsIcon} name='adult' size={13} color='rgba(0,0,0, 0.5)' />
                                 <TextInput style={styles.stats} 
-                                    value ={this.state.servings}  onChangeText={(servings) => this.setState({servings})}
+                                    value ={this.state.servings.toString()}  onChangeText={(servings) => this.setState({servings})}
                                     editable={this.state.editable}/>
+                                <Text style={{fontSize: 18,  marginTop:hPercentage('0.35%'), marginLeft: wPercentage('1.6%'), marginRight: wPercentage('2%')}}>servings</Text>
                             </View>
                         </View>
 
@@ -347,7 +369,7 @@ class RecipeEditingScreen extends React.Component {
                                 <Text style ={styles.macrosLabel}> FATS </Text>
                             </View>
                         </View>
-
+                                
 						{/* Shows the add ingredient modal if ingredientModalVisible is true (i.e when the user clicks '+' icon to add an ingredient */}
 						
 						<AddFoodItemModal
@@ -364,12 +386,6 @@ class RecipeEditingScreen extends React.Component {
 							amount={null}
 							unit=""
 						/>
-                        {/* <AddItemModal isModalVisible={this.state.ingredientModalVisible}
-                            title={"Add Ingredient"}
-                            message1={"Name:"} message2={"Amount:"}
-                            suggestion1={"Example: mushrooms"} suggestion2={"Example: 1/2 cups"}
-                            submitInput={ (inputText) => {this.sendInput(inputText)} }
-                            closeDialog={ () => {this.showDialog(false)}}/> */}
 
                         {/* Shows the add ingredient modal if ingredientModalVisible is true (i.e when the user clicks '+' icon to add an ingredient */}
                         <AddInstructionModal 
@@ -389,8 +405,9 @@ class RecipeEditingScreen extends React.Component {
 
                             </View>
                             {
-                                this.renderIngredientsList()
-                            }           
+                                (this.state.tempIngredients && this.state.tempIngredients.length > 0)?
+                                this.renderIngredientsList() : <Text style={styles.emptyListText}>There are no ingredients to show.</Text>
+                            }
                             <TouchableOpacity 
                                 style={styles.compareButton} 
                                 onPress={this.toggleComparisonModal}
@@ -408,10 +425,10 @@ class RecipeEditingScreen extends React.Component {
                                     <TouchableOpacity   onPress ={this.onPressAddInstruction}>
                                         <Icon style={styles.addIcon} name='plus' size={18} color='rgba(0,0,0, 0.65)' />
                                     </TouchableOpacity>
-
                             </View>
                             {
-                               this.renderInstructionsList()
+                               (this.state.tempInstructions && this.state.tempInstructions.length > 0)?
+                               this.renderInstructionsList() : <Text style={styles.emptyListText}>There are no instructions to show.</Text>
                             }
                             <View style={{paddingBottom: 20}} />
                         </View>
@@ -630,16 +647,16 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         width: '100%',
-        marginTop: 10,
-        marginLeft: 10,
-        paddingBottom: 15,
+        marginTop: hPercentage('1%'),
+        marginBottom: hPercentage('2%'), 
+        marginLeft: wPercentage('3%'),
     },
 
 
     stats: {
         fontSize: 18,
         color: 'rgba(0,0,0, 0.8)',
-        marginLeft: 6,
+        marginLeft: wPercentage('3%'),
     },
     
     statsIcon: {
@@ -670,9 +687,9 @@ const styles = StyleSheet.create({
     //     color: 'rgba(0,0,0, 0.8)',
     // },
 
-    /*-----------------------
-        Macros
-    -------------------------*/
+    /*------------------------------------------------------------------------
+        Macros Styles
+    ------------------------------------------------------------------------*/
 
       macrosContainer: {
         paddingTop: 20,
@@ -701,9 +718,9 @@ const styles = StyleSheet.create({
     },
 
     
-    /*-----------------------
-        Recipe Sections
-    -------------------------*/
+    /*------------------------------------------------------------------------
+        Recipes Styles
+    ------------------------------------------------------------------------*/
     
     sectionContainer: {
         marginBottom: 15,
@@ -725,21 +742,23 @@ const styles = StyleSheet.create({
         color: 'rgba(0,0,0,1)',
     },
 
-    /*-----------------------
-       Ingredients
-    -------------------------*/
+    emptyListText: {
+        marginLeft: wPercentage('7%'),
+        marginTop: hPercentage('2%'),
+        marginBottom: hPercentage('2%'),
+    },
+
+    /*------------------------------------------------------------------------
+        Ingredients Styles
+    ------------------------------------------------------------------------*/
     addIcon: {
-        // backgroundColor: 'rgba(188, 107, 107, 1)',
-        // marginTop: 25,
         paddingTop: 10,
-        // paddingBottom: 10,
         paddingRight: 30,
     },
     
     compareButton: {
-        backgroundColor: 'rgba(188, 107, 107, 1)',
+        // backgroundColor: 'rgba(227, 234, 231, 1)',
         marginTop: 25,
-        paddingTop: 10,
         paddingBottom: 10,
         paddingLeft: 20,
         paddingRight: 20,
@@ -749,7 +768,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: '500',
         width: '100%',
-        color: 'rgba(255, 255, 255, 1)',
+        color: 'rgba(58, 170, 170, 1)',
         textAlign: 'center',
     },
 
@@ -768,9 +787,9 @@ const styles = StyleSheet.create({
     },
 
 
-    /*-----------------------
-       Instructions
-    -------------------------*/
+    /*------------------------------------------------------------------------
+        Instructions Styles
+    ------------------------------------------------------------------------*/
 
     instructionStepContainer: {
         marginRight: 35,
@@ -801,29 +820,6 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         textAlign: 'center',
     },
-
-    /*------------------------------------------------------------------------
-        Bottom Menu Section
-    ------------------------------------------------------------------------*/
-    menubarRow: {
-        flex: 1,
-        flexDirection: 'row',
-        width: '100%',
-        height: 50,
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 90,
-    },
-
-    menuBar: {
-        width: '20%',
-        height: 100, 
-        backgroundColor: 'rgba(246, 238, 238, 1)',
-        borderTopColor: 'rgba(225, 218, 218, 0.7)',
-        borderTopWidth: 2.1,
-    },
-    
 });
 
 export default RecipeEditingScreen;
