@@ -255,8 +255,6 @@ export default class UserRecipesScreen extends React.Component {
                         </View>
                     </ScrollView>
                     
-                <View style={styles.behindIcon}></View>
-
                 </View>
                 <View key={'2'} tabLabel={'Bookmarks'} style={styles.tabContentSyle}>   
                     <ScrollView>
@@ -282,18 +280,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
     },
-
-    behindIcon: {
-        flex: 0,
-        backgroundColor: 'white',
-        position: 'absolute',
-        borderRadius: 100,
-        right: 28,
-        bottom: 28,
-        height: 50,
-        width: 50,
-    },
-
     
     createRecipeButton: {
         flex: 2,
