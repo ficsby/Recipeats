@@ -90,84 +90,6 @@ export default class FoodstockScreen extends React.Component {
     const state = this.state;
 
     return (
-<<<<<<< HEAD
-      <KeyboardShift>
-        {() => (
-          <View>
-            <SearchHeaderNav/>
-            <ScrollView>
-              {/* Launches food item modal to add a food item to user's food stock */}
-              <AddFoodItemModal
-                isModalVisible={this.state.addModalVisible}
-                title={"Add Ingredient to Food Stock"}
-                showPriceInput={true}
-                showDatePicker={true}
-                datePurchased={new Date()}
-                id={null}
-                name=""
-                parent={this}
-                price={null}
-                amount={null}
-                unit=""
-              />
-
-              <View>
-                <Text style={Styles.sectionTitle}> Inventory </Text>
-                <ListItem
-                    Component={TouchableScale}
-                    friction={90}
-                    tension={100}
-                    activeScale={0.95}
-                    containerStyle={{
-                      backgroundColor: 'rgba(50, 181, 175, 1)',
-                      marginTop: hPercentage('2%'),
-                      paddingTop: hPercentage('1%'),
-                      paddingBottom: hPercentage('1%'),
-                      paddingLeft: wPercentage('8%'),
-                      paddingRight: wPercentage('8%'),
-                      borderTopColor: 'rgba(0,0,0,0.1)',
-                      borderBottomColor: 'rgba(0,0,0,0.1)',
-                      borderTopWidth: 1,
-                      borderBottomWidth: 1
-                    }}
-                    title="Add New Food Item"
-                    rightIcon={<Icon name='plus' size={18} color='rgba(255,255,255,1)' />}
-                    titleStyle={{ color: 'rgba(255,255,255,1)', fontWeight: '500', fontSize: 17, paddingRight: wPercentage('2%'), textAlign: 'center' }}
-                    onPress={this.toggleIngrModalVisibility}
-                />
-                <View style={Styles.container}>
-                  <ListItem
-                    title={state.tableHead[0]}
-                    rightTitle={state.tableHead[1]}
-                    titleStyle={{ fontWeight: '500', fontSize: 15 }}
-                    rightTitleStyle={{ fontWeight: '500', fontSize: 15 }}
-                  />
-                  {
-                        
-                        (this.state.externalFoodList.length > 0)? 
-                          state.externalFoodList && state.externalFoodList.map(rowData => {
-                          return (
-                            // Launches food item dialogue that displays the information for each food item, user can also edit values here
-                            <FoodItem
-                              key={rowData.name}
-                              name={rowData.name}
-                              id={rowData.id}
-                              price={rowData.price}
-                              datePurchased={rowData.datePurchased}
-                              amount={rowData.amount}
-                              unit={rowData.unit}
-                              parent={this}
-                              tableData={rowData.tableData}
-                              foodInfoModalVisible={this.state.isFoodInfoModalVisible}
-                            />
-                          );})
-                          :
-                          <Text style={{marginTop: hPercentage('5%'), textAlign: 'center',}}>Nothing in your inventory. You should probably stock up...</Text> 
-                  }
-                </View>
-              </View>
-            </ScrollView>
-=======
       <View>
         <SearchHeaderNav />
         <Text style={Styles.sectionTitle}> Inventory </Text>
@@ -215,7 +137,6 @@ export default class FoodstockScreen extends React.Component {
                   />
                 );
               })}
->>>>>>> input-validation
           </View>
         </ScrollView>
         <ListItem
