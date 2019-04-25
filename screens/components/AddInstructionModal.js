@@ -68,18 +68,26 @@ class AddInstructionModal extends React.Component {
 	}
 
 	onTemporaryAddInstruction = () => {
-		var temp = [...this.state.instructionData];
+		var temp = this.state.instructionData;
 		var userInstruction = { step: this.state.instruction };
+		if(this.props.parent.tempInstructions)
+		{
+			if (this.props.parent.tempInstructions.length-1 <= this.state.insertAtStep)
+			{
+				temp.splice(parseInt(this.state.insertAtStep)-1, 0, userInstruction)
+			}
+			else
+			{
+				temp.push(userInstruction);
+			}
+			this.props.parent.setState({ tempInstructions: temp });
+		}
+		else{
+			this.props.parent.setState({tempInstructions: [userInstruction] });
+		}
+		
 
-		if (this.props.parent.tempInstructions.length-1 <= this.state.insertAtStep)
-		{
-			temp.splice(parseInt(this.state.insertAtStep)-1, 0, userInstruction);
-		}
-		else
-		{
-			temp.push(userInstruction);
-		}
-		this.props.parent.setState({ tempInstructions: temp });
+		
 		this.setState(this.initialState);
 	}
 
