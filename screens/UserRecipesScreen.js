@@ -1,53 +1,35 @@
-import React, { Component } from "react";
-import {
-  StyleSheet,
-  Image,
-  View,
-  ScrollView,
-  Text,
-  TextInput,
-  Dimensions,
-  TouchableOpacity,
-  Alert,
-  Modal,
-  SafeAreaView
-} from "react-native";
-import { StackActions, DrawerActions } from "react-navigation";
-import Autocomplete from "react-native-autocomplete-input";
-import { SearchBar } from "react-native-elements";
-import { Font, AppLoading } from "expo";
-import SearchHeaderNav from "./../navigation/SearchHeaderNav";
-import {
-  widthPercentageToDP as wPercentage,
-  heightPercentageToDP as hPercentage
-} from "react-native-responsive-screen";
-import ScrollableTabView, {
-  DefaultTabBar,
-  ScrollableTabBar
-} from "react-native-scrollable-tab-view-forked";
-import LoadingScreen from "./LoadingScreen";
-import RecipeListItem from "./components/RecipeListItem";
+import React, { Component } from 'react';
+import { StyleSheet, Image, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert, Modal, SafeAreaView } from 'react-native';
+import { StackActions, DrawerActions } from 'react-navigation';
+import Autocomplete from 'react-native-autocomplete-input';
+import { SearchBar } from 'react-native-elements';
+import { Font, AppLoading } from 'expo';
+import SearchHeaderNav from './../navigation/SearchHeaderNav';
+import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
+import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view-forked'
+import LoadingScreen from './LoadingScreen';
+import { ListItem } from "react-native-elements";
+import TouchableScale from "react-native-touchable-scale";
+import RecipeListItem from './components/RecipeListItem';
+import { Styles } from "../styles/GlobalStyles";
 
-import * as firebase from "firebase";
+
+import * as firebase from 'firebase';
 
 /* Custom Icons */
-import { createIconSetFromFontello } from "react-native-vector-icons";
-import fontelloConfig from "./../config/icon-font.json";
-import NavigationService from "../navigation/NavigationService.js";
-const Icon = createIconSetFromFontello(fontelloConfig, "fontello");
+import { createIconSetFromFontello } from 'react-native-vector-icons';
+import fontelloConfig from './../config/icon-font.json';
+import NavigationService from '../navigation/NavigationService.js';
+const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
-const { width: WIDTH } = Dimensions.get("window");
-var globalStyles = require("./../styles/GlobalStyles.js");
+const { width: WIDTH } = Dimensions.get('window');
+var globalStyles = require('./../styles/GlobalStyles.js');
 
 // Fetch News Components
-const fetch = require("node-fetch");
+const fetch = require('node-fetch');
 
-import Button from "./components/Button";
-import CreateRecipeModal from "./components/CreateRecipeModal";
-
-// import NewsItem from './components/NewsItem';
-// import apiUtils from '../api/apiUtils.js';
-const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
+import Button from './components/Button';
+import CreateRecipeModal from './components/CreateRecipeModal';
 
 export default class UserRecipesScreen extends React.Component {
   constructor(props) {
