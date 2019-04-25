@@ -72,7 +72,7 @@ class AddInstructionModal extends React.Component {
 		var userInstruction = { step: this.state.instruction };
 		if(this.props.parent.tempInstructions)
 		{
-			if (this.props.parent.tempInstructions.length-1 <= this.state.insertAtStep)
+			if ((this.props.parent.tempInstructions.length <= this.state.insertAtStep) || this.state.insertAtStep=='')
 			{
 				temp.splice(parseInt(this.state.insertAtStep)-1, 0, userInstruction)
 			}

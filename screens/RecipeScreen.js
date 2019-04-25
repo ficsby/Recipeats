@@ -388,105 +388,48 @@ export default class RecipeScreen extends React.Component {
 
                         <View style={styles.recipeTitleContainer}>
                             <View style={styles.row}>
-                                <Text multiline style={styles.recipeTitle} 
+                                <TextInput multiline style={styles.recipeTitle} 
                                     value ={this.state.title}  onChangeText={(title) => this.setState({title})}
                                     editable={this.state.editable}/>
 
-                                {/* <Text style={styles.title}>{this.state.title}</Text> */}
-                                {
-                                    // !(this.state.editable)? 
                                     <TouchableOpacity>
                                         <Text style={styles.editButton} onPress ={this.toggleEditable}>Edit</Text>
                                     </TouchableOpacity> 
-                                    // : null
-                                }
                             </View>
 
                             <View style={styles.statsContainer}>
                                 <Icon style={styles.statsIcon} name='clock' size={13} color='rgba(0,0,0, 0.5)' />
-                                <Text style={styles.stats} 
-                                    value ={this.state.readyInMinutes.toString()}  onChangeText={(readyInMinutes) => this.setState({readyInMinutes})}
-                                    editable={this.state.editable}/>
+                                <TextInput style={styles.stats} value ={this.state.readyInMinutes.toString()} />
                                 <Text style={{fontSize: 18, marginTop: wPercentage('0.35%'), marginLeft: wPercentage('1.6%'), marginRight: wPercentage('2.2%')}}>minutes</Text>
 
                                 <Icon style={styles.statsIcon} name='adult' size={13} color='rgba(0,0,0, 0.5)' />
-                                <Text style={styles.stats} 
-                                    value ={this.state.servings.toString()}  onChangeText={(servings) => this.setState({servings})}
-                                    editable={this.state.editable}/>
+                                <TextInput style={styles.stats} value ={this.state.servings.toString()} />
                                 <Text style={{fontSize: 18,  marginTop:hPercentage('0.35%'), marginLeft: wPercentage('1.6%'), marginRight: wPercentage('2%')}}>servings</Text>
                             </View>
                         </View>
 
                         <View style ={styles.macrosContainer}>
                             <View style ={styles.macrosColumn}> 
-                                <Text style ={styles.macrosData}
-                                    value={this.state.calories+''}  onChangeText={(calories) => this.setState({calories})}
-                                    editable={this.state.editable}/>
+                                <TextInput style ={styles.macrosData} value={this.state.calories+''} />
                                 <Text style ={styles.macrosLabel}>  CALORIES </Text>
                             </View>
                             <View style ={styles.macrosColumn}> 
-                                <Text style ={styles.macrosData}
-                                    value={this.state.protein+''}  onChangeText={(protein) => this.setState({protein})}
-                                    editable={this.state.editable}/>                                
+                                <TextInput style ={styles.macrosData} value={this.state.protein+''}/>                                
                                 <Text style ={styles.macrosLabel}>  PROTEIN </Text>
                             </View>
                             <View style ={styles.macrosColumn}>
-                                <Text style ={styles.macrosData}
-                                    value={this.state.carbs+''}  onChangeText={(carbs) => this.setState({carbs})}
-                                    editable={this.state.editable}/>   
+                                <TextInput style ={styles.macrosData} value={this.state.carbs+''} />   
                                 <Text style ={styles.macrosLabel}>  CARBS </Text>
                             </View>
                             <View style={styles.macrosColumn}>
-                                <Text style ={styles.macrosData}
-                                    value={this.state.fats+''}  onChangeText={(fats) => this.setState({fats})}
-                                    editable={this.state.editable}/>
+                                <TextInput style ={styles.macrosData} value={this.state.fats+''}/>
                                 <Text style ={styles.macrosLabel}> FATS </Text>
                             </View>
                         </View>
 
-						{/* Shows the add ingredient modal if ingredientModalVisible is true (i.e when the user clicks '+' icon to add an ingredient */}
-{/* 						
-						<AddFoodItemModal
-							isModalVisible={this.state.ingredientModalVisible}
-							title={"Add Ingredient to Recipe"}
-							showPriceInput = {false}
-							showDatePicker = {false}
-                            datePurchased={new Date()}
-                            sectionId={1}
-							id={null}
-							name=""
-							parent={this}
-							price={null}
-							amount={null}
-							unit=""
-                        /> */}
-                        
-                        {/* <AddItemModal isModalVisible={this.state.ingredientModalVisible}
-                            title={"Add Ingredient"}
-                            message1={"Name:"} message2={"Amount:"}
-                            suggestion1={"Example: mushrooms"} suggestion2={"Example: 1/2 cups"}
-                            submitInput={ (inputText) => {this.sendInput(inputText)} }
-                            closeDialog={ () => {this.showDialog(false)}}/> */}
-
-                        {/* Shows the add ingredient modal if ingredientModalVisible is true (i.e when the user clicks '+' icon to add an ingredient */}
-                     
-                        {/* <AddItemModal isModalVisible={this.state.instructionModalVisible}
-                            title={"Add Instruction"}
-                            message1={"Instruction:"} message2={"Step #:"}
-                            suggestion1={"Ex: Combine the eggs with the sugar"} suggestion2={""}
-                            submitInput={ (inputText) => {this.sendInput(inputText)} }
-                            closeDialog={ () => {this.showDialog(false)}}/> */}
-
                         <View style ={styles.sectionContainer}>
                             <View style={styles.row}>
                                 <Text style={styles.sectionTitle}>Ingredients</Text>
-                                {/* {
-                                    (this.state.editable)?
-                                    <TouchableOpacity onPress ={this.onPressAddIngredient}>
-                                        <Icon style={styles.addIcon} name='plus' size={18} color='rgba(0,0,0, 0.65)' />
-                                    </TouchableOpacity>
-                                    : null
-                                } */}
                             </View>
                             {
                                 (this.state.extendedIngredients.length > 0)?
@@ -503,13 +446,6 @@ export default class RecipeScreen extends React.Component {
                         <View style ={styles.sectionContainer}>
                             <View style={styles.row}>
                                 <Text style={styles.sectionTitle}>Instructions</Text>
-                                {/* {
-                                    (this.state.editable)?
-                                    <TouchableOpacity   onPress ={this.onPressAddInstruction}>
-                                        <Icon style={styles.addIcon} name='plus' size={18} color='rgba(0,0,0, 0.65)' />
-                                    </TouchableOpacity>
-                                    : null
-                                } */}
                             </View>
                             {
                                (this.state.instructions && this.state.instructions.length > 0) ?
@@ -526,9 +462,9 @@ export default class RecipeScreen extends React.Component {
 
 const styles = StyleSheet.create({
 
-/*------------------------------------------------------------------------
-    General Styles
-------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------
+        General Styles
+    ------------------------------------------------------------------------*/
     row: {
         flex: 1,
         flexDirection: 'row',
@@ -539,18 +475,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'blue' 
     },
 
-    collapsibleBar: {
-        backgroundColor: 'rgba(255,255,255,1)',
-        borderTopColor: 'rgba(0,0,0,0.3)',
-        borderBottomColor: 'rgba(0,0,0,0.3)',
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
-	},
-
-    whitespaceBuffer: {
-        width: 50,
-        paddingBottom: hPercentage('1%'),
-    },
 
     recipeRow: {
         flex: 1,
@@ -563,38 +487,22 @@ const styles = StyleSheet.create({
 
     contents: {
         marginTop: hPercentage('2%'),
-        marginBottom: hPercentage('2%'),
+        marginBottom: hPercentage('1%'),
     },
 
         
     editButton: {
-        paddingTop: 12,
-        paddingLeft: 15,
-        paddingRight: 20,
+        paddingTop: hPercentage('1%'),
+        paddingLeft: wPercentage('2%'),
+        paddingRight: wPercentage('2%'),
         textDecorationLine: 'underline',
-        fontSize: 15
-    },
-    
-    saveButton: {
-        marginBottom: hPercentage('5%'),
-        marginLeft: wPercentage('5%'),
-        marginRight: wPercentage('5%'),
-        paddingTop: 10,
-        paddingBottom: 10,
-        backgroundColor: 'rgba(204, 102, 102, 0.9)',
-        alignItems: 'center',
-        justifyContent: 'center',
+        fontSize: 15,
+        color: 'black',
     },
 
-    saveChanges: {
-        color: 'rgba(255,255,255,1)',
-        fontSize: 16,
-        fontWeight: '600',
-    },
-
-/*------------------------------------------------------------------------
+    /*------------------------------------------------------------------------
     Top Section
-------------------------------------------------------------------------*/
+    ------------------------------------------------------------------------*/
     topContainer: {
         width: '100%',
         height: 80,
@@ -605,30 +513,70 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2.1,
     },
 
-/*------------------------------------------------------------------------
+
+    /*------------------------------------------------------------------------
+    Autocomplete Section
+    ------------------------------------------------------------------------*/
+
+    searchContainer: {
+        alignSelf: 'center',
+        width: '74%',
+        marginTop: 10,
+        flex: 1,
+        top: 17,
+        zIndex: 1,
+        position: 'absolute',
+    },
+
+    searchInputContainer: {
+        alignSelf: 'center',
+        width: '94%',
+        paddingLeft: 10,
+        backgroundColor: 'rgba(255,255,255,1)',
+        // marginTop: -5,
+    },
+
+    searchInput: {
+        width: '100%',
+        fontSize: 15,
+        paddingLeft: 10,
+    },
+
+    searchResultsContainer: {
+        flex: 1,
+        width: '100%',
+        marginLeft: 10,
+        marginRight: 10,
+        marginBottom: 5,
+    },
+    searchResult: {
+        width: '100%',
+    },
+
+
+    /*------------------------------------------------------------------------
     Recipe Info Section
-------------------------------------------------------------------------*/
+    ------------------------------------------------------------------------*/
     overlayButtonsContainer: {
         flexDirection: 'row',
         position: 'absolute',
         justifyContent: 'flex-end',
         bottom: 0,
         right: 0,
-        paddingTop: 5,
-        paddingBottom: 5,
-        paddingRight: 3,
+        paddingTop: hPercentage('1%'),
+        paddingBottom: hPercentage('3%'),
+        paddingRight: wPercentage('1%'),
         width: '100%',
         backgroundColor: 'rgba(0,0,0,0.6)',
     },
 
     overlayButtons: {
-        paddingTop: 6, 
-        paddingRight: 22,
+        paddingTop: hPercentage('0.5%'), 
+        paddingRight: wPercentage('5%'),
     },
 
     recipeContainer: {
-		backgroundColor: 'rgba(0, 0, 0, 0.05)',
-		// paddingBottom: hPercentage('20%')
+        backgroundColor: 'rgba(0, 0, 0, 0.05)',
     },
 
     image: {
@@ -637,18 +585,19 @@ const styles = StyleSheet.create({
         height: 300,
     },
 
+    // @CT
     recipeTitleContainer: {
-        marginTop: hPercentage('-1%'),
-        paddingTop: 5,
+        marginTop: hPercentage('-4%'),
+        paddingTop: hPercentage('2%'),
         backgroundColor: 'rgba(255,255,255,1)',
     },
 
+    //@CT
     recipeTitle: {
-        width: '70%',
-        maxHeight: 80,
-        marginTop: hPercentage('2%'),
+        width: wPercentage('65%'),
+        maxHeight: hPercentage('5%'),
         marginLeft: wPercentage('7%'),
-        marginRight: wPercentage('5%'),
+        marginRight: wPercentage('8%'),
         fontSize: 20,
         fontWeight: '500',
         color: 'rgba(181, 83, 102, 1)', // Medium Pink
@@ -658,9 +607,9 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         width: '100%',
-        marginTop: hPercentage('1%'),
+        marginTop: hPercentage('2%'),
         marginBottom: hPercentage('2%'), 
-        marginLeft: wPercentage('2%'),
+        marginLeft: wPercentage('3%'),
     },
 
 
@@ -669,42 +618,21 @@ const styles = StyleSheet.create({
         color: 'rgba(0,0,0, 0.8)',
         marginLeft: wPercentage('3%'),
     },
-    
-    
+
     statsIcon: {
-        marginTop: hPercentage('1%'),
-        marginLeft: wPercentage('2%'),
+        marginTop: wPercentage('1%'),
+        marginLeft: wPercentage('5%'),
         fontSize: 18,
         color: 'rgba(0,0,0, 0.5)',
     },
 
-        
-    /*-----------------------
-        Description
-    -------------------------*/
 
-    // descriptionContainer: {
-    //     paddingBottom: 5,
-    //     backgroundColor: 'rgba(255,255,255,1)',
-    //     // borderBottomWidth: 1,
-    //     // borderBottomColor: 'rgba(0,0,0,0.3)',
-    // },
+    /*------------------------------------------------------------------------
+        Macros Styles
+    ------------------------------------------------------------------------*/
 
-    // description: {
-    //     marginTop: 8,
-    //     marginBottom: 15,
-    //     marginLeft: 17,
-    //     marginRight: 17,
-    //     fontSize: 14,
-    //     color: 'rgba(0,0,0, 0.8)',
-    // },
-
-    /*-----------------------
-        Macros
-    -------------------------*/
-
-      macrosContainer: {
-        paddingTop: 20,
+    macrosContainer: {
+        paddingTop: hPercentage('2%'),
         marginBottom: hPercentage('2%'),
         flex: 1,
         flexDirection: 'row',
@@ -712,10 +640,6 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 80,
         backgroundColor: 'rgba(255,255,255,1)',
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
-        borderTopColor: 'rgba(0,0,0,0.2)',
-        borderBottomColor: 'rgba(0,0,0,0.15)',
     },
 
     macrosLabel: {
@@ -729,46 +653,52 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
 
-    
-    /*-----------------------
-        Recipe Sections
-    -------------------------*/
-    
+
+    /*------------------------------------------------------------------------
+        Recipes Styles
+    ------------------------------------------------------------------------*/
+
     sectionContainer: {
-        marginBottom: hPercentage('2%'),
-        paddingTop: 10,
+        marginBottom: hPercentage('3%'),
+        paddingTop: hPercentage('1%'),
         backgroundColor: 'rgba(255,255,255,1)',
-        borderBottomColor: 'rgba(0,0,0,0.15)',
-        borderTopColor: 'rgba(0,0,0,0.15)',
-        borderBottomWidth: 1,
-        borderTopWidth: 1,
     },
 
     sectionTitle: {
         flex: 1,
-        marginTop: hPercentage('1%'),
+        marginTop: hPercentage('2%'),
         marginBottom: hPercentage('2%'),
-        marginLeft: wPercentage('5%'),
+        marginLeft: wPercentage('7%'), //
         fontSize: 20,
         fontWeight: '600',
         color: 'rgba(0,0,0,1)',
     },
 
-    /*-----------------------
-       Ingredients
-    -------------------------*/
-    addIcon: {
-        paddingTop: 10,
-        paddingRight: 30,
+    emptyListText: {
+        marginLeft: wPercentage('7%'),
+        marginTop: hPercentage('2%'),
+        marginBottom: hPercentage('2%'),
     },
-    
+
+    swipeIndicator: {
+        paddingRight: wPercentage('4%'),
+        paddingLeft: wPercentage('1.5%')
+    },
+    /*------------------------------------------------------------------------
+        Ingredients Styles
+    ------------------------------------------------------------------------*/
+    addIcon: {
+        paddingTop: hPercentage('2%'), //10
+        paddingRight: wPercentage('7%'), //30
+    },
+
     compareButton: {
         marginTop: hPercentage('3%'),
         marginBottom: hPercentage('2%'),
         marginRight: wPercentage('5%'),
         marginLeft: wPercentage('5%'),
     },
-    
+
     compareText: {
         fontSize: 15,
         fontWeight: '500',
@@ -779,29 +709,26 @@ const styles = StyleSheet.create({
 
     ingredientText: {
         fontSize: 14,
-        marginLeft: wPercentage('3%'),
+        marginLeft: wPercentage('4%'),
+        marginBottom: -15,
         color: 'rgba(105,105,105,1)',
     },
 
     amountText: {
         width: '100%',
         fontStyle: 'italic',
-        marginRight: wPercentage('3%'),
+        marginRight: wPercentage('10%'), //20
+        marginBottom: -15,
     },
 
-    emptyListText: {
-        marginLeft: wPercentage('6%'),
-        marginTop: hPercentage('2%'),
-        marginBottom: hPercentage('2%'),
-    },
 
-    /*-----------------------
-       Instructions
-    -------------------------*/
+    /*------------------------------------------------------------------------
+        Instructions Styles
+    ------------------------------------------------------------------------*/
 
     instructionStepContainer: {
-        marginRight: wPercentage('5%'),
-        marginLeft: wPercentage('-10%'),
+        marginRight: 35,
+        marginLeft: '-100%', 
         justifyContent: 'flex-start',
     },
 
@@ -811,8 +738,8 @@ const styles = StyleSheet.create({
     },
 
     numberContainer: {
-        marginLeft: hPercentage('2%'),
-        marginRight: wPercentage('3%'),
+        marginLeft: wPercentage('7%'), 
+        marginRight:  wPercentage('8%'),
     },
 
     numberBadge: {
@@ -827,28 +754,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: '500',
         textAlign: 'center',
-    },
-
-    /*------------------------------------------------------------------------
-        Bottom Menu Section
-    ------------------------------------------------------------------------*/
-    menubarRow: {
-        flex: 1,
-        flexDirection: 'row',
-        width: '100%',
-        height: 50,
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 90,
-    },
-
-    menuBar: {
-        width: '20%',
-        height: 100, 
-        backgroundColor: 'rgba(246, 238, 238, 1)',
-        borderTopColor: 'rgba(225, 218, 218, 0.7)',
-        borderTopWidth: 2.1,
     },
     
 });

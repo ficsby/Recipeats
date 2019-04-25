@@ -842,8 +842,8 @@ const styles = StyleSheet.create({
     numberBadge: {
         backgroundColor: 'rgba(68, 72, 76, 0.6)',
         borderRadius: 100,
-        width: wPercentage('5%'),
-        height: hPercentage('5%'),
+        width: 30,
+        height: 30,
     },
 
     instructionNumber: {
