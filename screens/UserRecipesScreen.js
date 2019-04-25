@@ -86,6 +86,7 @@ export default class UserRecipesScreen extends React.Component {
     };
     
     getCustomRecipesFromFirebase(){
+        console.log('custom recipes');
         // Returns a promise of the user's value
         retrieveData = () => {
             userId = firebase.auth().currentUser.uid;

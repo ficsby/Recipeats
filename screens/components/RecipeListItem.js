@@ -73,16 +73,23 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
                                     .ref("customRecipes/" + userId + "/" + this.state.item.title + "_" + this.state.item.id)
                                     .remove();
                                     temp = [...this.props.parent.state.customRecipes];
-                                    this.props.parent.setState({ customRecipes: temp });
+                                    this.props.parent.setState({
+                                        customRecipes: temp.filter(
+                                            item => item.id != this.state.item.id
+                                        )
+                                    });
                                     break;
                             case 2: 
-                                    console.log(' ACTUAL ID: ' + actualId);
                                     firebase
                                     .database()
                                     .ref("bookmarkedRecipes/" + userId + "/" + this.state.item.title + "_" + this.state.item.id )
                                     .remove();
                                     temp = [...this.props.parent.state.bookmarkedRecipes];
-                                    this.props.parent.setState({ bookmarkedRecipes: temp });
+                                    this.props.parent.setState({
+                                        bookmarkedRecipes: temp.filter(
+                                            item => item.id != this.state.item.id
+                                        )
+                                    });
                                     break;
                         }
                     }
