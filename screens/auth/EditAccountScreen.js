@@ -11,6 +11,7 @@ import {
   Image
 } from "react-native";
 import { StackActions } from "react-navigation";
+import { ListItem } from "react-native-elements";
 import * as firebase from "firebase";
 
 import {
@@ -160,7 +161,7 @@ export default class EditAccountScreen extends React.Component {
     } else if (this.state.user.userAccPicture) {
       return this.state.user.userAccPicture;
     } else {
-      return defAccIcon;
+      return "";
     }
   }
 
@@ -188,7 +189,7 @@ export default class EditAccountScreen extends React.Component {
 
   render() {
     const { user } = this.state;
-
+    // if (this.state.ed)
     if (this._ismounted) {
       return (
         <KeyboardShift>
@@ -228,15 +229,10 @@ export default class EditAccountScreen extends React.Component {
                 <Image
                   source={
                     this.state.userAccPicture == ""
-                      ? { uri: user.userAccPicture }
+                      ? require('./../../assets/images/default_acc_icon.png')
                       : { uri: this.state.userAccPicture }
                   }
-                  style={{
-                    flex: 1,
-                    width: wPercentage("40%"),
-                    height: hPercentage("40%"),
-                    resizeMode: "center"
-                  }}
+                  style={styles.userAvatar}
                 />
               </TouchableOpacity>
 
@@ -430,6 +426,14 @@ export default class EditAccountScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  
+  userAvatar: {
+    flex:1, 
+    width: wPercentage('40%'), 
+    height: hPercentage('40%'), 
+    resizeMode: 'center'
+  },
+
   titleRow: {
     flex: 1,
     flexDirection: "row",

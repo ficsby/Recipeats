@@ -255,8 +255,8 @@ const styles = StyleSheet.create({
   title: {
     width: wPercentage("50%"),
     fontSize: 18,
-    fontWeight: "400",
-    color: "rgb(42, 44, 48)"
+    fontWeight: "500",
+    color: "rgb(51, 55, 63)"
     // fontFamily: 'georgia'
   },
   photoContainer: {
