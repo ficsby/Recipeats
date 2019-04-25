@@ -106,8 +106,8 @@ export default class RecipeScreen extends React.Component {
         this._ismounted = true;
         this.setState({
             fontLoaded: true,
-            readyInMinutes: (this.state.readyInMinutes)? this.state.readyInMinutes.toString() + ' minutes' : '',
-            servings: (this.state.servings)? this.state.servings + ' servings' : ''
+            readyInMinutes: (this.state.readyInMinutes)? this.state.readyInMinutes.toString() : '',
+            servings: (this.state.servings)? this.state.servings : ''
         });
 
         if(this.state.id < 0){
@@ -357,7 +357,7 @@ export default class RecipeScreen extends React.Component {
 
                         <View style={styles.recipeTitleContainer}>
                             <View style={styles.row}>
-                                <TextInput multiline style={styles.recipeTitle} 
+                                <Text multiline style={styles.recipeTitle} 
                                     value ={this.state.title}  onChangeText={(title) => this.setState({title})}
                                     editable={this.state.editable}/>
 
@@ -373,13 +373,13 @@ export default class RecipeScreen extends React.Component {
 
                             <View style={styles.statsContainer}>
                                 <Icon style={styles.statsIcon} name='clock' size={13} color='rgba(0,0,0, 0.5)' />
-                                <TextInput style={styles.stats} 
+                                <Text style={styles.stats} 
                                     value ={this.state.readyInMinutes.toString()}  onChangeText={(readyInMinutes) => this.setState({readyInMinutes})}
                                     editable={this.state.editable}/>
-                                <Text style={{fontSize: 18, marginTop: wPercentage('0.35%'), marginLeft: wPercentage('1.6%'), marginRight: wPercentage('2.2%')}}>mins</Text>
+                                <Text style={{fontSize: 18, marginTop: wPercentage('0.35%'), marginLeft: wPercentage('1.6%'), marginRight: wPercentage('2.2%')}}>minutes</Text>
 
                                 <Icon style={styles.statsIcon} name='adult' size={13} color='rgba(0,0,0, 0.5)' />
-                                <TextInput style={styles.stats} 
+                                <Text style={styles.stats} 
                                     value ={this.state.servings.toString()}  onChangeText={(servings) => this.setState({servings})}
                                     editable={this.state.editable}/>
                                 <Text style={{fontSize: 18,  marginTop:hPercentage('0.35%'), marginLeft: wPercentage('1.6%'), marginRight: wPercentage('2%')}}>servings</Text>
@@ -388,25 +388,25 @@ export default class RecipeScreen extends React.Component {
 
                         <View style ={styles.macrosContainer}>
                             <View style ={styles.macrosColumn}> 
-                                <TextInput style ={styles.macrosData}
+                                <Text style ={styles.macrosData}
                                     value={this.state.calories+''}  onChangeText={(calories) => this.setState({calories})}
                                     editable={this.state.editable}/>
                                 <Text style ={styles.macrosLabel}>  CALORIES </Text>
                             </View>
                             <View style ={styles.macrosColumn}> 
-                                <TextInput style ={styles.macrosData}
+                                <Text style ={styles.macrosData}
                                     value={this.state.protein+''}  onChangeText={(protein) => this.setState({protein})}
                                     editable={this.state.editable}/>                                
                                 <Text style ={styles.macrosLabel}>  PROTEIN </Text>
                             </View>
                             <View style ={styles.macrosColumn}>
-                                <TextInput style ={styles.macrosData}
+                                <Text style ={styles.macrosData}
                                     value={this.state.carbs+''}  onChangeText={(carbs) => this.setState({carbs})}
                                     editable={this.state.editable}/>   
                                 <Text style ={styles.macrosLabel}>  CARBS </Text>
                             </View>
                             <View style={styles.macrosColumn}>
-                                <TextInput style ={styles.macrosData}
+                                <Text style ={styles.macrosData}
                                     value={this.state.fats+''}  onChangeText={(fats) => this.setState({fats})}
                                     editable={this.state.editable}/>
                                 <Text style ={styles.macrosLabel}> FATS </Text>
@@ -487,13 +487,6 @@ export default class RecipeScreen extends React.Component {
                         </View>
                     </View>
                     <View style={styles.whitespaceBuffer}></View>
-                    {/* {
-                        this.state.editable?            
-                        <TouchableOpacity style={styles.saveButton} onPress ={this.onSaveChangesPress}> 
-                            <Text style={styles.saveChanges}>Save Changes</Text>
-                        </TouchableOpacity> : null
-                    } */}
-
                 </ScrollView>        
             </View>
         )
@@ -522,14 +515,10 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderBottomWidth: 1,
 	},
-	
-	whitespaceBuffer:{
-		marginBottom: hPercentage('20%')
-	},
 
     whitespaceBuffer: {
         width: 50,
-        paddingBottom: hPercentage('10%'),
+        paddingBottom: hPercentage('1%'),
     },
 
     recipeRow: {
@@ -743,12 +732,10 @@ const styles = StyleSheet.create({
     },
     
     compareButton: {
-        backgroundColor: 'rgba(188, 107, 107, 1)',
-        marginTop: hPercentage('2%'),
-        paddingTop: 10,
-        paddingBottom: 10,
-        paddingLeft: 20,
-        paddingRight: 20,
+        marginTop: hPercentage('3%'),
+        marginBottom: hPercentage('2%'),
+        marginRight: wPercentage('5%'),
+        marginLeft: wPercentage('5%'),
     },
     
     compareText: {
@@ -772,7 +759,7 @@ const styles = StyleSheet.create({
     },
 
     emptyListText: {
-        marginLeft: wPercentage('7%'),
+        marginLeft: wPercentage('6%'),
         marginTop: hPercentage('2%'),
         marginBottom: hPercentage('2%'),
     },

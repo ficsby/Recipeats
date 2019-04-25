@@ -375,7 +375,8 @@ const styles = StyleSheet.create({
     },
 
     tabBarTextStyle: {
-        width: wPercentage('20%'),
+        width: wPercentage('35%'),
+        paddingLeft: wPercentage('7%'),
         fontSize: 14,
         fontWeight: 'normal',
     },
