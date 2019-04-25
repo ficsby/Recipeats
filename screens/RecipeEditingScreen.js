@@ -82,7 +82,7 @@ class RecipeEditingScreen extends React.Component {
       tempIngredients: this.props.parent.state.extendedIngredients,
       tempInstructions: this.props.parent.state.instructions,
       nutritionalTags: this.props.parent.state.nutritionalTags,
-
+	  
       photo: null,
 
       ingredientModalVisible: false,

@@ -134,6 +134,7 @@ export default class RecipeScreen extends React.Component {
     });
 
     if (this.state.id < 0) {
+	  this.getFoodStock();
       this.setState({ isLoading: false });
     } else {
       var recipeData = await apiUtils.getRecipeInfoFromId(this.state.id, this);

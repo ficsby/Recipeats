@@ -52,7 +52,7 @@ class RecipeListItem extends Component {
       carbs: selectedRecipe.carbs,
       fats: selectedRecipe.fats,
       readyInMinutes: selectedRecipe.readyInMinutes,
-      servings: selectedRecipe.servings
+      servings: selectedRecipe.servings,
     });
   }
 
