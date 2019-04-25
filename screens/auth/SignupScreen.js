@@ -36,6 +36,7 @@ export default class SignupScreen extends React.Component {
       birthDate: "",
       selectedHeightMetric: "in",
       selectedGender: "Male",
+      userAccPicture: '',
       ingredientSuggestions: []
     };
   }
@@ -47,14 +48,14 @@ export default class SignupScreen extends React.Component {
       .set({
         name: this.state.name,
         email: this.state.email,
-        password: this.state.password,
         username: this.state.username,
         weight: this.state.weight,
         activityLevel: this.state.activityLevel,
         birthDate: this.state.birthDate,
         height: this.state.height,
         selectedHeightMetric: this.state.selectedHeightMetric,
-        selectedGender: this.state.selectedGender
+        selectedGender: this.state.selectedGender,
+        userAccPicture: 'nopicture'
       });
   };
 
@@ -78,6 +79,7 @@ export default class SignupScreen extends React.Component {
           var user = firebase.auth().currentUser;
           this.writeUserData(user.uid);
           user.sendEmailVerification();
+          
           retrieveData = () => {
             var ref = firebase.database().ref('ingredients/ingredients');
             return ref.once('value');
@@ -89,7 +91,7 @@ export default class SignupScreen extends React.Component {
                 ingredientSuggestions: snapshot.val()
             })
           })
-          AutocompleteData.ingredientSuggestions = ingredientSuggestions;
+          // AutocompleteData.ingredientSuggestions = ingredientSuggestions;
           this.props.navigation.navigate("Home");
           // do nothing, success of creating will move onto the main page
         },

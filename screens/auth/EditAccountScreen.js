@@ -1,15 +1,17 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Text, TextInput, TouchableOpacity, Alert, Dimensions } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, TextInput, TouchableOpacity, Alert, Dimensions, Image } from 'react-native';
 import { StackActions } from 'react-navigation';
 import * as firebase from 'firebase';
 
 import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
 
 import KeyboardShift from './../../styles/KeyboardShift.js';
-
+import defAccIcon from './../../assets/images/default_acc_icon.png';
 /* Custom Icons */
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from './../../config/icon-font.json';
+import { ImagePicker } from 'expo';
+
 const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
 
 export default class EditAccountScreen extends React.Component {
@@ -18,6 +20,17 @@ export default class EditAccountScreen extends React.Component {
         this.state = { 
             user: null,
             editable: false,
+            userAccPicture: '',
+            name: '',
+            email: '',
+            password: '',
+            username: '',
+            weight: '',
+            userAccPicture: '',
+            activityLevel: '',
+            birthDate: '',
+            selectedHeightMetric: '',
+            selectedGender: '',
         };
         this.toggleEditable = this.toggleEditable.bind(this);
         this.onSaveChangesPress = this.onSaveChangesPress.bind(this);
@@ -31,9 +44,16 @@ export default class EditAccountScreen extends React.Component {
         });
     }
 
-    onSaveChangesPress = () => {
-        Alert.alert("Saved... (Testing)");
-        this.toggleEditable();
+    _pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            aspect: [3, 3],
+        })
+
+        if (!result.cancelled) {
+            this.setState({userAccPicture:result.uri});
+        }
+        
     }
 
     componentDidMount() {
@@ -62,18 +82,36 @@ export default class EditAccountScreen extends React.Component {
      }
     
     // Writes user data to the database
-    writeUserData = (userId) => {
-        firebase.database().ref('users/' + userId).set({
+    writeUserData = () => {
+        var user = this.state.user;
+        firebase.database().ref('users/' + firebase.auth().currentUser.uid).update({
             name: user.name,
             email: user.email,
-            password: user.password,
             username: user.username,
             weight: user.weight,
             activityLevel: user.activityLevel,
             birthDate: user.birthDate,
             selectedHeightMetric: user.selectedHeightMetric,
-            selectedGender: user.selectedGender
+            selectedGender: user.selectedGender,
+            userAccPicture : this.state.userAccPicture,
         });
+    }
+
+    imageSource() {
+        if(this.state.user.userAccPicture != this.state.userAccPicture )
+        {
+            console.log('state');
+            return this.state.userAccPicture;
+        }
+        else if(this.state.user.userAccPicture)
+        {
+            console.log('useracc');
+            return this.state.user.userAccPicture;
+        }
+        else{
+            console.log('defAcc');
+            return defAccIcon;
+        }
     }
 
     // Handles not a number exception
@@ -84,8 +122,7 @@ export default class EditAccountScreen extends React.Component {
     
     // Function for when user clicks the 'Save Button'
     onSaveChangesPress = () => {
-        var user = firebase.auth().currentUser;
-        this.writeUserData(user.uid);
+        this.writeUserData();
         Alert.alert("Your changes has been updated..");
     }
 
@@ -126,6 +163,10 @@ export default class EditAccountScreen extends React.Component {
 
 
                         {/* BASIC USER INFORMATION */}
+
+                        <TouchableOpacity style={styles.imageContainer } onPress ={this._pickImage}>
+                            <Image source= { (this.state.userAccPicture == '')? {uri:user.userAccPicture} : {uri:this.state.userAccPicture}} style={{flex:1, width: wPercentage('40%'), height: hPercentage('40%'), resizeMode: 'center'}}/> 
+                        </TouchableOpacity>
 
                         <Text style={styles.inputHeading}>Your basic information</Text>
                         
@@ -284,6 +325,15 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: '600',
         color: 'rgba(100, 92, 92, 0.8)', // Dark grey
+    },
+
+    imageContainer: {
+        flex: 1,
+        marginTop: hPercentage('5%'),
+        height: hPercentage('25%'),
+        borderRadius: 75,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 
  /*------------------------------------------------------------------------
