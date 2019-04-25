@@ -1,146 +1,144 @@
-import React, { Component } from 'react';
-import { StyleSheet, Image, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert, Modal, SafeAreaView } from 'react-native';
-import { StackActions, DrawerActions } from 'react-navigation';
-import Autocomplete from 'react-native-autocomplete-input';
-import { SearchBar } from 'react-native-elements';
-import { Font, AppLoading } from 'expo';
-import SearchHeaderNav from './../navigation/SearchHeaderNav';
-import {widthPercentageToDP as wPercentage, heightPercentageToDP as hPercentage} from 'react-native-responsive-screen';
-import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view-forked'
-import LoadingScreen from './LoadingScreen';
-import { ListItem } from "react-native-elements";
-import TouchableScale from "react-native-touchable-scale";
-import RecipeListItem from './components/RecipeListItem';
-import { Styles } from "../styles/GlobalStyles";
+import React, { Component } from "react";
+import {
+  StyleSheet,
+  Image,
+  View,
+  ScrollView,
+  Text,
+  TextInput,
+  Dimensions,
+  TouchableOpacity,
+  Alert,
+  Modal,
+  SafeAreaView
+} from "react-native";
+import { StackActions, DrawerActions } from "react-navigation";
+import Autocomplete from "react-native-autocomplete-input";
+import { SearchBar } from "react-native-elements";
+import { Font, AppLoading } from "expo";
+import SearchHeaderNav from "./../navigation/SearchHeaderNav";
+import {
+  widthPercentageToDP as wPercentage,
+  heightPercentageToDP as hPercentage
+} from "react-native-responsive-screen";
+import ScrollableTabView, {
+  DefaultTabBar,
+  ScrollableTabBar
+} from "react-native-scrollable-tab-view-forked";
+import LoadingScreen from "./LoadingScreen";
+import RecipeListItem from "./components/RecipeListItem";
 
-
-import * as firebase from 'firebase';
+import * as firebase from "firebase";
 
 /* Custom Icons */
-import { createIconSetFromFontello } from 'react-native-vector-icons';
-import fontelloConfig from './../config/icon-font.json';
-import NavigationService from '../navigation/NavigationService.js';
-const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
+import { createIconSetFromFontello } from "react-native-vector-icons";
+import fontelloConfig from "./../config/icon-font.json";
+import NavigationService from "../navigation/NavigationService.js";
+const Icon = createIconSetFromFontello(fontelloConfig, "fontello");
 
-const { width: WIDTH } = Dimensions.get('window');
-var globalStyles = require('./../styles/GlobalStyles.js');
+const { width: WIDTH } = Dimensions.get("window");
+var globalStyles = require("./../styles/GlobalStyles.js");
 
 // Fetch News Components
-const fetch = require('node-fetch');
+const fetch = require("node-fetch");
 
-import Button from './components/Button';
-import CreateRecipeModal from './components/CreateRecipeModal';
+import Button from "./components/Button";
+import CreateRecipeModal from "./components/CreateRecipeModal";
 
 // import NewsItem from './components/NewsItem';
 // import apiUtils from '../api/apiUtils.js';
 const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 
 export default class UserRecipesScreen extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            visible: false,
-            recipeModalVisible: false,
-            query: '',
-            isLoading: true,
-            recipeCreated: false,
-            customRecipes: [],
-            bookmarkedRecipes: [],
-        };
-        this.toggleRecipeModalVisibility = this.toggleRecipeModalVisibility.bind(this);
-        this.renderCustomRecipes = this.renderCustomRecipes.bind(this);
-        this.renderBookmarks = this.renderBookmarks.bind(this);
-        this.showCreateRecipeModal = this.showCreateRecipeModal.bind(this);
-        this.showRecipeScreen = this.showRecipeScreen.bind(this) // Calls the NavigationService.navigate
+  constructor(props) {
+    super(props);
+    this.state = {
+      visible: false,
+      recipeModalVisible: false,
+      query: "",
+      isLoading: true,
+      recipeCreated: false,
+      customRecipes: [],
+      bookmarkedRecipes: []
     };
+    this.toggleRecipeModalVisibility = this.toggleRecipeModalVisibility.bind(
+      this
+    );
+    this.renderCustomRecipes = this.renderCustomRecipes.bind(this);
+    this.renderBookmarks = this.renderBookmarks.bind(this);
+    this.showCreateRecipeModal = this.showCreateRecipeModal.bind(this);
+    this.showRecipeScreen = this.showRecipeScreen.bind(this); // Calls the NavigationService.navigate
+  }
 
-    static navigationOptions = {
-        drawerIcon: ({tintColor}) => (
-            <Icon name="home" style ={{fontSize: 24, color:tintColor}} />
-        )
-    } 
+  static navigationOptions = {
+    drawerIcon: ({ tintColor }) => (
+      <Icon name="home" style={{ fontSize: 24, color: tintColor }} />
+    )
+  };
 
-    async componentDidMount() {
-		console.log('test');
-        this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
-        await Font.loadAsync({
-          'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),
-        }); 
-        this.setState({fontLoaded: true});
-        this.getCustomRecipesFromFirebase();
+  componentDidMount() {
+    this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
+    this.setState({ fontLoaded: true });
+    this.getCustomRecipesFromFirebase();
+  }
+
+  componentWillUnmount() {
+    this._ismounted = false; // after component is unmounted reste boolean
+  }
+
+  getCustomRecipesFromFirebase(){
+    console.log('custom recipes');
+    // Returns a promise of the user's value
+    retrieveData = () => {
+        userId = firebase.auth().currentUser.uid;
+        ref = firebase.database().ref("customRecipes/" + userId + "/");
+        return ref.once("value");
     };
+    context = this;
+    retrieveData().then(snapshot => {
+        customRecipeSnapshot = snapshot.val();
+        recipes = [];
+        if(context.state.customRecipes.length != Object.keys(customRecipeSnapshot).length)
+        {
+            for (var key in customRecipeSnapshot) {
+                if (customRecipeSnapshot.hasOwnProperty(key)) {
+                    recipes.push(customRecipeSnapshot[key]);
+                }
+            }
 
-    componentWillUnmount () {
-        this._ismounted = false; // after component is unmounted reste boolean
-     };
-
-    onAccountIconPress = () => {
-        // var navActions = StackActions.reset({
-        //     index: 1,
-        //     actions: [
-        //         // We need to push both the current screen and the next screen that we are transitioning to incase the user wants to go to previous screen
-        //         StackActions.push({ routeName: "Home" }),       
-        //         StackActions.push({ routeName: "EditAccount" }),
-        //     ]
-        // });
-
-        // this.props.navigation.dispatch(navActions);
-        this.setState({visible: true});
-    };
+            context.setState({
+                customRecipes: recipes
+            });
+        }
+    });
+}
     
-    getCustomRecipesFromFirebase(){
-        console.log('custom recipes');
-        // Returns a promise of the user's value
-        retrieveData = () => {
-            userId = firebase.auth().currentUser.uid;
-            ref = firebase.database().ref("customRecipes/" + userId + "/");
-            return ref.once("value");
-        };
-        context = this;
-        retrieveData().then(snapshot => {
-            customRecipeSnapshot = snapshot.val();
-            recipes = [];
-            if(context.state.customRecipes.length != Object.keys(customRecipeSnapshot).length)
-            {
-                for (var key in customRecipeSnapshot) {
-                    if (customRecipeSnapshot.hasOwnProperty(key)) {
-                        recipes.push(customRecipeSnapshot[key]);
-                    }
+getBookmarkedRecipesFromFirebase(){
+    retrieveData = () => {
+        userId = firebase.auth().currentUser.uid;
+        ref = firebase.database().ref("bookmarkedRecipes/" + userId + "/");
+        return ref.once("value");
+    };
+    // bookmarkedRecipes
+    context = this;
+    retrieveData().then(snapshot => {
+        bookmarkedRecipeSnapshot = snapshot.val();
+        recipes = [];
+        if(context.state.bookmarkedRecipes.length != Object.keys(bookmarkedRecipeSnapshot).length)
+        {
+            for (var key in bookmarkedRecipeSnapshot) {
+                if (bookmarkedRecipeSnapshot.hasOwnProperty(key)) {
+                    recipes.push(bookmarkedRecipeSnapshot[key]);
                 }
-
-                context.setState({
-                    customRecipes: recipes
-                });
             }
-        });
-    }
 
-    getBookmarkedRecipesFromFirebase(){
-        retrieveData = () => {
-            userId = firebase.auth().currentUser.uid;
-            ref = firebase.database().ref("bookmarkedRecipes/" + userId + "/");
-            return ref.once("value");
-        };
-        // bookmarkedRecipes
-        context = this;
-        retrieveData().then(snapshot => {
-            bookmarkedRecipeSnapshot = snapshot.val();
-            recipes = [];
-            if(context.state.bookmarkedRecipes.length != Object.keys(bookmarkedRecipeSnapshot).length)
-            {
-                for (var key in bookmarkedRecipeSnapshot) {
-                    if (bookmarkedRecipeSnapshot.hasOwnProperty(key)) {
-                        recipes.push(bookmarkedRecipeSnapshot[key]);
-                    }
-                }
-
-                context.setState({
-                    bookmarkedRecipes: recipes
-                });
-            }
-        });
-    }
+            context.setState({
+                bookmarkedRecipes: recipes
+            });
+        }
+    });
+}
+    
     /**
      *  Renders the user's custom recipes, in which each item in customRecipes is mapped as a RecipeListItem. 
      *  Each RecipeListItem displays the title, image, serving size, cook time
@@ -202,9 +200,6 @@ export default class UserRecipesScreen extends React.Component {
   };
 
     render() {
-        // if (this.state.isLoading) {
-        //     return <LoadingScreen />;
-        // };
         this.getCustomRecipesFromFirebase();
         this.getBookmarkedRecipesFromFirebase();
         if (this.state.recipeCreated)
@@ -272,8 +267,7 @@ export default class UserRecipesScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-
-    /*------------------------------------------------------------------------
+  /*------------------------------------------------------------------------
         General Styles
     ------------------------------------------------------------------------*/
     row: {
@@ -296,81 +290,60 @@ const styles = StyleSheet.create({
     /*------------------------------------------------------------------------
        Top Section
     ------------------------------------------------------------------------*/
-    pageContainer: {
-        flex: 1,
-        width: '100%',
-    },
+  pageContainer: {
+    flex: 1,
+    width: "100%"
+  },
 
-    topContainer: {
-        width: '100%',
-        height: 80,
-        paddingTop: 30,
-        paddingBottom: 10,
-        backgroundColor: 'rgba(244, 238, 238, 0.9)',
-        borderBottomColor: 'rgba(225, 218, 218, 0.7)',
-        borderBottomWidth: 2.1,
-      },
+  topContainer: {
+    width: "100%",
+    height: 80,
+    paddingTop: 30,
+    paddingBottom: 10,
+    backgroundColor: "rgba(244, 238, 238, 0.9)",
+    borderBottomColor: "rgba(225, 218, 218, 0.7)",
+    borderBottomWidth: 2.1
+  },
 
-      
-     /*------------------------------------------------------------------------
+  /*------------------------------------------------------------------------
         Autocomplete Section
     ------------------------------------------------------------------------*/
-    searchContainer: {
-        alignSelf: 'center',
-        width: '74%',
-        marginTop: 10,
-        flex: 1,
-        top: 17,
-        zIndex: 1,
-        position: 'absolute',
-    },
+  searchContainer: {
+    alignSelf: "center",
+    width: "74%",
+    marginTop: 10,
+    flex: 1,
+    top: 17,
+    zIndex: 1,
+    position: "absolute"
+  },
 
-    searchInputContainer: {
-        alignSelf: 'center',
-        width: '94%',
-        paddingLeft: 10,
-        backgroundColor: 'rgba(255,255,255,1)',
-        // marginTop: -5,
-    },
+  searchInputContainer: {
+    alignSelf: "center",
+    width: "94%",
+    paddingLeft: 10,
+    backgroundColor: "rgba(255,255,255,1)"
+    // marginTop: -5,
+  },
 
-    searchInput: {
-        width: '100%',
-        fontSize: 15,
-        paddingLeft: 10,
-    },
+  searchInput: {
+    width: "100%",
+    fontSize: 15,
+    paddingLeft: 10
+  },
 
-    searchResultsContainer: {
-        width: '100%',
-        marginLeft: 10,
-        marginRight: 10,
-        marginBottom: 5,
-    },
+  searchResultsContainer: {
+    width: "100%",
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 5
+  },
 
-    searchResult: {
-        width: '100%',
-    },
+  searchResult: {
+    width: "100%"
+  },
 
-    /*------------------------------------------------------------------------
-        Sidebar Navigation Section
-    ------------------------------------------------------------------------*/
-
-    /*
-    logoText: {
-        marginTop: -60,
-        marginBottom: 15,
-        fontFamily: 'dancing-script',
-        fontSize: 45,
-        color: 'rgba(181, 83, 102, 1)', // Medium Pink
-    },
-
-    logo: {
-        width: 90,
-        height: 90,
-        marginBottom: 50,
-    },
-    */
-
-    /*------------------------------------------------------------------------
+  /*------------------------------------------------------------------------
         Tabs Styles
     ------------------------------------------------------------------------*/
     tabStyle: {
@@ -492,10 +465,9 @@ const styles = StyleSheet.create({
     /*------------------------------------------------------------------------
         Bottom Menu Section
     ------------------------------------------------------------------------*/
-    menuBar: {
-        width: '20%',
-        height: 100, 
-        backgroundColor: 'rgba(225, 218, 218, 0.7)'},
-    },
-
-);
+  menuBar: {
+    width: "20%",
+    height: 100,
+    backgroundColor: "rgba(225, 218, 218, 0.7)"
+  }
+});

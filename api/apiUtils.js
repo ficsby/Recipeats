@@ -158,8 +158,6 @@ async function searchRecipeByName(name, cuisine, diet, intolerances, context){
         url = url.replace('intolerances=&', '');
     }    
 
-    //https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=thai&diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&offset=0&type=main+course&query=burger
-    //"https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=thai&diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&offset=0&type=main+course&query=burger"
     const response = await fetch(url, {
         method: "GET",
         headers: {
@@ -324,9 +322,6 @@ async function getRandomFoodArticles(context){
 // */
 async function getRandomFoodVideos(context){
     // Returns a promise which then gets the result from the request call
-    // randomCuisine = cusines[(Math.random() * cuisines.length) | 0];
-    // cuisineUrl = 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/videos/search?cuisine=' + randomCuisine + '&minLength=0&maxLength=999&offset=0&number=10';
-    // cuisineUrl = 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/videos/search?cuisine=chinese&minLength=0&maxLength=999&offset=0&number=10';
     const response = await fetch('https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/videos/search?type=main+course&minLength=0&maxLength=999&offset=0&number=10', {
         method: "GET",
         headers: {

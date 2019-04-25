@@ -1,40 +1,53 @@
-import React from 'react';
-import { FlatList, StyleSheet, Image, ImageBackground, View, ScrollView, Text, TextInput, Dimensions, TouchableOpacity, Alert, Modal } from 'react-native';
-import { StackActions } from 'react-navigation';
-import Autocomplete from 'react-native-autocomplete-input';
-import { ListItem, Badge, Divider} from 'react-native-elements';
+import React from "react";
+import {
+  FlatList,
+  StyleSheet,
+  Image,
+  ImageBackground,
+  View,
+  ScrollView,
+  Text,
+  TextInput,
+  Dimensions,
+  TouchableOpacity,
+  Alert,
+  Modal
+} from "react-native";
+import { StackActions } from "react-navigation";
+import Autocomplete from "react-native-autocomplete-input";
+import { ListItem, Badge, Divider } from "react-native-elements";
 // import DialogInput from 'react-native-dialog-input';
-import FlatListItem from './components/FlatListItem';
+import FlatListItem from "./components/FlatListItem";
 import AddFoodItemModal from "./components/AddFoodItemModal";
 import {
-    widthPercentageToDP as wPercentage,
-    heightPercentageToDP as hPercentage
-  } from "react-native-responsive-screen";
+  widthPercentageToDP as wPercentage,
+  heightPercentageToDP as hPercentage
+} from "react-native-responsive-screen";
 
-import { Font, AppLoading } from 'expo';
-import * as firebase from 'firebase';
-import NavigationService from '../navigation/NavigationService.js';
-import ComparisonModal from './components/ComparisonModal';
+import { Font, AppLoading } from "expo";
+import * as firebase from "firebase";
+import NavigationService from "../navigation/NavigationService.js";
+import ComparisonModal from "./components/ComparisonModal";
 import {
-	findMissingFoodItems,
-	findSimilarFoodItems,
-	modifyFoodStock,
-	getFoodList
-  } from "../utils/FoodListUtils";
+  findMissingFoodItems,
+  findSimilarFoodItems,
+  modifyFoodStock,
+  getFoodList
+} from "../utils/FoodListUtils";
 
 /* Custom Icons */
-import { createIconSetFromFontello } from 'react-native-vector-icons';
-import fontelloConfig from './../config/icon-font.json';
-const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
+import { createIconSetFromFontello } from "react-native-vector-icons";
+import fontelloConfig from "./../config/icon-font.json";
+const Icon = createIconSetFromFontello(fontelloConfig, "fontello");
 
-const fetch = require('node-fetch');
+const fetch = require("node-fetch");
 
-import LoadingScreen from './LoadingScreen';
-import DialogInput from 'react-native-dialog-input';
-import apiUtils from '../api/apiUtils.js';
-import RecipeEditingScreen from './RecipeEditingScreen';
-import SearchHeaderNav from './../navigation/SearchHeaderNav';
-import { heightPercentageToDP } from 'react-native-responsive-screen';
+import LoadingScreen from "./LoadingScreen";
+import DialogInput from "react-native-dialog-input";
+import apiUtils from "../api/apiUtils.js";
+import RecipeEditingScreen from "./RecipeEditingScreen";
+import SearchHeaderNav from "./../navigation/SearchHeaderNav";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 
@@ -102,32 +115,35 @@ export default class RecipeScreen extends React.Component {
         this.renderChosenBackgroundImage = this.renderChosenBackgroundImage.bind(this);
     };
 
-    async componentDidMount() {
-        this._ismounted = true;
-        this.setState({
-            fontLoaded: true,
-            readyInMinutes: (this.state.readyInMinutes)? this.state.readyInMinutes.toString() : '',
-            servings: (this.state.servings)? this.state.servings : ''
-        });
 
-        if(this.state.id < 0){
-            this.setState({ isLoading: false });
-        }
-        else
-        {
-            var recipeData = await apiUtils.getRecipeInfoFromId(this.state.id, this);
-            var instructionData = await apiUtils.getAnalyzedInstructions(this.state.id, this);
-            this.getFoodStock();
-            
-            // findSimilarFoodItems();
-            if(recipeData != null && instructionData != null)
-            {	
-                console.log('foodstock');
-                console.log(this.state.userFoodStock);
-                this.setState({ isLoading: false });
-            }
-        }
-    };
+  async componentDidMount() {
+    this._ismounted = true;
+    this.setState({
+      fontLoaded: true,
+      readyInMinutes: this.state.readyInMinutes
+        ? this.state.readyInMinutes.toString() + " minutes"
+        : "",
+      servings: this.state.servings ? this.state.servings + " servings" : ""
+    });
+
+    if (this.state.id < 0) {
+      this.setState({ isLoading: false });
+    } else {
+      var recipeData = await apiUtils.getRecipeInfoFromId(this.state.id, this);
+      var instructionData = await apiUtils.getAnalyzedInstructions(
+        this.state.id,
+        this
+      );
+      this.getFoodStock();
+
+      // findSimilarFoodItems();
+      if (recipeData != null && instructionData != null) {
+        console.log("foodstock");
+        console.log(this.state.userFoodStock);
+        this.setState({ isLoading: false });
+      }
+    }
+  }
 
     componentWillUnmount () {
         this._ismounted = false; // after component is unmounted reste boolean
@@ -183,279 +199,373 @@ export default class RecipeScreen extends React.Component {
             
         }
     };
-
-    toggleComparisonModal() {
-        this.setState({comparisonModalVisible: !this.state.comparisonModalVisible});
-    }
-
-    // Toggles the like state when the "Heart" icon is tapped
-    toggleHeart() {
-        this.setState({  liked: !this.state.liked });
-    };
-
-    toggleEditable() {
-        this.setState({
-            editable: !this.state.editable
-        });
-        this.state.editable?  Alert.alert("Not editable now") : Alert.alert("Values should be editable now.");
-    };
-
-	toggleIngrModalVisibility() {
-		this.setState({
-			ingredientModalVisible : !this.state.ingredientModalVisible
-		})
-	}
-
-    getFoodStock() {
-      foodList = [];
-
-      // Returns a promise of the user's value
-      retrieveData = () => {
-        ref = getFoodList(firebase.auth().currentUser.uid);
-        return ref.once("value");
-      };
   
-      // Snapshot is the depiction of the user's current data
-      retrieveData().then(snapshot => {
-        foodListSnapshot = snapshot.val();
-  
-        for (var key in foodListSnapshot) {
-          if (foodListSnapshot.hasOwnProperty(key)) {
-            foodList.push(foodListSnapshot[key]);
-          }
+
+  toggleComparisonModal() {
+    this.setState({
+      comparisonModalVisible: !this.state.comparisonModalVisible
+    });
+  }
+
+  // Toggles the like state when the "Heart" icon is tapped
+  toggleHeart() {
+    this.setState({ liked: !this.state.liked });
+  }
+
+  toggleEditable() {
+    this.setState({
+      editable: !this.state.editable
+    });
+    this.state.editable
+      ? Alert.alert("Not editable now")
+      : Alert.alert("Values should be editable now.");
+  }
+
+  toggleIngrModalVisibility() {
+    this.setState({
+      ingredientModalVisible: !this.state.ingredientModalVisible
+    });
+  }
+
+  getFoodStock() {
+    foodList = [];
+
+    // Returns a promise of the user's value
+    retrieveData = () => {
+      ref = getFoodList(firebase.auth().currentUser.uid);
+      return ref.once("value");
+    };
+
+    // Snapshot is the depiction of the user's current data
+    retrieveData().then(snapshot => {
+      foodListSnapshot = snapshot.val();
+
+      for (var key in foodListSnapshot) {
+        if (foodListSnapshot.hasOwnProperty(key)) {
+          foodList.push(foodListSnapshot[key]);
         }
-        this.setState({userFoodStock:foodList});
-      });
+      }
+      this.setState({ userFoodStock: foodList });
+    });
+  }
+
+  // Renders the icon according to its current state
+  renderIcon(iconType) {
+    if (iconType == "bookmark") {
+      bookmarkStatus = this.state.bookmarked ? "bookmark" : "bookmark-empty";
+      return (
+        <Icon
+          name={bookmarkStatus}
+          size={28}
+          color="rgba(255,255,255,1)"
+          style={styles.overlayButtons}
+        />
+      );
     }
 
-    // Renders the icon according to its current state
-    renderIcon(iconType) {
-        if(iconType == "bookmark")
-        {
-            bookmarkStatus = this.state.bookmarked? "bookmark" : "bookmark-empty";
-            return (
-                  <Icon name={bookmarkStatus} size={28} color='rgba(255,255,255,1)' style={styles.overlayButtons} />
-            );
-        }
+    if (iconType == "heart") {
+      heartStatus = this.state.liked ? "heart" : "heart-empty";
+      return (
+        <Icon
+          name={heartStatus}
+          size={28}
+          color="rgba(255,255,255,1)"
+          style={styles.overlayButtons}
+        />
+      );
+    }
+  }
 
-        if(iconType == "heart")
-        {
-            heartStatus = this.state.liked? "heart" : "heart-empty";
-            return (
-                <Icon name={heartStatus} size={28} color='rgba(255,255,255,1)' style={styles.overlayButtons} />
-            );
-        }
-    };
+  onPressAddIngredient() {
+    this.setState({ ingredientModalVisible: true });
+  }
 
-    onPressAddIngredient(){
-        this.setState({ingredientModalVisible: true});
+  onPressAddInstruction() {
+    this.setState({ instructionModalVisible: true });
+  }
+
+  onAccountIconPress = () => {
+    var navActions = StackActions.reset({
+      index: 1,
+      actions: [
+        // We need to push both the current screen and the next screen that we are transitioning to incase the user wants to go to previous screen
+        StackActions.push({ routeName: "Home" }),
+        StackActions.push({ routeName: "EditAccount" })
+      ]
+    });
+
+    this.props.navigation.dispatch(navActions);
+  };
+
+  renderIngredientsList() {
+    return this.state.extendedIngredients.map((item, index) => (
+      <View>
+        <ListItem
+          key={index}
+          title={item.name}
+          rightTitle={item.amount + " " + item.unit}
+          titleStyle={styles.ingredientText}
+          rightTitleStyle={styles.amountText}
+        />
+        <Divider />
+      </View>
+    ));
+  }
+
+  renderInstructionsList() {
+    return this.state.editable ? (
+      <FlatList
+        data={this.state.instructions}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item, index }) => (
+          <FlatListItem
+            parentFlatList={this}
+            flatListData={this.state.instructions}
+            sectionId={2}
+            rowId={index}
+            title={item.instruction}
+            leftIcon={
+              <Badge
+                value={index + 1}
+                containerStyle={styles.numberContainer}
+                badgeStyle={styles.numberBadge}
+                textStyle={styles.instructionNumber}
+              />
+            }
+          />
+        )}
+      />
+    ) : (
+      this.state.instructions.map((item, index) => (
+        <View>
+          <ListItem
+            key={index}
+            title={item.step}
+            leftIcon={
+              <Badge
+                value={index + 1}
+                containerStyle={styles.numberContainer}
+                badgeStyle={styles.numberBadge}
+                textStyle={styles.instructionNumber}
+              />
+            }
+          />
+          <Divider />
+        </View>
+      ))
+    );
+  }
+
+  render() {
+    if (this.state.isLoading) {
+      return <LoadingScreen />;
     }
 
-    onPressAddInstruction(){
-        this.setState({instructionModalVisible: true});
+    if (this.state.editable) {
+      return <RecipeEditingScreen parent={this} />;
     }
 
-    onAccountIconPress = () => {
-        var navActions = StackActions.reset({
-            index: 1,
-            actions: [
-                // We need to push both the current screen and the next screen that we are transitioning to incase the user wants to go to previous screen
-                StackActions.push({ routeName: "Home" }),       
-                StackActions.push({ routeName: "EditAccount" }),
-            ]
-        });
-
-        this.props.navigation.dispatch(navActions);
-    };
-
-    renderIngredientsList(){
-        return (
-            this.state.extendedIngredients.map( (item, index) =>  
-            ( 
-              <View>
-                <ListItem key={index} title={item.name} rightTitle={item.amount + " " + item.unit} titleStyle={styles.ingredientText} rightTitleStyle={styles.amountText} />
-                <Divider />
-              </View>
-            )) 
-        );
-    };
-    
-    renderInstructionsList(){
-        return(
-            (this.state.editable)?
-            <FlatList data={this.state.instructions}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({item, index}) => 
-              <FlatListItem parentFlatList={this} flatListData={this.state.instructions} sectionId={2} rowId={index} title={item.instruction} 
-                  leftIcon={<Badge value={index+1} containerStyle={styles.numberContainer} badgeStyle={styles.numberBadge} textStyle={styles.instructionNumber} />} 
-               />
-            }/>
-            :
-            this.state.instructions.map( (item, index) =>  
-            ( 
-                <View>
-                    <ListItem key={index} title={item.step} leftIcon={<Badge value={index+1} containerStyle={styles.numberContainer} badgeStyle={styles.numberBadge} textStyle={styles.instructionNumber} /> } /> 
-                    <Divider />
-                </View>
-            ))
-        );
-    };
-
-    renderDefaultBackgroundImage() {
-        return (
-            <ImageBackground source={require('./../assets/images/default_image_0.png')} style={styles.image}>
-                <View style={styles.overlayButtonsContainer}> 
-                    <TouchableOpacity onPress={this.toggleHeart} >
-                        {this.renderIcon("heart") }
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={this.toggleBookmark} >
-                        {this.renderIcon("bookmark") }
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={this.downloadRecipe} >
-                        <Icon name='download' size={27} color='rgba(255,255,255,1)' style={styles.overlayButtons}/>   
-                    </TouchableOpacity>
-                </View>
-            </ImageBackground>
-        );
-    };
-
-    renderChosenBackgroundImage(){
-        return(
-            <ImageBackground source={{uri:this.state.image}} style={styles.image}>
-                <View style={styles.overlayButtonsContainer}> 
-                    <TouchableOpacity onPress={this.toggleHeart} >
-                        {this.renderIcon("heart") }
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={this.toggleBookmark} >
-                        {this.renderIcon("bookmark") }
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={this.downloadRecipe} >
-                        <Icon name='download' size={27} color='rgba(255,255,255,1)' style={styles.overlayButtons}/>   
-                    </TouchableOpacity>
-                </View>
-            </ImageBackground>  
-        );
-    };
-
-    render() {
-           
-        if (this.state.isLoading) {
-            return <LoadingScreen />;
-		}
-		
-		if(this.state.editable){
-			return <RecipeEditingScreen parent={this} />;
-		}
-      
-
-        return ( 
-            <View style={{flex:1}}> 
-                <SearchHeaderNav/>
-                {/*---------------------------------------------------------------------------------
+    return (
+      <View style={{ flex: 1 }}>
+        <SearchHeaderNav />
+        {/*---------------------------------------------------------------------------------
                    Recipe Page Contents 
                 ------------------------------------------------------------------------------------*/}
-                
-                <ScrollView style={styles.recipeContainer}> 
-                    {/* Comparison Modal */}
-                    <Modal
-                      animationType="slide"
-                      transparent={false}
-                      visible={this.state.comparisonModalVisible}
-                      onRequestClose={() => {
-                      Alert.alert("Modal has been closed.");
-                      }}
-                    >
-                      <ComparisonModal
-                        parent={this}
-                        foodstock={this.state.userFoodStock}
-                        recipeIngredients={this.state.extendedIngredients}
-                      />
-                    </Modal>
 
+        <ScrollView style={styles.recipeContainer}>
+          {/* Comparison Modal */}
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.comparisonModalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+            }}
+          >
+            <ComparisonModal
+              parent={this}
+              foodstock={this.state.userFoodStock}
+              recipeIngredients={this.state.extendedIngredients}
+            />
+          </Modal>
 
-                    {
-                        // Gets the recipe cover photo. If null, uses default photo.
-                        (this.state.image)? this.renderChosenBackgroundImage() : this.renderDefaultBackgroundImage()
-                    }
+          <ImageBackground
+            source={{ uri: this.state.image }}
+            style={styles.image}
+          >
+            <View style={styles.overlayButtonsContainer}>
+              <TouchableOpacity onPress={this.toggleHeart}>
+                {this.renderIcon("heart")}
+              </TouchableOpacity>
 
-                    <View style={styles.contents}>
+              <TouchableOpacity onPress={this.toggleBookmark}>
+                {this.renderIcon("bookmark")}
+              </TouchableOpacity>
 
-                        <View style={styles.recipeTitleContainer}>
-                            <View style={styles.row}>
-                                <TextInput multiline style={styles.recipeTitle} 
-                                    value ={this.state.title}  onChangeText={(title) => this.setState({title})}
-                                    editable={this.state.editable}/>
-
-                                    <TouchableOpacity>
-                                        <Text style={styles.editButton} onPress ={this.toggleEditable}>Edit</Text>
-                                    </TouchableOpacity> 
-                            </View>
-
-                            <View style={styles.statsContainer}>
-                                <Icon style={styles.statsIcon} name='clock' size={13} color='rgba(0,0,0, 0.5)' />
-                                <TextInput style={styles.stats} value ={this.state.readyInMinutes.toString()} />
-                                <Text style={{fontSize: 18, marginTop: wPercentage('0.35%'), marginLeft: wPercentage('1.6%'), marginRight: wPercentage('2.2%')}}>minutes</Text>
-
-                                <Icon style={styles.statsIcon} name='adult' size={13} color='rgba(0,0,0, 0.5)' />
-                                <TextInput style={styles.stats} value ={this.state.servings.toString()} />
-                                <Text style={{fontSize: 18,  marginTop:hPercentage('0.35%'), marginLeft: wPercentage('1.6%'), marginRight: wPercentage('2%')}}>servings</Text>
-                            </View>
-                        </View>
-
-                        <View style ={styles.macrosContainer}>
-                            <View style ={styles.macrosColumn}> 
-                                <TextInput style ={styles.macrosData} value={this.state.calories+''} />
-                                <Text style ={styles.macrosLabel}>  CALORIES </Text>
-                            </View>
-                            <View style ={styles.macrosColumn}> 
-                                <TextInput style ={styles.macrosData} value={this.state.protein+''}/>                                
-                                <Text style ={styles.macrosLabel}>  PROTEIN </Text>
-                            </View>
-                            <View style ={styles.macrosColumn}>
-                                <TextInput style ={styles.macrosData} value={this.state.carbs+''} />   
-                                <Text style ={styles.macrosLabel}>  CARBS </Text>
-                            </View>
-                            <View style={styles.macrosColumn}>
-                                <TextInput style ={styles.macrosData} value={this.state.fats+''}/>
-                                <Text style ={styles.macrosLabel}> FATS </Text>
-                            </View>
-                        </View>
-
-                        <View style ={styles.sectionContainer}>
-                            <View style={styles.row}>
-                                <Text style={styles.sectionTitle}>Ingredients</Text>
-                            </View>
-                            {
-                                (this.state.extendedIngredients && this.state.extendedIngredients.length > 0)?
-                                this.renderIngredientsList() : <Text style={styles.emptyListText}>There are no ingredients to show.</Text>
-                            }         
-                            <TouchableOpacity 
-                                style={styles.compareButton} 
-                                onPress={this.toggleComparisonModal}
-                            >
-                                <Text style={styles.compareText}>Compare To Food Stock</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                        <View style ={styles.sectionContainer}>
-                            <View style={styles.row}>
-                                <Text style={styles.sectionTitle}>Instructions</Text>
-                            </View>
-                            {
-                               (this.state.instructions && this.state.instructions.length > 0) ?
-                               this.renderInstructionsList() : <Text  style={styles.emptyListText}>There are no instructions to show.</Text>
-                            }
-                        </View>
-                    </View>
-                    <View style={styles.whitespaceBuffer}></View>
-                </ScrollView>        
+              <TouchableOpacity onPress={this.downloadRecipe}>
+                <Icon
+                  name="download"
+                  size={27}
+                  color="rgba(255,255,255,1)"
+                  style={styles.overlayButtons}
+                />
+              </TouchableOpacity>
             </View>
-        )
-    }
+          </ImageBackground>
+
+          <View style={styles.contents}>
+            <View style={styles.recipeTitleContainer}>
+              <View style={styles.row}>
+                <TextInput
+                  multiline
+                  style={styles.recipeTitle}
+                  value={this.state.title}
+                  onChangeText={title => this.setState({ title })}
+                  editable={this.state.editable}
+                />
+
+                {/* <Text style={styles.title}>{this.state.title}</Text> */}
+                {
+                  // !(this.state.editable)?
+                  <TouchableOpacity>
+                    <Text
+                      style={styles.editButton}
+                      onPress={this.toggleEditable}
+                    >
+                      Edit
+                    </Text>
+                  </TouchableOpacity>
+                  // : null
+                }
+              </View>
+
+              <View style={styles.statsContainer}>
+                <Icon
+                  style={styles.statsIcon}
+                  name="clock"
+                  size={13}
+                  color="rgba(0,0,0, 0.5)"
+                />
+                <TextInput
+                  style={styles.stats}
+                  value={this.state.readyInMinutes.toString()}
+                  onChangeText={readyInMinutes =>
+                    this.setState({ readyInMinutes })
+                  }
+                  editable={this.state.editable}
+                />
+                <Text
+                  style={{
+                    fontSize: 18,
+                    marginTop: wPercentage("0.35%"),
+                    marginLeft: wPercentage("1.6%"),
+                    marginRight: wPercentage("2.2%")
+                  }}
+                >
+                  mins
+                </Text>
+
+                <Icon
+                  style={styles.statsIcon}
+                  name="adult"
+                  size={13}
+                  color="rgba(0,0,0, 0.5)"
+                />
+                <TextInput
+                  style={styles.stats}
+                  value={this.state.servings.toString()}
+                  onChangeText={servings => this.setState({ servings })}
+                  editable={this.state.editable}
+                />
+                <Text
+                  style={{
+                    fontSize: 18,
+                    marginTop: hPercentage("0.35%"),
+                    marginLeft: wPercentage("1.6%"),
+                    marginRight: wPercentage("2%")
+                  }}
+                >
+                  servings
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.macrosContainer}>
+              <View style={styles.macrosColumn}>
+                <TextInput
+                  style={styles.macrosData}
+                  value={this.state.calories + ""}
+                  onChangeText={calories => this.setState({ calories })}
+                  editable={this.state.editable}
+                />
+                <Text style={styles.macrosLabel}> CALORIES </Text>
+              </View>
+              <View style={styles.macrosColumn}>
+                <TextInput
+                  style={styles.macrosData}
+                  value={this.state.protein + ""}
+                  onChangeText={protein => this.setState({ protein })}
+                  editable={this.state.editable}
+                />
+                <Text style={styles.macrosLabel}> PROTEIN </Text>
+              </View>
+              <View style={styles.macrosColumn}>
+                <TextInput
+                  style={styles.macrosData}
+                  value={this.state.carbs + ""}
+                  onChangeText={carbs => this.setState({ carbs })}
+                  editable={this.state.editable}
+                />
+                <Text style={styles.macrosLabel}> CARBS </Text>
+              </View>
+              <View style={styles.macrosColumn}>
+                <TextInput
+                  style={styles.macrosData}
+                  value={this.state.fats + ""}
+                  onChangeText={fats => this.setState({ fats })}
+                  editable={this.state.editable}
+                />
+                <Text style={styles.macrosLabel}> FATS </Text>
+              </View>
+            </View>
+
+            <View style={styles.sectionContainer}>
+              <View style={styles.row}>
+                <Text style={styles.sectionTitle}>Ingredients</Text>
+              </View>
+              {this.state.extendedIngredients.length > 0 ? (
+                this.renderIngredientsList()
+              ) : (
+                <Text style={styles.emptyListText}>
+                  There are no ingredients to show.
+                </Text>
+              )}
+              <TouchableOpacity
+                style={styles.compareButton}
+                onPress={this.toggleComparisonModal}
+              >
+                <Text style={styles.compareText}>Compare To Food Stock</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.sectionContainer}>
+              <View style={styles.row}>
+                <Text style={styles.sectionTitle}>Instructions</Text>
+              </View>
+              {this.state.instructions && this.state.instructions.length > 0 ? (
+                this.renderInstructionsList()
+              ) : (
+                <Text style={styles.emptyListText}>
+                  There are no instructions to show.
+                </Text>
+              )}
+            </View>
+          </View>
+          <View style={styles.whitespaceBuffer} />
+        </ScrollView>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -753,6 +863,4 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         textAlign: 'center',
     },
-    
 });
-

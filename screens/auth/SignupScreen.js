@@ -13,7 +13,7 @@ import {
 import * as firebase from "firebase";
 import DatePicker from "react-native-datepicker";
 import KeyboardShift from "./../../styles/KeyboardShift.js";
-import AutocompleteData from './../../data/AutocompleteData';
+import AutocompleteData from "./../../data/AutocompleteData";
 import {
   widthPercentageToDP as wPercentage,
   heightPercentageToDP as hPercentage
@@ -36,6 +36,7 @@ export default class SignupScreen extends React.Component {
       birthDate: "",
       selectedHeightMetric: "in",
       selectedGender: "Male",
+      userAccPicture: '',
       ingredientSuggestions: []
     };
   }
@@ -47,14 +48,14 @@ export default class SignupScreen extends React.Component {
       .set({
         name: this.state.name,
         email: this.state.email,
-        password: this.state.password,
         username: this.state.username,
         weight: this.state.weight,
         activityLevel: this.state.activityLevel,
         birthDate: this.state.birthDate,
         height: this.state.height,
         selectedHeightMetric: this.state.selectedHeightMetric,
-        selectedGender: this.state.selectedGender
+        selectedGender: this.state.selectedGender,
+        userAccPicture: 'nopicture'
       });
   };
 
@@ -78,17 +79,18 @@ export default class SignupScreen extends React.Component {
           var user = firebase.auth().currentUser;
           this.writeUserData(user.uid);
           user.sendEmailVerification();
+          
           retrieveData = () => {
-            var ref = firebase.database().ref('ingredients/ingredients');
-            return ref.once('value');
-          }
-      
+            var ref = firebase.database().ref("ingredients/ingredients");
+            return ref.once("value");
+          };
+
           // // Snapshot is the depiction of the user's current data
-          retrieveData().then( (snapshot) => {
-            this.setState( {
-                ingredientSuggestions: snapshot.val()
-            })
-          })
+          retrieveData().then(snapshot => {
+            this.setState({
+              ingredientSuggestions: snapshot.val()
+            });
+          });
           AutocompleteData.ingredientSuggestions = ingredientSuggestions;
           this.props.navigation.navigate("Home");
           // do nothing, success of creating will move onto the main page
@@ -415,7 +417,7 @@ const styles = StyleSheet.create({
     width: WIDTH - 130,
     height: 40,
     fontSize: 15,
-    marginLeft: wPercentage('-7%')
+    marginLeft: wPercentage("-7%")
   },
 
   pickerContainer: {
@@ -426,15 +428,15 @@ const styles = StyleSheet.create({
     flex: 2,
     flexWrap: "wrap",
     height: 40,
-    marginLeft: wPercentage('10%')
+    marginLeft: wPercentage("10%")
   },
 
   choiceContainer: {
     backgroundColor: "rgba(244, 238, 238, 0.7)",
     height: 40,
-    marginTop: hPercentage('2%'),
-    marginLeft: wPercentage('10%'),
-    marginRight: wPercentage('10%')
+    marginTop: hPercentage("2%"),
+    marginLeft: wPercentage("10%"),
+    marginRight: wPercentage("10%")
   },
 
   choiceRow: {
@@ -451,10 +453,10 @@ const styles = StyleSheet.create({
 ------------------------------------------------------------------------*/
 
   signupButton: {
-    marginTop: hPercentage('5%'),
-    marginBottom: hPercentage('5%'),
-    marginRight: wPercentage('5%'),
-    marginLeft: wPercentage('5%'),
+    marginTop: hPercentage("5%"),
+    marginBottom: hPercentage("5%"),
+    marginRight: wPercentage("5%"),
+    marginLeft: wPercentage("5%"),
     paddingTop: 10,
     paddingBottom: 10,
     backgroundColor: "rgba(204, 102, 102, 0.9)",
@@ -471,9 +473,9 @@ const styles = StyleSheet.create({
   },
 
   loginButton: {
-    marginBottom: hPercentage('3%'),
-    marginRight: wPercentage('5%'),
-    marginLeft: wPercentage('5%'),
+    marginBottom: hPercentage("3%"),
+    marginRight: wPercentage("5%"),
+    marginLeft: wPercentage("5%"),
     paddingBottom: 10,
     alignItems: "center",
     justifyContent: "center"
