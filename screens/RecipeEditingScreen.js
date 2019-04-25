@@ -218,8 +218,8 @@ class RecipeEditingScreen extends React.Component {
         ref = 'customRecipes/' + firebase.auth().currentUser.uid + '/' + this.state.title + '_' + this.state.id;
         
         firebase.database().ref(ref).set({
-            extendedIngredients: this.state.tempIngredients,
-            instructions: this.state.tempInstructions,
+            extendedIngredients: (this.state.tempIngredients)? this.state.tempIngredients : [],
+            instructions: (this.state.tempInstructions)? this.state.tempInstructions : [],
         });
 
         firebase.database().ref(ref).update({
@@ -254,9 +254,8 @@ class RecipeEditingScreen extends React.Component {
             extendedIngredients:  this.state.tempIngredients,
             instructions: this.state.tempInstructions,
             nutritionalTags: this.state.nutritionalTags
-
-            
-        })
+		})
+		
         Alert.alert("Your changes have been saved.");
         this.props.parent.toggleEditable();
     }
@@ -269,9 +268,7 @@ class RecipeEditingScreen extends React.Component {
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
             aspect: [4, 3],
-        });
-
-        console.log(result);
+    });
 
         if (!result.cancelled) {
             this.setState({ image: result.uri });
