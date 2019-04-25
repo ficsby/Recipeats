@@ -41,97 +41,8 @@ export default class UserRecipesScreen extends React.Component {
             query: '',
             isLoading: true,
             recipeCreated: false,
-            customRecipes: 
-            [
-                // {   
-                //     id: 556177,
-                //     title: 'Ramen Noodle Coleslaw',
-                //     servings: '4',
-                //     readyInMinutes: '60',
-                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                // },
-                // {   
-                //     id: 556178,
-                //     title: 'Rammy',
-                //     servings: '4',
-                //     readyInMinutes: '60',
-                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                // },
-                // {   
-                //     id: 556179,
-                //     title: 'Some yummy food',
-                //     servings: '4',
-                //     readyInMinutes: '60',
-                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                // },
-                // {   
-                //     id: 556120,
-                //     title: 'Best pizza ever',
-                //     servings: '4',
-                //     readyInMinutes: '60',
-                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                // },
-                // {   
-                //     id: 556125,
-                //     title: 'Frenchy Friez',
-                //     servings: '4',
-                //     readyInMinutes: '60',
-                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                // },
-                // {   
-                //     id: 5561721,
-                //     title: 'Cheez Burger',
-                //     servings: '4',
-                //     readyInMinutes: '60',
-                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                // }
-            ],
-            
-            bookmarkedRecipes: 
-            [
-                // {   
-                //     id: 456177,
-                //     title: 'Ramen Noodle Coleslaw',
-                //     servings: '4',
-                //     readyInMinutes: '60',
-                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                // },
-                // {   
-                //     id: 456178,
-                //     title: 'Rammy',
-                //     servings: '4',
-                //     readyInMinutes: '60',
-                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                // },
-                // {   
-                //     id: 456179,
-                //     title: 'Some yummy food',
-                //     servings: '4',
-                //     readyInMinutes: '60',
-                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                // },
-                // {   
-                //     id: 456171,
-                //     title: 'Best pizza ever',
-                //     servings: '4',
-                //     readyInMinutes: '60',
-                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                // },
-                // {   
-                //     id: 456172,
-                //     title: 'Frenchy Friez',
-                //     servings: '4',
-                //     readyInMinutes: '60',
-                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                // },
-                // {   
-                //     id: 256171,
-                //     title: 'Cheez Burger',
-                //     servings: '4',
-                //     readyInMinutes: '60',
-                //     image: './../../assets/images/ramen-noodle-coleslaw.jpg',
-                // }
-            ],
+            customRecipes: [],
+            bookmarkedRecipes: [],
         };
         this.toggleRecipeModalVisibility = this.toggleRecipeModalVisibility.bind(this);
         this.renderCustomRecipes = this.renderCustomRecipes.bind(this);
@@ -147,6 +58,7 @@ export default class UserRecipesScreen extends React.Component {
     } 
 
     async componentDidMount() {
+		console.log('test');
         this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
         await Font.loadAsync({
           'dancing-script': require('../assets/fonts/DancingScript-Regular.otf'),

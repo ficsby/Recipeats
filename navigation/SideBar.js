@@ -92,7 +92,6 @@ export default class Sidebar extends React.Component {
     render () {
         if(this._ismounted)
         {
-            console.log(this.state.user.name);
             return (
                 <ScrollView style={styles.container}>
                     <View style={styles.header}>
