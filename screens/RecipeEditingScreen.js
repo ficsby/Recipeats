@@ -596,12 +596,6 @@ class RecipeEditingScreen extends React.Component {
                   There are no ingredients to show.
                 </Text>
               )}
-              <TouchableOpacity
-                style={styles.compareButton}
-                onPress={this.toggleComparisonModal}
-              >
-                <Text style={styles.compareText}>Compare To Food Stock</Text>
-              </TouchableOpacity>
             </View>
 
             {/* contentContainerStyle={styles.numberContainer} rightContentContainerStyle={styles.instructionStepContainer} />  */}
@@ -834,7 +828,6 @@ const styles = StyleSheet.create({
   //@CT
   recipeTitle: {
     width: hPercentage("43%"),
-    maxHeight: hPercentage("5%"),
     marginLeft: wPercentage("7%"),
     marginRight: wPercentage("8%"),
     fontSize: 20,
