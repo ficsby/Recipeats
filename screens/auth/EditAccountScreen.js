@@ -138,16 +138,13 @@ export default class EditAccountScreen extends React.Component {
     imageSource() {
         if(this.state.user.userAccPicture != this.state.userAccPicture )
         {
-            console.log('state');
             return this.state.userAccPicture;
         }
         else if(this.state.user.userAccPicture)
         {
-            console.log('useracc');
             return this.state.user.userAccPicture;
         }
         else{
-            console.log('defAcc');
             return defAccIcon;
         }
     }
@@ -197,7 +194,11 @@ export default class EditAccountScreen extends React.Component {
                                     </TouchableOpacity> : null
                                 }
                             </View>
-            
+                            
+                            <TouchableOpacity style={styles.imageContainer } onPress ={this._pickImage}>
+                                <Image source= { (this.state.userAccPicture == '')? {uri:user.userAccPicture} : {uri:this.state.userAccPicture}} style={{flex:1, width: wPercentage('40%'), height: hPercentage('40%'), resizeMode: 'center'}}/> 
+                            </TouchableOpacity>
+
                             <Text style={styles.inputHeading}>Your basic information</Text>
              
                             <View style={styles.dataRow}>
@@ -434,5 +435,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 
+    imageContainer: {
+        flex: 1,
+        marginTop: hPercentage('5%'),
+        height: hPercentage('25%'),
+        borderRadius: 75,
+        alignItems: 'center',
+        justifyContent: 'center',
+}   ,
 
   });
