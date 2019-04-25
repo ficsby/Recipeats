@@ -143,7 +143,6 @@ async function getAnalyzedInstructions(id, context){
 
 
 async function searchRecipeByName(name, cuisine, diet, intolerances, context){
-    console.log('in search recipe');
     let url = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?cuisine=${cuisine}&diet=${diet}&intolerances=${intolerances}&number=10&offset=0&query=${name}`;
     
     if(cuisine.length == 0)

@@ -85,7 +85,6 @@ class CreateRecipeModal extends React.Component {
     var newRecipe = {
                         id: newId,
                         title: this.state.title,
-                        // image: this.state.image,
                         servings: this.state.servings,
                         readyInMinutes: this.state.readyInMinutes,
                         calories: this.state.calories,
