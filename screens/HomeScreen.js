@@ -38,7 +38,7 @@ const Icon = createIconSetFromFontello(fontelloConfig, "fontello");
 const fetch = require("node-fetch");
 
 import NewsItem from "./components/NewsItem";
-// import apiUtils from '../api/apiUtils.js';
+import apiUtils from '../api/apiUtils.js';
 const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 
 export default class HomeScreen extends React.Component {
@@ -113,7 +113,7 @@ export default class HomeScreen extends React.Component {
 
     return (
       <View style={styles.pageContainer}>
-        <SearchHeaderNav />
+        {/* <SearchHeaderNav /> */}
         <ScrollableTabView
           renderTabBar={() => (
             <ScrollableTabBar

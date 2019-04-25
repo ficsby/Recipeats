@@ -272,7 +272,7 @@ async function getRandomFoodTrivia(context){
 // */
 async function getRandomFoodArticles(context){
     searchKeys = ['food', 'avoid', 'best', 'healthy'];
-    shuffle(searchKeys);
+    // shuffle(searchKeys);
     // Returns a promise which then gets the result from the request call
     const foodArticles = [];
 

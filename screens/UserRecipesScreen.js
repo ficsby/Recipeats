@@ -252,7 +252,7 @@ export default class UserRecipesScreen extends React.Component {
     }
     return (
       <View style={styles.pageContainer}>
-        <SearchHeaderNav />
+        {/* <SearchHeaderNav /> */}
 
         {this.showCreateRecipeModal()}
 

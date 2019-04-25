@@ -134,7 +134,7 @@ export default class SearchResultScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <SearchHeaderNav />
+        {/* <SearchHeaderNav /> */}
 
         <ScrollView styles={styles.searchScreenContainer}>
           {this.state.searchResults.map((item, i) => (
