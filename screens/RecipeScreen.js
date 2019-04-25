@@ -728,7 +728,7 @@ const styles = StyleSheet.create({
 
   // @CT
   recipeTitleContainer: {
-    marginTop: hPercentage("-4%"),
+    marginTop: hPercentage("-1%"),
     paddingTop: hPercentage("2%"),
     backgroundColor: "rgba(255,255,255,1)"
   },

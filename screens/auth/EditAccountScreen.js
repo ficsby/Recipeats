@@ -11,6 +11,7 @@ import {
   Image
 } from "react-native";
 import { StackActions } from "react-navigation";
+import { ListItem } from "react-native-elements";
 import * as firebase from "firebase";
 
 import {
@@ -160,7 +161,7 @@ export default class EditAccountScreen extends React.Component {
     } else if (this.state.user.userAccPicture) {
       return this.state.user.userAccPicture;
     } else {
-      return defAccIcon;
+      return "";
     }
   }
 
@@ -189,6 +190,10 @@ export default class EditAccountScreen extends React.Component {
   render() {
     const { user } = this.state;
 
+    const inputDataStyle = (this.state.editable)? styles.inputDataBoxed : styles.inputData;
+    const inputMacrosStyle = (this.state.editable)? styles.macrosInputDataBoxed : styles.macrosInputData;
+
+    // if (this.state.ed)
     if (this._ismounted) {
       return (
         <KeyboardShift>
@@ -211,9 +216,7 @@ export default class EditAccountScreen extends React.Component {
                 <Text style={styles.pageTitle}>Account Settings</Text>
                 {!this.state.editable ? (
                   <TouchableOpacity style={styles.editButton} onPress={this.toggleEditable}>
-                    <Text>
-                      Edit
-                    </Text>
+                    <Text style={{textDecorationLine: 'underline'}}> Edit </Text>
                   </TouchableOpacity>
                 ) : null}
               </View>
@@ -225,15 +228,10 @@ export default class EditAccountScreen extends React.Component {
                 <Image
                   source={
                     this.state.userAccPicture == ""
-                      ? { uri: user.userAccPicture }
+                      ? (this.state.editable)? require('./../../assets/images/default_acc_icon_edit.png') : require('./../../assets/images/default_acc_icon.png')
                       : { uri: this.state.userAccPicture }
                   }
-                  style={{
-                    flex: 1,
-                    width: wPercentage("40%"),
-                    height: hPercentage("40%"),
-                    resizeMode: "center"
-                  }}
+                  style={styles.userAvatar}
                 />
               </TouchableOpacity>
 
@@ -242,7 +240,7 @@ export default class EditAccountScreen extends React.Component {
               <View style={styles.dataRow}>
                 <Text style={styles.inputLabel}>Name</Text>
                 <TextInput
-                  style={styles.inputData}
+                  style={inputDataStyle}
                   value={this.state.name}
                   onChangeText={name => this.setState({ name })}
                   editable={this.state.editable}
@@ -253,7 +251,7 @@ export default class EditAccountScreen extends React.Component {
               <View style={styles.dataRow}>
                 <Text style={styles.inputLabel}>Username</Text>
                 <TextInput
-                  style={styles.inputData}
+                  style={inputDataStyle}
                   value={this.state.username}
                   onChangeText={username => this.setState({ username })}
                   editable={this.state.editable}
@@ -264,7 +262,7 @@ export default class EditAccountScreen extends React.Component {
               <View style={styles.dataRow}>
                 <Text style={styles.inputLabel}>Email</Text>
                 <TextInput
-                  style={styles.inputData}
+                  style={inputDataStyle}
                   value={this.state.email}
                   onChangeText={email => this.setState({ email })}
                   editable={this.state.editable}
@@ -275,7 +273,7 @@ export default class EditAccountScreen extends React.Component {
               <View style={styles.dataRow}>
                 <Text style={styles.inputLabel}>Password</Text>
                 <TextInput
-                  style={styles.inputData}
+                  style={inputDataStyle}
                   value="ENCRYPTED"
                   onChangeText={password =>
                     firebase
@@ -298,7 +296,7 @@ export default class EditAccountScreen extends React.Component {
               <View style={styles.dataRow}>
                 <Text style={styles.inputLabel}>Birthday</Text>
                 <TextInput
-                  style={styles.inputData}
+                  style={inputDataStyle}
                   value={this.state.birthDate}
                   onChangeText={birthDate => this.setState({ birthDate })}
                   editable={this.state.editable}
@@ -309,7 +307,7 @@ export default class EditAccountScreen extends React.Component {
               <View style={styles.dataRow}>
                 <Text style={styles.inputLabel}>Gender</Text>
                 <TextInput
-                  style={styles.inputData}
+                  style={inputDataStyle}
                   value={this.state.selectedGender}
                   onChangeText={selectedGender =>
                     this.setState({ selectedGender })
@@ -323,7 +321,7 @@ export default class EditAccountScreen extends React.Component {
               <View style={styles.dataRow}>
                 <Text style={styles.inputLabel}>Height</Text>
                 <TextInput
-                  style={styles.inputData}
+                  style={inputDataStyle}
                   value={this.state.height}
                   onChangeText={height => this.setState({ height })}
                   editable={this.state.editable}
@@ -334,7 +332,7 @@ export default class EditAccountScreen extends React.Component {
               <View style={styles.dataRow}>
                 <Text style={styles.inputLabel}>Weight</Text>
                 <TextInput
-                  style={styles.inputData}
+                  style={inputDataStyle}
                   value={this.state.weight}
                   onChangeText={weight => this.setState({ weight })}
                   editable={this.state.editable}
@@ -345,7 +343,7 @@ export default class EditAccountScreen extends React.Component {
               <View style={styles.dataRow}>
                 <Text style={styles.inputLabel}>Level of Activity</Text>
                 <TextInput
-                  style={styles.inputData}
+                  style={inputDataStyle}
                   value={this.state.activityLevel}
                   onChangeText={activityLevel =>
                     this.setState({ activityLevel })
@@ -360,7 +358,7 @@ export default class EditAccountScreen extends React.Component {
               <View style={styles.dataRow}>
                 <Text style={styles.macroLabel}>Calories</Text>
                 <TextInput
-                  style={{ width: 200 }}
+                  style={inputMacrosStyle}
                   value={this.state.calories}
                   onChangeText={calories => this.setState({ calories })}
                   editable={this.state.editable}
@@ -369,7 +367,7 @@ export default class EditAccountScreen extends React.Component {
               <View style={styles.dataRow}>
                 <Text style={styles.macroLabel}>Protein</Text>
                 <TextInput
-                  style={{ width: 200 }}
+                  style={inputMacrosStyle}
                   value={this.state.protein}
                   onChangeText={protein => this.setState({ protein })}
                   editable={this.state.editable}
@@ -378,7 +376,7 @@ export default class EditAccountScreen extends React.Component {
               <View style={styles.dataRow}>
                 <Text style={styles.macroLabel}>Fats</Text>
                 <TextInput
-                  style={{ width: 200 }}
+                  style={inputMacrosStyle}
                   value={this.state.fats}
                   onChangeText={fats => this.setState({ fats })}
                   editable={this.state.editable}
@@ -387,7 +385,7 @@ export default class EditAccountScreen extends React.Component {
               <View style={styles.dataRow}>
                 <Text style={styles.macroLabel}>Carbs</Text>
                 <TextInput
-                  style={{ width: 200 }}
+                  style={inputMacrosStyle}
                   value={this.state.carbs}
                   onChangeText={carbs => this.setState({ carbs })}
                   editable={this.state.editable}
@@ -395,18 +393,6 @@ export default class EditAccountScreen extends React.Component {
               </View>
               <View style={styles.macroSeparationLine} />
 
-              <Text style={styles.inputHeading}>Budget Information</Text>
-
-              <View style={styles.dataRow}>
-                <Text style={styles.inputLabel}>Budget</Text>
-                <TextInput
-                  style={styles.inputData}
-                  value={this.state.budget}
-                  onChangeText={budget => this.setState({ budget })}
-                  editable={this.state.editable}
-                />
-              </View>
-              <View style={styles.separationLine} />
               <View style={styles.whitespaceBuffer} />
               {this.state.editable ? (
                 <TouchableOpacity
@@ -427,6 +413,14 @@ export default class EditAccountScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+
+  userAvatar: {
+    flex:1, 
+    width: wPercentage('40%'), 
+    height: hPercentage('40%'), 
+    resizeMode: 'center'
+  },
+
   titleRow: {
     flex: 1,
     flexDirection: "row",
@@ -480,12 +474,42 @@ const styles = StyleSheet.create({
 
   inputData: {
     width: 200,
-    paddingTop: 10
+    paddingTop: hPercentage('3%'),
+  },
+
+  inputDataBoxed: {
+    width: wPercentage('40%'),
+    marginTop: hPercentage("1%"),
+    marginBottom: hPercentage("1%"),
+    paddingTop: hPercentage("0.2%"),
+    paddingBottom: hPercentage("0.2%"),
+    paddingRight: wPercentage("2%"),
+    paddingLeft: wPercentage("2%"),
+    borderColor: "rgba(193, 201, 200, 1)",
+    borderWidth: 1
+  },
+
+  macrosInputData:{
+    width: wPercentage('20%'),
+  },
+
+  macrosInputDataBoxed:{
+    width: wPercentage('20%'),
+    marginTop: hPercentage("1%"),
+    marginBottom: hPercentage("1%"),
+    paddingTop: hPercentage("0.2%"),
+    paddingBottom: hPercentage("0.2%"),
+    paddingRight: wPercentage("2%"),
+    paddingLeft: wPercentage("2%"),
+    borderColor: "rgba(193, 201, 200, 1)",
+    borderWidth: 1
   },
 
   macroLabel: {
     width: 160,
     fontSize: 15,
+    marginTop: hPercentage("1.7%"),
+    marginBottom: hPercentage("1%"),
     color: "rgba(100, 92, 92, 1)",
     fontWeight: "500"
   },
