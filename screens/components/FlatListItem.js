@@ -3,6 +3,11 @@ import { View, TouchableOpacity, Alert } from 'react-native';
 import { ListItem, Badge, Divider } from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 
+/* Custom Icons */
+import { createIconSetFromFontello } from 'react-native-vector-icons';
+import fontelloConfig from './../../config/icon-font.json';
+const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
+
 class FlatListItem extends Component {
     constructor(props) {
         super(props);
@@ -16,7 +21,7 @@ class FlatListItem extends Component {
             <TouchableOpacity>
                 <ListItem key={this.props.rowId} title={this.props.title} rightTitle={this.props.rightTitle}
                     titleStyle={this.props.titleStyle} rightTitleStyle={this.props.rightTitleStyle}
-                    leftIcon={this.props.leftIcon} />
+                    leftIcon={this.props.leftIcon} rightIcon={this.props.rightIcon} />
                 <Divider />
             </TouchableOpacity>
         )

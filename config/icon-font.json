@@ -293,6 +293,24 @@
       "src": "websymbols"
     },
     {
+      "uid": "c311c48d79488965b0fab7f9cd12b6b5",
+      "css": "left-open",
+      "code": 59414,
+      "src": "entypo"
+    },
+    {
+      "uid": "b714be5a812a474811604f700dfc87ce",
+      "css": "left-open-1",
+      "code": 61447,
+      "src": "mfglabs"
+    },
+    {
+      "uid": "884cfc3e6e2d456dd2a2ca0dbb9e6337",
+      "css": "left-open-big",
+      "code": 59422,
+      "src": "entypo"
+    },
+    {
       "uid": "059ee84db3ec1875f05b6b29e53c8cd1",
       "css": "chef",
       "code": 59392,

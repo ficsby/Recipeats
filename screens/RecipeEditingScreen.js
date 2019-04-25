@@ -185,7 +185,7 @@ class RecipeEditingScreen extends React.Component {
             keyExtractor={(item, index) => index.toString()}
             renderItem={({item, index}) => 
               <FlatListItem parentFlatList={this} flatListData={this.state.tempIngredients} sectionId={1} rowId={index} 
-                    title={item.name} rightTitle={item.amount + " " + item.unit} titleStyle={styles.ingredientText} rightTitleStyle={styles.amountText}/>
+                    title={item.name} rightTitle={item.amount + " " + item.unit} titleStyle={styles.ingredientText} rightTitleStyle={styles.amountText} rightIcon={<Icon name='left-open' size={17} color={'grey'} style={styles.swipeIndicator}/>}/>
             }/>
         );
     };
@@ -196,7 +196,7 @@ class RecipeEditingScreen extends React.Component {
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({item, index}) => 
               <FlatListItem parentFlatList={this} flatListData={this.state.tempInstructions} sectionId={2} rowId={index} title={item.step} 
-                  leftIcon={<Badge value={index+1} containerStyle={styles.numberContainer} badgeStyle={styles.numberBadge} textStyle={styles.instructionNumber} />} 
+                    leftIcon={<Badge value={index+1} containerStyle={styles.numberContainer} badgeStyle={styles.numberBadge} textStyle={styles.instructionNumber} rightIcon={<Icon name='left-open' size={17} color={'grey'} style={styles.swipeIndicator}/>} />} 
                />
             }/>
         );
@@ -777,12 +777,16 @@ const styles = StyleSheet.create({
         marginBottom: hPercentage('2%'),
     },
 
+    swipeIndicator: {
+        paddingRight: wPercentage('4%'),
+        paddingLeft: wPercentage('1.5%')
+    },
     /*------------------------------------------------------------------------
         Ingredients Styles
     ------------------------------------------------------------------------*/
     addIcon: {
         paddingTop: hPercentage('2%'), //10
-        paddingRight: wPercentage('8%'), //30
+        paddingRight: wPercentage('7%'), //30
     },
     
     compareButton: {
@@ -802,7 +806,7 @@ const styles = StyleSheet.create({
 
     ingredientText: {
         fontSize: 14,
-        marginLeft: wPercentage('7.5%'),
+        marginLeft: wPercentage('4%'),
         marginBottom: -15,
         color: 'rgba(105,105,105,1)',
     },
