@@ -972,6 +972,7 @@ const styles = StyleSheet.create({
   ingredientText: {
     fontSize: 14,
     marginLeft: wPercentage("4%"),
+    marginRight: wPercentage("4%"),
     marginBottom: -15,
     color: "rgba(105,105,105,1)"
   },

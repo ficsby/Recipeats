@@ -473,6 +473,7 @@ export default class RecipeScreen extends React.Component {
             : this.renderDefaultBackgroundImage()}
 
           <View style={styles.contents}>
+            <View style={{paddingTop: hPercentage('5%')}} />
             <View style={styles.recipeTitleContainer}>
               <View style={styles.row}>
                 <TextInput
