@@ -228,7 +228,7 @@ export default class EditAccountScreen extends React.Component {
                 <Image
                   source={
                     this.state.userAccPicture == ""
-                      ? require('./../../assets/images/default_acc_icon.png')
+                      ? (this.state.editable)? require('./../../assets/images/default_acc_icon_edit.png') : require('./../../assets/images/default_acc_icon.png')
                       : { uri: this.state.userAccPicture }
                   }
                   style={styles.userAvatar}
