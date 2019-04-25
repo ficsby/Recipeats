@@ -423,7 +423,7 @@ export default class EditAccountScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  
+
   userAvatar: {
     flex:1, 
     width: wPercentage('40%'), 
