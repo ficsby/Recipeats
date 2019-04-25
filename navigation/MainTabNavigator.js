@@ -126,6 +126,13 @@ const HomeTab = createStackNavigator({
         navigationOptions:{
             header:null,
         }
+    },
+
+    FoodStock: {
+        screen: FoodstockScreen,
+        navigationOptions:{
+            header:null,
+        }
     }
 
 },{
