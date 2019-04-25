@@ -1,6 +1,7 @@
 import React from "react";
 import * as firebase from "firebase";
 import {
+  Alert,
   StyleSheet,
   Text,
   View,
@@ -72,8 +73,8 @@ class AddInstructionModal extends React.Component {
     text = text.substring(0, text.length - 1);
   }
 
-  overCharLimit(text) {
-    Alert.alert("You cannot exceed 240 characters.");
+  overCharLimit(text, charLimit) {
+    Alert.alert("You cannot exceed " + charLimit.toString() + " characters.");
     text = text.substring(0, text.length - 1);
   }
 
@@ -142,8 +143,8 @@ class AddInstructionModal extends React.Component {
                       numberOfLines={5}
                       value={this.state.instruction}
                       onChangeText={input => {
-                        if (input.length > 240) {
-                          this.overCharLimit(text);
+                        if (input.length > 120) {
+                          this.overCharLimit(input, 120);
                         } else {
                           this.setState({ instruction: input });
                         }
@@ -161,7 +162,7 @@ class AddInstructionModal extends React.Component {
                         value={this.state.insertAtStep}
                         onChangeText={input => {
                           isNaN(input)
-                            ? handleNaN(input)
+                            ? this.handleNaN(input)
                             : this.setState({ insertAtStep: input });
                         }}
                       />
