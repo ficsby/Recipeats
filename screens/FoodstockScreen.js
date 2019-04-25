@@ -134,6 +134,7 @@ export default class FoodstockScreen extends React.Component {
               <AddFoodItemModal
                 isModalVisible={this.state.addModalVisible}
                 title={"Add Ingredient to Food Stock"}
+                saveButton={"Add Ingredient"}
                 showPriceInput={true}
                 showDatePicker={true}
                 datePurchased={new Date()}

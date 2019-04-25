@@ -43,6 +43,7 @@ class AddFoodItemModal extends React.Component {
       inputModal: "",
       opening: true,
       title: this.props.title,
+      saveButton: this.props.saveButton,
 
       id: this.props.id,
 
@@ -132,8 +133,12 @@ class AddFoodItemModal extends React.Component {
         this.state.tableData);
 
       // create a newFoodList with the new item to replace the externalFoodList
+      // and display changes in the view
       newFoodList = [];
       newFoodList = parent.state.externalFoodList;
+
+      // filters out the old item if it already exists in the foodlist
+      newFoodList = newFoodList.filter((foodItem) => foodItem.name != this.state.name);
       newFoodList.push({
         name: this.state.name,
         id: this.state.id,
@@ -144,7 +149,7 @@ class AddFoodItemModal extends React.Component {
         nutritionData: this.state.tableData
       });
       newFoodList.sort((a, b) =>
-        a.itemName > b.itemName ? 1 : b.itemName > a.itemName ? -1 : 0
+        a.name > b.name ? 1 : b.name > a.name ? -1 : 0
       );
 
       this.setState(this.initialState);
@@ -153,6 +158,7 @@ class AddFoodItemModal extends React.Component {
       this.setState(this.initialState);
     }
     else {
+      // when the AddFoodItemModal is used to edit a FoodItem
       modifyFoodStock(
         firebase.auth().currentUser.uid,
         this.state.name,
@@ -161,9 +167,18 @@ class AddFoodItemModal extends React.Component {
         this.state.amount,
         this.state.unit,
         this.state.datePurchased,
-        this.state.tableData);
+        this.state.tableData
+      );
 
-        parent.toggleIngrModalVisibility();
+      // edit the parent FoodItem's state to reflect the changes  
+      parent.setState({
+        price: this.state.price,
+        amount: this.state.amount,
+        unit: this.state.unit,
+        datePurchased: this.state.datePurchased,
+        nutritionDate: this.state.tableData
+      });
+      parent.toggleIngrModalVisibility();
     }
   };
 
@@ -489,7 +504,7 @@ class AddFoodItemModal extends React.Component {
                   style={styles.saveButton}
                   onPress={this.onSaveChangesPress}
                 >
-                  <Text style={styles.saveText}>Add Ingredient</Text>
+                  <Text style={styles.saveText}>{this.state.saveButton}</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.cancelButton} onPress={() => this.state.parent.toggleIngrModalVisibility()}> 

@@ -141,6 +141,7 @@ export default class FoodItem extends React.Component {
 				<AddFoodItemModal
 					isModalVisible={this.state.itemModalVisible}
 					title={"Edit Ingredient"}
+					saveButton={"Save changes"}
 					showPriceInput={true}
 					showDatePicker={true}
 					datePurchased={this.state.datePurchased}
