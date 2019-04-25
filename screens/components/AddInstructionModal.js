@@ -25,6 +25,7 @@ import {
 /* Custom Icons */
 import { createIconSetFromFontello } from "react-native-vector-icons";
 import fontelloConfig from "./../../config/icon-font.json";
+
 const Icon = createIconSetFromFontello(fontelloConfig, "fontello");
 
 class AddInstructionModal extends React.Component {
@@ -40,7 +41,7 @@ class AddInstructionModal extends React.Component {
 			id: this.props.id,
 			instructionData: this.props.instructionData,
 			instruction: '',
-			insertAtStep: '',
+			insertAtStep: null,
 		};
 
 		this.initialState = {
@@ -68,11 +69,12 @@ class AddInstructionModal extends React.Component {
 	}
 
 	onTemporaryAddInstruction = () => {
-		var temp = this.state.instructionData;
+		var temp = this.props.parent.state.tempInstructions;
+		
 		var userInstruction = { step: this.state.instruction };
-		if(this.props.parent.tempInstructions)
+		if(this.props.parent.state.tempInstructions)
 		{
-			if ((this.props.parent.tempInstructions.length <= this.state.insertAtStep) || this.state.insertAtStep=='')
+			if ((this.props.parent.state.tempInstructions.length-1 < this.state.insertAtStep) || this.state.insertAtStep=='')
 			{
 				temp.splice(parseInt(this.state.insertAtStep)-1, 0, userInstruction)
 			}
@@ -85,8 +87,6 @@ class AddInstructionModal extends React.Component {
 		else{
 			this.props.parent.setState({tempInstructions: [userInstruction] });
 		}
-		
-
 		
 		this.setState(this.initialState);
 	}

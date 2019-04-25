@@ -216,6 +216,7 @@ class RecipeEditingScreen extends React.Component {
     };
     
     onSaveChangesPress() {
+        console.log(this.state.id);
         // UPDATE FIREBASE WITH THE NEW RECIPE CHANGES HERE
         ref = 'customRecipes/' + firebase.auth().currentUser.uid + '/' + this.state.title + '_' + this.state.id;
         

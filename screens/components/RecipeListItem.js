@@ -28,7 +28,9 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
     }
 
     showRecipeScreen(selectedRecipe) {
-        NavigationService.navigate('RecipeScreen', {title: selectedRecipe.title, recipeId: selectedRecipe.id, bookmarked: this.state.bookmarked, image: this.state.item.image});
+        NavigationService.navigate('RecipeScreen', {title: selectedRecipe.title, recipeId: selectedRecipe.id, bookmarked: this.state.bookmarked, image: this.state.item.image,
+                                                    instructions: selectedRecipe.instructions, extendedIngredients: selectedRecipe.extendedIngredients, calories:selectedRecipe.calories, 
+                                                    protein: selectedRecipe.protein, carbs: selectedRecipe.carbs, fats: selectedRecipe.fats, readyInMinutes: selectedRecipe.readyInMinutes, servings: selectedRecipe.servings});
     }
 
     onPressItem() {

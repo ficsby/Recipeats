@@ -71,8 +71,6 @@ export default class RecipeScreen extends React.Component {
 
             isIngredientModalVisible: false,
             isInstructionModalVisible: false,
-            extendedIngredients: [],
-            nutrients: [],
             userFoodStock: [],
 			convertedAmounts: [],
             
@@ -140,24 +138,24 @@ export default class RecipeScreen extends React.Component {
         if(!this.state.bookmarked)
         {
             firebase.database().ref('bookmarkedRecipes/' + firebase.auth().currentUser.uid + '/' + this.state.title + '_' + this.state.id).update({
-                id: this.state.id,
-                title: this.state.title,
-                servings: this.state.servings,
-                readyInMinutes: this.state.readyInMinutes,
+                id: (this.state.id)? this.state.id: '',
+                title: (this.state.title)? this.state.title : '',
+                servings: (this.state.servings)? this.state.servings : '',
+                readyInMinutes: (this.state.readyInMinutes)? this.state.readyInMinutes : '',
 
                 calories: 155,
                 protein: 3,
                 carbs: 8,
                 fats: 16,
                 
-                nutrients : this.state.nutrients,
-                sourceUrl: this.state.sourceUrl,
-                creditText: this.state.creditText,
-                sourceName: this.state.sourceName,
-                image: this.state.image,
+                nutrients : (this.state.nutrients)? this.state.nutrients: [],
+                sourceUrl: (this.state.sourceUrl)? this.state.sourceUrl : '' ,
+                creditText: (this.state.creditText)? this.state.creditText : '',
+                sourceName: (this.state.sourceName)? this.state.sourceName : '',
+                image: (this.state.image)? this.state.image : '',
 
-                extendedIngredients: this.state.extendedIngredients,
-                instructions: this.state.instructions,
+                extendedIngredients: (this.state.extendedIngredients)? this.state.extendedIngredients : [],
+                instructions: (this.state.instructions)? this.state.instructions : [],
             })
             Alert.alert("You have bookmarked this recipe.");
         }
@@ -432,7 +430,7 @@ export default class RecipeScreen extends React.Component {
                                 <Text style={styles.sectionTitle}>Ingredients</Text>
                             </View>
                             {
-                                (this.state.extendedIngredients.length > 0)?
+                                (this.state.extendedIngredients && this.state.extendedIngredients.length > 0)?
                                 this.renderIngredientsList() : <Text style={styles.emptyListText}>There are no ingredients to show.</Text>
                             }         
                             <TouchableOpacity 
