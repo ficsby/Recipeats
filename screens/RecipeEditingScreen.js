@@ -258,7 +258,6 @@ class RecipeEditingScreen extends React.Component {
             nutritionalTags: this.state.nutritionalTags
 		})
 		
-        Alert.alert("Your changes have been saved.");
         this.props.parent.toggleEditable();
     }
 
