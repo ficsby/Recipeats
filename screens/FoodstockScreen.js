@@ -99,7 +99,7 @@ export default class FoodstockScreen extends React.Component {
     return (
       <View>
         <SearchHeaderNav/>
-        <ScrollView style={{flex:1}}>
+        <ScrollView>
           {/* Launches food item modal to add a food item to user's food stock */}
           <AddFoodItemModal
             isModalVisible={this.state.addModalVisible}

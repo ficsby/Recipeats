@@ -154,10 +154,12 @@ class AddFoodItemModal extends React.Component {
         a.name > b.name ? 1 : b.name > a.name ? -1 : 0
       );
 
+      parent.setState({
+        externalFoodList: newFoodList
+      })
       this.setState(this.initialState);
       parent.toggleIngrModalVisibility();
 
-      this.setState(this.initialState);
     } else {
       // when the AddFoodItemModal is used to edit a FoodItem
       modifyFoodStock(
