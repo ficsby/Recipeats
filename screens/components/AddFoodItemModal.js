@@ -239,7 +239,7 @@ class AddFoodItemModal extends React.Component {
             value={this.state.price}
             onChangeText={itemPrice => 
               isNaN(itemPrice) 
-                ? handleNaN(itemPrice)
+                ? itemPrice = this.handleNaN(itemPrice)
                 : this.setState({ price: itemPrice })
             }
           />
@@ -394,8 +394,8 @@ class AddFoodItemModal extends React.Component {
                       style={styles.amountInput}
                       value={this.state.amount}
                       onChangeText={itemAmount => {
-                        isNaN(ingrAmt)
-                          ? handleNaN(ingrAmt) 
+                        isNaN(itemAmount)
+                          ? itemAmount = this.handleNaN(itemAmount) 
                           : this.setState({ amount: itemAmount });
                             this.state.parent.setState({
 							                itemAmount: itemAmount
