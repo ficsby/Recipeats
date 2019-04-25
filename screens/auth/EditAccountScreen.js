@@ -91,7 +91,6 @@ export default class EditAccountScreen extends React.Component {
                     user: snapshot.val(),
                     name: snapshot.val().name,
                     email: snapshot.val().email,
-                    password: snapshot.val().password,
                     username: snapshot.val().username,
                     weight: snapshot.val().weight,
                     height: snapshot.val().height,
@@ -101,7 +100,9 @@ export default class EditAccountScreen extends React.Component {
                     protein: snapshot.val().protein,
                     carbs: snapshot.val().carbs,
                     fats: snapshot.val().fats, 
-                    budget: snapshot.val().budget
+                    budget: snapshot.val().budget,
+                    selectedHeightMetric: snapshot.val().selectedHeightMetric,
+                    selectedGender : snapshot.val().selectedGender
                 })
             }
         })
@@ -115,23 +116,23 @@ export default class EditAccountScreen extends React.Component {
     // Writes user data to the database
     writeUserData = () => {
         var user = this.state.user;
+        var userAccPicture = this.imageSource();
         firebase.database().ref('users/' + firebase.auth().currentUser.uid).update({
-            name: this.state.name,
-            email: this.state.email,
-            password: this.state.password,
-            username: this.state.username,
-            weight: this.state.weight,
-            height: this.state.height,
-            activityLevel: this.state.activityLevel,
-            birthDate: this.state.birthDate,
-            calories: this.state.calories,
-            protein: this.state.protein,
-            carbs: this.state.carbs,
-            fats: this.state.fats, 
-            budget: this.state.budget,
-            selectedHeightMetric: user.selectedHeightMetric,
-            selectedGender: user.selectedGender,
-            userAccPicture : this.state.userAccPicture,
+            name: (this.state.name)? this.state.name : '',
+            email: (this.state.email)? this.state.email : '',
+            username: (this.state.username)? this.state.username : '',
+            weight: (this.state.weight)? this.state.weight : '',
+            height: (this.state.height)? this.state.height : '',
+            activityLevel: (this.state.activityLevel)? this.state.activityLevel : '',
+            birthDate: (this.state.birthDate)? this.state.birthDate : '',
+            calories: (this.state.calories? this.state.calories : ''),
+            protein: (this.state.protein? this.state.protein : ''),
+            carbs: (this.state.carbs)? this.state.carbs : '',
+            fats: (this.state.fats)? this.state.fats : '', 
+            budget: (this.state.budget? this.state.budget : ''),
+            selectedHeightMetric: (this.state.selectedHeightMetric)? this.state.selectedHeightMetric : '',
+            selectedGender: (this.state.selectedGender)? this.state.selectedGender : '',
+            userAccPicture : (userAccPicture)? userAccPicture : '',
         });
     }
 
@@ -178,7 +179,7 @@ export default class EditAccountScreen extends React.Component {
         {
             return (
                 <KeyboardShift>
-                {() => (<ScrollView>
+                {() => (<ScrollView style={{flex:1}}>
                             <View style={styles.titleRow}>
                                 {/* Side bar navigation icon */}
                                 <TouchableOpacity style={{height: 80}} onPress={this.onGoBack}>
@@ -228,8 +229,14 @@ export default class EditAccountScreen extends React.Component {
                             <View style={styles.dataRow}>
                                 <Text style={styles.inputLabel}>Password</Text>
                                 <TextInput style={styles.inputData} 
-                                           value ={this.state.password}  onChangeText={(password) => this.setState({password})}
-                                           editable={this.state.editable}/>
+                                    value ='ENCRYPTED' onChangeText={(password) =>
+                                        firebase.auth().currentUser.updatePassword(password).then(function() {
+                                            // no error
+                                        }).catch(function(err){
+                                            Alert.alert(err);
+                                        })
+                                    } 
+                                    editable={this.state.editable}/>
                             </View>
                             <View style={styles.separationLine} />
             
@@ -244,7 +251,16 @@ export default class EditAccountScreen extends React.Component {
                                            editable={this.state.editable}/>
                             </View>
                             <View style={styles.separationLine} />
-            
+                            
+                            <View style={styles.dataRow}>
+                                <Text style={styles.inputLabel}>Gender</Text>
+                                <TextInput style={styles.inputData} 
+                                           value ={this.state.selectedGender}  onChangeText={(selectedGender) => this.setState({selectedGender})}
+                                           editable={this.state.editable}/>
+                            </View>
+                            
+                            <View style={styles.separationLine} />
+
                             <View style={styles.dataRow}>
                                 <Text style={styles.inputLabel}>Height</Text>
                                 <TextInput style={styles.inputData} 
