@@ -100,6 +100,8 @@ export default class RecipeScreen extends React.Component {
         this.renderInstructionsList = this.renderInstructionsList.bind(this);
         this.toggleBookmark = this.toggleBookmark.bind(this);
         this.toggleHeart = this.toggleHeart.bind(this);
+        this.renderDefaultBackgroundImage = this.renderDefaultBackgroundImage.bind(this);
+        this.renderChosenBackgroundImage = this.renderChosenBackgroundImage.bind(this);
     };
 
     async componentDidMount() {
@@ -301,6 +303,46 @@ export default class RecipeScreen extends React.Component {
         );
     };
 
+    renderDefaultBackgroundImage() {
+        return (
+            <ImageBackground source={require('./../assets/images/default_image_0.png')} style={styles.image}>
+                <View style={styles.overlayButtonsContainer}> 
+                    <TouchableOpacity onPress={this.toggleHeart} >
+                        {this.renderIcon("heart") }
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={this.toggleBookmark} >
+                        {this.renderIcon("bookmark") }
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={this.downloadRecipe} >
+                        <Icon name='download' size={27} color='rgba(255,255,255,1)' style={styles.overlayButtons}/>   
+                    </TouchableOpacity>
+                </View>
+            </ImageBackground>
+        );
+    };
+
+    renderChosenBackgroundImage(){
+        return(
+            <ImageBackground source={{uri:this.state.image}} style={styles.image}>
+                <View style={styles.overlayButtonsContainer}> 
+                    <TouchableOpacity onPress={this.toggleHeart} >
+                        {this.renderIcon("heart") }
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={this.toggleBookmark} >
+                        {this.renderIcon("bookmark") }
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={this.downloadRecipe} >
+                        <Icon name='download' size={27} color='rgba(255,255,255,1)' style={styles.overlayButtons}/>   
+                    </TouchableOpacity>
+                </View>
+            </ImageBackground>  
+        );
+    };
+
     render() {
            
         if (this.state.isLoading) {
@@ -336,22 +378,11 @@ export default class RecipeScreen extends React.Component {
                       />
                     </Modal>
 
-                    {/* <ImageBackground source={require('./../assets/images/test_photo.jpg')} /> */}
-                    <ImageBackground source={{uri:this.state.image}} style={styles.image}>
-                        <View style={styles.overlayButtonsContainer}> 
-                            <TouchableOpacity onPress={this.toggleHeart} >
-                                {this.renderIcon("heart") }
-                            </TouchableOpacity>
 
-                            <TouchableOpacity onPress={this.toggleBookmark} >
-                                {this.renderIcon("bookmark") }
-                            </TouchableOpacity>
-
-                            <TouchableOpacity onPress={this.downloadRecipe} >
-                                <Icon name='download' size={27} color='rgba(255,255,255,1)' style={styles.overlayButtons}/>   
-                            </TouchableOpacity>
-                        </View>
-                    </ImageBackground>
+                    {
+                        // Gets the recipe cover photo. If null, uses default photo.
+                        (this.state.image)? this.renderChosenBackgroundImage() : this.renderDefaultBackgroundImage()
+                    }
 
                     <View style={styles.contents}>
 

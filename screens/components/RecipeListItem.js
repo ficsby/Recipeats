@@ -118,7 +118,10 @@ const Icon = createIconSetFromFontello(fontelloConfig, 'fontello');
                         </View>
                     </View>
                     <View style={styles.photoContainer}>
-                        <Image source={{uri:this.state.item.image}} style={styles.photo}/>
+                        {
+                            (this.state.item.image)? 
+                            <Image source={{uri:this.state.item.image}} style={styles.photo}/> : <Image source={require('./../../assets/images/default_image_0.png')} style={styles.photo}/>
+                        }
                     </View>
                 </View>
             </Button>
