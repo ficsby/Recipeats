@@ -125,82 +125,78 @@ export default class FoodstockScreen extends React.Component {
     const state = this.state;
 
     return (
-      <KeyboardShift>
-        {() => (
+      <View>
+        <SearchHeaderNav/>
+        <ScrollView style={{flex:1}}>
+          {/* Launches food item modal to add a food item to user's food stock */}
+          <AddFoodItemModal
+            isModalVisible={this.state.addModalVisible}
+            title={"Add Ingredient to Food Stock"}
+            saveButton={"Add Ingredient"}
+            showPriceInput={true}
+            showDatePicker={true}
+            datePurchased={new Date()}
+            id={null}
+            name=""
+            parent={this}
+            price={null}
+            amount={null}
+            unit=""
+          />
+
           <View>
-            <SearchHeaderNav/>
-            <ScrollView>
-              {/* Launches food item modal to add a food item to user's food stock */}
-              <AddFoodItemModal
-                isModalVisible={this.state.addModalVisible}
-                title={"Add Ingredient to Food Stock"}
-                saveButton={"Add Ingredient"}
-                showPriceInput={true}
-                showDatePicker={true}
-                datePurchased={new Date()}
-                id={null}
-                name=""
-                parent={this}
-                price={null}
-                amount={null}
-                unit=""
+            <Text style={Styles.sectionTitle}> Inventory </Text>
+            <View style={Styles.container}>
+              <ListItem
+                title={state.tableHead[0]}
+                rightTitle={state.tableHead[1]}
+                titleStyle={{ fontWeight: '500', fontSize: 15 }}
+                rightTitleStyle={{ fontWeight: '500', fontSize: 15 }}
               />
+              {state.externalFoodList &&
+                state.externalFoodList.map(rowData => {
+                  return (
+                    // Launches food item dialogue that displays the information for each food item, user can also edit values here
+                    <FoodItem
+                      key={rowData.name}
+                      name={rowData.name}
+                      id={rowData.id}
+                      price={rowData.price}
+                      datePurchased={rowData.datePurchased}
+                      amount={rowData.amount}
+                      unit={rowData.unit}
+                      parent={this}
+                      tableData={rowData.tableData}
+                      foodInfoModalVisible={this.state.isFoodInfoModalVisible}
+                    />
 
-              <View>
-                <Text style={Styles.sectionTitle}> Inventory </Text>
-                <View style={Styles.container}>
-                  <ListItem
-                    title={state.tableHead[0]}
-                    rightTitle={state.tableHead[1]}
-                    titleStyle={{ fontWeight: '500', fontSize: 15 }}
-                    rightTitleStyle={{ fontWeight: '500', fontSize: 15 }}
-                  />
-                  {state.externalFoodList &&
-                    state.externalFoodList.map(rowData => {
-                      return (
-                        // Launches food item dialogue that displays the information for each food item, user can also edit values here
-                        <FoodItem
-                          key={rowData.name}
-                          name={rowData.name}
-                          id={rowData.id}
-                          price={rowData.price}
-                          datePurchased={rowData.datePurchased}
-                          amount={rowData.amount}
-                          unit={rowData.unit}
-                          parent={this}
-                          tableData={rowData.tableData}
-                          foodInfoModalVisible={this.state.isFoodInfoModalVisible}
-                        />
-
-                      );
-                    })}
-                </View>
-              </View>
-            </ScrollView>
-            <ListItem
-              Component={TouchableScale}
-              friction={90}
-              tension={100}
-              activeScale={0.95}
-              containerStyle={{
-                backgroundColor: 'rgba(209, 201, 200, 0.2)',
-                paddingTop: wPercentage('3%'),
-                paddingBottom: wPercentage('3%'),
-                paddingLeft: wPercentage('8%'),
-                paddingRight: wPercentage('8%'),
-                borderTopColor: 'rgba(0,0,0,0.1)',
-                borderBottomColor: 'rgba(0,0,0,0.1)',
-                borderTopWidth: 1,
-                borderBottomWidth: 1
-              }}
-              title="Add New Food Item"
-              rightIcon={<Icon name='plus' size={18} color='rgba(63, 61, 58, 0.65)' />}
-              titleStyle={{ color: 'rgba(63, 61, 58, 0.65)', fontWeight: '500', fontSize: 17, paddingRight: wPercentage('2%'), textAlign: 'right' }}
-              onPress={this.toggleIngrModalVisibility}
-            />
+                  );
+                })}
+            </View>
           </View>
-        )}
-      </KeyboardShift>
+        </ScrollView>
+        <ListItem
+          Component={TouchableScale}
+          friction={90}
+          tension={100}
+          activeScale={0.95}
+          containerStyle={{
+            backgroundColor: 'rgba(209, 201, 200, 0.2)',
+            paddingTop: wPercentage('3%'),
+            paddingBottom: wPercentage('3%'),
+            paddingLeft: wPercentage('8%'),
+            paddingRight: wPercentage('8%'),
+            borderTopColor: 'rgba(0,0,0,0.1)',
+            borderBottomColor: 'rgba(0,0,0,0.1)',
+            borderTopWidth: 1,
+            borderBottomWidth: 1
+          }}
+          title="Add New Food Item"
+          rightIcon={<Icon name='plus' size={18} color='rgba(63, 61, 58, 0.65)' />}
+          titleStyle={{ color: 'rgba(63, 61, 58, 0.65)', fontWeight: '500', fontSize: 17, paddingRight: wPercentage('2%'), textAlign: 'right' }}
+          onPress={this.toggleIngrModalVisibility}
+        />
+      </View>
     );
 
   }
