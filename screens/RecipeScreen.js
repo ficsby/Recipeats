@@ -244,9 +244,6 @@ export default class RecipeScreen extends React.Component {
     this.setState({
       editable: !this.state.editable
     });
-    this.state.editable
-      ? Alert.alert("Not editable now")
-      : Alert.alert("Values should be editable now.");
   }
 
   toggleIngrModalVisibility() {
