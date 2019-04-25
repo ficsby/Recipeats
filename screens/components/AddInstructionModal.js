@@ -143,11 +143,9 @@ class AddInstructionModal extends React.Component {
                       numberOfLines={5}
                       value={this.state.instruction}
                       onChangeText={input => {
-                        if (input.length > 120) {
-                          this.overCharLimit(input, 120);
-                        } else {
-                          this.setState({ instruction: input });
-                        }
+                        input.length > 120
+                          ? this.overCharLimit(input, 120)
+                          : this.setState({ instruction: input });
                       }}
                     />
                   </View>

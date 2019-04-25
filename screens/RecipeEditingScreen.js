@@ -113,6 +113,16 @@ class RecipeEditingScreen extends React.Component {
     }
   }
 
+  handleNaN(text) {
+    Alert.alert("This input must be a number.");
+    text = text.substring(0, text.length - 1);
+  }
+
+  overCharLimit(text, charLimit) {
+    Alert.alert("You cannot exceed " + charLimit.toString() + " characters.");
+    text = text.substring(0, text.length - 1);
+  }
+
   componentWillUnmount() {
     this._ismounted = false; // after component is unmounted reste boolean
   }
@@ -397,7 +407,11 @@ class RecipeEditingScreen extends React.Component {
                   multiline
                   style={styles.recipeTitle}
                   value={this.state.title}
-                  onChangeText={title => this.setState({ title })}
+                  onChangeText={title =>
+                    title.length > 40
+                      ? this.overCharLimit(title, 40)
+                      : this.setState({ title })
+                  }
                   editable={this.state.editable}
                 />
               </View>
@@ -413,7 +427,9 @@ class RecipeEditingScreen extends React.Component {
                   style={styles.stats}
                   value={this.state.readyInMinutes.toString()}
                   onChangeText={readyInMinutes =>
-                    this.setState({ readyInMinutes })
+                    isNaN(readyInMinutes)
+                      ? this.handleNaN(readyInMinutes)
+                      : this.setState({ readyInMinutes })
                   }
                   editable={this.state.editable}
                 />
@@ -437,7 +453,11 @@ class RecipeEditingScreen extends React.Component {
                 <TextInput
                   style={styles.stats}
                   value={this.state.servings.toString()}
-                  onChangeText={servings => this.setState({ servings })}
+                  onChangeText={servings =>
+                    isNaN(servings)
+                      ? this.handleNaN(servings)
+                      : this.setState({ servings })
+                  }
                   editable={this.state.editable}
                 />
                 <Text
@@ -458,7 +478,11 @@ class RecipeEditingScreen extends React.Component {
                 <TextInput
                   style={styles.macrosData}
                   value={this.state.calories + ""}
-                  onChangeText={calories => this.setState({ calories })}
+                  onChangeText={calories =>
+                    isNaN(calories)
+                      ? this.handleNaN(calories)
+                      : this.setState({ calories })
+                  }
                   editable={this.state.editable}
                 />
                 <Text style={styles.macrosLabel}> CALORIES </Text>
@@ -467,7 +491,11 @@ class RecipeEditingScreen extends React.Component {
                 <TextInput
                   style={styles.macrosData}
                   value={this.state.protein + ""}
-                  onChangeText={protein => this.setState({ protein })}
+                  onChangeText={protein =>
+                    isNaN(protein)
+                      ? this.handleNaN(protein)
+                      : this.setState({ protein })
+                  }
                   editable={this.state.editable}
                 />
                 <Text style={styles.macrosLabel}> PROTEIN </Text>
@@ -476,7 +504,11 @@ class RecipeEditingScreen extends React.Component {
                 <TextInput
                   style={styles.macrosData}
                   value={this.state.carbs + ""}
-                  onChangeText={carbs => this.setState({ carbs })}
+                  onChangeText={carbs =>
+                    isNaN(carbs)
+                      ? this.handleNaN(carbs)
+                      : this.setState({ carbs })
+                  }
                   editable={this.state.editable}
                 />
                 <Text style={styles.macrosLabel}> CARBS </Text>
@@ -485,7 +517,11 @@ class RecipeEditingScreen extends React.Component {
                 <TextInput
                   style={styles.macrosData}
                   value={this.state.fats + ""}
-                  onChangeText={fats => this.setState({ fats })}
+                  onChangeText={fats =>
+                    isNaN(fats) 
+                      ? this.handleNaN(fats) 
+                      : this.setState({ fats })
+                  }
                   editable={this.state.editable}
                 />
                 <Text style={styles.macrosLabel}> FATS </Text>
