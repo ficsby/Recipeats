@@ -237,7 +237,7 @@ class RecipeEditingScreen extends React.Component {
             sourceUrl: this.state.sourceUrl,
             creditText: this.state.creditText,
             sourceName: this.state.sourceName,
-            image: this.state.image,
+            image: (this.state.image)? this.state.image : '',
         })
 
         this.props.parent.setState({

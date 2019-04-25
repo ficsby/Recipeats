@@ -74,12 +74,16 @@ class CreateRecipeModal extends React.Component {
 
   onSaveChangesPress(){
     var temp = [...this.props.parent.state.customRecipes];
-    // --idCount;
-    
-    console.log("RECIPE ID: ", CreateRecipeModal.idCount);
+	
+	var sumOfTitle = 0;
+	this.state.title.toUpperCase().split('').forEach(function(alphabet) {
+		sumOfTitle += alphabet.charCodeAt(0) - 64;
+	});
+
+    var newId = -1*(this.state.title.length * sumOfTitle);
 
     var newRecipe = {
-                        id: CreateRecipeModal.idCount,
+                        id: newId,
                         title: this.state.title,
                         // image: this.state.image,
                         servings: this.state.servings,

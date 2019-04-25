@@ -229,9 +229,13 @@ export default class UserRecipesScreen extends React.Component {
      *  Each RecipeListItem displays the title, image, serving size, cook time
      */
     renderCustomRecipes() {
-        return this.state.customRecipes.map((recipe, index) => {
-            return <RecipeListItem  parent={this} item={recipe} rowId={index} sectionId={1} bookmarked={false}/>  //sectionId 1 refers to custom recipes
-        });
+		if(this.state.customRecipes)
+		{
+			return this.state.customRecipes.map((recipe, index) => {
+				return <RecipeListItem  parent={this} item={recipe} rowId={index} sectionId={1} bookmarked={false}/>  //sectionId 1 refers to custom recipes
+			});
+		}
+        return <Text>No custom recipes to show</Text>
     };
 
     /**
