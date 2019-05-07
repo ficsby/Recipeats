@@ -271,7 +271,7 @@ async function getRandomFoodTrivia(context){
 //         API Request call to 'Search Site Content" in order to get food articles
 // */
 async function getRandomFoodArticles(context){
-    searchKeys = ['food', 'avoid', 'best', 'healthy'];
+    searchKeys = ['food', 'what', 'best'];
     // shuffle(searchKeys);
     // Returns a promise which then gets the result from the request call
     const foodArticles = [];

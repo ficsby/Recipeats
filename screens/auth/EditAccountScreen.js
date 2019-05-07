@@ -113,7 +113,8 @@ export default class EditAccountScreen extends React.Component {
           protein:  (snapshot.val().protein)? snapshot.val().protein: "---" ,
           carbs:  (snapshot.val().carbs)? snapshot.val().carbs: "---" ,
           fats:  (snapshot.val().fats)? snapshot.val().fats: "---" ,
-          budget: snapshot.val().budget,
+		  budget: snapshot.val().budget,
+		  userAccPicture: (snapshot.val().userAccPicture)? snapshot.val().userAccPicture : '',
           selectedHeightMetric: snapshot.val().selectedHeightMetric,
           selectedGender: snapshot.val().selectedGender
         });

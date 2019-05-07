@@ -24,7 +24,8 @@ export default class Sidebar extends React.Component {
 			fooddiary: false,
 			logout: false,
             currentSelected: 'home',
-            user: null,
+			user: null,
+			userAccPicture: '',
         };
     }
 
@@ -42,7 +43,8 @@ export default class Sidebar extends React.Component {
             if(this._ismounted)
             {
                 this.setState( {
-                    user: snapshot.val()
+					user: snapshot.val(),
+					userAccPicture: (snapshot.val().userAccPicture)? snapshot.val().userAccPicture : ''
                 })
             }
         })
@@ -96,7 +98,7 @@ export default class Sidebar extends React.Component {
                 <ScrollView style={styles.container}>
                     <View style={styles.header}>
                         <TouchableOpacity style={styles.imageContainer } onPress ={this.onAccountIconPress}>
-                            <Image source= {defAccIcon} style={{flex:1, width: wPercentage('35%'), height: hPercentage('35%'), resizeMode: 'center'}}/> 
+                            <Image source= {(this.state.userAccPicture =='')? require('./../assets/images/default_acc_icon.png') : {uri:this.state.userAccPicture}} style={{flex:1, width: wPercentage('35%'), height: hPercentage('35%'), resizeMode: 'center'}}/> 
                         </TouchableOpacity>
                         <Text style={styles.name}>{this.state.user.name}</Text>
                     </View>
