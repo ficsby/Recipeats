@@ -120,7 +120,6 @@ export default class Sidebar extends React.Component {
 								<Icon color={(this.state['recipes']) ? 'rgba(249, 248, 248, 1)' : 'rgba(175,76,99,1)'} name='bookmark' size={25}/>
 								<Text style = { (this.state['recipes']) ? styles.selectedTextStyle : styles.notSelectedTextStyle }>Bookmarks</Text>
 							</View>
-
                             
                         </TouchableOpacity>
 

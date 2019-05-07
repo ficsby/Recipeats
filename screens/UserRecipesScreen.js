@@ -80,7 +80,6 @@ export default class UserRecipesScreen extends React.Component {
   };
 
   async componentDidMount() {
-    console.log("test");
     this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
     await Font.loadAsync({
       "dancing-script": require("../assets/fonts/DancingScript-Regular.otf")
@@ -108,7 +107,6 @@ export default class UserRecipesScreen extends React.Component {
   };
 
   getCustomRecipesFromFirebase() {
-    console.log("custom recipes");
     // Returns a promise of the user's value
     retrieveData = () => {
       userId = firebase.auth().currentUser.uid;
