@@ -108,9 +108,6 @@ export default class SearchResultScreen extends React.Component {
 
   async componentDidMount() {
     this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
-    await Font.loadAsync({
-    'dancing-script': require('./../assets/fonts/DancingScript-Regular.otf'),
-    });
     this.setState({ fontLoaded: true });
 
     const name = NavigationService.getTopLevelNavigator().state.params.name;
@@ -134,7 +131,7 @@ export default class SearchResultScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <SearchHeaderNav />
+        {/* <SearchHeaderNav /> */}
 
         <ScrollView styles={styles.searchScreenContainer}>
           {this.state.searchResults.map((item, i) => (

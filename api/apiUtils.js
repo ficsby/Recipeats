@@ -76,21 +76,9 @@ async function getRecipeInfoFromId(id, context){
         for(key in json)
         {   
             if(key in context.state){
-                if(key == 'servings'){
-                    context.setState({
-                        [key]: json[key] + ' servings'
-                    });
-                }
-                else if(key == 'readyInMinutes'){
-                    context.setState({
-                        [key]: json[key] + ' minutes'
-                    });
-                }
-                else{
-                    context.setState({
-                        [key]: json[key]
-                    });
-                }
+                context.setState({
+                    [key]: json[key]
+                });
             }
             else if(key in context.state.nutritionalTags)
             {
@@ -281,8 +269,8 @@ async function getRandomFoodTrivia(context){
 //         API Request call to 'Search Site Content" in order to get food articles
 // */
 async function getRandomFoodArticles(context){
-    searchKeys = ['restaurant', 'easy', 'kitchen', 'food', 'avoid', 'best', 'healthy'];
-    shuffle(searchKeys);
+    searchKeys = ['food', 'what', 'best'];
+    // shuffle(searchKeys);
     // Returns a promise which then gets the result from the request call
     const foodArticles = [];
 

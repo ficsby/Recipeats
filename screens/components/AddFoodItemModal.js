@@ -79,7 +79,7 @@ class AddFoodItemModal extends React.Component {
       nutritionalTags: {},
       price: "",
       unit: "",
-      datePurchased: new Date(),
+      datePurchased: null,
 
       // data for nutrition info table
       tableHead: ["Title", "Amount", "Unit", "% of Daily Needs"],
@@ -160,6 +160,7 @@ class AddFoodItemModal extends React.Component {
       this.setState(this.initialState);
       parent.toggleIngrModalVisibility();
 
+      this.setState(this.initialState);
     } else {
       // this code executes when the AddFoodItemModal is used to edit a FoodItem
       modifyFoodStock(
@@ -181,7 +182,6 @@ class AddFoodItemModal extends React.Component {
         datePurchased: this.state.datePurchased,
         nutritionDate: this.state.tableData
       });
-      parent.toggleIngrModalVisibility();
     }
   };
 
@@ -536,7 +536,7 @@ class AddFoodItemModal extends React.Component {
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     width: "100%",
     height: "100%",
     flexDirection: "column",

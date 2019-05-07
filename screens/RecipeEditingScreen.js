@@ -82,7 +82,7 @@ class RecipeEditingScreen extends React.Component {
       tempIngredients: this.props.parent.state.extendedIngredients,
       tempInstructions: this.props.parent.state.instructions,
       nutritionalTags: this.props.parent.state.nutritionalTags,
-
+	  
       photo: null,
 
       ingredientModalVisible: false,
@@ -102,15 +102,28 @@ class RecipeEditingScreen extends React.Component {
     this.toggleInstrModalVisibility = this.toggleInstrModalVisibility.bind(
       this
     );
+    this.renderDefaultBackgroundImage = this.renderDefaultBackgroundImage.bind(
+      this
+    );
+    this.renderChosenBackgroundImage = this.renderChosenBackgroundImage.bind(
+      this
+    );
     this._pickImage = this._pickImage.bind(this);
   }
 
   async componentDidMount() {
     this._ismounted = true;
+    await Font.loadAsync({
+      "dancing-script": require("../assets/fonts/DancingScript-Regular.otf")
+    });
     this.setState({ fontLoaded: true });
     if (this.state.id > 0) {
       this.setState({ id: -this.state.id });
     }
+  }
+
+  componentWillUnmount() {
+    this._ismounted = false; // after component is unmounted reste boolean
   }
 
   handleNaN(text) {
@@ -122,11 +135,7 @@ class RecipeEditingScreen extends React.Component {
     Alert.alert("You cannot exceed " + charLimit.toString() + " characters.");
     text = text.substring(0, text.length - 1);
   }
-
-  componentWillUnmount() {
-    this._ismounted = false; // after component is unmounted reste boolean
-  }
-
+  
   toggleBookmark() {
     this.setState({ bookmarked: !this.state.bookmarked });
   }
@@ -227,6 +236,14 @@ class RecipeEditingScreen extends React.Component {
             rightTitle={item.amount + " " + item.unit}
             titleStyle={styles.ingredientText}
             rightTitleStyle={styles.amountText}
+            rightIcon={
+              <Icon
+                name="left-open"
+                size={17}
+                color={"grey"}
+                style={styles.swipeIndicator}
+              />
+            }
           />
         )}
       />
@@ -251,6 +268,14 @@ class RecipeEditingScreen extends React.Component {
                 containerStyle={styles.numberContainer}
                 badgeStyle={styles.numberBadge}
                 textStyle={styles.instructionNumber}
+                rightIcon={
+                  <Icon
+                    name="left-open"
+                    size={17}
+                    color={"grey"}
+                    style={{ marginRight: wPercentage("50%") }}
+                  />
+                }
               />
             }
           />
@@ -273,6 +298,7 @@ class RecipeEditingScreen extends React.Component {
   };
 
   onSaveChangesPress() {
+    console.log(this.state.id);
     // UPDATE FIREBASE WITH THE NEW RECIPE CHANGES HERE
     ref =
       "customRecipes/" +
@@ -331,12 +357,64 @@ class RecipeEditingScreen extends React.Component {
       nutritionalTags: this.state.nutritionalTags
     });
 
-    Alert.alert("Your changes have been saved.");
     this.props.parent.toggleEditable();
   }
 
   onCancelEditChanges() {
     this.props.parent.toggleEditable();
+  }
+
+  renderDefaultBackgroundImage() {
+    return (
+      <ImageBackground
+        source={require("./../assets/images/default_image.png")}
+        style={styles.image}
+      >
+        <View style={styles.overlayButtonsContainer}>
+          <TouchableOpacity onPress={this.toggleHeart}>
+            {this.renderIcon("heart")}
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={this.toggleBookmark}>
+            {this.renderIcon("bookmark")}
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={this.downloadRecipe}>
+            <Icon
+              name="download"
+              size={27}
+              color="rgba(255,255,255,1)"
+              style={styles.overlayButtons}
+            />
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
+    );
+  }
+
+  renderChosenBackgroundImage() {
+    return (
+      <ImageBackground source={{ uri: this.state.image }} style={styles.image}>
+        <View style={styles.overlayButtonsContainer}>
+          <TouchableOpacity onPress={this.toggleHeart}>
+            {this.renderIcon("heart")}
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={this.toggleBookmark}>
+            {this.renderIcon("bookmark")}
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={this.downloadRecipe}>
+            <Icon
+              name="download"
+              size={27}
+              color="rgba(255,255,255,1)"
+              style={styles.overlayButtons}
+            />
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
+    );
   }
 
   _pickImage = async () => {
@@ -375,29 +453,9 @@ class RecipeEditingScreen extends React.Component {
           </Modal>
 
           <TouchableOpacity onPress={this._pickImage}>
-            <ImageBackground
-              source={{ uri: this.state.image }}
-              style={styles.image}
-            >
-              <View style={styles.overlayButtonsContainer}>
-                <TouchableOpacity onPress={this.toggleHeart}>
-                  {this.renderIcon("heart")}
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={this.toggleBookmark}>
-                  {this.renderIcon("bookmark")}
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={this.downloadRecipe}>
-                  <Icon
-                    name="download"
-                    size={27}
-                    color="rgba(255,255,255,1)"
-                    style={styles.overlayButtons}
-                  />
-                </TouchableOpacity>
-              </View>
-            </ImageBackground>
+            {this.state.image
+              ? this.renderChosenBackgroundImage()
+              : this.renderDefaultBackgroundImage()}
           </TouchableOpacity>
 
           <View style={styles.contents}>
@@ -441,7 +499,7 @@ class RecipeEditingScreen extends React.Component {
                     marginRight: wPercentage("2.2%")
                   }}
                 >
-                  mins
+                  minutes
                 </Text>
 
                 <Icon
@@ -574,12 +632,6 @@ class RecipeEditingScreen extends React.Component {
                   There are no ingredients to show.
                 </Text>
               )}
-              <TouchableOpacity
-                style={styles.compareButton}
-                onPress={this.toggleComparisonModal}
-              >
-                <Text style={styles.compareText}>Compare To Food Stock</Text>
-              </TouchableOpacity>
             </View>
 
             {/* contentContainerStyle={styles.numberContainer} rightContentContainerStyle={styles.instructionStepContainer} />  */}
@@ -605,11 +657,9 @@ class RecipeEditingScreen extends React.Component {
                   There are no instructions to show.
                 </Text>
               )}
-              <View style={{ paddingBottom: 20 }} />
+              <View style={{ paddingBottom: hPercentage("5%") }} />
             </View>
           </View>
-
-          <View style={styles.whitespaceBuffer} />
 
           <TouchableOpacity
             style={styles.saveButton}
@@ -668,8 +718,8 @@ const styles = StyleSheet.create({
   },
 
   contents: {
-    marginTop: 5,
-    marginBottom: 15
+    marginTop: hPercentage("2%"),
+    marginBottom: hPercentage("1%")
   },
 
   editButton: {
@@ -682,11 +732,12 @@ const styles = StyleSheet.create({
   },
 
   saveButton: {
-    marginBottom: 30,
-    marginLeft: 30,
-    marginRight: 30,
-    paddingTop: 10,
-    paddingBottom: 10,
+    marginTop: hPercentage("-1%"),
+    marginBottom: hPercentage("1%"),
+    marginLeft: wPercentage("4%"),
+    marginRight: wPercentage("4%"),
+    paddingTop: hPercentage("1%"),
+    paddingBottom: hPercentage("1%"),
     backgroundColor: "rgba(204, 102, 102, 0.9)",
     alignItems: "center",
     justifyContent: "center"
@@ -701,11 +752,12 @@ const styles = StyleSheet.create({
   },
 
   cancelButton: {
-    marginBottom: 30,
-    marginLeft: 30,
-    marginRight: 30,
-    paddingTop: 10,
-    paddingBottom: 10,
+    // marginTop: hPercentage('3%'),
+    marginBottom: hPercentage("3%"),
+    marginLeft: wPercentage("4%"),
+    marginRight: wPercentage("4%"),
+    paddingTop: hPercentage("1%"),
+    paddingBottom: hPercentage("1%"),
     backgroundColor: "grey",
     alignItems: "center",
     justifyContent: "center"
@@ -780,16 +832,16 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     bottom: 0,
     right: 0,
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingRight: 3,
+    paddingTop: hPercentage("1%"),
+    paddingBottom: hPercentage("3%"),
+    paddingRight: wPercentage("1%"),
     width: "100%",
     backgroundColor: "rgba(0,0,0,0.6)"
   },
 
   overlayButtons: {
-    paddingTop: 6,
-    paddingRight: 22
+    paddingTop: hPercentage("0.5%"),
+    paddingRight: wPercentage("5%")
   },
 
   recipeContainer: {
@@ -802,28 +854,34 @@ const styles = StyleSheet.create({
     height: 300
   },
 
+  // @CT
   recipeTitleContainer: {
-    marginTop: -5,
-    paddingTop: 5,
+    marginTop: hPercentage("-4%"),
+    paddingTop: hPercentage("2%"),
     backgroundColor: "rgba(255,255,255,1)"
   },
 
+  //@CT
   recipeTitle: {
-    width: "70%",
-    maxHeight: 80,
-    marginTop: 10,
-    marginLeft: 25,
-    marginRight: 25,
+    width: hPercentage("43%"),
+    marginLeft: wPercentage("7%"),
+    marginRight: wPercentage("8%"),
     fontSize: 20,
     fontWeight: "500",
-    color: "rgba(181, 83, 102, 1)" // Medium Pink
+    color: "rgba(181, 83, 102, 1)", // Medium Pink
+    paddingTop: hPercentage("0.2%"),
+    paddingBottom: hPercentage("0.2%"),
+    paddingRight: wPercentage("2%"),
+    paddingLeft: wPercentage("2%"),
+    borderColor: "rgba(193, 201, 200, 1)",
+    borderWidth: 1
   },
 
   statsContainer: {
     flex: 1,
     flexDirection: "row",
     width: "100%",
-    marginTop: hPercentage("1%"),
+    marginTop: hPercentage("2%"),
     marginBottom: hPercentage("2%"),
     marginLeft: wPercentage("3%")
   },
@@ -831,43 +889,29 @@ const styles = StyleSheet.create({
   stats: {
     fontSize: 18,
     color: "rgba(0,0,0, 0.8)",
-    marginLeft: wPercentage("3%")
+    marginLeft: wPercentage("3%"),
+    paddingTop: hPercentage("0.2%"),
+    paddingBottom: hPercentage("0.2%"),
+    paddingRight: wPercentage("1.3%"),
+    paddingLeft: wPercentage("1.3%"),
+    borderColor: "rgba(193, 201, 200, 1)",
+    borderWidth: 1
   },
 
   statsIcon: {
-    marginTop: 3,
-    marginLeft: 15,
+    marginTop: wPercentage("1%"),
+    marginLeft: wPercentage("5%"),
     fontSize: 18,
     color: "rgba(0,0,0, 0.5)"
   },
-
-  /*-----------------------
-        Description
-    -------------------------*/
-
-  // descriptionContainer: {
-  //     paddingBottom: 5,
-  //     backgroundColor: 'rgba(255,255,255,1)',
-  //     // borderBottomWidth: 1,
-  //     // borderBottomColor: 'rgba(0,0,0,0.3)',
-  // },
-
-  // description: {
-  //     marginTop: 8,
-  //     marginBottom: 15,
-  //     marginLeft: 17,
-  //     marginRight: 17,
-  //     fontSize: 14,
-  //     color: 'rgba(0,0,0, 0.8)',
-  // },
 
   /*------------------------------------------------------------------------
         Macros Styles
     ------------------------------------------------------------------------*/
 
   macrosContainer: {
-    paddingTop: 20,
-    marginBottom: 15,
+    paddingTop: hPercentage("2%"),
+    marginBottom: hPercentage("2%"),
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-evenly",
@@ -888,7 +932,13 @@ const styles = StyleSheet.create({
 
   macrosData: {
     textAlign: "center",
-    fontSize: 15
+    fontSize: 15,
+    paddingTop: 2,
+    paddingBottom: 2,
+    paddingRight: 5,
+    paddingLeft: 5,
+    borderColor: "rgba(193, 201, 200, 1)",
+    borderWidth: 1
   },
 
   /*------------------------------------------------------------------------
@@ -896,8 +946,8 @@ const styles = StyleSheet.create({
     ------------------------------------------------------------------------*/
 
   sectionContainer: {
-    marginBottom: 15,
-    paddingTop: 10,
+    marginBottom: hPercentage("3%"),
+    paddingTop: hPercentage("1%"),
     backgroundColor: "rgba(255,255,255,1)",
     borderBottomColor: "rgba(0,0,0,0.15)",
     borderTopColor: "rgba(0,0,0,0.15)",
@@ -907,9 +957,9 @@ const styles = StyleSheet.create({
 
   sectionTitle: {
     flex: 1,
-    marginTop: 5,
-    marginBottom: 5,
-    marginLeft: 30,
+    marginTop: hPercentage("2%"),
+    marginBottom: hPercentage("2%"),
+    marginLeft: wPercentage("7%"), //
     fontSize: 20,
     fontWeight: "600",
     color: "rgba(0,0,0,1)"
@@ -921,20 +971,23 @@ const styles = StyleSheet.create({
     marginBottom: hPercentage("2%")
   },
 
+  swipeIndicator: {
+    paddingRight: wPercentage("4%"),
+    paddingLeft: wPercentage("1.5%")
+  },
   /*------------------------------------------------------------------------
         Ingredients Styles
     ------------------------------------------------------------------------*/
   addIcon: {
-    paddingTop: 10,
-    paddingRight: 30
+    paddingTop: hPercentage("2%"), //10
+    paddingRight: wPercentage("7%") //30
   },
 
   compareButton: {
-    // backgroundColor: 'rgba(227, 234, 231, 1)',
-    marginTop: 25,
-    paddingBottom: 10,
-    paddingLeft: 20,
-    paddingRight: 20
+    marginTop: hPercentage("3%"),
+    marginBottom: hPercentage("2%"),
+    marginRight: wPercentage("5%"),
+    marginLeft: wPercentage("5%")
   },
 
   compareText: {
@@ -947,7 +1000,8 @@ const styles = StyleSheet.create({
 
   ingredientText: {
     fontSize: 14,
-    marginLeft: 20,
+    marginLeft: wPercentage("4%"),
+    marginRight: wPercentage("4%"),
     marginBottom: -15,
     color: "rgba(105,105,105,1)"
   },
@@ -955,7 +1009,7 @@ const styles = StyleSheet.create({
   amountText: {
     width: "100%",
     fontStyle: "italic",
-    marginRight: 20,
+    marginRight: wPercentage("10%"), //20
     marginBottom: -15
   },
 
@@ -975,8 +1029,8 @@ const styles = StyleSheet.create({
   },
 
   numberContainer: {
-    marginLeft: 10,
-    marginRight: 15
+    marginLeft: wPercentage("4%"),
+    marginRight: wPercentage("8%")
   },
 
   numberBadge: {

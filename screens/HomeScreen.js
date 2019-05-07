@@ -38,7 +38,7 @@ const Icon = createIconSetFromFontello(fontelloConfig, "fontello");
 const fetch = require("node-fetch");
 
 import NewsItem from "./components/NewsItem";
-import apiUtils from "../api/apiUtils.js";
+import apiUtils from '../api/apiUtils.js';
 const API_KEY = "14a82f14fbmsh3185b492f556006p1c82d1jsn4b2cf95864f2";
 
 export default class HomeScreen extends React.Component {
@@ -63,6 +63,9 @@ export default class HomeScreen extends React.Component {
 
   async componentDidMount() {
     this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
+    await Font.loadAsync({
+      "dancing-script": require("../assets/fonts/DancingScript-Regular.otf")
+    });
     this.setState({ fontLoaded: true });
 
     const foodTrivia = await apiUtils.getRandomFoodTrivia(this);
@@ -105,12 +108,12 @@ export default class HomeScreen extends React.Component {
 
   render() {
     if (this.state.isLoading) {
-      return <LoadingScreen />;
+      return <LoadingScreen />
     }
 
     return (
       <View style={styles.pageContainer}>
-        <SearchHeaderNav />
+        {/* <SearchHeaderNav /> */}
         <ScrollableTabView
           renderTabBar={() => (
             <ScrollableTabBar

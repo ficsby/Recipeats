@@ -1,7 +1,6 @@
 import React from "react";
 import * as firebase from "firebase";
 import {
-  Alert,
   StyleSheet,
   Text,
   View,
@@ -26,6 +25,7 @@ import {
 /* Custom Icons */
 import { createIconSetFromFontello } from "react-native-vector-icons";
 import fontelloConfig from "./../../config/icon-font.json";
+
 const Icon = createIconSetFromFontello(fontelloConfig, "fontello");
 
 class AddInstructionModal extends React.Component {
@@ -41,7 +41,7 @@ class AddInstructionModal extends React.Component {
       id: this.props.id,
       instructionData: this.props.instructionData,
       instruction: "",
-      insertAtStep: ""
+      insertAtStep: null
     };
 
     this.initialState = {

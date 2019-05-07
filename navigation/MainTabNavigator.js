@@ -22,6 +22,7 @@ import BookmarksScreen from './../screens/BookmarksScreen';
 import FoodstockScreen from './../screens/FoodstockScreen';
 import MacrosScreen from './../screens/MacrosScreen';
 import SearchScreen from './../screens/SearchScreen';
+
 import SearchResults from './../screens/SearchResultScreen';
 import SearchHeaderNav from './SearchHeaderNav';
 import NavigationService from './NavigationService';
@@ -96,7 +97,7 @@ const HomeTab = createStackNavigator({
     Home: {
         screen: Tabs,
         navigationOptions: {
-            header: null,
+            header: <SearchHeaderNav/>,
         }
     },
 
@@ -117,19 +118,25 @@ const HomeTab = createStackNavigator({
     SearchResults: {
         screen: SearchResults,
         navigationOptions:{
-            header:null,
+            header:<SearchHeaderNav/>,
         }
     },
 
     RecipeScreen: {
         screen: RecipeScreen,
         navigationOptions:{
-            header:null,
+            header:<SearchHeaderNav/>,
+        }
+    },
+    FoodStock: {
+        screen: FoodstockScreen,
+        navigationOptions:{
+            header: <SearchHeaderNav/>
         }
     }
 
 },{
-    header: null,
+    header: <SearchHeaderNav/>,
     defaultNavigationOptions:({navigation}) => {
         NavigationService.setTopLevelNavigator(navigation);
     },

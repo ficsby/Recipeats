@@ -26,7 +26,10 @@ import ScrollableTabView, {
   ScrollableTabBar
 } from "react-native-scrollable-tab-view-forked";
 import LoadingScreen from "./LoadingScreen";
+import { ListItem } from "react-native-elements";
+import TouchableScale from "react-native-touchable-scale";
 import RecipeListItem from "./components/RecipeListItem";
+import { Styles } from "../styles/GlobalStyles";
 
 import * as firebase from "firebase";
 
@@ -76,8 +79,12 @@ export default class UserRecipesScreen extends React.Component {
     )
   };
 
-  componentDidMount() {
+  async componentDidMount() {
+    console.log("test");
     this._ismounted = true; // set boolean to true, then for each setState call have a condition that checks if _ismounted is true
+    await Font.loadAsync({
+      "dancing-script": require("../assets/fonts/DancingScript-Regular.otf")
+    });
     this.setState({ fontLoaded: true });
     this.getCustomRecipesFromFirebase();
   }
@@ -86,7 +93,22 @@ export default class UserRecipesScreen extends React.Component {
     this._ismounted = false; // after component is unmounted reste boolean
   }
 
+  onAccountIconPress = () => {
+    // var navActions = StackActions.reset({
+    //     index: 1,
+    //     actions: [
+    //         // We need to push both the current screen and the next screen that we are transitioning to incase the user wants to go to previous screen
+    //         StackActions.push({ routeName: "Home" }),
+    //         StackActions.push({ routeName: "EditAccount" }),
+    //     ]
+    // });
+
+    // this.props.navigation.dispatch(navActions);
+    this.setState({ visible: true });
+  };
+
   getCustomRecipesFromFirebase() {
+    console.log("custom recipes");
     // Returns a promise of the user's value
     retrieveData = () => {
       userId = firebase.auth().currentUser.uid;
@@ -146,7 +168,7 @@ export default class UserRecipesScreen extends React.Component {
    *  Each RecipeListItem displays the title, image, serving size, cook time
    */
   renderCustomRecipes() {
-    if (this.state.customRecipes) {
+    if (this.state.customRecipes.length > 0) {
       return this.state.customRecipes.map((recipe, index) => {
         return (
           <RecipeListItem
@@ -159,7 +181,7 @@ export default class UserRecipesScreen extends React.Component {
         ); //sectionId 1 refers to custom recipes
       });
     }
-    return <Text>No custom recipes to show</Text>;
+    return <Text style={styles.emptyList}>No custom recipes to show.</Text>;
   }
 
   /**
@@ -167,17 +189,24 @@ export default class UserRecipesScreen extends React.Component {
    *  Each RecipeListItem displays the title, image, serving size, cook time
    */
   renderBookmarks() {
-    return this.state.bookmarkedRecipes.map((recipe, index) => {
-      return (
-        <RecipeListItem
-          parent={this}
-          item={recipe}
-          rowId={index}
-          sectionId={2}
-          bookmarked={true}
-        />
-      ); //sectionId 2 refers to bookmarked recipes
-    });
+    if (this.state.bookmarkedRecipes.length > 0) {
+      return this.state.bookmarkedRecipes.map((recipe, index) => {
+        return (
+          <RecipeListItem
+            parent={this}
+            item={recipe}
+            rowId={index}
+            sectionId={2}
+            bookmarked={true}
+          />
+        ); //sectionId 2 refers to bookmarked recipes
+      });
+    }
+    return (
+      <Text style={{ marginTop: hPercentage("17%"), textAlign: "center" }}>
+        No bookmarks to show.
+      </Text>
+    );
   }
 
   showCreateRecipeModal() {
@@ -223,9 +252,11 @@ export default class UserRecipesScreen extends React.Component {
     }
     return (
       <View style={styles.pageContainer}>
-        <SearchHeaderNav />
+        {/* <SearchHeaderNav /> */}
 
         {this.showCreateRecipeModal()}
+
+        <Text style={Styles.sectionTitle}> Your Recipes </Text>
 
         <ScrollableTabView
           renderTabBar={() => (
@@ -245,20 +276,41 @@ export default class UserRecipesScreen extends React.Component {
             tabLabel={"Custom Recipes"}
             style={styles.tabContentSyle}
           >
+            <ListItem
+              Component={TouchableScale}
+              friction={90}
+              tension={100}
+              activeScale={0.95}
+              containerStyle={{
+                backgroundColor: "rgba(50, 181, 175, 1)",
+                marginTop: hPercentage("2%"),
+                paddingTop: hPercentage("1%"),
+                paddingBottom: hPercentage("1%"),
+                paddingLeft: wPercentage("8%"),
+                paddingRight: wPercentage("8%"),
+                borderTopColor: "rgba(0,0,0,0.1)",
+                borderBottomColor: "rgba(0,0,0,0.1)",
+                borderTopWidth: 1,
+                borderBottomWidth: 1
+              }}
+              title="Create New Recipe"
+              rightIcon={
+                <Icon name="plus" size={18} color="rgba(255,255,255,1)" />
+              }
+              titleStyle={{
+                color: "rgba(255,255,255,1)",
+                fontWeight: "500",
+                fontSize: 17,
+                paddingRight: wPercentage("2%"),
+                textAlign: "center"
+              }}
+              onPress={() => this.toggleRecipeModalVisibility()}
+            />
             <ScrollView>
               <View style={styles.customRecipesContainer}>
                 {this.renderCustomRecipes()}
               </View>
             </ScrollView>
-
-            <View style={styles.behindIcon} />
-
-            <TouchableOpacity
-              style={styles.createRecipeButton}
-              onPress={() => this.toggleRecipeModalVisibility()}
-            >
-              <Icon name="plus-circle" size={50} color="rgb(196, 70, 70)" />
-            </TouchableOpacity>
           </View>
           <View key={"2"} tabLabel={"Bookmarks"} style={styles.tabContentSyle}>
             <ScrollView>
@@ -281,17 +333,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     width: "100%"
-  },
-
-  behindIcon: {
-    flex: 0,
-    backgroundColor: "white",
-    position: "absolute",
-    borderRadius: 100,
-    right: 28,
-    bottom: 28,
-    height: 50,
-    width: 50
   },
 
   createRecipeButton: {
@@ -362,6 +403,26 @@ const styles = StyleSheet.create({
   },
 
   /*------------------------------------------------------------------------
+        Sidebar Navigation Section
+    ------------------------------------------------------------------------*/
+
+  /*
+    logoText: {
+        marginTop: -60,
+        marginBottom: 15,
+        fontFamily: 'dancing-script',
+        fontSize: 45,
+        color: 'rgba(181, 83, 102, 1)', // Medium Pink
+    },
+
+    logo: {
+        width: 90,
+        height: 90,
+        marginBottom: 50,
+    },
+    */
+
+  /*------------------------------------------------------------------------
         Tabs Styles
     ------------------------------------------------------------------------*/
   tabStyle: {},
@@ -377,7 +438,8 @@ const styles = StyleSheet.create({
   },
 
   tabBarTextStyle: {
-    width: wPercentage("20%"),
+    width: wPercentage("35%"),
+    paddingLeft: wPercentage("5%"),
     fontSize: 14,
     fontWeight: "normal"
   },
@@ -470,6 +532,11 @@ const styles = StyleSheet.create({
   //     color: '#397CA9',
   //     fontSize: 20,
   // },
+
+  emptyList: {
+    marginTop: hPercentage("10%"),
+    textAlign: "center"
+  },
 
   /*------------------------------------------------------------------------
         Bottom Menu Section

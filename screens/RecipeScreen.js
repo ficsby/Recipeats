@@ -75,10 +75,10 @@ export default class RecipeScreen extends React.Component {
         .instructions,
       nutrition: null,
 
-      calories: NavigationService.getTopLevelNavigator().state.params.calories,
-      protein: NavigationService.getTopLevelNavigator().state.params.protein,
-      carbs: NavigationService.getTopLevelNavigator().state.params.carbs,
-      fats: NavigationService.getTopLevelNavigator().state.params.fats,
+      calories: (NavigationService.getTopLevelNavigator().state.params.calories)? NavigationService.getTopLevelNavigator().state.params.calories : '---',
+      protein: (NavigationService.getTopLevelNavigator().state.params.protein? NavigationService.getTopLevelNavigator().state.params.protein : '---'),
+      carbs: (NavigationService.getTopLevelNavigator().state.params.carbs)? NavigationService.getTopLevelNavigator().state.params.carbs : '---',
+      fats: (NavigationService.getTopLevelNavigator().state.params.fats)? NavigationService.getTopLevelNavigator().state.params.fats : '---',
 
       sourceUrl: "",
       creditText: "",
@@ -87,8 +87,6 @@ export default class RecipeScreen extends React.Component {
 
       isIngredientModalVisible: false,
       isInstructionModalVisible: false,
-      extendedIngredients: [],
-      nutrients: [],
       userFoodStock: [],
       convertedAmounts: [],
 
@@ -117,6 +115,12 @@ export default class RecipeScreen extends React.Component {
     this.renderInstructionsList = this.renderInstructionsList.bind(this);
     this.toggleBookmark = this.toggleBookmark.bind(this);
     this.toggleHeart = this.toggleHeart.bind(this);
+    this.renderDefaultBackgroundImage = this.renderDefaultBackgroundImage.bind(
+      this
+    );
+    this.renderChosenBackgroundImage = this.renderChosenBackgroundImage.bind(
+      this
+    );
   }
 
   async componentDidMount() {
@@ -124,12 +128,13 @@ export default class RecipeScreen extends React.Component {
     this.setState({
       fontLoaded: true,
       readyInMinutes: this.state.readyInMinutes
-        ? this.state.readyInMinutes.toString() + " minutes"
+        ? this.state.readyInMinutes.toString()
         : "",
-      servings: this.state.servings ? this.state.servings + " servings" : ""
+      servings: this.state.servings ? this.state.servings : ""
     });
 
     if (this.state.id < 0) {
+	  this.getFoodStock();
       this.setState({ isLoading: false });
     } else {
       var recipeData = await apiUtils.getRecipeInfoFromId(this.state.id, this);
@@ -166,24 +171,28 @@ export default class RecipeScreen extends React.Component {
             this.state.id
         )
         .update({
-          id: this.state.id,
-          title: this.state.title,
-          servings: this.state.servings,
-          readyInMinutes: this.state.readyInMinutes,
+          id: this.state.id ? this.state.id : "",
+          title: this.state.title ? this.state.title : "",
+          servings: this.state.servings ? this.state.servings : "",
+          readyInMinutes: this.state.readyInMinutes
+            ? this.state.readyInMinutes
+            : "",
 
           calories: 155,
           protein: 3,
           carbs: 8,
           fats: 16,
 
-          nutrients: this.state.nutrients,
-          sourceUrl: this.state.sourceUrl,
-          creditText: this.state.creditText,
-          sourceName: this.state.sourceName,
-          image: this.state.image,
+          nutrients: this.state.nutrients ? this.state.nutrients : [],
+          sourceUrl: this.state.sourceUrl ? this.state.sourceUrl : "",
+          creditText: this.state.creditText ? this.state.creditText : "",
+          sourceName: this.state.sourceName ? this.state.sourceName : "",
+          image: this.state.image ? this.state.image : "",
 
-          extendedIngredients: this.state.extendedIngredients,
-          instructions: this.state.instructions
+          extendedIngredients: this.state.extendedIngredients
+            ? this.state.extendedIngredients
+            : [],
+          instructions: this.state.instructions ? this.state.instructions : []
         });
       Alert.alert("You have bookmarked this recipe.");
     } else {
@@ -236,9 +245,6 @@ export default class RecipeScreen extends React.Component {
     this.setState({
       editable: !this.state.editable
     });
-    this.state.editable
-      ? Alert.alert("Not editable now")
-      : Alert.alert("Values should be editable now.");
   }
 
   toggleIngrModalVisibility() {
@@ -323,7 +329,7 @@ export default class RecipeScreen extends React.Component {
         <ListItem
           key={index}
           title={item.name}
-          rightTitle={item.amount + " " + item.unit}
+          rightTitle={((item.amount % 1 == 0)? (item.amount) : (parseFloat(item.amount).toFixed(1))) + " " + item.unit }
           titleStyle={styles.ingredientText}
           rightTitleStyle={styles.amountText}
         />
@@ -376,6 +382,59 @@ export default class RecipeScreen extends React.Component {
     );
   }
 
+  renderDefaultBackgroundImage() {
+    return (
+      <ImageBackground
+        source={require("./../assets/images/default_image_0.png")}
+        style={styles.image}
+      >
+        <View style={styles.overlayButtonsContainer}>
+          <TouchableOpacity onPress={this.toggleHeart}>
+            {this.renderIcon("heart")}
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={this.toggleBookmark}>
+            {this.renderIcon("bookmark")}
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={this.downloadRecipe}>
+            <Icon
+              name="download"
+              size={27}
+              color="rgba(255,255,255,1)"
+              style={styles.overlayButtons}
+            />
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
+    );
+  }
+
+  renderChosenBackgroundImage() {
+    return (
+      <ImageBackground source={{ uri: this.state.image }} style={styles.image}>
+        <View style={styles.overlayButtonsContainer}>
+          <TouchableOpacity onPress={this.toggleHeart}>
+            {this.renderIcon("heart")}
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={this.toggleBookmark}>
+            {this.renderIcon("bookmark")}
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={this.downloadRecipe}>
+            <Icon
+              name="download"
+              size={27}
+              color="rgba(255,255,255,1)"
+              style={styles.overlayButtons}
+            />
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
+    );
+  }
+
   render() {
     if (this.state.isLoading) {
       return <LoadingScreen />;
@@ -387,7 +446,7 @@ export default class RecipeScreen extends React.Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <SearchHeaderNav />
+        {/* <SearchHeaderNav /> */}
         {/*---------------------------------------------------------------------------------
                    Recipe Page Contents 
                 ------------------------------------------------------------------------------------*/}
@@ -409,33 +468,14 @@ export default class RecipeScreen extends React.Component {
             />
           </Modal>
 
-          {/* <ImageBackground source={require('./../assets/images/test_photo.jpg')} /> */}
-          <ImageBackground
-            source={{ uri: this.state.image }}
-            style={styles.image}
-          >
-            <View style={styles.overlayButtonsContainer}>
-              <TouchableOpacity onPress={this.toggleHeart}>
-                {this.renderIcon("heart")}
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={this.toggleBookmark}>
-                {this.renderIcon("bookmark")}
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={this.downloadRecipe}>
-                <Icon
-                  name="download"
-                  size={27}
-                  color="rgba(255,255,255,1)"
-                  style={styles.overlayButtons}
-                />
-              </TouchableOpacity>
-            </View>
-          </ImageBackground>
+          {// Gets the recipe cover photo. If null, uses default photo.
+          this.state.image
+            ? this.renderChosenBackgroundImage()
+            : this.renderDefaultBackgroundImage()}
 
           <View style={styles.contents}>
             <View style={styles.recipeTitleContainer}>
+              <View style={{paddingTop: hPercentage('0.2%')}} />
               <View style={styles.row}>
                 <TextInput
                   multiline
@@ -445,19 +485,11 @@ export default class RecipeScreen extends React.Component {
                   editable={this.state.editable}
                 />
 
-                {/* <Text style={styles.title}>{this.state.title}</Text> */}
-                {
-                  // !(this.state.editable)?
-                  <TouchableOpacity>
-                    <Text
-                      style={styles.editButton}
-                      onPress={this.toggleEditable}
-                    >
-                      Edit
-                    </Text>
-                  </TouchableOpacity>
-                  // : null
-                }
+                <TouchableOpacity>
+                  <Text style={styles.editButton} onPress={this.toggleEditable}>
+                    Edit
+                  </Text>
+                </TouchableOpacity>
               </View>
 
               <View style={styles.statsContainer}>
@@ -470,10 +502,6 @@ export default class RecipeScreen extends React.Component {
                 <TextInput
                   style={styles.stats}
                   value={this.state.readyInMinutes.toString()}
-                  onChangeText={readyInMinutes =>
-                    this.setState({ readyInMinutes })
-                  }
-                  editable={this.state.editable}
                 />
                 <Text
                   style={{
@@ -483,7 +511,7 @@ export default class RecipeScreen extends React.Component {
                     marginRight: wPercentage("2.2%")
                   }}
                 >
-                  mins
+                  minutes
                 </Text>
 
                 <Icon
@@ -495,8 +523,6 @@ export default class RecipeScreen extends React.Component {
                 <TextInput
                   style={styles.stats}
                   value={this.state.servings.toString()}
-                  onChangeText={servings => this.setState({ servings })}
-                  editable={this.state.editable}
                 />
                 <Text
                   style={{
@@ -510,14 +536,12 @@ export default class RecipeScreen extends React.Component {
                 </Text>
               </View>
             </View>
-
+            <Divider />
             <View style={styles.macrosContainer}>
               <View style={styles.macrosColumn}>
                 <TextInput
                   style={styles.macrosData}
                   value={this.state.calories + ""}
-                  onChangeText={calories => this.setState({ calories })}
-                  editable={this.state.editable}
                 />
                 <Text style={styles.macrosLabel}> CALORIES </Text>
               </View>
@@ -525,8 +549,6 @@ export default class RecipeScreen extends React.Component {
                 <TextInput
                   style={styles.macrosData}
                   value={this.state.protein + ""}
-                  onChangeText={protein => this.setState({ protein })}
-                  editable={this.state.editable}
                 />
                 <Text style={styles.macrosLabel}> PROTEIN </Text>
               </View>
@@ -534,8 +556,6 @@ export default class RecipeScreen extends React.Component {
                 <TextInput
                   style={styles.macrosData}
                   value={this.state.carbs + ""}
-                  onChangeText={carbs => this.setState({ carbs })}
-                  editable={this.state.editable}
                 />
                 <Text style={styles.macrosLabel}> CARBS </Text>
               </View>
@@ -543,8 +563,6 @@ export default class RecipeScreen extends React.Component {
                 <TextInput
                   style={styles.macrosData}
                   value={this.state.fats + ""}
-                  onChangeText={fats => this.setState({ fats })}
-                  editable={this.state.editable}
                 />
                 <Text style={styles.macrosLabel}> FATS </Text>
               </View>
@@ -554,7 +572,8 @@ export default class RecipeScreen extends React.Component {
               <View style={styles.row}>
                 <Text style={styles.sectionTitle}>Ingredients</Text>
               </View>
-              {this.state.extendedIngredients.length > 0 ? (
+              {this.state.extendedIngredients &&
+              this.state.extendedIngredients.length > 0 ? (
                 this.renderIngredientsList()
               ) : (
                 <Text style={styles.emptyListText}>
@@ -591,8 +610,8 @@ export default class RecipeScreen extends React.Component {
 
 const styles = StyleSheet.create({
   /*------------------------------------------------------------------------
-    General Styles
-------------------------------------------------------------------------*/
+        General Styles
+    ------------------------------------------------------------------------*/
   row: {
     flex: 1,
     flexDirection: "row",
@@ -601,23 +620,6 @@ const styles = StyleSheet.create({
 
   divider: {
     backgroundColor: "blue"
-  },
-
-  collapsibleBar: {
-    backgroundColor: "rgba(255,255,255,1)",
-    borderTopColor: "rgba(0,0,0,0.3)",
-    borderBottomColor: "rgba(0,0,0,0.3)",
-    borderTopWidth: 1,
-    borderBottomWidth: 1
-  },
-
-  whitespaceBuffer: {
-    marginBottom: hPercentage("20%")
-  },
-
-  whitespaceBuffer: {
-    width: 50,
-    paddingBottom: hPercentage("10%")
   },
 
   recipeRow: {
@@ -631,37 +633,21 @@ const styles = StyleSheet.create({
 
   contents: {
     marginTop: hPercentage("2%"),
-    marginBottom: hPercentage("2%")
+    marginBottom: hPercentage("1%")
   },
 
   editButton: {
-    paddingTop: 12,
-    paddingLeft: 15,
-    paddingRight: 20,
+    paddingTop: hPercentage("1%"),
+    paddingLeft: wPercentage("2%"),
+    paddingRight: wPercentage("2%"),
     textDecorationLine: "underline",
-    fontSize: 15
-  },
-
-  saveButton: {
-    marginBottom: hPercentage("5%"),
-    marginLeft: wPercentage("5%"),
-    marginRight: wPercentage("5%"),
-    paddingTop: 10,
-    paddingBottom: 10,
-    backgroundColor: "rgba(204, 102, 102, 0.9)",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-
-  saveChanges: {
-    color: "rgba(255,255,255,1)",
-    fontSize: 16,
-    fontWeight: "600"
+    fontSize: 15,
+    color: "black"
   },
 
   /*------------------------------------------------------------------------
     Top Section
-------------------------------------------------------------------------*/
+    ------------------------------------------------------------------------*/
   topContainer: {
     width: "100%",
     height: 80,
@@ -673,49 +659,87 @@ const styles = StyleSheet.create({
   },
 
   /*------------------------------------------------------------------------
+    Autocomplete Section
+    ------------------------------------------------------------------------*/
+
+  searchContainer: {
+    alignSelf: "center",
+    width: "74%",
+    marginTop: 10,
+    flex: 1,
+    top: 17,
+    zIndex: 1,
+    position: "absolute"
+  },
+
+  searchInputContainer: {
+    alignSelf: "center",
+    width: "94%",
+    paddingLeft: 10,
+    backgroundColor: "rgba(255,255,255,1)"
+    // marginTop: -5,
+  },
+
+  searchInput: {
+    width: "100%",
+    fontSize: 15,
+    paddingLeft: 10
+  },
+
+  searchResultsContainer: {
+    flex: 1,
+    width: "100%",
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 5
+  },
+  searchResult: {
+    width: "100%"
+  },
+
+  /*------------------------------------------------------------------------
     Recipe Info Section
-------------------------------------------------------------------------*/
+    ------------------------------------------------------------------------*/
   overlayButtonsContainer: {
     flexDirection: "row",
     position: "absolute",
     justifyContent: "flex-end",
     bottom: 0,
     right: 0,
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingRight: 3,
+    paddingTop: hPercentage("1%"),
+    paddingBottom: hPercentage("1%"),
+    paddingRight: wPercentage("1%"),
     width: "100%",
     backgroundColor: "rgba(0,0,0,0.6)"
   },
 
   overlayButtons: {
-    paddingTop: 6,
-    paddingRight: 22
+    paddingTop: hPercentage("0.5%"),
+    paddingRight: wPercentage("5%")
   },
 
   recipeContainer: {
     backgroundColor: "rgba(0, 0, 0, 0.05)"
-    // paddingBottom: hPercentage('20%')
   },
 
   image: {
     //position: 'relative',
     width: "100%",
-    height: 300
+    height: 300,
+    marginBottom: 0,
   },
 
+  // @CT
   recipeTitleContainer: {
-    marginTop: hPercentage("-1%"),
-    paddingTop: 5,
+    paddingTop: hPercentage("2%"),
     backgroundColor: "rgba(255,255,255,1)"
   },
 
+  //@CT
   recipeTitle: {
-    width: "70%",
-    maxHeight: 80,
-    marginTop: hPercentage("2%"),
+    width: wPercentage("65%"),
     marginLeft: wPercentage("7%"),
-    marginRight: wPercentage("5%"),
+    marginRight: wPercentage("8%"),
     fontSize: 20,
     fontWeight: "500",
     color: "rgba(181, 83, 102, 1)" // Medium Pink
@@ -725,9 +749,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     width: "100%",
-    marginTop: hPercentage("1%"),
-    marginBottom: hPercentage("2%"),
-    marginLeft: wPercentage("2%")
+    marginTop: hPercentage("2%"),
+    marginBottom: hPercentage("3%"),
+    marginLeft: wPercentage("3%")
   },
 
   stats: {
@@ -737,49 +761,26 @@ const styles = StyleSheet.create({
   },
 
   statsIcon: {
-    marginTop: hPercentage("1%"),
-    marginLeft: wPercentage("2%"),
+    marginTop: wPercentage("1%"),
+    marginLeft: wPercentage("5%"),
     fontSize: 18,
     color: "rgba(0,0,0, 0.5)"
   },
 
-  /*-----------------------
-        Description
-    -------------------------*/
-
-  // descriptionContainer: {
-  //     paddingBottom: 5,
-  //     backgroundColor: 'rgba(255,255,255,1)',
-  //     // borderBottomWidth: 1,
-  //     // borderBottomColor: 'rgba(0,0,0,0.3)',
-  // },
-
-  // description: {
-  //     marginTop: 8,
-  //     marginBottom: 15,
-  //     marginLeft: 17,
-  //     marginRight: 17,
-  //     fontSize: 14,
-  //     color: 'rgba(0,0,0, 0.8)',
-  // },
-
-  /*-----------------------
-        Macros
-    -------------------------*/
+  /*------------------------------------------------------------------------
+        Macros Styles
+    ------------------------------------------------------------------------*/
 
   macrosContainer: {
-    paddingTop: 20,
+    paddingTop: hPercentage("1%"),
+    paddingBottom: hPercentage('-5%'),
     marginBottom: hPercentage("2%"),
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-evenly",
     width: "100%",
     height: 80,
-    backgroundColor: "rgba(255,255,255,1)",
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderTopColor: "rgba(0,0,0,0.2)",
-    borderBottomColor: "rgba(0,0,0,0.15)"
+    backgroundColor: "rgba(255,255,255,1)"
   },
 
   macrosLabel: {
@@ -793,45 +794,49 @@ const styles = StyleSheet.create({
     fontSize: 15
   },
 
-  /*-----------------------
-        Recipe Sections
-    -------------------------*/
+  /*------------------------------------------------------------------------
+        Recipes Styles
+    ------------------------------------------------------------------------*/
 
   sectionContainer: {
-    marginBottom: hPercentage("2%"),
-    paddingTop: 10,
-    backgroundColor: "rgba(255,255,255,1)",
-    borderBottomColor: "rgba(0,0,0,0.15)",
-    borderTopColor: "rgba(0,0,0,0.15)",
-    borderBottomWidth: 1,
-    borderTopWidth: 1
+    marginBottom: hPercentage("3%"),
+    paddingTop: hPercentage("1%"),
+    backgroundColor: "rgba(255,255,255,1)"
   },
 
   sectionTitle: {
     flex: 1,
-    marginTop: hPercentage("1%"),
+    marginTop: hPercentage("2%"),
     marginBottom: hPercentage("2%"),
-    marginLeft: wPercentage("5%"),
+    marginLeft: wPercentage("7%"), //
     fontSize: 20,
     fontWeight: "600",
     color: "rgba(0,0,0,1)"
   },
 
-  /*-----------------------
-       Ingredients
-    -------------------------*/
+  emptyListText: {
+    marginLeft: wPercentage("7%"),
+    marginTop: hPercentage("2%"),
+    marginBottom: hPercentage("2%")
+  },
+
+  swipeIndicator: {
+    paddingRight: wPercentage("4%"),
+    paddingLeft: wPercentage("1.5%")
+  },
+  /*------------------------------------------------------------------------
+        Ingredients Styles
+    ------------------------------------------------------------------------*/
   addIcon: {
-    paddingTop: 10,
-    paddingRight: 30
+    paddingTop: hPercentage("2%"), //10
+    paddingRight: wPercentage("7%") //30
   },
 
   compareButton: {
-    backgroundColor: "rgba(188, 107, 107, 1)",
-    marginTop: hPercentage("2%"),
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 20,
-    paddingRight: 20
+    marginTop: hPercentage("3%"),
+    marginBottom: hPercentage("2%"),
+    marginRight: wPercentage("5%"),
+    marginLeft: wPercentage("5%")
   },
 
   compareText: {
@@ -844,29 +849,25 @@ const styles = StyleSheet.create({
 
   ingredientText: {
     fontSize: 14,
-    marginLeft: wPercentage("3%"),
+    marginLeft: wPercentage("4%"),
+    marginBottom: -15,
     color: "rgba(105,105,105,1)"
   },
 
   amountText: {
     width: "100%",
     fontStyle: "italic",
-    marginRight: wPercentage("3%")
+    marginRight: wPercentage("10%"), //20
+    marginBottom: -15
   },
 
-  emptyListText: {
-    marginLeft: wPercentage("7%"),
-    marginTop: hPercentage("2%"),
-    marginBottom: hPercentage("2%")
-  },
-
-  /*-----------------------
-       Instructions
-    -------------------------*/
+  /*------------------------------------------------------------------------
+        Instructions Styles
+    ------------------------------------------------------------------------*/
 
   instructionStepContainer: {
-    marginRight: wPercentage("5%"),
-    marginLeft: wPercentage("-10%"),
+    marginRight: 35,
+    marginLeft: "-100%",
     justifyContent: "flex-start"
   },
 
@@ -876,8 +877,8 @@ const styles = StyleSheet.create({
   },
 
   numberContainer: {
-    marginLeft: hPercentage("2%"),
-    marginRight: wPercentage("3%")
+    marginLeft: wPercentage("7%"),
+    marginRight: wPercentage("8%")
   },
 
   numberBadge: {
@@ -892,27 +893,5 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "500",
     textAlign: "center"
-  },
-
-  /*------------------------------------------------------------------------
-        Bottom Menu Section
-    ------------------------------------------------------------------------*/
-  menubarRow: {
-    flex: 1,
-    flexDirection: "row",
-    width: "100%",
-    height: 50,
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 90
-  },
-
-  menuBar: {
-    width: "20%",
-    height: 100,
-    backgroundColor: "rgba(246, 238, 238, 1)",
-    borderTopColor: "rgba(225, 218, 218, 0.7)",
-    borderTopWidth: 2.1
   }
 });

@@ -79,19 +79,18 @@ export default class SignupScreen extends React.Component {
           var user = firebase.auth().currentUser;
           this.writeUserData(user.uid);
           user.sendEmailVerification();
-          
-          retrieveData = () => {
-            var ref = firebase.database().ref("ingredients/ingredients");
-            return ref.once("value");
-          };
+        //   retrieveData = () => {
+        //     var ref = firebase.database().ref("ingredients/ingredients");
+        //     return ref.once("value");
+        //   };
 
-          // // Snapshot is the depiction of the user's current data
-          retrieveData().then(snapshot => {
-            this.setState({
-              ingredientSuggestions: snapshot.val()
-            });
-          });
-          AutocompleteData.ingredientSuggestions = ingredientSuggestions;
+        //   // // Snapshot is the depiction of the user's current data
+        //   retrieveData().then(snapshot => {
+        //     this.setState({
+        //       ingredientSuggestions: snapshot.val()
+        //     });
+        //   });
+        //   AutocompleteData.ingredientSuggestions = ingredientSuggestions;
           this.props.navigation.navigate("Home");
           // do nothing, success of creating will move onto the main page
         },
